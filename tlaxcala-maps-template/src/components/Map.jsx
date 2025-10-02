@@ -19,9 +19,9 @@ const Map = ({ onFeatureClick }) => {
     // Capa WMS desde tu Geoserver
     const wmsLayer = new TileLayer({
       source: new TileWMS({
-        url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/tlaxcala/wms',
+        url: 'http://localhost:8080/geoserver/Tlaxcala/wms',
         params: {
-          'LAYERS': 'tlaxcala:municipios',
+          'LAYERS': 'Tlaxcala:Municipios',
           'TILED': true
         },
         serverType: 'geoserver',
@@ -75,8 +75,9 @@ const Map = ({ onFeatureClick }) => {
       style={{ 
         width: '100%', 
         height: '500px',
-        border: '2px solid #ddd',
-        borderRadius: '8px'
+        border: '2px solid var(--color-border)',
+        borderRadius: 'var(--radius-md)',
+        overflow: 'hidden'
       }} 
     />
   );
