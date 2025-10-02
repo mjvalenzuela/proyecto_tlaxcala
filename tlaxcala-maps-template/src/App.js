@@ -59,6 +59,7 @@ function App() {
           header: true,
           dynamicTyping: true,
           complete: (results) => {
+            console.log('CSV cargado:', results.data); 
             setCsvData(results.data);
           }
         });
@@ -143,6 +144,7 @@ function App() {
 
 // Componente para el Dashboard (layout principal)
 const DashboardView = ({ currentView, csvData, selectedFeature, handleFeatureClick }) => {
+  console.log('DashboardView recibió csvData:', csvData);
   return (
     <div className="main-content">
       {/* Header con título y descripción */}

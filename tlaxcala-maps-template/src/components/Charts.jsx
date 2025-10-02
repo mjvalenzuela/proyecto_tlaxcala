@@ -5,6 +5,18 @@ import {
 } from 'recharts';
 
 const Charts = ({ data, selectedFeature }) => {
+
+   console.log('Charts rendering with data:', data); // AGREGAR
+
+  // Si no hay datos, mostrar mensaje
+  if (!data || data.length === 0) {
+    return (
+      <div className="charts-content">
+        <h3>Gráficos Dinámicos</h3>
+        <p>Cargando datos...</p>
+      </div>
+    );
+  }
   // Filtrar datos según el feature seleccionado
   const filteredData = selectedFeature 
     ? data.filter(item => item.municipio === selectedFeature.nombre)
