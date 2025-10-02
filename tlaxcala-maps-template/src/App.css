@@ -329,3 +329,43 @@
 .charts-section .recharts-surface {
   max-width: 100% !important;
 }
+
+/* === ESTILOS PARA CHARTS === */
+
+.charts-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.charts-content h3 {
+  color: var(--color-title-purple);
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.charts-info {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-bg-gray-light);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-accent-green);
+  margin-bottom: var(--spacing-md);
+  font-size: 0.85rem;
+  color: var(--color-text-gray);
+}
+
+.charts-info strong {
+  color: var(--color-primary-orange);
+}
+
+.chart-wrapper {
+  margin-bottom: var(--spacing-md);
+}
+
+.chart-wrapper h4 {
+  color: var(--color-text-dark);
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}

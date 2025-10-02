@@ -20,7 +20,7 @@ const Story = ({ selectedFeature, viewTitle }) => {
       ) : (
         <div className="empty-state">
           <p>
-            👆 Haz clic en cualquier municipio del mapa para ver sus datos específicos
+            Texto dinamico
           </p>
         </div>
       )}
