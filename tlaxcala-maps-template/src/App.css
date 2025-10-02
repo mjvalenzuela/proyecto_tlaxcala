@@ -1,182 +1,296 @@
-/* App.css - Layout principal con navbar y sidebar */
+/* App.css - Layout Dashboard sin scroll */
 
 .App {
   min-height: 100vh;
+  height: 100vh;
   background-color: var(--color-bg-light);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* === CONTENIDO PRINCIPAL === */
 
 .main-content {
-  margin-top: 70px; /* Altura del navbar */
-  padding: var(--spacing-lg);
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-  transition: margin-left var(--transition-normal);
+  flex: 1;
+  margin-top: 70px;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: calc(100vh - 70px);
 }
 
-/* === GRID DE CONTENIDO === */
+/* === HEADER DEL DASHBOARD === */
 
-.content-grid {
+.dashboard-header {
+  text-align: center;
+  padding: var(--spacing-md) 0;
+  background: linear-gradient(135deg, var(--color-bg-white) 0%, var(--color-bg-gray-light) 100%);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  box-shadow: 0 2px 8px var(--color-shadow-md);
+  flex-shrink: 0;
+}
+
+.dashboard-header h1 {
+  color: var(--color-title-purple-dark);
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.dashboard-description {
+  color: var(--color-text-gray);
+  margin: 0;
+  font-size: 0.95rem;
+  padding: 0 var(--spacing-lg);
+}
+
+/* === GRID PRINCIPAL DEL DASHBOARD === */
+
+.dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-lg);
+  grid-template-columns: 40% 60%;
+  gap: var(--spacing-md);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
-/* === CONTENEDOR DE MAPA === */
+/* === COLUMNA IZQUIERDA === */
 
-.map-container {
-  min-height: 500px;
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.charts-section {
+  flex: 1.2;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--color-bg-white);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px var(--color-shadow-md);
+}
+
+.story-section {
+  flex: 0.8;
+  min-height: 0;
+  overflow-y: auto;
+  background: linear-gradient(135deg, var(--color-bg-white) 0%, var(--color-bg-gray-light) 100%);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px var(--color-shadow-md);
+}
+
+/* === COLUMNA DERECHA === */
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.map-section {
+  flex: 1.5;
+  min-height: 0;
   background-color: var(--color-bg-white);
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: 0 2px 8px var(--color-shadow-md);
-  transition: box-shadow var(--transition-normal);
 }
 
-.map-container:hover {
-  box-shadow: 0 4px 16px var(--color-shadow-lg);
-}
-
-/* === CONTENEDOR DE GRÁFICOS === */
-
-.charts-container {
-  background: var(--color-bg-white);
-  padding: var(--spacing-lg);
+.table-section {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   border-radius: var(--radius-md);
   box-shadow: 0 2px 8px var(--color-shadow-md);
-  transition: box-shadow var(--transition-normal);
 }
 
-.charts-container:hover {
-  box-shadow: 0 4px 16px var(--color-shadow-lg);
-}
+/* === AJUSTES PARA CONTENEDORES INTERNOS === */
 
-.charts-container h3 {
+.charts-section h3 {
   color: var(--color-title-purple);
-  margin-bottom: var(--spacing-md);
-  font-size: 1.5rem;
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 
-.charts-container h4 {
+.charts-section h4 {
   color: var(--color-text-dark);
-  margin-bottom: var(--spacing-sm);
-  font-size: 1.1rem;
+  margin: var(--spacing-lg) 0 var(--spacing-sm) 0;
+  font-size: 1rem;
   font-weight: 500;
 }
 
-.charts-container p {
+.charts-section p {
   color: var(--color-text-gray);
-  margin-bottom: var(--spacing-lg);
-  font-size: 0.95rem;
+  margin-bottom: var(--spacing-md);
+  font-size: 0.9rem;
 }
 
-.charts-container p strong {
+.charts-section p strong {
   color: var(--color-primary-orange);
   font-weight: 600;
 }
 
-/* === STORY CONTAINER === */
+/* === STORY SECTION === */
 
-.story-container {
-  padding: var(--spacing-xl);
-  background: linear-gradient(135deg, var(--color-bg-white) 0%, var(--color-bg-gray-light) 100%);
-  border-radius: var(--radius-lg);
-  margin-bottom: var(--spacing-lg);
-  box-shadow: 0 2px 8px var(--color-shadow-md);
+.story-section h3 {
+  color: var(--color-primary-orange);
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
-.story-container h1 {
-  color: var(--color-title-purple-dark);
-  margin-bottom: var(--spacing-sm);
-  font-size: 2.2rem;
-}
-
-.story-container p {
-  font-size: 1rem;
-  line-height: 1.7;
+.story-section p {
+  font-size: 0.9rem;
+  line-height: 1.6;
   color: var(--color-text-gray);
+  margin: 0;
 }
 
-/* === FEATURE INFO BOX === */
+/* === FEATURE INFO (dentro de Story) === */
 
 .feature-info {
-  margin-top: var(--spacing-lg);
   padding: var(--spacing-md);
   background-color: var(--color-bg-white);
   border-left: 4px solid var(--color-primary-orange);
   border-radius: var(--radius-sm);
   box-shadow: 0 1px 4px var(--color-shadow-sm);
+  margin-top: var(--spacing-sm);
 }
 
 .feature-info h3 {
   color: var(--color-primary-orange);
-  margin-bottom: var(--spacing-sm);
-  font-size: 1.3rem;
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: 1.1rem;
 }
 
 .feature-info p {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--color-text-dark);
   line-height: 1.6;
+  margin: 0;
 }
 
 /* === EMPTY STATE === */
 
 .empty-state {
-  margin-top: var(--spacing-lg);
   padding: var(--spacing-md);
   background-color: rgba(80, 180, 152, 0.1);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-accent-green);
+  margin-top: var(--spacing-sm);
 }
 
 .empty-state p {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--color-text-gray);
   font-style: italic;
   margin: 0;
 }
 
+/* === SCROLLBARS PERSONALIZADOS === */
+
+.charts-section::-webkit-scrollbar,
+.story-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.charts-section::-webkit-scrollbar-track,
+.story-section::-webkit-scrollbar-track {
+  background: var(--color-bg-gray-light);
+  border-radius: 3px;
+}
+
+.charts-section::-webkit-scrollbar-thumb,
+.story-section::-webkit-scrollbar-thumb {
+  background: var(--color-accent-green);
+  border-radius: 3px;
+}
+
+.charts-section::-webkit-scrollbar-thumb:hover,
+.story-section::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-orange);
+}
+
 /* === RESPONSIVE === */
+
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: 45% 55%;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+}
 
 @media (max-width: 968px) {
   .main-content {
-    margin-top: 60px; /* Altura del navbar en mobile */
-    padding: var(--spacing-md);
+    margin-top: 60px;
+    padding: var(--spacing-sm);
+    height: calc(100vh - 60px);
   }
 
-  .content-grid {
+  .dashboard-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
   }
 
-  .story-container {
-    padding: var(--spacing-lg);
+  .left-column,
+  .right-column {
+    min-height: 50vh;
   }
 
-  .story-container h1 {
-    font-size: 1.8rem;
+  .dashboard-header {
+    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .dashboard-description {
+    font-size: 0.85rem;
+    padding: 0 var(--spacing-md);
   }
 }
 
 @media (max-width: 640px) {
   .main-content {
+    padding: var(--spacing-xs);
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .dashboard-description {
+    font-size: 0.8rem;
+  }
+
+  .charts-section,
+  .story-section {
     padding: var(--spacing-sm);
   }
 
-  .charts-container {
-    padding: var(--spacing-md);
+  .charts-section h3 {
+    font-size: 1.1rem;
   }
 
-  .story-container {
-    padding: var(--spacing-md);
-  }
-
-  .story-container h1 {
-    font-size: 1.5rem;
+  .charts-section h4 {
+    font-size: 0.95rem;
   }
 }
 
@@ -193,8 +307,25 @@
   }
 }
 
-.charts-container,
-.map-container,
-.story-container {
-  animation: fadeIn var(--transition-slow) ease-out;
+.dashboard-header,
+.charts-section,
+.story-section,
+.map-section,
+.table-section {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* === AJUSTES PARA EVITAR OVERFLOW === */
+
+.map-section > * {
+  height: 100%;
+}
+
+/* Asegurar que los gráficos no se desborden */
+.charts-section .recharts-wrapper {
+  max-width: 100% !important;
+}
+
+.charts-section .recharts-surface {
+  max-width: 100% !important;
 }

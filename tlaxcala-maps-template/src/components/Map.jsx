@@ -93,7 +93,21 @@ const Map = ({ onFeatureClick, layerName }) => {
 
     mapInstanceRef.current = map;
 
-    return () => map.setTarget(undefined);
+    // Ajustar tamaño del mapa cuando cambia el contenedor
+    const resizeObserver = new ResizeObserver(() => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.updateSize();
+      }
+    });
+
+    if (mapRef.current) {
+      resizeObserver.observe(mapRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+      map.setTarget(undefined);
+    };
   }, [onFeatureClick, layerName]);
 
   const handleClosePopup = () => {
@@ -104,15 +118,18 @@ const Map = ({ onFeatureClick, layerName }) => {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div style={{ 
+      position: 'relative', 
+      width: '100%', 
+      height: '100%',
+      minHeight: '300px'
+    }}>
       <div 
         ref={mapRef} 
         style={{ 
           width: '100%', 
-          height: '500px',
-          border: '2px solid var(--color-border)',
-          borderRadius: 'var(--radius-md)',
-          overflow: 'hidden'
+          height: '100%',
+          borderRadius: 'var(--radius-sm)'
         }} 
       />
       
