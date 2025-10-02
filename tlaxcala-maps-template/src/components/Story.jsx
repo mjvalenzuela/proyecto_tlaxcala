@@ -1,19 +1,15 @@
 import React from 'react';
 
-const Story = ({ selectedFeature }) => {
+const Story = ({ selectedFeature, viewTitle, viewDescription }) => {
   return (
     <div className="story-container">
-      {/* Título fijo */}
-      <h1>Incendios Forestales en Tlaxcala</h1>
+      {/* Título dinámico según la vista activa */}
+      <h1>{viewTitle} - Cambio Climático en Tlaxcala</h1>
 
-      {/* Texto estático */}
-      <p>
-        Los incendios forestales representan una amenaza significativa para los 
-        ecosistemas de Tlaxcala. Este análisis presenta datos históricos sobre 
-        la frecuencia y el impacto de estos eventos en diferentes municipios.
-      </p>
+      {/* Descripción estática de la vista */}
+      <p>{viewDescription}</p>
 
-      {/* Texto dinámico */}
+      {/* Texto dinámico según feature seleccionado */}
       {selectedFeature ? (
         <div className="feature-info">
           <h3>{selectedFeature.nombre}</h3>
@@ -21,7 +17,7 @@ const Story = ({ selectedFeature }) => {
             Has seleccionado el municipio de <strong>{selectedFeature.nombre}</strong>. 
             Los gráficos se han actualizado para mostrar los datos específicos de esta región.
             Aquí puedes analizar las tendencias históricas y comprender mejor el comportamiento
-            de los incendios forestales en esta área.
+            de los indicadores de <strong>{viewTitle.toLowerCase()}</strong> en esta área.
           </p>
         </div>
       ) : (

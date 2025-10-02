@@ -1,0 +1,129 @@
+/* Sidebar.css - Estilos del panel lateral izquierdo */
+
+.sidebar {
+  position: fixed;
+  top: 70px; /* Altura del navbar */
+  left: 0;
+  width: 300px;
+  height: calc(100vh - 70px);
+  background-color: var(--color-bg-white);
+  box-shadow: 2px 0 8px var(--color-shadow-md);
+  transform: translateX(-100%);
+  transition: transform var(--transition-normal);
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+/* === OVERLAY === */
+
+.sidebar-overlay {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* === HEADER DEL SIDEBAR === */
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border-light);
+  background-color: var(--color-bg-gray-light);
+}
+
+.sidebar-header h3 {
+  color: var(--color-title-purple);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sidebar-close-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-gray);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  line-height: 1;
+}
+
+.sidebar-close-btn:hover {
+  background-color: var(--color-bg-gray);
+  color: var(--color-text-dark);
+}
+
+/* === CONTENIDO DEL SIDEBAR === */
+
+.sidebar-content {
+  padding: var(--spacing-lg);
+}
+
+.sidebar-placeholder {
+  color: var(--color-text-light);
+  font-style: italic;
+  text-align: center;
+  margin-top: var(--spacing-xl);
+}
+
+/* === SCROLLBAR DEL SIDEBAR === */
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: var(--color-bg-gray-light);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-gray);
+}
+
+/* === RESPONSIVE === */
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 280px;
+    top: 60px; /* Altura del navbar en mobile */
+    height: calc(100vh - 60px);
+  }
+
+  .sidebar-overlay {
+    top: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 85%;
+    max-width: 300px;
+  }
+}

@@ -1,12 +1,19 @@
-/* App.css - Layout principal con variables aplicadas */
+/* App.css - Layout principal con navbar y sidebar */
 
 .App {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: var(--spacing-lg);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--color-bg-light);
   min-height: 100vh;
+  background-color: var(--color-bg-light);
+}
+
+/* === CONTENIDO PRINCIPAL === */
+
+.main-content {
+  margin-top: 70px; /* Altura del navbar */
+  padding: var(--spacing-lg);
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: margin-left var(--transition-normal);
 }
 
 /* === GRID DE CONTENIDO === */
@@ -137,6 +144,11 @@
 /* === RESPONSIVE === */
 
 @media (max-width: 968px) {
+  .main-content {
+    margin-top: 60px; /* Altura del navbar en mobile */
+    padding: var(--spacing-md);
+  }
+
   .content-grid {
     grid-template-columns: 1fr;
   }
@@ -151,8 +163,8 @@
 }
 
 @media (max-width: 640px) {
-  .App {
-    padding: var(--spacing-md);
+  .main-content {
+    padding: var(--spacing-sm);
   }
 
   .charts-container {
