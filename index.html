@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Story Maps sobre el cambio climático en Tlaxcala - Análisis de vulnerabilidad, riesgo, amenazas e impactos">
+  <title>Cambio Climático en Tlaxcala - Story Maps</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  
+  <style>
+    /* Estilos específicos del landing page */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, 
+        var(--color-primary-light, rgba(37, 99, 235, 0.05)) 0%, 
+        var(--color-background, #ffffff) 100%);
+      padding-top: 70px;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 900px;
+      padding: 2rem;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--color-primary, #2563eb);
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      color: var(--color-text-secondary, #555);
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    /* Grid de Story Maps */
+    .story-maps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .story-map-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-align: center;
+      border: 2px solid transparent;
+    }
+
+    .story-map-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+      border-color: var(--color-primary, #2563eb);
+    }
+
+    .story-map-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .story-map-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--color-text-primary, #333);
+    }
+
+    .story-map-description {
+      font-size: 1rem;
+      color: var(--color-text-secondary, #666);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .story-map-button {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      background-color: var(--color-primary, #2563eb);
+      color: white;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .story-map-button:hover {
+      background-color: var(--color-primary-dark, #1e40af);
+      transform: scale(1.05);
+    }
+
+    /* Colores específicos por tema */
+    .card-vulnerabilidad {
+      border-top: 4px solid #ef4444;
+    }
+    .card-vulnerabilidad .story-map-icon {
+      color: #ef4444;
+    }
+
+    .card-riesgo {
+      border-top: 4px solid #f59e0b;
+    }
+    .card-riesgo .story-map-icon {
+      color: #f59e0b;
+    }
+
+    .card-amenazas {
+      border-top: 4px solid #8b5cf6;
+    }
+    .card-amenazas .story-map-icon {
+      color: #8b5cf6;
+    }
+
+    .card-impactos {
+      border-top: 4px solid #10b981;
+    }
+    .card-impactos .story-map-icon {
+      color: #10b981;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: var(--color-background-secondary, #f8f9fa);
+      margin-top: 4rem;
+    }
+
+    /* Animaciones */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .story-maps-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <span class="navbar-brand-icon">🌍</span>
+        <span>Clima Tlaxcala</span>
+      </a>
+
+      <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú">
+        <span class="navbar-toggle-line"></span>
+        <span class="navbar-toggle-line"></span>
+        <span class="navbar-toggle-line"></span>
+      </button>
+
+      <div class="navbar-menu" id="navbarMenu">
+        <a href="index.html" class="navbar-link active">Inicio</a>
+        <a href="vulnerabilidad.html" class="navbar-link">Vulnerabilidad</a>
+        <a href="riesgo.html" class="navbar-link">Riesgo</a>
+        <a href="amenazas.html" class="navbar-link">Amenazas</a>
+        <a href="impactos.html" class="navbar-link">Impactos</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Cambio Climático en Tlaxcala</h1>
+      <p class="hero-subtitle">
+        Explora historias interactivas sobre el cambio climático en nuestro municipio
+      </p>
+
+      <!-- Grid de Story Maps -->
+      <div class="story-maps-grid">
+        <!-- Card Vulnerabilidad -->
+        <div class="story-map-card card-vulnerabilidad" onclick="location.href='vulnerabilidad.html'">
+          <div class="story-map-icon">🛡️</div>
+          <h2 class="story-map-title">Vulnerabilidad</h2>
+          <p class="story-map-description">
+            Descubre las zonas más vulnerables ante el cambio climático en Tlaxcala
+          </p>
+          <a href="vulnerabilidad.html" class="story-map-button">Explorar</a>
+        </div>
+
+        <!-- Card Riesgo -->
+        <div class="story-map-card card-riesgo" onclick="location.href='riesgo.html'">
+          <div class="story-map-icon">⚠️</div>
+          <h2 class="story-map-title">Riesgo</h2>
+          <p class="story-map-description">
+            Analiza los principales riesgos climáticos que enfrenta la región
+          </p>
+          <a href="riesgo.html" class="story-map-button">Explorar</a>
+        </div>
+
+        <!-- Card Amenazas -->
+        <div class="story-map-card card-amenazas" onclick="location.href='amenazas.html'">
+          <div class="story-map-icon">🌪️</div>
+          <h2 class="story-map-title">Amenazas</h2>
+          <p class="story-map-description">
+            Conoce las amenazas climáticas presentes y futuras en el territorio
+          </p>
+          <a href="amenazas.html" class="story-map-button">Explorar</a>
+        </div>
+
+        <!-- Card Impactos -->
+        <div class="story-map-card card-impactos" onclick="location.href='impactos.html'">
+          <div class="story-map-icon">🌡️</div>
+          <h2 class="story-map-title">Impactos</h2>
+          <p class="story-map-description">
+            Observa los impactos reales del cambio climático en la comunidad
+          </p>
+          <a href="amenazas.html" class="story-map-button">Explorar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2024 Cambio Climático Tlaxcala. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Toggle del menú móvil
+    const navbarToggle = document.getElementById('navbarToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+
+    navbarToggle.addEventListener('click', () => {
+      navbarToggle.classList.toggle('active');
+      navbarMenu.classList.toggle('active');
+    });
+
+    // Cerrar menú al hacer click en un link
+    const navbarLinks = document.querySelectorAll('.navbar-link');
+    navbarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navbarToggle.classList.remove('active');
+        navbarMenu.classList.remove('active');
+      });
+    });
+
+    // Efecto scroll en navbar
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

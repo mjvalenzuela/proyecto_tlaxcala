@@ -1,0 +1,95 @@
+/* ===================================
+   VARIABLES DE COLORES - TLAXCALA
+   Basado en el diseÃ±o del sitio oficial
+   =================================== */
+
+:root {
+  /* === COLORES PRINCIPALES === */
+  
+  /* Header - Esquema Oscuro */
+  --color-header-bg: #3C4F4E;
+  --color-header-text: #FFFFFF;
+  --color-header-text-secondary: rgba(255, 255, 255, 0.8);
+  
+  /* Acentos y Botones */
+  --color-accent-green: #50B498;
+  --color-accent-green-hover: #45A085;
+  --color-primary-orange: #F47921;
+  --color-primary-orange-hover: #D86A1C;
+  --color-secondary-yellow: #F5A623;
+  --color-secondary-yellow-hover: #E09515;
+  
+  /* TÃ­tulos y Textos */
+  --color-title-purple: #5C3D7A;
+  --color-title-purple-dark: #4A2870;
+  --color-text-dark: #333333;
+  --color-text-gray: #666666;
+  --color-text-light: #999999;
+  
+  /* === FONDOS === */
+  
+  --color-bg-white: #FFFFFF;
+  --color-bg-light: #FAFAFA;
+  --color-bg-gray: #F5F5F5;
+  --color-bg-gray-light: #F8F9FA;
+  
+  /* === BORDES Y SOMBRAS === */
+  
+  --color-border: #DDDDDD;
+  --color-border-light: #E8E8E8;
+  --color-shadow-sm: rgba(0, 0, 0, 0.08);
+  --color-shadow-md: rgba(0, 0, 0, 0.1);
+  --color-shadow-lg: rgba(0, 0, 0, 0.15);
+  
+  /* === ESTADOS === */
+  
+  --color-success: #4CAF50;
+  --color-warning: #FF9800;
+  --color-error: #F44336;
+  --color-info: #2196F3;
+  
+  /* === GRÃFICOS === */
+  
+  --color-chart-primary: #FF6B35;
+  --color-chart-secondary: #4ECDC4;
+  --color-chart-tertiary: #F47921;
+  --color-chart-quaternary: #50B498;
+  
+  /* === GRADIENTES === */
+  
+  --gradient-orange: linear-gradient(135deg, #F47921 0%, #F5A623 100%);
+  --gradient-green: linear-gradient(135deg, #50B498 0%, #45A085 100%);
+  --gradient-purple: linear-gradient(135deg, #5C3D7A 0%, #4A2870 100%);
+  
+  /* === ESPACIADO === */
+  
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+  
+  /* === BORDER RADIUS === */
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  
+  /* === TRANSICIONES === */
+  
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* === TEMA OSCURO (OPCIONAL PARA FUTURO) === */
+
+[data-theme="dark"] {
+  --color-bg-white: #1E1E1E;
+  --color-bg-light: #2A2A2A;
+  --color-bg-gray: #333333;
+  --color-text-dark: #FFFFFF;
+  --color-text-gray: #CCCCCC;
+  --color-border: #444444;
+}
