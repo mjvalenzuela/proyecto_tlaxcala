@@ -46,21 +46,21 @@ export const storyMapConfig = {
               strokeColor: '#50B498',
               strokeWidth: 2
             }
-          }
+          },
           // EJEMPLO: Agregar más capas WFS
-          // {
-          //   nombre: 'Zonas de Riesgo',
-          //   tipo: 'wfs',
-          //   url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-          //   layers: 'SEICCT:ZonasRiesgo',
-          //   visible: false,
-          //   leyenda: true,
-          //   estilo: {
-          //     fillColor: 'rgba(239, 68, 68, 0.3)',
-          //     strokeColor: '#ef4444',
-          //     strokeWidth: 2
-          //   }
-          // },
+           {
+             nombre: 'Localidades',
+             tipo: 'wfs',
+             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+             layers: 'SEICCT:Localidades',
+             visible: false,
+             leyenda: true,
+             estilo: {
+               fillColor: 'rgba(239, 68, 68, 0.3)',
+               strokeColor: '#ef4444',
+               strokeWidth: 4
+             }
+           },
           // {
           //   nombre: 'Estaciones Meteorológicas',
           //   tipo: 'wfs',
