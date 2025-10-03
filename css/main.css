@@ -24,8 +24,8 @@ html {
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
-  color: var(--color-text-primary, #333);
-  background-color: var(--color-background, #ffffff);
+  color: var(--color-text-dark);
+  background-color: var(--color-bg-white);
   overflow-x: hidden;
 }
 
@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 1rem;
-  color: var(--color-text-primary, #1a1a1a);
+  color: var(--color-title-purple);
 }
 
 h1 {
@@ -63,18 +63,18 @@ h6 {
 
 p {
   margin-bottom: 1rem;
-  color: var(--color-text-secondary, #555);
+  color: var(--color-text-gray);
 }
 
 /* ===== ENLACES ===== */
 a {
-  color: var(--color-primary, #2563eb);
+  color: var(--color-accent-green);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color var(--transition-normal);
 }
 
 a:hover {
-  color: var(--color-primary-dark, #1e40af);
+  color: var(--color-accent-green-hover);
 }
 
 /* ===== BOTONES BASE ===== */
@@ -188,33 +188,33 @@ ul, ol {
 
 /* ===== SOMBRAS ===== */
 .shadow-sm {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px var(--color-shadow-sm), 0 1px 2px var(--color-shadow-sm);
 }
 
 .shadow-md {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px var(--color-shadow-md), 0 2px 4px var(--color-shadow-sm);
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px var(--color-shadow-lg), 0 4px 6px var(--color-shadow-md);
 }
 
 /* ===== BORDES SUAVES ===== */
 .rounded-sm {
-  border-radius: 0.25rem;
+  border-radius: var(--radius-sm);
 }
 
 .rounded-md {
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
 }
 
 .rounded-lg {
-  border-radius: 1rem;
+  border-radius: var(--radius-lg);
 }
 
 /* ===== TRANSICIONES ===== */
 .transition-all {
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
 }
 
 /* ===== SCROLLBAR PERSONALIZADO ===== */
@@ -224,14 +224,14 @@ ul, ol {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-background-secondary, #f1f1f1);
+  background: var(--color-bg-gray);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary, #888);
+  background: var(--color-text-light);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-dark, #555);
+  background: var(--color-text-light);
 }
