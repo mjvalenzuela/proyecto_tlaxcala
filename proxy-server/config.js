@@ -3,7 +3,7 @@ module.exports = {
   // Configuración para desarrollo local
   desarrollo: {
     geoserver: 'http://localhost:8080/geoserver',
-    puerto: 3000,
+    puerto: 3001,
     ambiente: 'desarrollo'
   },
 
