@@ -1,277 +1,307 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Story Map sobre la Vulnerabilidad Climática en Tlaxcala">
-  <title>Vulnerabilidad Climática - Tlaxcala</title>
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/navbar.css">
-  <link rel="stylesheet" href="css/story-map.css">
-  
-  <!-- OpenLayers CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
-  
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-  
-  <!-- OpenLayers JS -->
-  <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
-  
-  <!-- Papa Parse para CSVs -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-</head>
-<body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="navbar-container">
-      <a href="index.html" class="navbar-brand">
-<!--         <span class="navbar-brand-icon">🌍</span> -->
-        <span>Tlaxcala</span>
-      </a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Story Map sobre la Vulnerabilidad Climática en Tlaxcala"
+    />
+    <title>Vulnerabilidad Climática - Tlaxcala</title>
 
-      <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú">
-        <span class="navbar-toggle-line"></span>
-        <span class="navbar-toggle-line"></span>
-        <span class="navbar-toggle-line"></span>
-      </button>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/story-map.css" />
 
-      <div class="navbar-menu" id="navbarMenu">
-        <a href="index.html" class="navbar-link">Inicio</a>
-        <a href="vulnerabilidad.html" class="navbar-link active">Vulnerabilidad</a>
-        <a href="riesgo.html" class="navbar-link">Riesgo</a>
-        <a href="amenazas.html" class="navbar-link">Amenazas</a>
-        <a href="impactos.html" class="navbar-link">Impactos</a>
+    <!-- OpenLayers CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
+    <!-- OpenLayers JS -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+
+    <!-- Papa Parse para CSVs -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <!--         <span class="navbar-brand-icon">🌍</span> -->
+          <span>Tlaxcala</span>
+        </a>
+
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú">
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <a href="index.html" class="navbar-link">Inicio</a>
+          <a href="vulnerabilidad.html" class="navbar-link active"
+            >Vulnerabilidad</a
+          >
+          <a href="riesgo.html" class="navbar-link">Riesgo</a>
+          <a href="amenazas.html" class="navbar-link">Amenazas</a>
+          <a href="impactos.html" class="navbar-link">Impactos</a>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- Contenedor principal del Story Map -->
-  <div class="story-map-container">
-    <!-- Pantalla inicial (Portada) -->
-    <section class="story-intro" id="storyIntro">
-      <h1 class="story-intro-title">Vulnerabilidad Climática en Tlaxcala</h1>
-      <p class="story-intro-summary">
-        Explora cómo el cambio climático afecta de manera diferenciada a los municipios de Tlaxcala. 
-        Descubre las zonas más vulnerables y los factores que incrementan el riesgo ante eventos climáticos extremos.
-      </p>
-      
-      <!-- Mapa inicial (pequeño preview) -->
-      <div class="story-intro-map" id="introMap"></div>
-      
-      <button class="btn-start" id="btnStart">
-        Iniciar Historia 🚀
-      </button>
-    </section>
+    <!-- Contenedor principal del Story Map -->
+    <div class="story-map-container">
+      <!-- Pantalla inicial (Portada) -->
+      <section class="story-intro" id="storyIntro">
+        <h1 class="story-intro-title">Vulnerabilidad Climática en Tlaxcala</h1>
+        <p class="story-intro-summary">
+          Explora cómo el cambio climático afecta de manera diferenciada a los
+          municipios de Tlaxcala. Descubre las zonas más vulnerables y los
+          factores que incrementan el riesgo ante eventos climáticos extremos.
+        </p>
 
-    <!-- Contenedor de capítulos con scroll-snap -->
-    <div class="chapters-container" id="chaptersContainer" style="display: none;">
-      
-      <!-- CAPÍTULO 1 -->
-      <section class="chapter" id="chapter-1" data-chapter="1">
-        <!-- Mapa -->
-        <div class="chapter-map">
-          <div class="map-container" id="map-1"></div>
-          
-          <!-- Controles de capas -->
-          <div class="map-controls">
-            <div class="map-controls-title">Capas</div>
-            <div class="layer-control">
-              <input type="checkbox" id="layer-municipios-1" checked>
-              <label for="layer-municipios-1">Municipios</label>
-            </div>
-          </div>
-        </div>
+        <!-- Mapa inicial (pequeño preview) -->
+        <div class="story-intro-map" id="introMap"></div>
 
-        <!-- Card de texto -->
-        <div class="chapter-text">
-          <span class="chapter-number">Capítulo 1</span>
-          <h2 class="chapter-title">Contexto Municipal</h2>
-          <div class="chapter-content">
-            <p>
-              Tlaxcala, el estado más pequeño de México, enfrenta desafíos únicos relacionados con el cambio climático. 
-              Su geografía diversa, que va desde valles agrícolas hasta zonas montañosas, presenta diferentes niveles 
-              de vulnerabilidad ante eventos climáticos extremos.
-            </p>
-            <p>
-              Los 60 municipios que conforman el estado muestran una distribución heterogénea de vulnerabilidad, 
-              determinada por factores como la densidad poblacional, las actividades económicas predominantes, 
-              la infraestructura disponible y las condiciones geográficas específicas.
-            </p>
-            <p>
-              En este primer capítulo, exploramos los 15 municipios principales y sus características demográficas 
-              que influyen directamente en su capacidad de adaptación ante el cambio climático.
-            </p>
-          </div>
-        </div>
-
-        <!-- Card de gráfico -->
-        <div class="chapter-chart">
-          <h3 class="chart-title">Vulnerabilidad por Municipio</h3>
-          <div class="chart-container">
-            <canvas id="chart-1"></canvas>
-          </div>
-        </div>
+        <button class="btn-start" id="btnStart">Iniciar Historia 🚀</button>
       </section>
 
-      <!-- CAPÍTULO 2 -->
-      <section class="chapter" id="chapter-2" data-chapter="2">
-        <!-- Mapa -->
-        <div class="chapter-map">
-          <div class="map-container" id="map-2"></div>
-          
-          <!-- Controles de capas -->
-          <div class="map-controls">
-            <div class="map-controls-title">Capas</div>
-            <div class="layer-control">
-              <input type="checkbox" id="layer-municipios-2" checked>
-              <label for="layer-municipios-2">Municipios</label>
+      <!-- Contenedor de capítulos con scroll-snap -->
+      <div
+        class="chapters-container"
+        id="chaptersContainer"
+        style="display: none"
+      >
+        <!-- CAPÍTULO 1 -->
+        <section class="chapter" id="chapter-1" data-chapter="1">
+          <!-- Mapa -->
+          <div class="chapter-map">
+            <div class="map-container" id="map-1"></div>
+
+            <!-- Controles de capas -->
+            <div class="map-controls">
+              <div class="map-controls-title">Capas</div>
+              <div class="layer-control">
+                <input type="checkbox" id="layer-municipios-1" checked />
+                <label for="layer-municipios-1">Municipios</label>
+              </div>
+              <div class="layer-control">
+                <input type="checkbox" id="layer-1-1" />
+                <label for="layer-1-1">Zonas de Riesgo</label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Card de texto -->
-        <div class="chapter-text">
-          <span class="chapter-number">Capítulo 2</span>
-          <h2 class="chapter-title">Tendencias Climáticas</h2>
-          <div class="chapter-content">
-            <p>
-              En las últimas décadas, Tlaxcala ha experimentado cambios significativos en sus patrones climáticos. 
-              Los datos meteorológicos revelan una tendencia clara: aumento sostenido de la temperatura promedio 
-              y disminución gradual de la precipitación anual.
-            </p>
-            <p>
-              Entre 2010 y 2024, la temperatura promedio anual ha aumentado aproximadamente 3.7°C, 
-              mientras que la precipitación ha disminuido cerca de 40%. Este cambio tiene impactos directos 
-              en la agricultura, principal actividad económica de la región, y en la disponibilidad de agua 
-              para consumo humano.
-            </p>
-            <p>
-              Los días calurosos (con temperaturas superiores a 30°C) han incrementado de 45 a 102 días al año, 
-              mientras que los eventos climáticos extremos se han cuadriplicado en el mismo período.
-            </p>
-          </div>
-        </div>
-
-        <!-- Card de gráfico -->
-        <div class="chapter-chart">
-          <h3 class="chart-title">Evolución Climática 2010-2024</h3>
-          <div class="chart-container">
-            <canvas id="chart-2"></canvas>
-          </div>
-        </div>
-      </section>
-
-      <!-- CAPÍTULO 3 -->
-      <section class="chapter" id="chapter-3" data-chapter="3">
-        <!-- Mapa -->
-        <div class="chapter-map">
-          <div class="map-container" id="map-3"></div>
-          
-          <!-- Controles de capas -->
-          <div class="map-controls">
-            <div class="map-controls-title">Capas</div>
-            <div class="layer-control">
-              <input type="checkbox" id="layer-municipios-3" checked>
-              <label for="layer-municipios-3">Municipios</label>
+          <!-- Card de texto -->
+          <div class="chapter-text">
+            <span class="chapter-number">Capítulo 1</span>
+            <h2 class="chapter-title">Contexto Municipal</h2>
+            <div class="chapter-content">
+              <p>
+                Tlaxcala, el estado más pequeño de México, enfrenta desafíos
+                únicos relacionados con el cambio climático. Su geografía
+                diversa, que va desde valles agrícolas hasta zonas montañosas,
+                presenta diferentes niveles de vulnerabilidad ante eventos
+                climáticos extremos.
+              </p>
+              <p>
+                Los 60 municipios que conforman el estado muestran una
+                distribución heterogénea de vulnerabilidad, determinada por
+                factores como la densidad poblacional, las actividades
+                económicas predominantes, la infraestructura disponible y las
+                condiciones geográficas específicas.
+              </p>
+              <p>
+                En este primer capítulo, exploramos los 15 municipios
+                principales y sus características demográficas que influyen
+                directamente en su capacidad de adaptación ante el cambio
+                climático.
+              </p>
             </div>
           </div>
-        </div>
 
-        <!-- Card de texto -->
-        <div class="chapter-text">
-          <span class="chapter-number">Capítulo 3</span>
-          <h2 class="chapter-title">Distribución de Vulnerabilidad</h2>
-          <div class="chapter-content">
-            <p>
-              La vulnerabilidad climática no se distribuye de manera uniforme en el territorio tlaxcalteca. 
-              Un análisis detallado revela que el 25% de las zonas presentan vulnerabilidad muy alta, 
-              requiriendo atención inmediata y medidas de adaptación urgentes.
-            </p>
-            <p>
-              El 35% del territorio se clasifica como de alta vulnerabilidad, zonas donde la combinación 
-              de factores socioeconómicos y ambientales incrementa significativamente el riesgo ante 
-              eventos climáticos extremos. Estas áreas incluyen municipios con alta densidad poblacional 
-              y limitada infraestructura de respuesta.
-            </p>
-            <p>
-              Solo el 12% del territorio presenta baja vulnerabilidad, generalmente correspondiente a 
-              zonas con mejor infraestructura, mayor capacidad económica y geografía menos expuesta 
-              a fenómenos climáticos extremos.
-            </p>
+          <!-- Card de gráfico -->
+          <div class="chapter-chart">
+            <h3 class="chart-title">Vulnerabilidad por Municipio</h3>
+            <div class="chart-container">
+              <canvas id="chart-1"></canvas>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Card de gráfico -->
-        <div class="chapter-chart">
-          <h3 class="chart-title">Categorías de Vulnerabilidad</h3>
-          <div class="chart-container">
-            <canvas id="chart-3"></canvas>
+        <!-- CAPÍTULO 2 -->
+        <section class="chapter" id="chapter-2" data-chapter="2">
+          <!-- Mapa -->
+          <div class="chapter-map">
+            <div class="map-container" id="map-2"></div>
+
+            <!-- Controles de capas -->
+            <div class="map-controls">
+              <div class="map-controls-title">Capas</div>
+              <div class="layer-control">
+                <input type="checkbox" id="layer-municipios-2" checked />
+                <label for="layer-municipios-2">Municipios</label>
+              </div>
+            </div>
           </div>
+
+          <!-- Card de texto -->
+          <div class="chapter-text">
+            <span class="chapter-number">Capítulo 2</span>
+            <h2 class="chapter-title">Tendencias Climáticas</h2>
+            <div class="chapter-content">
+              <p>
+                En las últimas décadas, Tlaxcala ha experimentado cambios
+                significativos en sus patrones climáticos. Los datos
+                meteorológicos revelan una tendencia clara: aumento sostenido de
+                la temperatura promedio y disminución gradual de la
+                precipitación anual.
+              </p>
+              <p>
+                Entre 2010 y 2024, la temperatura promedio anual ha aumentado
+                aproximadamente 3.7°C, mientras que la precipitación ha
+                disminuido cerca de 40%. Este cambio tiene impactos directos en
+                la agricultura, principal actividad económica de la región, y en
+                la disponibilidad de agua para consumo humano.
+              </p>
+              <p>
+                Los días calurosos (con temperaturas superiores a 30°C) han
+                incrementado de 45 a 102 días al año, mientras que los eventos
+                climáticos extremos se han cuadriplicado en el mismo período.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card de gráfico -->
+          <div class="chapter-chart">
+            <h3 class="chart-title">Evolución Climática 2010-2024</h3>
+            <div class="chart-container">
+              <canvas id="chart-2"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- CAPÍTULO 3 -->
+        <section class="chapter" id="chapter-3" data-chapter="3">
+          <!-- Mapa -->
+          <div class="chapter-map">
+            <div class="map-container" id="map-3"></div>
+
+            <!-- Controles de capas -->
+            <div class="map-controls">
+              <div class="map-controls-title">Capas</div>
+              <div class="layer-control">
+                <input type="checkbox" id="layer-municipios-3" checked />
+                <label for="layer-municipios-3">Municipios</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="chapter-text">
+            <span class="chapter-number">Capítulo 3</span>
+            <h2 class="chapter-title">Distribución de Vulnerabilidad</h2>
+            <div class="chapter-content">
+              <p>
+                La vulnerabilidad climática no se distribuye de manera uniforme
+                en el territorio tlaxcalteca. Un análisis detallado revela que
+                el 25% de las zonas presentan vulnerabilidad muy alta,
+                requiriendo atención inmediata y medidas de adaptación urgentes.
+              </p>
+              <p>
+                El 35% del territorio se clasifica como de alta vulnerabilidad,
+                zonas donde la combinación de factores socioeconómicos y
+                ambientales incrementa significativamente el riesgo ante eventos
+                climáticos extremos. Estas áreas incluyen municipios con alta
+                densidad poblacional y limitada infraestructura de respuesta.
+              </p>
+              <p>
+                Solo el 12% del territorio presenta baja vulnerabilidad,
+                generalmente correspondiente a zonas con mejor infraestructura,
+                mayor capacidad económica y geografía menos expuesta a fenómenos
+                climáticos extremos.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card de gráfico -->
+          <div class="chapter-chart">
+            <h3 class="chart-title">Categorías de Vulnerabilidad</h3>
+            <div class="chart-container">
+              <canvas id="chart-3"></canvas>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Timeline inferior -->
+      <div class="timeline" id="timeline" style="display: none">
+        <div class="timeline-item" data-chapter="1">
+          <div class="timeline-circle">1</div>
+          <div class="timeline-label">Contexto</div>
         </div>
-      </section>
-
-    </div>
-
-    <!-- Timeline inferior -->
-    <div class="timeline" id="timeline" style="display: none;">
-      <div class="timeline-item" data-chapter="1">
-        <div class="timeline-circle">1</div>
-        <div class="timeline-label">Contexto</div>
+        <div class="timeline-item" data-chapter="2">
+          <div class="timeline-circle">2</div>
+          <div class="timeline-label">Tendencias</div>
+        </div>
+        <div class="timeline-item" data-chapter="3">
+          <div class="timeline-circle">3</div>
+          <div class="timeline-label">Distribución</div>
+        </div>
       </div>
-      <div class="timeline-item" data-chapter="2">
-        <div class="timeline-circle">2</div>
-        <div class="timeline-label">Tendencias</div>
+
+      <!-- Botones de navegación -->
+      <div class="nav-buttons left" id="navButtonsLeft" style="display: none">
+        <button class="nav-btn" id="btnPrev" aria-label="Capítulo anterior">
+          ←
+        </button>
       </div>
-      <div class="timeline-item" data-chapter="3">
-        <div class="timeline-circle">3</div>
-        <div class="timeline-label">Distribución</div>
+      <div class="nav-buttons right" id="navButtonsRight" style="display: none">
+        <button class="nav-btn" id="btnNext" aria-label="Siguiente capítulo">
+          →
+        </button>
       </div>
     </div>
 
-    <!-- Botones de navegación -->
-    <div class="nav-buttons left" id="navButtonsLeft" style="display: none;">
-      <button class="nav-btn" id="btnPrev" aria-label="Capítulo anterior">←</button>
-    </div>
-    <div class="nav-buttons right" id="navButtonsRight" style="display: none;">
-      <button class="nav-btn" id="btnNext" aria-label="Siguiente capítulo">→</button>
-    </div>
-  </div>
+    <!-- JavaScript -->
+    <script type="module" src="js/main.js"></script>
 
-  <!-- JavaScript -->
-  <script type="module" src="js/main.js"></script>
+    <script>
+      // Toggle del menú móvil (inline para que funcione antes de cargar main.js)
+      const navbarToggle = document.getElementById("navbarToggle");
+      const navbarMenu = document.getElementById("navbarMenu");
 
-  <script>
-    // Toggle del menú móvil (inline para que funcione antes de cargar main.js)
-    const navbarToggle = document.getElementById('navbarToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-
-    navbarToggle.addEventListener('click', () => {
-      navbarToggle.classList.toggle('active');
-      navbarMenu.classList.toggle('active');
-    });
-
-    // Cerrar menú al hacer click en un link
-    const navbarLinks = document.querySelectorAll('.navbar-link');
-    navbarLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        navbarToggle.classList.remove('active');
-        navbarMenu.classList.remove('active');
+      navbarToggle.addEventListener("click", () => {
+        navbarToggle.classList.toggle("active");
+        navbarMenu.classList.toggle("active");
       });
-    });
 
-    // Efecto scroll en navbar
-    window.addEventListener('scroll', () => {
-      const navbar = document.querySelector('.navbar');
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-  </script>
-</body>
+      // Cerrar menú al hacer click en un link
+      const navbarLinks = document.querySelectorAll(".navbar-link");
+      navbarLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navbarToggle.classList.remove("active");
+          navbarMenu.classList.remove("active");
+        });
+      });
+
+      // Efecto scroll en navbar
+      window.addEventListener("scroll", () => {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+    </script>
+  </body>
 </html>
