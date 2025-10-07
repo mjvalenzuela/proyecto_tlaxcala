@@ -12,8 +12,8 @@ export const storyMapConfig = {
       {
         nombre: 'Municipios',
         tipo: 'wms',
-        url: 'http://localhost:3001/geoserver/Tlaxcala/wms',
-        layers: 'Tlaxcala:Municipios',
+        url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+        layers: 'SEICCT:Municipios',
         visible: true
       }
     ]
