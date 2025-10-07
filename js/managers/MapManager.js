@@ -6,9 +6,9 @@
 export class MapManager {
   constructor(config) {
     this.config = config;
-    this.mapas = {}; // Almacena las instancias de mapas
-    this.capas = {}; // Almacena las capas por mapa
-    this.overlays = {}; // Almacena los overlays (popups)
+    this.mapas = {};
+    this.capas = {};
+    this.overlays = {};
   }
 
   /**
@@ -17,10 +17,8 @@ export class MapManager {
   inicializarMapaIntro(containerId) {
     const mapaConfig = this.config.mapaInicial;
     
-    // Crear capa base
     const capaBase = this.crearCapaBase();
     
-    // Crear capas (WMS o WFS)
     const capas = mapaConfig.capas.map(capaConfig => {
       if (capaConfig.tipo === 'wfs') {
         return this.crearCapaWFS(capaConfig);
@@ -29,7 +27,6 @@ export class MapManager {
       }
     });
 
-    // Crear vista del mapa
     const vista = new ol.View({
       center: ol.proj.fromLonLat(mapaConfig.centro),
       zoom: mapaConfig.zoom,
@@ -37,7 +34,6 @@ export class MapManager {
       minZoom: 8
     });
 
-    // Crear mapa
     const mapa = new ol.Map({
       target: containerId,
       layers: [capaBase, ...capas],
@@ -59,10 +55,8 @@ export class MapManager {
   inicializarMapaCapitulo(containerId, capituloConfig, numeroCapitulo) {
     const mapaConfig = capituloConfig.mapa;
     
-    // Crear capa base
     const capaBase = this.crearCapaBase();
     
-    // Crear capas (WMS o WFS)
     const capas = mapaConfig.capas.map(capaConfig => {
       if (capaConfig.tipo === 'wfs') {
         return this.crearCapaWFS(capaConfig);
@@ -71,7 +65,6 @@ export class MapManager {
       }
     });
 
-    // Crear vista del mapa
     const vista = new ol.View({
       center: ol.proj.fromLonLat(mapaConfig.centro),
       zoom: mapaConfig.zoom,
@@ -79,7 +72,6 @@ export class MapManager {
       minZoom: 8
     });
 
-    // Crear overlay para popup
     const popupElement = document.createElement('div');
     popupElement.className = 'ol-popup';
     popupElement.innerHTML = `
@@ -96,7 +88,6 @@ export class MapManager {
       }
     });
 
-    // Crear mapa
     const mapa = new ol.Map({
       target: containerId,
       layers: [capaBase, ...capas],
@@ -109,16 +100,12 @@ export class MapManager {
       })
     });
 
-    // Almacenar referencias
     const mapaId = `cap-${numeroCapitulo}`;
     this.mapas[mapaId] = mapa;
     this.capas[mapaId] = capas;
     this.overlays[mapaId] = overlay;
 
-    // Configurar interacción de click para popup (WFS)
     this.configurarClickPopupWFS(mapa, overlay, capas);
-
-    // Configurar controles de capas
     this.configurarControlesCapas(numeroCapitulo, capas);
 
     return mapa;
@@ -146,7 +133,6 @@ export class MapManager {
     const url = capaConfig.url;
     const typeName = capaConfig.layers;
 
-    // Crear source WFS
     const vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
       url: function(extent) {
@@ -155,7 +141,6 @@ export class MapManager {
       strategy: ol.loadingstrategy.bbox
     });
 
-    // Estilo por defecto o personalizado
     const estilo = capaConfig.estilo ? this.crearEstiloWFS(capaConfig.estilo) : new ol.style.Style({
       fill: new ol.style.Fill({
         color: 'rgba(80, 180, 152, 0.3)'
@@ -176,7 +161,6 @@ export class MapManager {
       })
     });
 
-    // Crear capa vectorial
     const capa = new ol.layer.Vector({
       source: vectorSource,
       style: estilo,
@@ -184,7 +168,6 @@ export class MapManager {
       zIndex: 2
     });
 
-    // Agregar metadata a la capa
     capa.set('nombre', capaConfig.nombre);
     capa.set('layers', capaConfig.layers);
     capa.set('tipo', 'wfs');
@@ -216,40 +199,11 @@ export class MapManager {
       })
     });
   }
-    // Usar el proxy configurado
-    const proxyUrl = this.config.proxy.url;
-    const wmsUrl = `${proxyUrl}/Tlaxcala/wms`;
-
-    const capa = new ol.layer.Tile({
-      source: new ol.source.TileWMS({
-        url: wmsUrl,
-        params: {
-          'LAYERS': capaConfig.layers,
-          'TILED': true,
-          'VERSION': '1.1.0',
-          'FORMAT': 'image/png',
-          'TRANSPARENT': true
-        },
-        serverType: 'geoserver',
-        crossOrigin: 'anonymous'
-      }),
-      visible: capaConfig.visible,
-      zIndex: 1,
-      opacity: 0.8
-    });
-
-    // Agregar metadata a la capa
-    capa.set('nombre', capaConfig.nombre);
-    capa.set('layers', capaConfig.layers);
-
-    return capa;
-  }
 
   /**
    * Crea una capa WMS desde GeoServer
    */
   crearCapaWMS(capaConfig) {
-    // Usar el proxy configurado
     const proxyUrl = this.config.proxy.url;
     const wmsUrl = `${proxyUrl}/Tlaxcala/wms`;
 
@@ -271,7 +225,6 @@ export class MapManager {
       opacity: 0.8
     });
 
-    // Agregar metadata a la capa
     capa.set('nombre', capaConfig.nombre);
     capa.set('layers', capaConfig.layers);
     capa.set('tipo', 'wms');
@@ -284,11 +237,9 @@ export class MapManager {
    */
   configurarClickPopupWFS(mapa, overlay, capas) {
     mapa.on('singleclick', (evt) => {
-      // Buscar features en el punto clicado
       const features = [];
       
       mapa.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
-        // Solo procesar capas WFS visibles
         if (layer && layer.get('tipo') === 'wfs' && layer.getVisible()) {
           features.push({
             feature: feature,
@@ -298,41 +249,36 @@ export class MapManager {
       });
 
       if (features.length > 0) {
-        // Tomar el primer feature encontrado
-        const { feature, layer } = features[0];
+        const firstItem = features[0];
+        const feature = firstItem.feature;
+        const layer = firstItem.layer;
         const properties = feature.getProperties();
         
-        // Construir contenido del popup
         let contenido = '<div class="popup-info">';
         contenido += `<p class="popup-layer-name"><strong>${layer.get('nombre')}</strong></p>`;
         
-        for (const [key, value] of Object.entries(properties)) {
-          // Omitir la geometría y propiedades internas
+        for (const key in properties) {
+          const value = properties[key];
           if (key !== 'geometry' && !key.startsWith('_') && value !== null && value !== '') {
             contenido += `<p><strong>${key}:</strong> ${value}</p>`;
           }
         }
         contenido += '</div>';
 
-        // Mostrar popup
         const popupContent = overlay.getElement().querySelector('.ol-popup-content');
         popupContent.innerHTML = contenido;
         overlay.setPosition(evt.coordinate);
         
-        // Agregar estilos al popup si no existen
         this.agregarEstilosPopup();
       } else {
-        // Si no hay features, ocultar popup
         overlay.setPosition(undefined);
       }
     });
 
-    // Cerrar popup al hacer click en el botón cerrar
     overlay.getElement().querySelector('.ol-popup-closer').addEventListener('click', () => {
       overlay.setPosition(undefined);
     });
 
-    // Cambiar cursor al pasar sobre features
     mapa.on('pointermove', (evt) => {
       const pixel = mapa.getEventPixel(evt.originalEvent);
       const hit = mapa.hasFeatureAtPixel(pixel);
@@ -344,8 +290,9 @@ export class MapManager {
    * Configura los controles de visibilidad de capas
    */
   configurarControlesCapas(numeroCapitulo, capas) {
-    capas.forEach((capa, index) => {
-      const checkboxId = `layer-${index}-${numeroCapitulo}`;
+    for (let i = 0; i < capas.length; i++) {
+      const capa = capas[i];
+      const checkboxId = `layer-${i}-${numeroCapitulo}`;
       const checkbox = document.getElementById(checkboxId);
       
       if (checkbox) {
@@ -353,13 +300,14 @@ export class MapManager {
           capa.setVisible(e.target.checked);
         });
       }
-    });
+    }
   }
 
   /**
    * Actualiza el centro y zoom de un mapa
    */
-  actualizarVistaMapa(mapaId, centro, zoom, duracion = 1000) {
+  actualizarVistaMapa(mapaId, centro, zoom, duracion) {
+    duracion = duracion || 1000;
     const mapa = this.mapas[mapaId];
     if (!mapa) return;
 
@@ -378,14 +326,17 @@ export class MapManager {
     const capas = this.capas[mapaId];
     if (!capas) return;
 
-    const capa = capas.find(c => c.get('nombre') === nombreCapa);
-    if (capa) {
-      capa.setVisible(visible);
+    for (let i = 0; i < capas.length; i++) {
+      const capa = capas[i];
+      if (capa.get('nombre') === nombreCapa) {
+        capa.setVisible(visible);
+        break;
+      }
     }
   }
 
   /**
-   * Actualiza el tamaño del mapa (útil al cambiar de capítulo)
+   * Actualiza el tamaño del mapa
    */
   actualizarTamano(mapaId) {
     const mapa = this.mapas[mapaId];
@@ -410,7 +361,7 @@ export class MapManager {
   }
 
   /**
-   * Agrega estilos CSS para el popup (se ejecuta una sola vez)
+   * Agrega estilos CSS para el popup
    */
   agregarEstilosPopup() {
     if (document.getElementById('popup-styles')) return;
@@ -489,7 +440,7 @@ export class MapManager {
       }
       
       .popup-info strong {
-        color: var(--color-primary, #2563eb);
+        color: var(--color-accent-green, #50B498);
       }
     `;
     document.head.appendChild(style);
