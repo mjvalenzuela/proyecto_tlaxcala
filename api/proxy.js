@@ -15,20 +15,23 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Obtener el path de la query string
-  const { path } = req.query;
+  // Obtener TODA la query string original
+  const urlParts = req.url.split('?path=');
   
-  if (!path) {
+  if (urlParts.length < 2) {
     return res.status(400).json({ 
       error: 'Falta el parámetro "path"',
       uso: '/api/proxy?path=/geoserver/SEICCT/wms?SERVICE=WMS...',
-      ejemplo: '/api/proxy?path=/geoserver/SEICCT/wms?SERVICE=WMS&REQUEST=GetCapabilities'
+      recibido: req.url
     });
   }
 
+  // El path completo con TODOS los parámetros
+  const fullPath = urlParts[1];
+  
   // Construir URL completa a GeoServer
   const geoserverBaseUrl = 'https://api.cambioclimaticotlaxcala.mx';
-  const fullUrl = `${geoserverBaseUrl}${path}`;
+  const fullUrl = `${geoserverBaseUrl}${fullPath}`;
   
   console.log(`🔄 Proxy Vercel → ${fullUrl}`);
 
