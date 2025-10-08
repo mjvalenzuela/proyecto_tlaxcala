@@ -3,14 +3,14 @@ module.exports = {
   // Configuración para desarrollo local
   desarrollo: {
     geoserver: 'https://api.cambioclimaticotlaxcala.mx/geoserver',
-    puerto: 3001,
+    puerto: 3000,  // ✅ Puerto estándar para desarrollo local
     ambiente: 'desarrollo'
   },
 
   // Configuración para producción
   produccion: {
     geoserver: 'https://api.cambioclimaticotlaxcala.mx/geoserver',
-    puerto: 3001,
+    puerto: 3000,  // ✅ Puerto estándar para producción
     ambiente: 'produccion'
   }
 };
