@@ -175,7 +175,25 @@ export const storyMapConfig = {
 
   // Configuración del proxy
   proxy: {
-    url: 'https://api.cambioclimaticotlaxcala.mx/geoserver'
+    url: (() => {
+      const hostname = window.location.hostname;
+      
+      // LOCAL: Usando Live Server (puerto 5500 o 127.0.0.1)
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        console.log('🏠 Entorno: LOCAL - Usando proxy Node.js');
+        return 'http://localhost:3001/geoserver';
+      }
+      
+      // VERCEL PRODUCCIÓN
+      if (hostname.includes('vercel.app')) {
+        console.log('☁️ Entorno: VERCEL - Usando proxy serverless');
+        return '/api/proxy?path=';
+      }
+      
+      // FALLBACK: Conexión directa (si tienes dominio propio)
+      console.log('🌐 Entorno: OTRO - Conexión directa');
+      return 'https://api.cambioclimaticotlaxcala.mx/geoserver';
+    })()
   }
 };
 

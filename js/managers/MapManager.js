@@ -4,7 +4,7 @@
  * INCLUYE: Integración con MapControlsManager para herramientas
  */
 
-import { MapControlsManager } from './MapControlsManager.js';
+import { MapControlsManager } from "./MapControlsManager.js";
 
 export class MapManager {
   constructor(config) {
@@ -20,11 +20,11 @@ export class MapManager {
    */
   inicializarMapaIntro(containerId) {
     const mapaConfig = this.config.mapaInicial;
-    
+
     const capaBase = this.crearCapaBase();
-    
-    const capas = mapaConfig.capas.map(capaConfig => {
-      if (capaConfig.tipo === 'wfs') {
+
+    const capas = mapaConfig.capas.map((capaConfig) => {
+      if (capaConfig.tipo === "wfs") {
         return this.crearCapaWFS(capaConfig);
       } else {
         return this.crearCapaWMS(capaConfig);
@@ -35,7 +35,7 @@ export class MapManager {
       center: ol.proj.fromLonLat(mapaConfig.centro),
       zoom: mapaConfig.zoom,
       maxZoom: 18,
-      minZoom: 8
+      minZoom: 8,
     });
 
     const mapa = new ol.Map({
@@ -44,12 +44,12 @@ export class MapManager {
       view: vista,
       controls: ol.control.defaults.defaults({
         zoom: true,
-        attribution: true
-      })
+        attribution: true,
+      }),
     });
 
-    this.mapas['intro'] = mapa;
-    
+    this.mapas["intro"] = mapa;
+
     return mapa;
   }
 
@@ -58,11 +58,11 @@ export class MapManager {
    */
   inicializarMapaCapitulo(containerId, capituloConfig, numeroCapitulo) {
     const mapaConfig = capituloConfig.mapa;
-    
+
     const capaBase = this.crearCapaBase();
-    
-    const capas = mapaConfig.capas.map(capaConfig => {
-      if (capaConfig.tipo === 'wfs') {
+
+    const capas = mapaConfig.capas.map((capaConfig) => {
+      if (capaConfig.tipo === "wfs") {
         return this.crearCapaWFS(capaConfig);
       } else {
         return this.crearCapaWMS(capaConfig);
@@ -73,11 +73,11 @@ export class MapManager {
       center: ol.proj.fromLonLat(mapaConfig.centro),
       zoom: mapaConfig.zoom,
       maxZoom: 18,
-      minZoom: 8
+      minZoom: 8,
     });
 
-    const popupElement = document.createElement('div');
-    popupElement.className = 'ol-popup';
+    const popupElement = document.createElement("div");
+    popupElement.className = "ol-popup";
     popupElement.innerHTML = `
       <div class="ol-popup-closer" data-chapter="${numeroCapitulo}"></div>
       <div class="ol-popup-content"></div>
@@ -87,9 +87,9 @@ export class MapManager {
       element: popupElement,
       autoPan: {
         animation: {
-          duration: 250
-        }
-      }
+          duration: 250,
+        },
+      },
     });
 
     const mapa = new ol.Map({
@@ -100,8 +100,8 @@ export class MapManager {
       controls: ol.control.defaults.defaults({
         zoom: true,
         attribution: true,
-        rotate: false
-      })
+        rotate: false,
+      }),
     });
 
     const mapaId = `cap-${numeroCapitulo}`;
@@ -125,7 +125,7 @@ export class MapManager {
     try {
       const controlsManager = new MapControlsManager(mapa, mapaId);
       this.controlsManagers[mapaId] = controlsManager;
-      
+
       //console.log(`🛠️ Controles de herramientas inicializados para ${mapaId}`);
     } catch (error) {
       console.error(`Error al inicializar controles para ${mapaId}:`, error);
@@ -144,70 +144,84 @@ export class MapManager {
    */
   crearCapaBase() {
     const url = this.config.mapaBase.url;
-    
+
     return new ol.layer.Tile({
       source: new ol.source.XYZ({
         url: url,
-        attributions: '© Esri'
+        attributions: "© Esri",
       }),
-      zIndex: 0
+      zIndex: 0,
     });
   }
 
   /**
    * Crea una capa WFS desde GeoServer
    */
-  crearCapaWFS(capaConfig) {
-    // Usar la URL base configurada más el path específico de la capa
-    const baseUrl = this.config.proxy.url;
+crearCapaWFS(capaConfig) {
+    const proxyBase = this.config.proxy.url;
     const typeName = capaConfig.layers;
     
     // Extraer workspace
     const layerParts = typeName.split(':');
     const workspace = layerParts.length > 1 ? layerParts[0] : 'SEICCT';
+    
+    // Detectar si estamos usando proxy de Vercel o proxy local
+    const isVercelProxy = proxyBase.includes('proxy?path=');
 
     console.log(`📍 Creando capa WFS: ${capaConfig.nombre}`);
     console.log(`   - Workspace: ${workspace}`);
     console.log(`   - TypeName: ${typeName}`);
+    console.log(`   - Proxy type: ${isVercelProxy ? 'Vercel Serverless' : 'Local/Directo'}`);
 
     const vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
       url: function(extent) {
-        return `${baseUrl}/${workspace}/ows?service=WFS&version=1.1.0&request=GetFeature&typename=${typeName}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
+        const wfsPath = `/geoserver/${workspace}/ows?service=WFS&version=1.1.0&request=GetFeature&typename=${typeName}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
+        
+        // Construir URL según el tipo de proxy
+        if (isVercelProxy) {
+          // Para Vercel: /api/proxy?path=/geoserver/...
+          return `${proxyBase}${wfsPath}`;
+        } else {
+          // Para local: http://localhost:3001/geoserver/...
+          return `${proxyBase}${wfsPath}`;
+        }
       },
       strategy: ol.loadingstrategy.bbox
     });
 
-    const estilo = capaConfig.estilo ? this.crearEstiloWFS(capaConfig.estilo) : new ol.style.Style({
-      fill: new ol.style.Fill({
-        color: 'rgba(80, 180, 152, 0.3)'
-      }),
-      stroke: new ol.style.Stroke({
-        color: '#50B498',
-        width: 2
-      }),
-      image: new ol.style.Circle({
-        radius: 6,
-        fill: new ol.style.Fill({
-          color: '#50B498'
-        }),
-        stroke: new ol.style.Stroke({
-          color: '#fff',
-          width: 2
-        })
-      })
-    });
+    const estilo = capaConfig.estilo
+      ? this.crearEstiloWFS(capaConfig.estilo)
+      : new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: "rgba(80, 180, 152, 0.3)",
+          }),
+          stroke: new ol.style.Stroke({
+            color: "#50B498",
+            width: 2,
+          }),
+          image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({
+              color: "#50B498",
+            }),
+            stroke: new ol.style.Stroke({
+              color: "#fff",
+              width: 2,
+            }),
+          }),
+        });
 
     const capa = new ol.layer.Vector({
       source: vectorSource,
       style: estilo,
       visible: capaConfig.visible,
-      zIndex: 2
+      zIndex: 2,
     });
 
-    capa.set('nombre', capaConfig.nombre);
-    capa.set('layers', capaConfig.layers);
-    capa.set('tipo', 'wfs');
+    capa.set("nombre", capaConfig.nombre);
+    capa.set("layers", capaConfig.layers);
+    capa.set("tipo", "wfs");
 
     return capa;
   }
@@ -218,64 +232,79 @@ export class MapManager {
   crearEstiloWFS(estiloConfig) {
     return new ol.style.Style({
       fill: new ol.style.Fill({
-        color: estiloConfig.fillColor || 'rgba(80, 180, 152, 0.3)'
+        color: estiloConfig.fillColor || "rgba(80, 180, 152, 0.3)",
       }),
       stroke: new ol.style.Stroke({
-        color: estiloConfig.strokeColor || '#50B498',
-        width: estiloConfig.strokeWidth || 2
+        color: estiloConfig.strokeColor || "#50B498",
+        width: estiloConfig.strokeWidth || 2,
       }),
       image: new ol.style.Circle({
         radius: estiloConfig.pointRadius || 6,
         fill: new ol.style.Fill({
-          color: estiloConfig.pointFillColor || '#50B498'
+          color: estiloConfig.pointFillColor || "#50B498",
         }),
         stroke: new ol.style.Stroke({
-          color: estiloConfig.pointStrokeColor || '#fff',
-          width: estiloConfig.pointStrokeWidth || 2
-        })
-      })
+          color: estiloConfig.pointStrokeColor || "#fff",
+          width: estiloConfig.pointStrokeWidth || 2,
+        }),
+      }),
     });
   }
 
-    /**
+  /**
    * Crea una capa WMS desde GeoServer
    */
   crearCapaWMS(capaConfig) {
     // Extraer el workspace del layers (ej: "SEICCT:Limite" -> "SEICCT")
-    const layerParts = capaConfig.layers.split(':');
-    const workspace = layerParts.length > 1 ? layerParts[0] : 'SEICCT';
-    
-    // Construir la URL WMS (ahora apunta directo a GeoServer)
-    const baseUrl = this.config.proxy.url;
-    const wmsUrl = `${baseUrl}/${workspace}/wms`;
+    const layerParts = capaConfig.layers.split(":");
+    const workspace = layerParts.length > 1 ? layerParts[0] : "SEICCT";
+
+    // Detectar si estamos usando proxy de Vercel o proxy local
+    const proxyBase = this.config.proxy.url;
+    const isVercelProxy = proxyBase.includes("proxy?path=");
+
+    // Construir URL WMS según el tipo de proxy
+    let wmsUrl;
+    if (isVercelProxy) {
+      // Para Vercel: /api/proxy?path=/geoserver/WORKSPACE/wms
+      wmsUrl = `${proxyBase}/geoserver/${workspace}/wms`;
+    } else {
+      // Para local o directo: http://localhost:3001/geoserver/WORKSPACE/wms
+      wmsUrl = `${proxyBase}/${workspace}/wms`;
+    }
 
     console.log(`📍 Creando capa WMS: ${capaConfig.nombre}`);
     console.log(`   - Workspace: ${workspace}`);
     console.log(`   - Layers: ${capaConfig.layers}`);
+    console.log(
+      `   - Proxy type: ${
+        isVercelProxy ? "Vercel Serverless" : "Local/Directo"
+      }`
+    );
     console.log(`   - URL: ${wmsUrl}`);
 
     const capa = new ol.layer.Tile({
       source: new ol.source.TileWMS({
         url: wmsUrl,
         params: {
-          'LAYERS': capaConfig.layers,
-          'TILED': true,
-          'VERSION': '1.1.0',
-          'FORMAT': 'image/png',
-          'TRANSPARENT': true
+          LAYERS: capaConfig.layers,
+          TILED: true,
+          VERSION: "1.1.0",
+          FORMAT: "image/png",
+          TRANSPARENT: true,
         },
-        serverType: 'geoserver',
-        crossOrigin: 'anonymous'
+        serverType: "geoserver",
+        crossOrigin: "anonymous",
       }),
       visible: capaConfig.visible,
       zIndex: 1,
-      opacity: 0.8
+      opacity: 0.8,
     });
 
-    capa.set('nombre', capaConfig.nombre);
-    capa.set('layers', capaConfig.layers);
-    capa.set('tipo', 'wms');
-    capa.set('workspace', workspace);
+    capa.set("nombre", capaConfig.nombre);
+    capa.set("layers", capaConfig.layers);
+    capa.set("tipo", "wms");
+    capa.set("workspace", workspace);
 
     return capa;
   }
@@ -284,14 +313,14 @@ export class MapManager {
    * Configura el click en el mapa para mostrar popup con datos WFS
    */
   configurarClickPopupWFS(mapa, overlay, capas) {
-    mapa.on('singleclick', (evt) => {
+    mapa.on("singleclick", (evt) => {
       const features = [];
-      
+
       mapa.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
-        if (layer && layer.get('tipo') === 'wfs' && layer.getVisible()) {
+        if (layer && layer.get("tipo") === "wfs" && layer.getVisible()) {
           features.push({
             feature: feature,
-            layer: layer
+            layer: layer,
           });
         }
       });
@@ -301,36 +330,48 @@ export class MapManager {
         const feature = firstItem.feature;
         const layer = firstItem.layer;
         const properties = feature.getProperties();
-        
+
         let contenido = '<div class="popup-info">';
-        contenido += `<p class="popup-layer-name"><strong>${layer.get('nombre')}</strong></p>`;
-        
+        contenido += `<p class="popup-layer-name"><strong>${layer.get(
+          "nombre"
+        )}</strong></p>`;
+
         for (const key in properties) {
           const value = properties[key];
-          if (key !== 'geometry' && !key.startsWith('_') && value !== null && value !== '') {
+          if (
+            key !== "geometry" &&
+            !key.startsWith("_") &&
+            value !== null &&
+            value !== ""
+          ) {
             contenido += `<p><strong>${key}:</strong> ${value}</p>`;
           }
         }
-        contenido += '</div>';
+        contenido += "</div>";
 
-        const popupContent = overlay.getElement().querySelector('.ol-popup-content');
+        const popupContent = overlay
+          .getElement()
+          .querySelector(".ol-popup-content");
         popupContent.innerHTML = contenido;
         overlay.setPosition(evt.coordinate);
-        
+
         this.agregarEstilosPopup();
       } else {
         overlay.setPosition(undefined);
       }
     });
 
-    overlay.getElement().querySelector('.ol-popup-closer').addEventListener('click', () => {
-      overlay.setPosition(undefined);
-    });
+    overlay
+      .getElement()
+      .querySelector(".ol-popup-closer")
+      .addEventListener("click", () => {
+        overlay.setPosition(undefined);
+      });
 
-    mapa.on('pointermove', (evt) => {
+    mapa.on("pointermove", (evt) => {
       const pixel = mapa.getEventPixel(evt.originalEvent);
       const hit = mapa.hasFeatureAtPixel(pixel);
-      mapa.getTargetElement().style.cursor = hit ? 'pointer' : '';
+      mapa.getTargetElement().style.cursor = hit ? "pointer" : "";
     });
   }
 
@@ -342,9 +383,9 @@ export class MapManager {
       const capa = capas[i];
       const checkboxId = `layer-${i}-${numeroCapitulo}`;
       const checkbox = document.getElementById(checkboxId);
-      
+
       if (checkbox) {
-        checkbox.addEventListener('change', (e) => {
+        checkbox.addEventListener("change", (e) => {
           capa.setVisible(e.target.checked);
         });
       }
@@ -357,7 +398,7 @@ export class MapManager {
    */
   actualizarVistaMapa(mapaId, centro, zoom, duracion = 1000) {
     const controlsManager = this.controlsManagers[mapaId];
-    
+
     if (controlsManager) {
       // ⬇️ NUEVO: Usar la herramienta de animación
       controlsManager.animarHacia(centro, zoom, duracion);
@@ -370,7 +411,7 @@ export class MapManager {
       vista.animate({
         center: ol.proj.fromLonLat(centro),
         zoom: zoom,
-        duration: duracion
+        duration: duracion,
       });
     }
   }
@@ -384,7 +425,7 @@ export class MapManager {
 
     for (let i = 0; i < capas.length; i++) {
       const capa = capas[i];
-      if (capa.get('nombre') === nombreCapa) {
+      if (capa.get("nombre") === nombreCapa) {
         capa.setVisible(visible);
         break;
       }
@@ -428,10 +469,10 @@ export class MapManager {
    * Agrega estilos CSS para el popup
    */
   agregarEstilosPopup() {
-    if (document.getElementById('popup-styles')) return;
+    if (document.getElementById("popup-styles")) return;
 
-    const style = document.createElement('style');
-    style.id = 'popup-styles';
+    const style = document.createElement("style");
+    style.id = "popup-styles";
     style.textContent = `
       .ol-popup {
         position: absolute;
@@ -523,8 +564,8 @@ export class MapManager {
   obtenerCapaPorNombre(mapaId, nombreCapa) {
     const capas = this.capas[mapaId];
     if (!capas) return null;
-    
-    return capas.find(capa => capa.get('nombre') === nombreCapa);
+
+    return capas.find((capa) => capa.get("nombre") === nombreCapa);
   }
 
   /**
@@ -541,7 +582,9 @@ export class MapManager {
     const capaDer = this.obtenerCapaPorNombre(mapaId, nombreCapaDer);
 
     if (!capaIzq || !capaDer) {
-      console.warn(`⚠️ No se encontraron las capas: ${nombreCapaIzq}, ${nombreCapaDer}`);
+      console.warn(
+        `⚠️ No se encontraron las capas: ${nombreCapaIzq}, ${nombreCapaDer}`
+      );
       return false;
     }
 
