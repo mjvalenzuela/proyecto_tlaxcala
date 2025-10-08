@@ -58,6 +58,13 @@ export class MapManager {
    */
   inicializarMapaCapitulo(containerId, capituloConfig, numeroCapitulo) {
     const mapaConfig = capituloConfig.mapa;
+    const mapaId = `cap-${numeroCapitulo}`;
+
+    // ✅ NUEVO: Limpiar mapa existente si ya existe
+    if (this.mapas[mapaId]) {
+      console.log(`🧹 Limpiando mapa existente: ${mapaId}`);
+      this.limpiarMapa(mapaId);
+    }
 
     const capaBase = this.crearCapaBase();
 
@@ -79,8 +86,8 @@ export class MapManager {
     const popupElement = document.createElement("div");
     popupElement.className = "ol-popup";
     popupElement.innerHTML = `
-      <div class="ol-popup-closer" data-chapter="${numeroCapitulo}"></div>
-      <div class="ol-popup-content"></div>
+      
+      
     `;
 
     const overlay = new ol.Overlay({
@@ -104,7 +111,7 @@ export class MapManager {
       }),
     });
 
-    const mapaId = `cap-${numeroCapitulo}`;
+    // ✅ MOVIDO: Asignar mapaId ANTES de guardar referencias
     this.mapas[mapaId] = mapa;
     this.capas[mapaId] = capas;
     this.overlays[mapaId] = overlay;
@@ -114,6 +121,8 @@ export class MapManager {
 
     // ⬇️ NUEVO: Inicializar controles de herramientas
     this.inicializarControles(mapaId, mapa);
+
+    console.log(`✅ Mapa inicializado: ${mapaId}`);
 
     return mapa;
   }

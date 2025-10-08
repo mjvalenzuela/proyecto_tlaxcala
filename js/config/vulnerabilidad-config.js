@@ -1,8 +1,9 @@
 export const storyMapConfig = {
-  id: 'vulnerabilidad',
-  titulo: 'Vulnerabilidad Climática en Tlaxcala',
-  descripcion: 'Análisis detallado de la vulnerabilidad climática en los municipios de Tlaxcala',
-  
+  id: "vulnerabilidad",
+  titulo: "Vulnerabilidad Climática en Tlaxcala",
+  descripcion:
+    "Análisis detallado de la vulnerabilidad climática en los municipios de Tlaxcala",
+
   // ==========================================
   // MAPA INICIAL (PORTADA)
   // ==========================================
@@ -11,14 +12,14 @@ export const storyMapConfig = {
     zoom: 10,
     capas: [
       {
-        nombre: 'Municipios de Tlaxcala',
-        tipo: 'wms',
-        url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-        layers: 'SEICCT:Municipios',  // ✅ CORREGIDO
+        nombre: "Municipios de Tlaxcala",
+        tipo: "wms",
+        url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+        layers: "SEICCT:Municipios", // ✅ CORREGIDO
         visible: true,
-        leyenda: false
-      }
-    ]
+        leyenda: false,
+      },
+    ],
   },
 
   // ==========================================
@@ -29,130 +30,129 @@ export const storyMapConfig = {
     // CAPÍTULO 1: CONTEXTO MUNICIPAL
     // ==========================================
     {
-      id: 'cap-1',
+      id: "cap-1",
       numero: 1,
-      titulo: 'Contexto Municipal',
-      etiqueta: 'Contexto',
-      
+      titulo: "Contexto Municipal",
+      etiqueta: "Contexto",
+
       mapa: {
         centro: [-98.2377, 19.3138],
         zoom: 10,
         capas: [
           {
-            nombre: 'Límite Estatal',
-            tipo: 'wfs',  // WFS para permitir interacción con popup
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',  // ✅ CORREGIDO
+            nombre: "Límite Estatal",
+            tipo: "wfs", // WFS para permitir interacción con popup
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:Limite", // ✅ CORREGIDO
             visible: true,
             leyenda: true,
             estilo: {
-              fillColor: 'rgba(80, 180, 152, 0.3)',
-              strokeColor: '#50B498',
-              strokeWidth: 2
-            }
-          }
-        ]
+              fillColor: "rgba(80, 180, 152, 0.3)",
+              strokeColor: "#50B498",
+              strokeWidth: 2,
+            },
+          },
+        ],
       },
 
       grafico: {
-        tipo: 'bar',
-        datos: 'data/municipios.csv',
+        tipo: "bar",
+        datos: "data/municipios.csv",
         config: {
-          titulo: 'Vulnerabilidad por Municipio',
-          ejeX: 'municipio',
-          ejeY: 'vulnerabilidad',
-          etiquetaY: 'Índice de Vulnerabilidad',
-          color: 'rgba(239, 68, 68, 0.8)',
-          colorBorde: 'rgba(239, 68, 68, 1)',
-          mostrarLeyenda: false
-        }
-      }
+          titulo: "Vulnerabilidad por Municipio",
+          ejeX: "municipio",
+          ejeY: "vulnerabilidad",
+          etiquetaY: "Índice de Vulnerabilidad",
+          color: "rgba(239, 68, 68, 0.8)",
+          colorBorde: "rgba(239, 68, 68, 1)",
+          mostrarLeyenda: false,
+        },
+      },
     },
 
     // ==========================================
     // CAPÍTULO 2: COMPARACIÓN TEMPORAL
     // ==========================================
     {
-      id: 'cap-2',
+      id: "cap-2",
       numero: 2,
-      titulo: 'Comparación Temporal de Vulnerabilidad',
-      etiqueta: 'Comparación',
-      
+      titulo: "Comparación Temporal de Vulnerabilidad",
+      etiqueta: "Comparación",
+
       mapa: {
         centro: [-98.2377, 19.3138],
         zoom: 10,
         capas: [
           // Capa izquierda del swipe (si está habilitado)
           {
-            nombre: 'Vulnerabilidad 2020',
-            tipo: 'wms',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Municipios',  // ✅ CORREGIDO
+            nombre: "Vulnerabilidad 2020",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:Municipios", // ✅ CORREGIDO
             visible: true,
-            leyenda: true
+            leyenda: true,
           },
           // Capa derecha del swipe (si está habilitado)
           {
-            nombre: 'Vulnerabilidad 2024',
-            tipo: 'wms',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Localidades',  // ✅ CORREGIDO (usamos Localidades como segunda capa)
+            nombre: "Vulnerabilidad 2024",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:Localidades", // ✅ CORREGIDO (usamos Localidades como segunda capa)
             visible: true,
-            leyenda: true
-          }
+            leyenda: true,
+          },
         ],
-        
+
         // ⚠️ NOTA: El swipe está comentado porque requiere configuración adicional
         // Para habilitarlo, descomentar y asegurar que MapManager lo soporte
-        
+
         swipe: {
           enabled: true,
-          capaIzquierda: 'Vulnerabilidad 2020',
-          capaDerecha: 'Vulnerabilidad 2024'
-        }
-
+          capaIzquierda: "Vulnerabilidad 2020",
+          capaDerecha: "Vulnerabilidad 2024",
+        },
       },
 
       grafico: {
-        tipo: 'line',
-        datos: 'data/temperatura.csv',
+        tipo: "line",
+        datos: "data/temperatura.csv",
         config: {
-          titulo: 'Evolución Temporal de Vulnerabilidad',
-          ejeX: 'año',
+          titulo: "Evolución Temporal de Vulnerabilidad",
+          ejeX: "año",
           datasets: [
             {
-              label: 'Temperatura Promedio (°C)',
-              dato: 'temperatura_promedio',
-              color: 'rgba(244, 121, 33, 0.3)',
-              borderColor: '#F47921'
+              label: "Temperatura Promedio (°C)",
+              dato: "temperatura_promedio",
+              color: "rgba(244, 121, 33, 0.3)",
+              borderColor: "#F47921",
             },
             {
-              label: 'Días Calurosos',
-              dato: 'dias_calurosos',
-              color: 'rgba(239, 68, 68, 0.3)',
-              borderColor: '#EF4444'
-            }
+              label: "Días Calurosos",
+              dato: "dias_calurosos",
+              color: "rgba(239, 68, 68, 0.3)",
+              borderColor: "#EF4444",
+            },
           ],
           mostrarLeyenda: true,
-          mostrarPuntos: true
-        }
-      }
+          mostrarPuntos: true,
+        },
+      },
     },
 
     // ==========================================
     // CAPÍTULO 3: DISTRIBUCIÓN DE VULNERABILIDAD
     // ==========================================
     {
-      id: 'cap-3',
+      id: "cap-3",
       numero: 3,
-      titulo: 'Distribución de Vulnerabilidad',
-      etiqueta: 'Distribución',
-      
+      titulo: "Distribución de Vulnerabilidad",
+      etiqueta: "Distribución",
+
       mapa: {
         centro: [-98.2377, 19.3138],
         zoom: 10,
         capas: [
-/*           {
+          /*           {
             nombre: 'Índice de Vulnerabilidad',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
@@ -161,45 +161,45 @@ export const storyMapConfig = {
             leyenda: true
           }, */
           {
-            nombre: 'Localidades',
-            tipo: 'wfs',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Localidades',  // ✅ CORREGIDO
+            nombre: "Localidades",
+            tipo: "wfs",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:Localidades", // ✅ CORREGIDO
             visible: true,
             leyenda: false,
-            opacity: 0.6  // Semi-transparente para ver ambas capas
-          }
-        ]
+            opacity: 0.6, // Semi-transparente para ver ambas capas
+          },
+        ],
       },
 
       grafico: {
-        tipo: 'pie',
-        datos: 'data/categorias.csv',
+        tipo: "pie",
+        datos: "data/categorias.csv",
         config: {
-          titulo: 'Categorías de Vulnerabilidad',
-          etiqueta: 'categoria',
-          valor: 'porcentaje',
+          titulo: "Categorías de Vulnerabilidad",
+          etiqueta: "categoria",
+          valor: "porcentaje",
           colores: [
-            'rgba(239, 68, 68, 0.8)',   // Muy Alto - Rojo
-            'rgba(245, 158, 11, 0.8)',  // Alto - Naranja
-            'rgba(234, 179, 8, 0.8)',   // Medio - Amarillo
-            'rgba(34, 197, 94, 0.8)'    // Bajo - Verde
+            "rgba(239, 68, 68, 0.8)", // Muy Alto - Rojo
+            "rgba(245, 158, 11, 0.8)", // Alto - Naranja
+            "rgba(234, 179, 8, 0.8)", // Medio - Amarillo
+            "rgba(34, 197, 94, 0.8)", // Bajo - Verde
           ],
           mostrarLeyenda: true,
-          mostrarPorcentaje: true
-        }
-      }
-    }
+          mostrarPorcentaje: true,
+        },
+      },
+    },
   ],
 
   // ==========================================
   // CONFIGURACIÓN DE LA CAPA BASE
   // ==========================================
   mapaBase: {
-    tipo: 'esri',
-    nombre: 'World Street Map',
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
-    attribution: '© Esri'
+    tipo: "esri",
+    nombre: "World Street Map",
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+    attribution: "© Esri",
   },
 
   // ==========================================
@@ -208,31 +208,31 @@ export const storyMapConfig = {
   proxy: {
     url: (() => {
       const hostname = window.location.hostname;
-      
+
       // ==========================================
       // ENTORNO LOCAL (Live Server, http-server, etc.)
       // ==========================================
-      if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        console.log('🏠 Entorno: LOCAL - Usando proxy Node.js');
-        return 'http://localhost:3001/geoserver';
+      if (hostname === "localhost" || hostname === "127.0.0.1") {
+        console.log("🏠 Entorno: LOCAL - Usando proxy Node.js");
+        return "http://localhost:3000/geoserver";
       }
-      
+
       // ==========================================
       // ENTORNO VERCEL (Producción)
       // ==========================================
-      if (hostname.includes('vercel.app')) {
-        console.log('☁️ Entorno: VERCEL - Usando proxy serverless');
-        return '/api/proxy?path=';
+      if (hostname.includes("vercel.app")) {
+        console.log("☁️ Entorno: VERCEL - Usando proxy serverless");
+        return "/api/proxy?path=";
       }
-      
+
       // ==========================================
       // FALLBACK: Conexión directa (si tienes dominio propio con CORS)
       // ==========================================
-      console.log('🌐 Entorno: OTRO - Conexión directa a GeoServer');
-      console.warn('⚠️ ADVERTENCIA: Conexión directa puede fallar por CORS');
-      return 'https://api.cambioclimaticotlaxcala.mx/geoserver';
-    })()
-  }
+      console.log("🌐 Entorno: OTRO - Conexión directa a GeoServer");
+      console.warn("⚠️ ADVERTENCIA: Conexión directa puede fallar por CORS");
+      return "https://api.cambioclimaticotlaxcala.mx/geoserver";
+    })(),
+  },
 };
 
 // ==========================================
@@ -243,62 +243,86 @@ export const storyMapConfig = {
  * Valida que la configuración sea correcta
  */
 export function validarConfiguracion(config) {
-  console.log('🔍 Validando configuración del Story Map...');
-  
+  console.log("🔍 Validando configuración del Story Map...");
+
   // Validar que hay capítulos
   if (!config.capitulos || config.capitulos.length === 0) {
-    throw new Error('La configuración debe tener al menos un capítulo');
+    throw new Error("La configuración debe tener al menos un capítulo");
   }
 
   // Validar cada capítulo
   config.capitulos.forEach((cap, index) => {
     // Validar estructura básica
     if (!cap.mapa || !cap.grafico) {
-      throw new Error(`El capítulo ${index + 1} debe tener configuración de mapa y gráfico`);
+      throw new Error(
+        `El capítulo ${index + 1} debe tener configuración de mapa y gráfico`
+      );
     }
 
     // Validar que las capas existen
     if (!cap.mapa.capas || cap.mapa.capas.length === 0) {
-      throw new Error(`El capítulo ${index + 1} debe tener al menos una capa de mapa`);
+      throw new Error(
+        `El capítulo ${index + 1} debe tener al menos una capa de mapa`
+      );
     }
 
     // Validar capas WMS/WFS
     cap.mapa.capas.forEach((capa, capaIndex) => {
-      if (!capa.layers || !capa.layers.includes('SEICCT:')) {
-        console.warn(`⚠️ Capítulo ${index + 1}, Capa ${capaIndex + 1}: No tiene el formato correcto SEICCT:NombreCapa`);
+      if (!capa.layers || !capa.layers.includes("SEICCT:")) {
+        console.warn(
+          `⚠️ Capítulo ${index + 1}, Capa ${
+            capaIndex + 1
+          }: No tiene el formato correcto SEICCT:NombreCapa`
+        );
       }
-      
+
       // Validar que el nombre de la capa es válido
-      const capasValidas = ['SEICCT:Limite', 'SEICCT:Localidades', 'SEICCT:Municipios'];
+      const capasValidas = [
+        "SEICCT:Limite",
+        "SEICCT:Localidades",
+        "SEICCT:Municipios",
+      ];
       if (!capasValidas.includes(capa.layers)) {
-        console.warn(`⚠️ Capítulo ${index + 1}: Capa "${capa.layers}" puede no existir en GeoServer`);
-        console.warn(`   Capas válidas: ${capasValidas.join(', ')}`);
+        console.warn(
+          `⚠️ Capítulo ${index + 1}: Capa "${
+            capa.layers
+          }" puede no existir en GeoServer`
+        );
+        console.warn(`   Capas válidas: ${capasValidas.join(", ")}`);
       }
     });
 
     // Validar swipe si está habilitado
     if (cap.mapa.swipe?.enabled) {
       if (!cap.mapa.swipe.capaIzquierda || !cap.mapa.swipe.capaDerecha) {
-        throw new Error(`El capítulo ${index + 1} tiene swipe habilitado pero faltan capas`);
+        throw new Error(
+          `El capítulo ${index + 1} tiene swipe habilitado pero faltan capas`
+        );
       }
 
       // Verificar que las capas existen
-      const nombreCapas = cap.mapa.capas.map(c => c.nombre);
+      const nombreCapas = cap.mapa.capas.map((c) => c.nombre);
       if (!nombreCapas.includes(cap.mapa.swipe.capaIzquierda)) {
-        throw new Error(`Capa izquierda del swipe no encontrada: ${cap.mapa.swipe.capaIzquierda}`);
+        throw new Error(
+          `Capa izquierda del swipe no encontrada: ${cap.mapa.swipe.capaIzquierda}`
+        );
       }
       if (!nombreCapas.includes(cap.mapa.swipe.capaDerecha)) {
-        throw new Error(`Capa derecha del swipe no encontrada: ${cap.mapa.swipe.capaDerecha}`);
+        throw new Error(
+          `Capa derecha del swipe no encontrada: ${cap.mapa.swipe.capaDerecha}`
+        );
       }
     }
 
     // Validar configuración del gráfico
     if (!cap.grafico.tipo || !cap.grafico.datos || !cap.grafico.config) {
-      throw new Error(`El capítulo ${index + 1} tiene configuración incompleta del gráfico`);
+      throw new Error(
+        `El capítulo ${index + 1} tiene configuración incompleta del gráfico`
+      );
     }
   });
 
-  console.log('✅ Configuración validada correctamente');
+  console.log("✅ Configuración validada correctamente");
   return true;
 }
 
@@ -306,7 +330,7 @@ export function validarConfiguracion(config) {
  * Obtiene un capítulo por su número
  */
 export function obtenerCapituloPorNumero(numero) {
-  return storyMapConfig.capitulos.find(cap => cap.numero === numero);
+  return storyMapConfig.capitulos.find((cap) => cap.numero === numero);
 }
 
 /**
@@ -320,7 +344,7 @@ export function obtenerTotalCapitulos() {
  * Obtiene los capítulos que tienen swipe habilitado
  */
 export function obtenerCapitulosConSwipe() {
-  return storyMapConfig.capitulos.filter(cap => cap.mapa.swipe?.enabled);
+  return storyMapConfig.capitulos.filter((cap) => cap.mapa.swipe?.enabled);
 }
 
 /**
@@ -337,9 +361,9 @@ export function tieneSwipe(numeroCapitulo) {
 export function obtenerInfoProxy() {
   return {
     url: storyMapConfig.proxy.url,
-    esLocal: storyMapConfig.proxy.url.includes('localhost'),
-    esVercel: storyMapConfig.proxy.url.includes('/api/proxy'),
-    esDirecto: storyMapConfig.proxy.url.includes('cambioclimaticotlaxcala.mx')
+    esLocal: storyMapConfig.proxy.url.includes("localhost"),
+    esVercel: storyMapConfig.proxy.url.includes("/api/proxy"),
+    esDirecto: storyMapConfig.proxy.url.includes("cambioclimaticotlaxcala.mx"),
   };
 }
 
@@ -348,23 +372,23 @@ export function obtenerInfoProxy() {
  */
 export function listarCapasUnicas() {
   const capasSet = new Set();
-  
+
   // Capas del mapa inicial
   if (storyMapConfig.mapaInicial?.capas) {
-    storyMapConfig.mapaInicial.capas.forEach(capa => {
+    storyMapConfig.mapaInicial.capas.forEach((capa) => {
       capasSet.add(capa.layers);
     });
   }
-  
+
   // Capas de cada capítulo
-  storyMapConfig.capitulos.forEach(cap => {
+  storyMapConfig.capitulos.forEach((cap) => {
     if (cap.mapa?.capas) {
-      cap.mapa.capas.forEach(capa => {
+      cap.mapa.capas.forEach((capa) => {
         capasSet.add(capa.layers);
       });
     }
   });
-  
+
   return Array.from(capasSet);
 }
 
@@ -373,13 +397,12 @@ export function listarCapasUnicas() {
 // ==========================================
 try {
   validarConfiguracion(storyMapConfig);
-  
-  console.log('📊 Resumen de configuración:');
+
+  console.log("📊 Resumen de configuración:");
   console.log(`   - Capítulos: ${obtenerTotalCapitulos()}`);
-  console.log(`   - Capas únicas: ${listarCapasUnicas().join(', ')}`);
+  console.log(`   - Capas únicas: ${listarCapasUnicas().join(", ")}`);
   console.log(`   - Proxy: ${obtenerInfoProxy().url}`);
-  
 } catch (error) {
-  console.error('❌ Error en la configuración:', error.message);
+  console.error("❌ Error en la configuración:", error.message);
   throw error;
 }
