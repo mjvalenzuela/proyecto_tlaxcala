@@ -156,30 +156,32 @@ class StoryMapApp {
   /**
    * Inicializa todos los capítulos (mapas y gráficos)
    */
-    async inicializarCapitulo(numero) {
+   async inicializarCapitulo(numero) {
     const capitulo = this.config.capitulos.find(cap => cap.numero === numero);
-    if (!capitulo) return;
+    if (!capitulo) {
+      console.warn(`⚠️ Capítulo ${numero} no encontrado en configuración`);
+      return;
+    }
 
-    const mapaId = `cap-${numero}`;
     const mapElementId = `map-${numero}`;
 
     try {
-      // Crear mapa para el capítulo
-      await this.mapManager.inicializarMapa(
+      console.log(`📦 Inicializando capítulo ${numero}...`);
+
+      // ✅ Crear mapa usando el método correcto
+      this.mapManager.inicializarMapaCapitulo(
         mapElementId,
-        mapaId,
-        capitulo.mapa.capas,
-        capitulo.mapa.centro,
-        capitulo.mapa.zoom,
+        capitulo,
         numero
       );
 
-      // ⬇️ NUEVO: Verificar si el capítulo tiene swipe habilitado
+      // ⬇️ Verificar si el capítulo tiene swipe habilitado
       if (capitulo.mapa.swipe && capitulo.mapa.swipe.enabled) {
         console.log(`🔀 Configurando swipe para capítulo ${numero}`);
         
         const capaIzquierda = capitulo.mapa.swipe.capaIzquierda;
         const capaDerecha = capitulo.mapa.swipe.capaDerecha;
+        const mapaId = `cap-${numero}`;
         
         // Pequeño delay para que las capas se carguen antes de configurar swipe
         setTimeout(() => {
@@ -206,9 +208,9 @@ class StoryMapApp {
         capitulo.grafico.config
       );
 
-      console.log(`✅ Capítulo ${numero} inicializado`);
+      console.log(`✅ Capítulo ${numero} inicializado correctamente`);
     } catch (error) {
-      console.error(`Error al inicializar capítulo ${numero}:`, error);
+      console.error(`❌ Error al inicializar capítulo ${numero}:`, error);
     }
   }
 
