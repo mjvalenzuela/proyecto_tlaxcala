@@ -158,13 +158,22 @@ export class MapManager {
    * Crea una capa WFS desde GeoServer
    */
   crearCapaWFS(capaConfig) {
-    const url = capaConfig.url;
+    // Usar la URL base configurada más el path específico de la capa
+    const baseUrl = this.config.proxy.url;
     const typeName = capaConfig.layers;
+    
+    // Extraer workspace
+    const layerParts = typeName.split(':');
+    const workspace = layerParts.length > 1 ? layerParts[0] : 'SEICCT';
+
+    console.log(`📍 Creando capa WFS: ${capaConfig.nombre}`);
+    console.log(`   - Workspace: ${workspace}`);
+    console.log(`   - TypeName: ${typeName}`);
 
     const vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
       url: function(extent) {
-        return `${url}?service=WFS&version=1.1.0&request=GetFeature&typename=${typeName}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
+        return `${baseUrl}/${workspace}/ows?service=WFS&version=1.1.0&request=GetFeature&typename=${typeName}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
       },
       strategy: ol.loadingstrategy.bbox
     });
@@ -234,11 +243,11 @@ export class MapManager {
   crearCapaWMS(capaConfig) {
     // Extraer el workspace del layers (ej: "SEICCT:Limite" -> "SEICCT")
     const layerParts = capaConfig.layers.split(':');
-    const workspace = layerParts.length > 1 ? layerParts[0] : 'Tlaxcala';
+    const workspace = layerParts.length > 1 ? layerParts[0] : 'SEICCT';
     
-    // Construir la URL WMS usando el proxy y el workspace correcto
-    const proxyUrl = this.config.proxy.url;
-    const wmsUrl = `${proxyUrl}/${workspace}/wms`;
+    // Construir la URL WMS (ahora apunta directo a GeoServer)
+    const baseUrl = this.config.proxy.url;
+    const wmsUrl = `${baseUrl}/${workspace}/wms`;
 
     console.log(`📍 Creando capa WMS: ${capaConfig.nombre}`);
     console.log(`   - Workspace: ${workspace}`);

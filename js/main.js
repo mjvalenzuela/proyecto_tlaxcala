@@ -139,6 +139,21 @@ class StoryMapApp {
   }
 
   /**
+   * Inicializa todos los capítulos (carga mapas y gráficos)
+   */
+  async inicializarCapitulos() {
+    console.log('📦 Inicializando todos los capítulos...');
+    
+    // Inicializar cada capítulo
+    for (let i = 1; i <= this.totalCapitulos; i++) {
+      await this.inicializarCapitulo(i);
+    }
+    
+    console.log(`✅ ${this.totalCapitulos} capítulos inicializados`);
+  }
+
+
+  /**
    * Inicializa todos los capítulos (mapas y gráficos)
    */
     async inicializarCapitulo(numero) {

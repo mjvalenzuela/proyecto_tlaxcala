@@ -175,7 +175,7 @@ export const storyMapConfig = {
 
   // Configuración del proxy
   proxy: {
-    url: 'http://localhost:3001/geoserver'
+    url: 'https://api.cambioclimaticotlaxcala.mx/geoserver'
   }
 };
 
