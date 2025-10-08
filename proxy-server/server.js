@@ -16,7 +16,7 @@ app.use(cors({
 
 // Middleware de logging para debugging
 app.use((req, res, next) => {
-  //console.log(`📥 ${req.method} ${req.url}`);
+  console.log(`📥 ${req.method} ${req.url}`);
   next();
 });
 

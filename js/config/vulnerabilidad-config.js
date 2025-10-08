@@ -212,9 +212,9 @@ export const storyMapConfig = {
       // ==========================================
       // ENTORNO LOCAL (Live Server, http-server, etc.)
       // ==========================================
-      if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        console.log('🏠 Entorno: LOCAL - Conexión directa a GeoServer');
-        return 'https://api.cambioclimaticotlaxcala.mx/geoserver';
+      if (hostname === "localhost" || hostname === "127.0.0.1") {
+        console.log("🏠 Entorno: LOCAL - Usando proxy Node.js local");
+        return "http://localhost:3001/geoserver";
       }
 
       // ==========================================
@@ -226,7 +226,7 @@ export const storyMapConfig = {
       }
 
       // ==========================================
-      // FALLBACK: Conexión directa (si tienes dominio propio con CORS)
+      // FALLBACK: Conexión directa
       // ==========================================
       console.log("🌐 Entorno: OTRO - Conexión directa a GeoServer");
       console.warn("⚠️ ADVERTENCIA: Conexión directa puede fallar por CORS");
