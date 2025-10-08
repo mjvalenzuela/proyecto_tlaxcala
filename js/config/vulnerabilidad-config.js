@@ -1,26 +1,3 @@
-/**
- * ============================================
- * ARCHIVO: js/config/vulnerabilidad-config.js
- * ============================================
- * SOLUCIÓN: Configuración corregida del Story Map de Vulnerabilidad
- * 
- * PROBLEMA ORIGINAL:
- * - Capas WMS con nombres incorrectos o inconsistentes
- * - Referencias a workspace incorrecto
- * - Mezcla de tipos WMS y WFS sin criterio claro
- * 
- * CAPAS REALES EN GEOSERVER (confirmadas):
- * - Workspace: SEICCT
- * - Capas: Limite, Localidades, Municipios
- * 
- * SOLUCIÓN IMPLEMENTADA:
- * - Corregir todos los nombres de capas para que coincidan con GeoServer
- * - Usar WMS para visualización (más rápido y ligero)
- * - Usar WFS solo para capas con interacción (popup)
- * - URLs correctas al proxy según entorno
- * ============================================
- */
-
 export const storyMapConfig = {
   id: 'vulnerabilidad',
   titulo: 'Vulnerabilidad Climática en Tlaxcala',
@@ -127,13 +104,13 @@ export const storyMapConfig = {
         
         // ⚠️ NOTA: El swipe está comentado porque requiere configuración adicional
         // Para habilitarlo, descomentar y asegurar que MapManager lo soporte
-        /*
+        
         swipe: {
           enabled: true,
           capaIzquierda: 'Vulnerabilidad 2020',
           capaDerecha: 'Vulnerabilidad 2024'
         }
-        */
+
       },
 
       grafico: {
@@ -175,17 +152,17 @@ export const storyMapConfig = {
         centro: [-98.2377, 19.3138],
         zoom: 10,
         capas: [
-          {
+/*           {
             nombre: 'Índice de Vulnerabilidad',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
             layers: 'SEICCT:Municipios',  // ✅ CORREGIDO
             visible: true,
             leyenda: true
-          },
+          }, */
           {
             nombre: 'Localidades',
-            tipo: 'wms',
+            tipo: 'wfs',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
             layers: 'SEICCT:Localidades',  // ✅ CORREGIDO
             visible: true,
