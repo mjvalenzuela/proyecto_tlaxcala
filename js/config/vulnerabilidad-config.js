@@ -203,7 +203,7 @@ export const storyMapConfig = {
   },
 
   // ==========================================
-  // CONFIGURACIÓN DEL PROXY
+  // CONFIGURACIÓN DEL PROXYlkjsk
   // ==========================================
   proxy: {
     url: (() => {
@@ -212,9 +212,9 @@ export const storyMapConfig = {
       // ==========================================
       // ENTORNO LOCAL (Live Server, http-server, etc.)
       // ==========================================
-      if (hostname === "localhost" || hostname === "127.0.0.1") {
-        console.log("🏠 Entorno: LOCAL - Usando proxy Node.js");
-        return "http://localhost:3000/geoserver";
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        console.log('🏠 Entorno: LOCAL - Conexión directa a GeoServer');
+        return 'https://api.cambioclimaticotlaxcala.mx/geoserver';
       }
 
       // ==========================================

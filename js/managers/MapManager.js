@@ -56,7 +56,7 @@ export class MapManager {
   /**
    * Inicializa un mapa para un capítulo específico
    */
-  inicializarMapaCapitulo(containerId, capituloConfig, numeroCapitulo) {
+   inicializarMapaCapitulo(containerId, capituloConfig, numeroCapitulo) {
     const mapaConfig = capituloConfig.mapa;
     const mapaId = `cap-${numeroCapitulo}`;
 
@@ -413,12 +413,10 @@ export class MapManager {
   /**
    * Configura los controles de visibilidad de capas
    */
-  configurarControlesCapas(numeroCapitulo, capas) {
+   configurarControlesCapas(numeroCapitulo, capas) {
     // ✅ Validar que tenemos capas para configurar
     if (!capas || capas.length === 0) {
-      console.warn(
-        `⚠️ No hay capas para configurar controles en capítulo ${numeroCapitulo}`
-      );
+      console.warn(`⚠️ No hay capas para configurar controles en capítulo ${numeroCapitulo}`);
       return;
     }
 
@@ -434,34 +432,23 @@ export class MapManager {
         try {
           checkbox.addEventListener("change", (e) => {
             capa.setVisible(e.target.checked);
-            console.log(
-              `🔄 Capa "${capa.get("nombre")}" visibilidad: ${e.target.checked}`
-            );
+            console.log(`🔄 Capa "${capa.get('nombre')}" visibilidad: ${e.target.checked}`);
           });
           controlesConfigurados++;
         } catch (error) {
-          console.error(
-            `❌ Error al configurar control para capa ${i}:`,
-            error
-          );
+          console.error(`❌ Error al configurar control para capa ${i}:`, error);
         }
       } else {
         // ✅ NUEVO: Log informativo, NO error crítico
-        console.log(
-          `ℹ️ Checkbox no encontrado: ${checkboxId} (opcional - UI sin controles de capa)`
-        );
+        console.log(`ℹ️ Checkbox no encontrado: ${checkboxId} (opcional - UI sin controles de capa)`);
       }
     }
 
     // ✅ NUEVO: Log resumen de configuración
     if (controlesConfigurados > 0) {
-      console.log(
-        `✅ ${controlesConfigurados} controles de capa configurados para capítulo ${numeroCapitulo}`
-      );
+      console.log(`✅ ${controlesConfigurados} controles de capa configurados para capítulo ${numeroCapitulo}`);
     } else {
-      console.log(
-        `ℹ️ Capítulo ${numeroCapitulo}: Sin controles de capa en UI (modo solo visualización)`
-      );
+      console.log(`ℹ️ Capítulo ${numeroCapitulo}: Sin controles de capa en UI (modo solo visualización)`);
     }
   }
 
