@@ -1,7 +1,10 @@
 /**
- * MapManager - Gestor de mapas con OpenLayers
+ * MapManager - Gestor de mapas con OpenLayers (ACTUALIZADO)
  * Maneja la creación, actualización y control de mapas interactivos
+ * INCLUYE: Integración con MapControlsManager para herramientas
  */
+
+import { MapControlsManager } from './MapControlsManager.js';
 
 export class MapManager {
   constructor(config) {
@@ -9,6 +12,7 @@ export class MapManager {
     this.mapas = {};
     this.capas = {};
     this.overlays = {};
+    this.controlsManagers = {}; // ← NUEVO: Gestores de controles de herramientas
   }
 
   /**
@@ -108,7 +112,31 @@ export class MapManager {
     this.configurarClickPopupWFS(mapa, overlay, capas);
     this.configurarControlesCapas(numeroCapitulo, capas);
 
+    // ⬇️ NUEVO: Inicializar controles de herramientas
+    this.inicializarControles(mapaId, mapa);
+
     return mapa;
+  }
+
+  /**
+   * ⬇️ NUEVO: Inicializa los controles de herramientas para un mapa
+   */
+  inicializarControles(mapaId, mapa) {
+    try {
+      const controlsManager = new MapControlsManager(mapa, mapaId);
+      this.controlsManagers[mapaId] = controlsManager;
+      
+      console.log(`🛠️ Controles de herramientas inicializados para ${mapaId}`);
+    } catch (error) {
+      console.error(`Error al inicializar controles para ${mapaId}:`, error);
+    }
+  }
+
+  /**
+   * ⬇️ NUEVO: Obtiene el gestor de controles de un mapa
+   */
+  obtenerControles(mapaId) {
+    return this.controlsManagers[mapaId];
   }
 
   /**
@@ -304,19 +332,27 @@ export class MapManager {
   }
 
   /**
-   * Actualiza el centro y zoom de un mapa
+   * Actualiza el centro y zoom de un mapa CON ANIMACIÓN
+   * MODIFICADO: Ahora usa la herramienta de animación si está disponible
    */
-  actualizarVistaMapa(mapaId, centro, zoom, duracion) {
-    duracion = duracion || 1000;
-    const mapa = this.mapas[mapaId];
-    if (!mapa) return;
+  actualizarVistaMapa(mapaId, centro, zoom, duracion = 1000) {
+    const controlsManager = this.controlsManagers[mapaId];
+    
+    if (controlsManager) {
+      // ⬇️ NUEVO: Usar la herramienta de animación
+      controlsManager.animarHacia(centro, zoom, duracion);
+    } else {
+      // Fallback al método anterior
+      const mapa = this.mapas[mapaId];
+      if (!mapa) return;
 
-    const vista = mapa.getView();
-    vista.animate({
-      center: ol.proj.fromLonLat(centro),
-      zoom: zoom,
-      duration: duracion
-    });
+      const vista = mapa.getView();
+      vista.animate({
+        center: ol.proj.fromLonLat(centro),
+        zoom: zoom,
+        duration: duracion
+      });
+    }
   }
 
   /**
@@ -349,8 +385,16 @@ export class MapManager {
 
   /**
    * Limpia un mapa específico
+   * MODIFICADO: Ahora también limpia los controles de herramientas
    */
   limpiarMapa(mapaId) {
+    // ⬇️ NUEVO: Destruir controles antes de limpiar el mapa
+    const controlsManager = this.controlsManagers[mapaId];
+    if (controlsManager) {
+      controlsManager.destruir();
+      delete this.controlsManagers[mapaId];
+    }
+
     const mapa = this.mapas[mapaId];
     if (mapa) {
       mapa.setTarget(null);
@@ -451,5 +495,37 @@ export class MapManager {
    */
   obtenerMapa(mapaId) {
     return this.mapas[mapaId];
+  }
+
+  /**
+   * ⬇️ NUEVO: Obtiene todas las capas de un mapa por nombre
+   */
+  obtenerCapaPorNombre(mapaId, nombreCapa) {
+    const capas = this.capas[mapaId];
+    if (!capas) return null;
+    
+    return capas.find(capa => capa.get('nombre') === nombreCapa);
+  }
+
+  /**
+   * ⬇️ NUEVO: Configura layer swipe para un mapa específico
+   */
+  configurarSwipe(mapaId, nombreCapaIzq, nombreCapaDer) {
+    const controlsManager = this.controlsManagers[mapaId];
+    if (!controlsManager) {
+      console.warn(`⚠️ No hay controles inicializados para ${mapaId}`);
+      return false;
+    }
+
+    const capaIzq = this.obtenerCapaPorNombre(mapaId, nombreCapaIzq);
+    const capaDer = this.obtenerCapaPorNombre(mapaId, nombreCapaDer);
+
+    if (!capaIzq || !capaDer) {
+      console.warn(`⚠️ No se encontraron las capas: ${nombreCapaIzq}, ${nombreCapaDer}`);
+      return false;
+    }
+
+    controlsManager.configurarSwipe(capaIzq, capaDer);
+    return true;
   }
 }
