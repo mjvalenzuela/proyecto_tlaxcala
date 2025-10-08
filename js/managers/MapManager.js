@@ -157,37 +157,53 @@ export class MapManager {
   /**
    * Crea una capa WFS desde GeoServer
    */
-crearCapaWFS(capaConfig) {
+  crearCapaWFS(capaConfig) {
     const proxyBase = this.config.proxy.url;
     const typeName = capaConfig.layers;
-    
+
     // Extraer workspace
-    const layerParts = typeName.split(':');
-    const workspace = layerParts.length > 1 ? layerParts[0] : 'SEICCT';
-    
+    const layerParts = typeName.split(":");
+    const workspace = layerParts.length > 1 ? layerParts[0] : "SEICCT";
+
     // Detectar si estamos usando proxy de Vercel o proxy local
-    const isVercelProxy = proxyBase.includes('proxy?path=');
+    const isVercelProxy = proxyBase.includes("proxy?path=");
 
     console.log(`📍 Creando capa WFS: ${capaConfig.nombre}`);
     console.log(`   - Workspace: ${workspace}`);
     console.log(`   - TypeName: ${typeName}`);
-    console.log(`   - Proxy type: ${isVercelProxy ? 'Vercel Serverless' : 'Local/Directo'}`);
+    console.log(
+      `   - Proxy type: ${
+        isVercelProxy ? "Vercel Serverless" : "Local/Directo"
+      }`
+    );
 
     const vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
-      url: function(extent) {
-        const wfsPath = `/geoserver/${workspace}/ows?service=WFS&version=1.1.0&request=GetFeature&typename=${typeName}&outputFormat=application/json&srsname=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`;
-        
+      url: function (extent) {
+        // Construir los parámetros WFS
+        const params = new URLSearchParams({
+          service: "WFS",
+          version: "1.0.0", // ✅ Usar 1.0.0 como en las URLs de previsualización
+          request: "GetFeature",
+          typeName: typeName,
+          outputFormat: "application/json",
+          srsname: "EPSG:3857",
+          bbox: `${extent.join(",")},EPSG:3857`,
+        });
+
+        const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
+
         // Construir URL según el tipo de proxy
         if (isVercelProxy) {
-          // Para Vercel: /api/proxy?path=/geoserver/...
-          return `${proxyBase}${wfsPath}`;
+          // Para Vercel: URL-encode todo el path
+          const encodedPath = encodeURIComponent(wfsPath);
+          return `${proxyBase.replace("?path=", "")}?path=${encodedPath}`;
         } else {
-          // Para local: http://localhost:3001/geoserver/...
+          // Para local: concatenar directamente
           return `${proxyBase}${wfsPath}`;
         }
       },
-      strategy: ol.loadingstrategy.bbox
+      strategy: ol.loadingstrategy.bbox,
     });
 
     const estilo = capaConfig.estilo
@@ -254,56 +270,69 @@ crearCapaWFS(capaConfig) {
   /**
    * Crea una capa WMS desde GeoServer
    */
-    crearCapaWMS(capaConfig) {
+  crearCapaWMS(capaConfig) {
     // Extraer el workspace del layers (ej: "SEICCT:Limite" -> "SEICCT")
-    const layerParts = capaConfig.layers.split(':');
-    const workspace = layerParts.length > 1 ? layerParts[0] : 'SEICCT';
-    
+    const layerParts = capaConfig.layers.split(":");
+    const workspace = layerParts.length > 1 ? layerParts[0] : "SEICCT";
+
     // Detectar si estamos usando proxy de Vercel o proxy local
     const proxyBase = this.config.proxy.url;
-    const isVercelProxy = proxyBase.includes('proxy?path=');
-    
+    const isVercelProxy = proxyBase.includes("proxy?path=");
+
     // Construir URL WMS según el tipo de proxy
     let wmsUrl;
     if (isVercelProxy) {
-      // Para Vercel: /api/proxy?path=/geoserver/WORKSPACE/wms?
-      // IMPORTANTE: Agregar el ? al final para que OpenLayers agregue los parámetros correctamente
-      wmsUrl = `${proxyBase}/geoserver/${workspace}/wms?`;
+      // Para Vercel: necesitamos una función loader personalizada
+      // porque OpenLayers no puede URL-encode automáticamente
+      const basePath = `/geoserver/${workspace}/wms`;
+
+      // WMS requiere un loader personalizado para Vercel
+      const capa = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: `${proxyBase.replace("?path=", "")}`, // Base del proxy sin ?path=
+          params: {
+            LAYERS: capaConfig.layers,
+            TILED: true,
+            VERSION: "1.1.0",
+            FORMAT: "image/png",
+            TRANSPARENT: true,
+          },
+          serverType: "geoserver",
+          crossOrigin: "anonymous",
+          // ✅ Loader personalizado para construir URLs correctas
+          tileLoadFunction: function (imageTile, src) {
+            // Extraer solo los parámetros de la URL
+            const url = new URL(src, window.location.origin);
+            const params = url.searchParams.toString();
+
+            // Construir path completo
+            const fullPath = `${basePath}?${params}`;
+
+            // URL-encode el path para Vercel
+            const encodedPath = encodeURIComponent(fullPath);
+            const finalUrl = `${proxyBase.replace(
+              "?path=",
+              ""
+            )}?path=${encodedPath}`;
+
+            imageTile.getImage().src = finalUrl;
+          },
+        }),
+        visible: capaConfig.visible,
+        zIndex: 1,
+        opacity: 0.8,
+      });
+
+      capa.set("nombre", capaConfig.nombre);
+      capa.set("layers", capaConfig.layers);
+      capa.set("tipo", "wms");
+      capa.set("workspace", workspace);
+
+      return capa;
     } else {
-      // Para local o directo: http://localhost:3001/geoserver/WORKSPACE/wms
+      // Para local o directo: concatenar directamente
       wmsUrl = `${proxyBase}/${workspace}/wms`;
     }
-
-    console.log(`📍 Creando capa WMS: ${capaConfig.nombre}`);
-    console.log(`   - Workspace: ${workspace}`);
-    console.log(`   - Layers: ${capaConfig.layers}`);
-    console.log(`   - Proxy type: ${isVercelProxy ? 'Vercel Serverless' : 'Local/Directo'}`);
-    console.log(`   - URL: ${wmsUrl}`);
-
-    const capa = new ol.layer.Tile({
-      source: new ol.source.TileWMS({
-        url: wmsUrl,
-        params: {
-          'LAYERS': capaConfig.layers,
-          'TILED': true,
-          'VERSION': '1.1.0',
-          'FORMAT': 'image/png',
-          'TRANSPARENT': true
-        },
-        serverType: 'geoserver',
-        crossOrigin: 'anonymous'
-      }),
-      visible: capaConfig.visible,
-      zIndex: 1,
-      opacity: 0.8
-    });
-
-    capa.set('nombre', capaConfig.nombre);
-    capa.set('layers', capaConfig.layers);
-    capa.set('tipo', 'wms');
-    capa.set('workspace', workspace);
-
-    return capa;
   }
 
   /**
