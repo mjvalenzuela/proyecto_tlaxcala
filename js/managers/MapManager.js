@@ -414,16 +414,54 @@ export class MapManager {
    * Configura los controles de visibilidad de capas
    */
   configurarControlesCapas(numeroCapitulo, capas) {
+    // ✅ Validar que tenemos capas para configurar
+    if (!capas || capas.length === 0) {
+      console.warn(
+        `⚠️ No hay capas para configurar controles en capítulo ${numeroCapitulo}`
+      );
+      return;
+    }
+
+    let controlesConfigurados = 0;
+
     for (let i = 0; i < capas.length; i++) {
       const capa = capas[i];
       const checkboxId = `layer-${i}-${numeroCapitulo}`;
       const checkbox = document.getElementById(checkboxId);
 
+      // ✅ NUEVO: Solo configurar si el checkbox existe en el DOM
       if (checkbox) {
-        checkbox.addEventListener("change", (e) => {
-          capa.setVisible(e.target.checked);
-        });
+        try {
+          checkbox.addEventListener("change", (e) => {
+            capa.setVisible(e.target.checked);
+            console.log(
+              `🔄 Capa "${capa.get("nombre")}" visibilidad: ${e.target.checked}`
+            );
+          });
+          controlesConfigurados++;
+        } catch (error) {
+          console.error(
+            `❌ Error al configurar control para capa ${i}:`,
+            error
+          );
+        }
+      } else {
+        // ✅ NUEVO: Log informativo, NO error crítico
+        console.log(
+          `ℹ️ Checkbox no encontrado: ${checkboxId} (opcional - UI sin controles de capa)`
+        );
       }
+    }
+
+    // ✅ NUEVO: Log resumen de configuración
+    if (controlesConfigurados > 0) {
+      console.log(
+        `✅ ${controlesConfigurados} controles de capa configurados para capítulo ${numeroCapitulo}`
+      );
+    } else {
+      console.log(
+        `ℹ️ Capítulo ${numeroCapitulo}: Sin controles de capa en UI (modo solo visualización)`
+      );
     }
   }
 
