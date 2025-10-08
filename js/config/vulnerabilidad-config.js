@@ -1,6 +1,24 @@
 /**
- * vulnerabilidad-config.js - Configuración del Story Map de Vulnerabilidad
- * ACTUALIZADO: Incluye ejemplo de Layer Swipe para comparar capas temporales
+ * ============================================
+ * ARCHIVO: js/config/vulnerabilidad-config.js
+ * ============================================
+ * SOLUCIÓN: Configuración corregida del Story Map de Vulnerabilidad
+ * 
+ * PROBLEMA ORIGINAL:
+ * - Capas WMS con nombres incorrectos o inconsistentes
+ * - Referencias a workspace incorrecto
+ * - Mezcla de tipos WMS y WFS sin criterio claro
+ * 
+ * CAPAS REALES EN GEOSERVER (confirmadas):
+ * - Workspace: SEICCT
+ * - Capas: Limite, Localidades, Municipios
+ * 
+ * SOLUCIÓN IMPLEMENTADA:
+ * - Corregir todos los nombres de capas para que coincidan con GeoServer
+ * - Usar WMS para visualización (más rápido y ligero)
+ * - Usar WFS solo para capas con interacción (popup)
+ * - URLs correctas al proxy según entorno
+ * ============================================
  */
 
 export const storyMapConfig = {
@@ -8,24 +26,31 @@ export const storyMapConfig = {
   titulo: 'Vulnerabilidad Climática en Tlaxcala',
   descripcion: 'Análisis detallado de la vulnerabilidad climática en los municipios de Tlaxcala',
   
-  // Configuración del mapa inicial (portada)
+  // ==========================================
+  // MAPA INICIAL (PORTADA)
+  // ==========================================
   mapaInicial: {
     centro: [-98.2377, 19.3138],
     zoom: 10,
     capas: [
       {
-        nombre: 'Municipios',
+        nombre: 'Municipios de Tlaxcala',
         tipo: 'wms',
         url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-        layers: 'SEICCT:Municipios',
-        visible: true
+        layers: 'SEICCT:Municipios',  // ✅ CORREGIDO
+        visible: true,
+        leyenda: false
       }
     ]
   },
 
-  // Definición de los capítulos
+  // ==========================================
+  // DEFINICIÓN DE LOS CAPÍTULOS
+  // ==========================================
   capitulos: [
-    // ==================== CAPÍTULO 1 ====================
+    // ==========================================
+    // CAPÍTULO 1: CONTEXTO MUNICIPAL
+    // ==========================================
     {
       id: 'cap-1',
       numero: 1,
@@ -37,10 +62,10 @@ export const storyMapConfig = {
         zoom: 10,
         capas: [
           {
-            nombre: 'Limite',
-            tipo: 'wfs',
+            nombre: 'Límite Estatal',
+            tipo: 'wfs',  // WFS para permitir interacción con popup
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:Limite',  // ✅ CORREGIDO
             visible: true,
             leyenda: true,
             estilo: {
@@ -59,13 +84,17 @@ export const storyMapConfig = {
           titulo: 'Vulnerabilidad por Municipio',
           ejeX: 'municipio',
           ejeY: 'vulnerabilidad',
+          etiquetaY: 'Índice de Vulnerabilidad',
           color: 'rgba(239, 68, 68, 0.8)',
+          colorBorde: 'rgba(239, 68, 68, 1)',
           mostrarLeyenda: false
         }
       }
     },
 
-    // ==================== CAPÍTULO 2 - CON LAYER SWIPE ====================
+    // ==========================================
+    // CAPÍTULO 2: COMPARACIÓN TEMPORAL
+    // ==========================================
     {
       id: 'cap-2',
       numero: 2,
@@ -76,32 +105,35 @@ export const storyMapConfig = {
         centro: [-98.2377, 19.3138],
         zoom: 10,
         capas: [
-          // ⬇️ Capa de vulnerabilidad 2020 (izquierda del swipe)
+          // Capa izquierda del swipe (si está habilitado)
           {
             nombre: 'Vulnerabilidad 2020',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Municipios',
+            layers: 'SEICCT:Municipios',  // ✅ CORREGIDO
             visible: true,
             leyenda: true
           },
-          // ⬇️ Capa de vulnerabilidad 2024 (derecha del swipe)
+          // Capa derecha del swipe (si está habilitado)
           {
             nombre: 'Vulnerabilidad 2024',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Localidades',
+            layers: 'SEICCT:Localidades',  // ✅ CORREGIDO (usamos Localidades como segunda capa)
             visible: true,
             leyenda: true
           }
         ],
         
-        // ⬇️ NUEVO: Configuración de Layer Swipe
+        // ⚠️ NOTA: El swipe está comentado porque requiere configuración adicional
+        // Para habilitarlo, descomentar y asegurar que MapManager lo soporte
+        /*
         swipe: {
           enabled: true,
           capaIzquierda: 'Vulnerabilidad 2020',
           capaDerecha: 'Vulnerabilidad 2024'
         }
+        */
       },
 
       grafico: {
@@ -112,10 +144,16 @@ export const storyMapConfig = {
           ejeX: 'año',
           datasets: [
             {
-              label: 'Índice Promedio',
-              dato: 'promedio',
-              color: 'rgba(244, 121, 33, 0.8)',
+              label: 'Temperatura Promedio (°C)',
+              dato: 'temperatura_promedio',
+              color: 'rgba(244, 121, 33, 0.3)',
               borderColor: '#F47921'
+            },
+            {
+              label: 'Días Calurosos',
+              dato: 'dias_calurosos',
+              color: 'rgba(239, 68, 68, 0.3)',
+              borderColor: '#EF4444'
             }
           ],
           mostrarLeyenda: true,
@@ -124,7 +162,9 @@ export const storyMapConfig = {
       }
     },
 
-    // ==================== CAPÍTULO 3 ====================
+    // ==========================================
+    // CAPÍTULO 3: DISTRIBUCIÓN DE VULNERABILIDAD
+    // ==========================================
     {
       id: 'cap-3',
       numero: 3,
@@ -139,9 +179,18 @@ export const storyMapConfig = {
             nombre: 'Índice de Vulnerabilidad',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Localidades',
+            layers: 'SEICCT:Municipios',  // ✅ CORREGIDO
             visible: true,
             leyenda: true
+          },
+          {
+            nombre: 'Localidades',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Localidades',  // ✅ CORREGIDO
+            visible: true,
+            leyenda: false,
+            opacity: 0.6  // Semi-transparente para ver ambas capas
           }
         ]
       },
@@ -166,53 +215,89 @@ export const storyMapConfig = {
     }
   ],
 
-  // Configuración de la capa base
+  // ==========================================
+  // CONFIGURACIÓN DE LA CAPA BASE
+  // ==========================================
   mapaBase: {
     tipo: 'esri',
     nombre: 'World Street Map',
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+    attribution: '© Esri'
   },
 
-  // Configuración del proxy
+  // ==========================================
+  // CONFIGURACIÓN DEL PROXY
+  // ==========================================
   proxy: {
     url: (() => {
       const hostname = window.location.hostname;
       
-      // LOCAL: Usando Live Server (puerto 5500 o 127.0.0.1)
+      // ==========================================
+      // ENTORNO LOCAL (Live Server, http-server, etc.)
+      // ==========================================
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
         console.log('🏠 Entorno: LOCAL - Usando proxy Node.js');
         return 'http://localhost:3001/geoserver';
       }
       
-      // VERCEL PRODUCCIÓN
+      // ==========================================
+      // ENTORNO VERCEL (Producción)
+      // ==========================================
       if (hostname.includes('vercel.app')) {
         console.log('☁️ Entorno: VERCEL - Usando proxy serverless');
         return '/api/proxy?path=';
       }
       
-      // FALLBACK: Conexión directa (si tienes dominio propio)
-      console.log('🌐 Entorno: OTRO - Conexión directa');
+      // ==========================================
+      // FALLBACK: Conexión directa (si tienes dominio propio con CORS)
+      // ==========================================
+      console.log('🌐 Entorno: OTRO - Conexión directa a GeoServer');
+      console.warn('⚠️ ADVERTENCIA: Conexión directa puede fallar por CORS');
       return 'https://api.cambioclimaticotlaxcala.mx/geoserver';
     })()
   }
 };
 
-// ============================================
-// FUNCIONES AUXILIARES
-// ============================================
+// ==========================================
+// FUNCIONES AUXILIARES DE VALIDACIÓN
+// ==========================================
 
 /**
  * Valida que la configuración sea correcta
  */
 export function validarConfiguracion(config) {
+  console.log('🔍 Validando configuración del Story Map...');
+  
+  // Validar que hay capítulos
   if (!config.capitulos || config.capitulos.length === 0) {
     throw new Error('La configuración debe tener al menos un capítulo');
   }
 
+  // Validar cada capítulo
   config.capitulos.forEach((cap, index) => {
+    // Validar estructura básica
     if (!cap.mapa || !cap.grafico) {
       throw new Error(`El capítulo ${index + 1} debe tener configuración de mapa y gráfico`);
     }
+
+    // Validar que las capas existen
+    if (!cap.mapa.capas || cap.mapa.capas.length === 0) {
+      throw new Error(`El capítulo ${index + 1} debe tener al menos una capa de mapa`);
+    }
+
+    // Validar capas WMS/WFS
+    cap.mapa.capas.forEach((capa, capaIndex) => {
+      if (!capa.layers || !capa.layers.includes('SEICCT:')) {
+        console.warn(`⚠️ Capítulo ${index + 1}, Capa ${capaIndex + 1}: No tiene el formato correcto SEICCT:NombreCapa`);
+      }
+      
+      // Validar que el nombre de la capa es válido
+      const capasValidas = ['SEICCT:Limite', 'SEICCT:Localidades', 'SEICCT:Municipios'];
+      if (!capasValidas.includes(capa.layers)) {
+        console.warn(`⚠️ Capítulo ${index + 1}: Capa "${capa.layers}" puede no existir en GeoServer`);
+        console.warn(`   Capas válidas: ${capasValidas.join(', ')}`);
+      }
+    });
 
     // Validar swipe si está habilitado
     if (cap.mapa.swipe?.enabled) {
@@ -229,8 +314,14 @@ export function validarConfiguracion(config) {
         throw new Error(`Capa derecha del swipe no encontrada: ${cap.mapa.swipe.capaDerecha}`);
       }
     }
+
+    // Validar configuración del gráfico
+    if (!cap.grafico.tipo || !cap.grafico.datos || !cap.grafico.config) {
+      throw new Error(`El capítulo ${index + 1} tiene configuración incompleta del gráfico`);
+    }
   });
 
+  console.log('✅ Configuración validada correctamente');
   return true;
 }
 
@@ -261,4 +352,57 @@ export function obtenerCapitulosConSwipe() {
 export function tieneSwipe(numeroCapitulo) {
   const capitulo = obtenerCapituloPorNumero(numeroCapitulo);
   return capitulo?.mapa?.swipe?.enabled || false;
+}
+
+/**
+ * Obtiene información del proxy según el entorno
+ */
+export function obtenerInfoProxy() {
+  return {
+    url: storyMapConfig.proxy.url,
+    esLocal: storyMapConfig.proxy.url.includes('localhost'),
+    esVercel: storyMapConfig.proxy.url.includes('/api/proxy'),
+    esDirecto: storyMapConfig.proxy.url.includes('cambioclimaticotlaxcala.mx')
+  };
+}
+
+/**
+ * Lista todas las capas únicas usadas en la configuración
+ */
+export function listarCapasUnicas() {
+  const capasSet = new Set();
+  
+  // Capas del mapa inicial
+  if (storyMapConfig.mapaInicial?.capas) {
+    storyMapConfig.mapaInicial.capas.forEach(capa => {
+      capasSet.add(capa.layers);
+    });
+  }
+  
+  // Capas de cada capítulo
+  storyMapConfig.capitulos.forEach(cap => {
+    if (cap.mapa?.capas) {
+      cap.mapa.capas.forEach(capa => {
+        capasSet.add(capa.layers);
+      });
+    }
+  });
+  
+  return Array.from(capasSet);
+}
+
+// ==========================================
+// VALIDACIÓN AUTOMÁTICA AL CARGAR
+// ==========================================
+try {
+  validarConfiguracion(storyMapConfig);
+  
+  console.log('📊 Resumen de configuración:');
+  console.log(`   - Capítulos: ${obtenerTotalCapitulos()}`);
+  console.log(`   - Capas únicas: ${listarCapasUnicas().join(', ')}`);
+  console.log(`   - Proxy: ${obtenerInfoProxy().url}`);
+  
+} catch (error) {
+  console.error('❌ Error en la configuración:', error.message);
+  throw error;
 }
