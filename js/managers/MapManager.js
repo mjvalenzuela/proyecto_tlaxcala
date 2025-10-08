@@ -254,20 +254,21 @@ crearCapaWFS(capaConfig) {
   /**
    * Crea una capa WMS desde GeoServer
    */
-  crearCapaWMS(capaConfig) {
+    crearCapaWMS(capaConfig) {
     // Extraer el workspace del layers (ej: "SEICCT:Limite" -> "SEICCT")
-    const layerParts = capaConfig.layers.split(":");
-    const workspace = layerParts.length > 1 ? layerParts[0] : "SEICCT";
-
+    const layerParts = capaConfig.layers.split(':');
+    const workspace = layerParts.length > 1 ? layerParts[0] : 'SEICCT';
+    
     // Detectar si estamos usando proxy de Vercel o proxy local
     const proxyBase = this.config.proxy.url;
-    const isVercelProxy = proxyBase.includes("proxy?path=");
-
+    const isVercelProxy = proxyBase.includes('proxy?path=');
+    
     // Construir URL WMS según el tipo de proxy
     let wmsUrl;
     if (isVercelProxy) {
-      // Para Vercel: /api/proxy?path=/geoserver/WORKSPACE/wms
-      wmsUrl = `${proxyBase}/geoserver/${workspace}/wms`;
+      // Para Vercel: /api/proxy?path=/geoserver/WORKSPACE/wms?
+      // IMPORTANTE: Agregar el ? al final para que OpenLayers agregue los parámetros correctamente
+      wmsUrl = `${proxyBase}/geoserver/${workspace}/wms?`;
     } else {
       // Para local o directo: http://localhost:3001/geoserver/WORKSPACE/wms
       wmsUrl = `${proxyBase}/${workspace}/wms`;
@@ -276,35 +277,31 @@ crearCapaWFS(capaConfig) {
     console.log(`📍 Creando capa WMS: ${capaConfig.nombre}`);
     console.log(`   - Workspace: ${workspace}`);
     console.log(`   - Layers: ${capaConfig.layers}`);
-    console.log(
-      `   - Proxy type: ${
-        isVercelProxy ? "Vercel Serverless" : "Local/Directo"
-      }`
-    );
+    console.log(`   - Proxy type: ${isVercelProxy ? 'Vercel Serverless' : 'Local/Directo'}`);
     console.log(`   - URL: ${wmsUrl}`);
 
     const capa = new ol.layer.Tile({
       source: new ol.source.TileWMS({
         url: wmsUrl,
         params: {
-          LAYERS: capaConfig.layers,
-          TILED: true,
-          VERSION: "1.1.0",
-          FORMAT: "image/png",
-          TRANSPARENT: true,
+          'LAYERS': capaConfig.layers,
+          'TILED': true,
+          'VERSION': '1.1.0',
+          'FORMAT': 'image/png',
+          'TRANSPARENT': true
         },
-        serverType: "geoserver",
-        crossOrigin: "anonymous",
+        serverType: 'geoserver',
+        crossOrigin: 'anonymous'
       }),
       visible: capaConfig.visible,
       zIndex: 1,
-      opacity: 0.8,
+      opacity: 0.8
     });
 
-    capa.set("nombre", capaConfig.nombre);
-    capa.set("layers", capaConfig.layers);
-    capa.set("tipo", "wms");
-    capa.set("workspace", workspace);
+    capa.set('nombre', capaConfig.nombre);
+    capa.set('layers', capaConfig.layers);
+    capa.set('tipo', 'wms');
+    capa.set('workspace', workspace);
 
     return capa;
   }
