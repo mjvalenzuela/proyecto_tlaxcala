@@ -200,13 +200,17 @@ class StoryMapApp {
       }
 
       // Crear gráfico para el capítulo
-      const chartElementId = `chart-${numero}`;
-      await this.chartManager.crearGrafico(
-        chartElementId,
-        capitulo.grafico.tipo,
-        capitulo.grafico.datos,
-        capitulo.grafico.config
-      );
+    const chartElementId = `chart-${numero}`;
+    
+    // ✅ AHORA PASAMOS LOS PARÁMETROS CORRECTOS:
+    // - canvasId: el ID del elemento canvas en el DOM
+    // - graficoConfig: el objeto completo capitulo.grafico
+    // - numeroCapitulo: el número del capítulo
+    await this.chartManager.crearGrafico(
+      chartElementId,      // ID del canvas
+      capitulo.grafico,    // ✅ OBJETO COMPLETO (contiene tipo, datos, config)
+      numero               // Número del capítulo
+    );
 
       console.log(`✅ Capítulo ${numero} inicializado correctamente`);
     } catch (error) {
