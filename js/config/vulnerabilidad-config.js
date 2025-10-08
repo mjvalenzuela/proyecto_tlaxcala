@@ -37,7 +37,7 @@ export const storyMapConfig = {
         zoom: 10,
         capas: [
           {
-            nombre: 'Municipios',
+            nombre: 'Limite',
             tipo: 'wfs',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
             layers: 'SEICCT:Limite',
@@ -139,7 +139,7 @@ export const storyMapConfig = {
             nombre: 'Índice de Vulnerabilidad',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:Localidades',
             visible: true,
             leyenda: true
           }
