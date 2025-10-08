@@ -179,7 +179,7 @@ export class MapControlsManager {
     // Actualizar UI
     this.botones.distance.classList.add('active');
     
-    console.log('📏 Medición de distancia activada');
+    //console.log('📏 Medición de distancia activada');
   }
 
   /**
@@ -203,7 +203,7 @@ export class MapControlsManager {
     // Actualizar UI
     this.botones.area.classList.add('active');
     
-    console.log('📐 Medición de área activada');
+    //console.log('📐 Medición de área activada');
   }
 
   /**
@@ -213,7 +213,7 @@ export class MapControlsManager {
     this.measurementTool.limpiar();
     this.desactivarHerramienta();
     
-    console.log('🧹 Mediciones limpiadas');
+    //console.log('🧹 Mediciones limpiadas');
   }
 
   /**
@@ -239,7 +239,7 @@ export class MapControlsManager {
       this.mostrarNotificacion('Mapa exportado correctamente', 'success');
     }, 2000);
 
-    console.log('💾 Mapa exportado:', filename);
+    //console.log('💾 Mapa exportado:', filename);
   }
 
   /**
@@ -256,7 +256,7 @@ export class MapControlsManager {
       this.layerSwipeTool.desactivar();
       this.herramientaActiva = null;
       this.botones.swipe.classList.remove('active');
-      console.log('❌ Layer Swipe desactivado');
+      //console.log('❌ Layer Swipe desactivado');
     } else {
       // Desactivar herramienta anterior
       this.desactivarHerramienta();
@@ -265,7 +265,7 @@ export class MapControlsManager {
       this.layerSwipeTool.activar();
       this.herramientaActiva = 'swipe';
       this.botones.swipe.classList.add('active');
-      console.log('✅ Layer Swipe activado');
+      //console.log('✅ Layer Swipe activado');
     }
   }
 
@@ -281,7 +281,7 @@ export class MapControlsManager {
       this.botones.swipe.style.display = 'flex';
     }
 
-    console.log('🔀 Layer Swipe configurado');
+    //console.log('🔀 Layer Swipe configurado');
   }
 
   /**

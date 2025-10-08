@@ -40,7 +40,7 @@ export const storyMapConfig = {
             nombre: 'Municipios',
             tipo: 'wfs',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Municipios',
+            layers: 'SEICCT:Limite',
             visible: true,
             leyenda: true,
             estilo: {

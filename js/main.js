@@ -35,7 +35,7 @@ class StoryMapApp {
    * Inicializa la aplicación
    */
   async inicializar() {
-    console.log('🚀 Iniciando Story Map:', this.config.titulo);
+    ////console.log('🚀 Iniciando Story Map:', this.config.titulo);
 
     try {
       // Inicializar mapa de intro
@@ -44,9 +44,9 @@ class StoryMapApp {
       // Configurar eventos
       this.configurarEventos();
 
-      console.log('✅ Story Map inicializado correctamente');
+      ////console.log('✅ Story Map inicializado correctamente');
     } catch (error) {
-      console.error('❌ Error al inicializar Story Map:', error);
+      //console.error('❌ Error al inicializar Story Map:', error);
     }
   }
 
@@ -56,9 +56,9 @@ class StoryMapApp {
   async inicializarMapaIntro() {
     try {
       this.mapManager.inicializarMapaIntro('introMap');
-      console.log('📍 Mapa de introducción creado');
+      ////console.log('📍 Mapa de introducción creado');
     } catch (error) {
-      console.error('Error al crear mapa de intro:', error);
+      //console.error('Error al crear mapa de intro:', error);
     }
   }
 
@@ -115,7 +115,7 @@ class StoryMapApp {
    * Inicia el Story Map (oculta intro, muestra capítulos)
    */
   async iniciarStoryMap() {
-    console.log('▶️ Iniciando navegación de capítulos');
+    //console.log('▶️ Iniciando navegación de capítulos');
 
     // Ocultar intro
     this.elementos.storyIntro.style.display = 'none';
@@ -141,39 +141,60 @@ class StoryMapApp {
   /**
    * Inicializa todos los capítulos (mapas y gráficos)
    */
-  async inicializarCapitulos() {
-    console.log('📚 Inicializando capítulos...');
+    async inicializarCapitulo(numero) {
+    const capitulo = this.config.capitulos.find(cap => cap.numero === numero);
+    if (!capitulo) return;
 
-    const promesas = this.config.capitulos.map(async (capitulo, index) => {
-      const numeroCapitulo = index + 1;
-      
-      try {
-        // Inicializar mapa del capítulo
-        const mapContainerId = `map-${numeroCapitulo}`;
-        this.mapManager.inicializarMapaCapitulo(
-          mapContainerId, 
-          capitulo, 
-          numeroCapitulo
-        );
-        
-        console.log(`✅ Mapa capítulo ${numeroCapitulo} creado`);
+    const mapaId = `cap-${numero}`;
+    const mapElementId = `map-${numero}`;
 
-        // Inicializar gráfico del capítulo
-        const chartCanvasId = `chart-${numeroCapitulo}`;
-        await this.chartManager.crearGrafico(
-          chartCanvasId, 
-          capitulo.grafico, 
-          numeroCapitulo
-        );
+    try {
+      // Crear mapa para el capítulo
+      await this.mapManager.inicializarMapa(
+        mapElementId,
+        mapaId,
+        capitulo.mapa.capas,
+        capitulo.mapa.centro,
+        capitulo.mapa.zoom,
+        numero
+      );
+
+      // ⬇️ NUEVO: Verificar si el capítulo tiene swipe habilitado
+      if (capitulo.mapa.swipe && capitulo.mapa.swipe.enabled) {
+        console.log(`🔀 Configurando swipe para capítulo ${numero}`);
         
-        console.log(`📊 Gráfico capítulo ${numeroCapitulo} creado`);
-      } catch (error) {
-        console.error(`Error al inicializar capítulo ${numeroCapitulo}:`, error);
+        const capaIzquierda = capitulo.mapa.swipe.capaIzquierda;
+        const capaDerecha = capitulo.mapa.swipe.capaDerecha;
+        
+        // Pequeño delay para que las capas se carguen antes de configurar swipe
+        setTimeout(() => {
+          const swipeConfigurado = this.mapManager.configurarSwipe(
+            mapaId,
+            capaIzquierda,
+            capaDerecha
+          );
+          
+          if (swipeConfigurado) {
+            console.log(`✅ Swipe activado: ${capaIzquierda} ↔ ${capaDerecha}`);
+          } else {
+            console.warn(`⚠️ No se pudo configurar swipe para capítulo ${numero}`);
+          }
+        }, 500);
       }
-    });
 
-    await Promise.all(promesas);
-    console.log('✅ Todos los capítulos inicializados');
+      // Crear gráfico para el capítulo
+      const chartElementId = `chart-${numero}`;
+      await this.chartManager.crearGrafico(
+        chartElementId,
+        capitulo.grafico.tipo,
+        capitulo.grafico.datos,
+        capitulo.grafico.config
+      );
+
+      console.log(`✅ Capítulo ${numero} inicializado`);
+    } catch (error) {
+      console.error(`Error al inicializar capítulo ${numero}:`, error);
+    }
   }
 
   /**
@@ -223,7 +244,7 @@ class StoryMapApp {
       this.mapManager.actualizarTamano(`cap-${numeroCapitulo}`);
     }, 300);
 
-    console.log(`📍 Capítulo ${numeroCapitulo} activado`);
+    //console.log(`📍 Capítulo ${numeroCapitulo} activado`);
   }
 
   /**
@@ -278,7 +299,7 @@ class StoryMapApp {
    * Limpia recursos cuando se destruye la aplicación
    */
   destruir() {
-    console.log('🧹 Limpiando recursos...');
+    //console.log('🧹 Limpiando recursos...');
     
     // Destruir gráficos
     this.chartManager.destruirTodos();
@@ -288,13 +309,13 @@ class StoryMapApp {
       this.mapManager.limpiarMapa(mapaId);
     });
 
-    console.log('✅ Recursos limpiados');
+    //console.log('✅ Recursos limpiados');
   }
 }
 
 // Inicializar la aplicación cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🌍 Iniciando aplicación Story Map');
+  //console.log('🌍 Iniciando aplicación Story Map');
   
   try {
     // Crear instancia de la aplicación

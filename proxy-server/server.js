@@ -16,7 +16,7 @@ app.use(cors({
 
 // Middleware de logging para debugging
 app.use((req, res, next) => {
-  console.log(`📥 ${req.method} ${req.url}`);
+  //console.log(`📥 ${req.method} ${req.url}`);
   next();
 });
 
@@ -24,20 +24,28 @@ app.use((req, res, next) => {
 const proxyOptions = {
   target: GEOSERVER_URL,
   changeOrigin: true,
-  pathRewrite: {
-    '^/geoserver': '' // Remueve /geoserver del path antes de enviar a GeoServer
+  pathRewrite: (path, req) => {
+    // No remover /geoserver, solo reemplazarlo por la ruta correcta
+    // Ejemplo: /geoserver/SEICCT/wms → /geoserver/SEICCT/wms
+    const newPath = path.replace('/geoserver', '/geoserver');
+    console.log(`   🔀 Path original: ${path}`);
+    console.log(`   🔀 Path enviado: ${newPath}`);
+    return newPath;
   },
   onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Proxy → ${GEOSERVER_URL}${req.url}`);
+    const targetUrl = `${GEOSERVER_URL}${req.url.replace('/geoserver', '/geoserver')}`;
+    console.log(`🔄 Proxy → ${targetUrl}`);
   },
   onProxyRes: (proxyRes, req, res) => {
-    console.log(`✅ Respuesta: ${proxyRes.statusCode}`);
+    console.log(`✅ Respuesta: ${proxyRes.statusCode} ${proxyRes.statusMessage}`);
   },
   onError: (err, req, res) => {
     console.error('❌ Error en proxy:', err.message);
+    console.error('   URL que falló:', req.url);
     res.status(500).json({ 
       error: 'Error al conectar con GeoServer',
-      mensaje: err.message 
+      mensaje: err.message,
+      url: req.url
     });
   }
 };
@@ -71,13 +79,13 @@ app.get('/', (req, res) => {
 
 // Iniciar servidor
 app.listen(PORT, () => {
-  console.log('╔════════════════════════════════════════════════╗');
-  console.log('║   🌍 Proxy Server GeoServer - ACTIVO          ║');
-  console.log('╚════════════════════════════════════════════════╝');
-  console.log(`\n✅ Servidor corriendo en: http://localhost:${PORT}`);
-  console.log(`📡 Redirigiendo a: ${GEOSERVER_URL}`);
-  console.log(`\n📖 Uso:`);
-  console.log(`   Frontend: http://localhost:${PORT}/geoserver/Tlaxcala/wms`);
-  console.log(`   Health check: http://localhost:${PORT}/health`);
-  console.log(`\n💡 Para detener: Ctrl+C\n`);
+  //console.log('╔════════════════════════════════════════════════╗');
+  //console.log('║   🌍 Proxy Server GeoServer - ACTIVO          ║');
+  //console.log('╚════════════════════════════════════════════════╝');
+  //console.log(`\n✅ Servidor corriendo en: http://localhost:${PORT}`);
+  //console.log(`📡 Redirigiendo a: ${GEOSERVER_URL}`);
+  //console.log(`\n📖 Uso:`);
+  //console.log(`   Frontend: http://localhost:${PORT}/geoserver/Tlaxcala/wms`);
+  //console.log(`   Health check: http://localhost:${PORT}/health`);
+  //console.log(`\n💡 Para detener: Ctrl+C\n`);
 });

@@ -126,7 +126,7 @@ export class MapManager {
       const controlsManager = new MapControlsManager(mapa, mapaId);
       this.controlsManagers[mapaId] = controlsManager;
       
-      console.log(`🛠️ Controles de herramientas inicializados para ${mapaId}`);
+      //console.log(`🛠️ Controles de herramientas inicializados para ${mapaId}`);
     } catch (error) {
       console.error(`Error al inicializar controles para ${mapaId}:`, error);
     }
@@ -228,12 +228,22 @@ export class MapManager {
     });
   }
 
-  /**
+    /**
    * Crea una capa WMS desde GeoServer
    */
   crearCapaWMS(capaConfig) {
+    // Extraer el workspace del layers (ej: "SEICCT:Limite" -> "SEICCT")
+    const layerParts = capaConfig.layers.split(':');
+    const workspace = layerParts.length > 1 ? layerParts[0] : 'Tlaxcala';
+    
+    // Construir la URL WMS usando el proxy y el workspace correcto
     const proxyUrl = this.config.proxy.url;
-    const wmsUrl = `${proxyUrl}/Tlaxcala/wms`;
+    const wmsUrl = `${proxyUrl}/${workspace}/wms`;
+
+    console.log(`📍 Creando capa WMS: ${capaConfig.nombre}`);
+    console.log(`   - Workspace: ${workspace}`);
+    console.log(`   - Layers: ${capaConfig.layers}`);
+    console.log(`   - URL: ${wmsUrl}`);
 
     const capa = new ol.layer.Tile({
       source: new ol.source.TileWMS({
@@ -256,6 +266,7 @@ export class MapManager {
     capa.set('nombre', capaConfig.nombre);
     capa.set('layers', capaConfig.layers);
     capa.set('tipo', 'wms');
+    capa.set('workspace', workspace);
 
     return capa;
   }
