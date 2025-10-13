@@ -14,11 +14,11 @@ export class ChartManager {
   async cargarCSV(ruta) {
     // Si ya está en cache, retornarlo
     if (this.datos[ruta]) {
-      console.log(`📦 CSV en cache: ${ruta}`);
+      // console.log(`📦 CSV en cache: ${ruta}`);
       return this.datos[ruta];
     }
 
-    console.log(`📥 Cargando CSV: ${ruta}`);
+    // console.log(`📥 Cargando CSV: ${ruta}`);
 
     try {
       // ==========================================
@@ -39,7 +39,7 @@ export class ChartManager {
         throw new Error(`El archivo CSV está vacío: ${ruta}`);
       }
 
-      console.log(`✅ CSV descargado: ${csvText.length} caracteres`);
+      // console.log(`✅ CSV descargado: ${csvText.length} caracteres`);
 
       // ==========================================
       // 2. PARSEAR EL CSV CON PAPA PARSE
@@ -82,8 +82,8 @@ export class ChartManager {
               return Object.values(row).some(val => val !== null && val !== undefined && val !== '');
             });
 
-            console.log(`✅ CSV parseado: ${datosFiltrados.length} filas, ${results.meta.fields.length} columnas`);
-            console.log(`   Columnas: ${results.meta.fields.join(', ')}`);
+            // console.log(`✅ CSV parseado: ${datosFiltrados.length} filas, ${results.meta.fields.length} columnas`);
+            // console.log(`   Columnas: ${results.meta.fields.join(', ')}`);
 
             // Guardar en cache
             this.datos[ruta] = datosFiltrados;
@@ -115,7 +115,7 @@ export class ChartManager {
    */
   async crearGrafico(canvasId, graficoConfig, numeroCapitulo) {
     try {
-      console.log(`📊 Creando gráfico ${graficoConfig.tipo} para capítulo ${numeroCapitulo}`);
+      // console.log(`📊 Creando gráfico ${graficoConfig.tipo} para capítulo ${numeroCapitulo}`);
 
       // Validar que el canvas existe
       const canvas = document.getElementById(canvasId);
@@ -149,7 +149,7 @@ export class ChartManager {
       const graficoId = `cap-${numeroCapitulo}`;
       this.graficos[graficoId] = grafico;
 
-      console.log(`✅ Gráfico creado exitosamente: ${graficoId}`);
+      // console.log(`✅ Gráfico creado exitosamente: ${graficoId}`);
       return grafico;
 
     } catch (error) {
@@ -507,7 +507,7 @@ export class ChartManager {
   async actualizarGrafico(graficoId, nuevaRutaCSV, config) {
     const grafico = this.graficos[graficoId];
     if (!grafico) {
-      console.warn(`⚠️ Gráfico ${graficoId} no encontrado`);
+      // console.warn(`⚠️ Gráfico ${graficoId} no encontrado`);
       return;
     }
 
@@ -529,7 +529,7 @@ export class ChartManager {
       }
 
       grafico.update();
-      console.log(`✅ Gráfico ${graficoId} actualizado`);
+      // console.log(`✅ Gráfico ${graficoId} actualizado`);
     } catch (error) {
       console.error(`❌ Error al actualizar gráfico ${graficoId}:`, error);
     }
@@ -545,7 +545,7 @@ export class ChartManager {
     if (grafico) {
       grafico.destroy();
       delete this.graficos[graficoId];
-      console.log(`🗑️ Gráfico ${graficoId} destruido`);
+      // console.log(`🗑️ Gráfico ${graficoId} destruido`);
     }
   }
 
@@ -558,7 +558,7 @@ export class ChartManager {
     Object.keys(this.graficos).forEach(id => {
       this.destruirGrafico(id);
     });
-    console.log('🗑️ Todos los gráficos destruidos');
+    // console.log('🗑️ Todos los gráficos destruidos');
   }
 
   /**
@@ -577,6 +577,6 @@ export class ChartManager {
    */
   limpiarCache() {
     this.datos = {};
-    console.log('🧹 Cache de CSVs limpiado');
+    // console.log('🧹 Cache de CSVs limpiado');
   }
 }

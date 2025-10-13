@@ -62,7 +62,7 @@ export class MapManager {
 
     // ✅ NUEVO: Limpiar mapa existente si ya existe
     if (this.mapas[mapaId]) {
-      console.log(`🧹 Limpiando mapa existente: ${mapaId}`);
+      // console.log(`🧹 Limpiando mapa existente: ${mapaId}`);
       this.limpiarMapa(mapaId);
     }
 
@@ -117,12 +117,16 @@ export class MapManager {
     this.overlays[mapaId] = overlay;
 
     this.configurarClickPopupWFS(mapa, overlay, capas);
+
+    // ⬇️ NUEVO: Generar leyenda dinámica antes de configurar controles
+    this.generarLeyendaDinamica(containerId, capas, numeroCapitulo);
+
     this.configurarControlesCapas(numeroCapitulo, capas);
 
     // ⬇️ NUEVO: Inicializar controles de herramientas
     this.inicializarControles(mapaId, mapa);
 
-    console.log(`✅ Mapa inicializado: ${mapaId}`);
+    // console.log(`✅ Mapa inicializado: ${mapaId}`);
 
     return mapa;
   }
@@ -177,14 +181,14 @@ export class MapManager {
     // Detectar si estamos usando proxy de Vercel o proxy local
     const isVercelProxy = proxyBase.includes("proxy?path=");
 
-    console.log(`📍 Creando capa WFS: ${capaConfig.nombre}`);
-    console.log(`   - Workspace: ${workspace}`);
-    console.log(`   - TypeName: ${typeName}`);
-    console.log(
-      `   - Proxy type: ${
-        isVercelProxy ? "Vercel Serverless" : "Local/Directo"
-      }`
-    );
+    // console.log(`📍 Creando capa WFS: ${capaConfig.nombre}`);
+    // console.log(`   - Workspace: ${workspace}`);
+    // console.log(`   - TypeName: ${typeName}`);
+    // console.log(
+    //   `   - Proxy type: ${
+    //     isVercelProxy ? "Vercel Serverless" : "Local/Directo"
+    //   }`
+    // );
 
     const vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
@@ -438,12 +442,55 @@ export class MapManager {
   }
 
   /**
+   * ⬇️ NUEVO: Genera la leyenda dinámica basada en las capas del mapa
+   */
+  generarLeyendaDinamica(containerId, capas, numeroCapitulo) {
+    // Buscar el contenedor del mapa
+    const mapContainer = document.getElementById(containerId);
+    if (!mapContainer || !mapContainer.parentElement) {
+      // console.warn(`⚠️ No se encontró el contenedor para generar leyenda: ${containerId}`);
+      return;
+    }
+
+    // Buscar o crear el contenedor de controles de capas
+    let controlsContainer = mapContainer.parentElement.querySelector('.map-controls');
+
+    if (!controlsContainer) {
+      // Crear contenedor de controles si no existe
+      controlsContainer = document.createElement('div');
+      controlsContainer.className = 'map-controls';
+      mapContainer.parentElement.appendChild(controlsContainer);
+    }
+
+    // Limpiar contenido anterior
+    controlsContainer.innerHTML = '<div class="map-controls-title">Capas</div>';
+
+    // Generar controles para cada capa
+    capas.forEach((capa, index) => {
+      const nombreCapa = capa.get('nombre') || `Capa ${index + 1}`;
+      const visible = capa.getVisible();
+      const checkboxId = `layer-${index}-${numeroCapitulo}`;
+
+      const layerControl = document.createElement('div');
+      layerControl.className = 'layer-control';
+      layerControl.innerHTML = `
+        <input type="checkbox" id="${checkboxId}" ${visible ? 'checked' : ''} />
+        <label for="${checkboxId}">${nombreCapa}</label>
+      `;
+
+      controlsContainer.appendChild(layerControl);
+    });
+
+    // console.log(`✅ Leyenda dinámica generada para capítulo ${numeroCapitulo} con ${capas.length} capas`);
+  }
+
+  /**
    * Configura los controles de visibilidad de capas
    */
    configurarControlesCapas(numeroCapitulo, capas) {
     // ✅ Validar que tenemos capas para configurar
     if (!capas || capas.length === 0) {
-      console.warn(`⚠️ No hay capas para configurar controles en capítulo ${numeroCapitulo}`);
+      // console.warn(`⚠️ No hay capas para configurar controles en capítulo ${numeroCapitulo}`);
       return;
     }
 
@@ -459,7 +506,7 @@ export class MapManager {
         try {
           checkbox.addEventListener("change", (e) => {
             capa.setVisible(e.target.checked);
-            console.log(`🔄 Capa "${capa.get('nombre')}" visibilidad: ${e.target.checked}`);
+            // console.log(`🔄 Capa "${capa.get('nombre')}" visibilidad: ${e.target.checked}`);
           });
           controlesConfigurados++;
         } catch (error) {
@@ -467,16 +514,16 @@ export class MapManager {
         }
       } else {
         // ✅ NUEVO: Log informativo, NO error crítico
-        console.log(`ℹ️ Checkbox no encontrado: ${checkboxId} (opcional - UI sin controles de capa)`);
+        // console.log(`ℹ️ Checkbox no encontrado: ${checkboxId} (opcional - UI sin controles de capa)`);
       }
     }
 
     // ✅ NUEVO: Log resumen de configuración
-    if (controlesConfigurados > 0) {
-      console.log(`✅ ${controlesConfigurados} controles de capa configurados para capítulo ${numeroCapitulo}`);
-    } else {
-      console.log(`ℹ️ Capítulo ${numeroCapitulo}: Sin controles de capa en UI (modo solo visualización)`);
-    }
+    // if (controlesConfigurados > 0) {
+    //   console.log(`✅ ${controlesConfigurados} controles de capa configurados para capítulo ${numeroCapitulo}`);
+    // } else {
+    //   console.log(`ℹ️ Capítulo ${numeroCapitulo}: Sin controles de capa en UI (modo solo visualización)`);
+    // }
   }
 
   /**
@@ -661,7 +708,7 @@ export class MapManager {
   configurarSwipe(mapaId, nombreCapaIzq, nombreCapaDer) {
     const controlsManager = this.controlsManagers[mapaId];
     if (!controlsManager) {
-      console.warn(`⚠️ No hay controles inicializados para ${mapaId}`);
+      // console.warn(`⚠️ No hay controles inicializados para ${mapaId}`);
       return false;
     }
 
@@ -669,9 +716,9 @@ export class MapManager {
     const capaDer = this.obtenerCapaPorNombre(mapaId, nombreCapaDer);
 
     if (!capaIzq || !capaDer) {
-      console.warn(
-        `⚠️ No se encontraron las capas: ${nombreCapaIzq}, ${nombreCapaDer}`
-      );
+      // console.warn(
+      //   `⚠️ No se encontraron las capas: ${nombreCapaIzq}, ${nombreCapaDer}`
+      // );
       return false;
     }
 

@@ -40,7 +40,7 @@ export const storyMapConfig = {
         zoom: 10,
         capas: [
           {
-            nombre: "Límite Estatal",
+            nombre: "Límite Municipal",
             tipo: "wfs", // WFS para permitir interacción con popup
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite", // ✅ CORREGIDO
@@ -85,7 +85,7 @@ export const storyMapConfig = {
         capas: [
           // Capa izquierda del swipe (si está habilitado)
           {
-            nombre: "Vulnerabilidad 2020",
+            nombre: "Municipios",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Municipios", // ✅ CORREGIDO
@@ -94,7 +94,7 @@ export const storyMapConfig = {
           },
           // Capa derecha del swipe (si está habilitado)
           {
-            nombre: "Vulnerabilidad 2024",
+            nombre: "Localidades",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Localidades", // ✅ CORREGIDO (usamos Localidades como segunda capa)
@@ -108,8 +108,8 @@ export const storyMapConfig = {
 
         swipe: {
           enabled: true,
-          capaIzquierda: "Vulnerabilidad 2020",
-          capaDerecha: "Vulnerabilidad 2024",
+          capaIzquierda: "Municipios",
+          capaDerecha: "Localidades",
         },
       },
 
@@ -213,7 +213,7 @@ export const storyMapConfig = {
       // ENTORNO LOCAL (Live Server, http-server, etc.)
       // ==========================================
       if (hostname === "localhost" || hostname === "127.0.0.1") {
-        console.log("🏠 Entorno: LOCAL - Usando proxy Node.js local");
+        // console.log("🏠 Entorno: LOCAL - Usando proxy Node.js local");
         return "http://localhost:3001/geoserver";
       }
 
@@ -221,15 +221,15 @@ export const storyMapConfig = {
       // ENTORNO VERCEL (Producción)
       // ==========================================
       if (hostname.includes("vercel.app")) {
-        console.log("☁️ Entorno: VERCEL - Usando proxy serverless");
+        // console.log("☁️ Entorno: VERCEL - Usando proxy serverless");
         return "/api/proxy?path=";
       }
 
       // ==========================================
       // FALLBACK: Conexión directa
       // ==========================================
-      console.log("🌐 Entorno: OTRO - Conexión directa a GeoServer");
-      console.warn("⚠️ ADVERTENCIA: Conexión directa puede fallar por CORS");
+      // console.log("🌐 Entorno: OTRO - Conexión directa a GeoServer");
+      // console.warn("⚠️ ADVERTENCIA: Conexión directa puede fallar por CORS");
       return "https://api.cambioclimaticotlaxcala.mx/geoserver";
     })(),
   },
@@ -243,7 +243,7 @@ export const storyMapConfig = {
  * Valida que la configuración sea correcta
  */
 export function validarConfiguracion(config) {
-  console.log("🔍 Validando configuración del Story Map...");
+  // console.log("🔍 Validando configuración del Story Map...");
 
   // Validar que hay capítulos
   if (!config.capitulos || config.capitulos.length === 0) {
@@ -269,11 +269,7 @@ export function validarConfiguracion(config) {
     // Validar capas WMS/WFS
     cap.mapa.capas.forEach((capa, capaIndex) => {
       if (!capa.layers || !capa.layers.includes("SEICCT:")) {
-        console.warn(
-          `⚠️ Capítulo ${index + 1}, Capa ${
-            capaIndex + 1
-          }: No tiene el formato correcto SEICCT:NombreCapa`
-        );
+        // console.warn(`⚠️ Capítulo ${index + 1}, Capa ${capaIndex + 1}: No tiene el formato correcto SEICCT:NombreCapa`);
       }
 
       // Validar que el nombre de la capa es válido
@@ -283,12 +279,8 @@ export function validarConfiguracion(config) {
         "SEICCT:Municipios",
       ];
       if (!capasValidas.includes(capa.layers)) {
-        console.warn(
-          `⚠️ Capítulo ${index + 1}: Capa "${
-            capa.layers
-          }" puede no existir en GeoServer`
-        );
-        console.warn(`   Capas válidas: ${capasValidas.join(", ")}`);
+        // console.warn(`⚠️ Capítulo ${index + 1}: Capa "${capa.layers}" puede no existir en GeoServer`);
+        // console.warn(`   Capas válidas: ${capasValidas.join(", ")}`);
       }
     });
 
@@ -322,7 +314,7 @@ export function validarConfiguracion(config) {
     }
   });
 
-  console.log("✅ Configuración validada correctamente");
+  // console.log("✅ Configuración validada correctamente");
   return true;
 }
 
@@ -398,10 +390,10 @@ export function listarCapasUnicas() {
 try {
   validarConfiguracion(storyMapConfig);
 
-  console.log("📊 Resumen de configuración:");
-  console.log(`   - Capítulos: ${obtenerTotalCapitulos()}`);
-  console.log(`   - Capas únicas: ${listarCapasUnicas().join(", ")}`);
-  console.log(`   - Proxy: ${obtenerInfoProxy().url}`);
+  // console.log("📊 Resumen de configuración:");
+  // console.log(`   - Capítulos: ${obtenerTotalCapitulos()}`);
+  // console.log(`   - Capas únicas: ${listarCapasUnicas().join(", ")}`);
+  // console.log(`   - Proxy: ${obtenerInfoProxy().url}`);
 } catch (error) {
   console.error("❌ Error en la configuración:", error.message);
   throw error;

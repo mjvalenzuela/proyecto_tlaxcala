@@ -112,14 +112,14 @@ class StoryMapApp {
    * Inicializa todos los capítulos (carga mapas y gráficos)
    */
   async inicializarCapitulos() {
-    console.log('📦 Inicializando todos los capítulos...');
+    // console.log('📦 Inicializando todos los capítulos...');
     
     // Inicializar cada capítulo
     for (let i = 1; i <= this.totalCapitulos; i++) {
       await this.inicializarCapitulo(i);
     }
     
-    console.log(`✅ ${this.totalCapitulos} capítulos inicializados`);
+    // console.log(`✅ ${this.totalCapitulos} capítulos inicializados`);
   }
 
 
@@ -129,14 +129,14 @@ class StoryMapApp {
    async inicializarCapitulo(numero) {
     const capitulo = this.config.capitulos.find(cap => cap.numero === numero);
     if (!capitulo) {
-      console.warn(`⚠️ Capítulo ${numero} no encontrado en configuración`);
+      // console.warn(`⚠️ Capítulo ${numero} no encontrado en configuración`);
       return;
     }
 
     const mapElementId = `map-${numero}`;
 
     try {
-      console.log(`📦 Inicializando capítulo ${numero}...`);
+      // console.log(`📦 Inicializando capítulo ${numero}...`);
 
       // ✅ Crear mapa usando el método correcto
       this.mapManager.inicializarMapaCapitulo(
@@ -147,7 +147,7 @@ class StoryMapApp {
 
       // ⬇️ Verificar si el capítulo tiene swipe habilitado
       if (capitulo.mapa.swipe && capitulo.mapa.swipe.enabled) {
-        console.log(`🔀 Configurando swipe para capítulo ${numero}`);
+        // console.log(`🔀 Configurando swipe para capítulo ${numero}`);
         
         const capaIzquierda = capitulo.mapa.swipe.capaIzquierda;
         const capaDerecha = capitulo.mapa.swipe.capaDerecha;
@@ -162,9 +162,9 @@ class StoryMapApp {
           );
           
           if (swipeConfigurado) {
-            console.log(`✅ Swipe activado: ${capaIzquierda} ↔ ${capaDerecha}`);
+            // console.log(`✅ Swipe activado: ${capaIzquierda} ↔ ${capaDerecha}`);
           } else {
-            console.warn(`⚠️ No se pudo configurar swipe para capítulo ${numero}`);
+            // console.warn(`⚠️ No se pudo configurar swipe para capítulo ${numero}`);
           }
         }, 500);
       }
@@ -182,7 +182,7 @@ class StoryMapApp {
       numero               // Número del capítulo
     );
 
-      console.log(`✅ Capítulo ${numero} inicializado correctamente`);
+      // console.log(`✅ Capítulo ${numero} inicializado correctamente`);
     } catch (error) {
       console.error(`❌ Error al inicializar capítulo ${numero}:`, error);
     }

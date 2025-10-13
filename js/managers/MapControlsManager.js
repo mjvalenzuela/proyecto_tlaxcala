@@ -43,11 +43,29 @@ export class MapControlsManager {
    * Crea la barra de herramientas en el mapa
    */
   crearToolbar() {
-    // Crear contenedor principal
+    // Crear contenedor principal con botón de toggle
+    const toolbarWrapper = document.createElement('div');
+    toolbarWrapper.className = 'map-toolbar-wrapper';
+    toolbarWrapper.id = `toolbar-wrapper-${this.mapId}`;
+
+    // Crear botón de toggle
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'toolbar-toggle-btn';
+    toggleBtn.id = `toolbar-toggle-${this.mapId}`;
+    toggleBtn.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="1"/>
+        <circle cx="12" cy="5" r="1"/>
+        <circle cx="12" cy="19" r="1"/>
+      </svg>
+    `;
+    toggleBtn.title = 'Mostrar/ocultar herramientas';
+
+    // Crear toolbar
     this.toolbar = document.createElement('div');
     this.toolbar.className = 'map-toolbar';
     this.toolbar.id = `toolbar-${this.mapId}`;
-    
+
     // HTML de la toolbar
     this.toolbar.innerHTML = `
       <div class="toolbar-group">
@@ -114,12 +132,38 @@ export class MapControlsManager {
       </div>
     `;
 
+    // Ensamblar wrapper
+    toolbarWrapper.appendChild(toggleBtn);
+    toolbarWrapper.appendChild(this.toolbar);
+
     // Agregar al viewport del mapa
     const viewport = this.map.getTargetElement();
-    viewport.appendChild(this.toolbar);
+    viewport.appendChild(toolbarWrapper);
 
     // Configurar eventos
     this.configurarEventos();
+    this.configurarToggle(toggleBtn);
+  }
+
+  /**
+   * Configura el botón de toggle para mostrar/ocultar toolbar
+   */
+  configurarToggle(toggleBtn) {
+    let toolbarVisible = true;
+
+    toggleBtn.addEventListener('click', () => {
+      toolbarVisible = !toolbarVisible;
+
+      if (toolbarVisible) {
+        this.toolbar.classList.remove('toolbar-hidden');
+        toggleBtn.classList.remove('toolbar-collapsed');
+      } else {
+        this.toolbar.classList.add('toolbar-hidden');
+        toggleBtn.classList.add('toolbar-collapsed');
+      }
+
+      // console.log(`🔧 Toolbar ${toolbarVisible ? 'mostrado' : 'ocultado'}`);
+    });
   }
 
   /**
@@ -361,11 +405,49 @@ export class MapControlsManager {
     const style = document.createElement('style');
     style.id = 'map-toolbar-styles';
     style.textContent = `
-      /* ===== TOOLBAR PRINCIPAL ===== */
-      .map-toolbar {
+      /* ===== TOOLBAR WRAPPER ===== */
+      .map-toolbar-wrapper {
         position: absolute;
         top: 10px;
         left: 10px;
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      /* ===== BOTÓN TOGGLE ===== */
+      .toolbar-toggle-btn {
+        width: 40px;
+        height: 40px;
+        background: white;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        color: #333;
+      }
+
+      .toolbar-toggle-btn:hover {
+        background: #f5f5f5;
+        transform: scale(1.05);
+      }
+
+      .toolbar-toggle-btn.toolbar-collapsed {
+        background: #A21A5C;
+        color: white;
+      }
+
+      .toolbar-toggle-btn.toolbar-collapsed:hover {
+        background: #8A1650;
+      }
+
+      /* ===== TOOLBAR PRINCIPAL ===== */
+      .map-toolbar {
         background: white;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -373,8 +455,20 @@ export class MapControlsManager {
         display: flex;
         flex-direction: column;
         gap: 8px;
-        z-index: 500;
         backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        opacity: 1;
+        transform: translateX(0);
+        max-height: 500px;
+        overflow: hidden;
+      }
+
+      .map-toolbar.toolbar-hidden {
+        opacity: 0;
+        transform: translateX(-10px);
+        max-height: 0;
+        padding: 0;
+        margin: 0;
       }
 
       .toolbar-group {
