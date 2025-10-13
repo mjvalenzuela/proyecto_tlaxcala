@@ -59,27 +59,8 @@
 
     <!-- Contenedor principal del Story Map -->
     <div class="story-map-container">
-      <!-- Pantalla inicial (Portada) -->
-      <section class="story-intro" id="storyIntro">
-        <h1 class="story-intro-title">Vulnerabilidad Climática en Tlaxcala</h1>
-        <p class="story-intro-summary">
-          Explora cómo el cambio climático afecta de manera diferenciada a los
-          municipios de Tlaxcala. Descubre las zonas más vulnerables y los
-          factores que incrementan el riesgo ante eventos climáticos extremos.
-        </p>
-
-        <!-- Mapa inicial (pequeño preview) -->
-        <div class="story-intro-map" id="introMap"></div>
-
-        <button class="btn-start" id="btnStart">Iniciar</button>
-      </section>
-
       <!-- Contenedor de capítulos con scroll-snap -->
-      <div
-        class="chapters-container"
-        id="chaptersContainer"
-        style="display: none"
-      >
+      <div class="chapters-container" id="chaptersContainer">
         <!-- CAPÍTULO 1 -->
         <section class="chapter" id="chapter-1" data-chapter="1">
           <!-- Mapa -->
@@ -243,7 +224,7 @@
       </div>
 
       <!-- Timeline inferior -->
-      <div class="timeline" id="timeline" style="display: none">
+      <div class="timeline" id="timeline">
         <div class="timeline-item" data-chapter="1">
           <div class="timeline-circle">1</div>
           <div class="timeline-label">Contexto</div>
@@ -259,12 +240,12 @@
       </div>
 
       <!-- Botones de navegación -->
-      <div class="nav-buttons left" id="navButtonsLeft" style="display: none">
+      <div class="nav-buttons left" id="navButtonsLeft">
         <button class="nav-btn" id="btnPrev" aria-label="Capítulo anterior">
           ←
         </button>
       </div>
-      <div class="nav-buttons right" id="navButtonsRight" style="display: none">
+      <div class="nav-buttons right" id="navButtonsRight">
         <button class="nav-btn" id="btnNext" aria-label="Siguiente capítulo">
           →
         </button>

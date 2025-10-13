@@ -68,13 +68,13 @@ p {
 
 /* ===== ENLACES ===== */
 a {
-  color: var(--color-accent-green);
+  color: var(--color-accent-cyan);
   text-decoration: none;
   transition: color var(--transition-normal);
 }
 
 a:hover {
-  color: var(--color-accent-green-hover);
+  color: var(--color-accent-cyan-hover);
 }
 
 /* ===== BOTONES BASE ===== */

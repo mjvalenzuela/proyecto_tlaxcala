@@ -86,8 +86,8 @@ export class MapManager {
     const popupElement = document.createElement("div");
     popupElement.className = "ol-popup";
     popupElement.innerHTML = `
-      
-      
+      <a href="#" class="ol-popup-closer"></a>
+      <div class="ol-popup-content"></div>
     `;
 
     const overlay = new ol.Overlay({
@@ -200,15 +200,15 @@ export class MapManager {
           bbox: `${extent.join(",")},EPSG:3857`,
         });
 
-        const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
-
         // Construir URL según el tipo de proxy
         if (isVercelProxy) {
           // Para Vercel: URL-encode todo el path
+          const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
           const encodedPath = encodeURIComponent(wfsPath);
           return `${proxyBase.replace("?path=", "")}?path=${encodedPath}`;
         } else {
-          // Para local: concatenar directamente
+          // Para local: NO incluir /geoserver porque proxyBase ya lo tiene
+          const wfsPath = `/${workspace}/ows?${params.toString()}`;
           return `${proxyBase}${wfsPath}`;
         }
       },
@@ -341,6 +341,31 @@ export class MapManager {
     } else {
       // Para local o directo: concatenar directamente
       wmsUrl = `${proxyBase}/${workspace}/wms`;
+
+      const capa = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: wmsUrl,
+          params: {
+            LAYERS: capaConfig.layers,
+            TILED: true,
+            VERSION: "1.1.0",
+            FORMAT: "image/png",
+            TRANSPARENT: true,
+          },
+          serverType: "geoserver",
+          crossOrigin: "anonymous",
+        }),
+        visible: capaConfig.visible,
+        zIndex: 1,
+        opacity: 0.8,
+      });
+
+      capa.set("nombre", capaConfig.nombre);
+      capa.set("layers", capaConfig.layers);
+      capa.set("tipo", "wms");
+      capa.set("workspace", workspace);
+
+      return capa;
     }
   }
 
@@ -396,12 +421,14 @@ export class MapManager {
       }
     });
 
-    overlay
-      .getElement()
-      .querySelector(".ol-popup-closer")
-      .addEventListener("click", () => {
+    // Configurar el botón de cierre del popup
+    const popupCloser = overlay.getElement().querySelector(".ol-popup-closer");
+    if (popupCloser) {
+      popupCloser.addEventListener("click", (e) => {
+        e.preventDefault();
         overlay.setPosition(undefined);
       });
+    }
 
     mapa.on("pointermove", (evt) => {
       const pixel = mapa.getEventPixel(evt.originalEvent);

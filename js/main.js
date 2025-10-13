@@ -18,12 +18,10 @@ class StoryMapApp {
     
     // Referencias a elementos del DOM
     this.elementos = {
-      storyIntro: document.getElementById('storyIntro'),
       chaptersContainer: document.getElementById('chaptersContainer'),
       timeline: document.getElementById('timeline'),
       navButtonsLeft: document.getElementById('navButtonsLeft'),
       navButtonsRight: document.getElementById('navButtonsRight'),
-      btnStart: document.getElementById('btnStart'),
       btnPrev: document.getElementById('btnPrev'),
       btnNext: document.getElementById('btnNext')
     };
@@ -38,11 +36,11 @@ class StoryMapApp {
     ////console.log('🚀 Iniciando Story Map:', this.config.titulo);
 
     try {
-      // Inicializar mapa de intro
-      await this.inicializarMapaIntro();
-
       // Configurar eventos
       this.configurarEventos();
+
+      // Iniciar directamente los capítulos sin pantalla de intro
+      await this.iniciarStoryMapDirecto();
 
       ////console.log('✅ Story Map inicializado correctamente');
     } catch (error) {
@@ -51,26 +49,9 @@ class StoryMapApp {
   }
 
   /**
-   * Inicializa el mapa de la pantalla inicial
-   */
-  async inicializarMapaIntro() {
-    try {
-      this.mapManager.inicializarMapaIntro('introMap');
-      ////console.log('📍 Mapa de introducción creado');
-    } catch (error) {
-      //console.error('Error al crear mapa de intro:', error);
-    }
-  }
-
-  /**
    * Configura todos los event listeners
    */
   configurarEventos() {
-    // Botón Iniciar
-    this.elementos.btnStart.addEventListener('click', () => {
-      this.iniciarStoryMap();
-    });
-
     // Botones de navegación
     this.elementos.btnPrev.addEventListener('click', () => {
       this.navegarCapitulo(this.capituloActual - 1);
@@ -112,21 +93,10 @@ class StoryMapApp {
   }
 
   /**
-   * Inicia el Story Map (oculta intro, muestra capítulos)
+   * Inicia el Story Map directamente sin pantalla de intro
    */
-  async iniciarStoryMap() {
-    //console.log('▶️ Iniciando navegación de capítulos');
-
-    // Ocultar intro
-    this.elementos.storyIntro.style.display = 'none';
-
-    // Mostrar contenedor de capítulos
-    this.elementos.chaptersContainer.style.display = 'block';
-
-    // Mostrar timeline y botones
-    this.elementos.timeline.style.display = 'flex';
-    this.elementos.navButtonsLeft.style.display = 'flex';
-    this.elementos.navButtonsRight.style.display = 'flex';
+  async iniciarStoryMapDirecto() {
+    //console.log('▶️ Iniciando navegación de capítulos directamente');
 
     // Ya no estamos en intro
     this.enIntro = false;
