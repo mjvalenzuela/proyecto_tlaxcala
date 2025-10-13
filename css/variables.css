@@ -4,42 +4,41 @@
    =================================== */
 
 :root {
-  /* === COLORES PRINCIPALES - PALETA OFICIAL === */
+  /* === COLORES PRINCIPALES - PALETA REFINADA === */
 
   /* Header y Navegación - Morado Principal */
   --color-header-bg: #582574;
   --color-header-text: #FFFFFF;
   --color-header-text-secondary: rgba(255, 255, 255, 0.8);
 
-  /* Botones Primarios - Naranja */
-  --color-btn-primary: #FF8300;
-  --color-btn-primary-hover: #E07600;
+  /* Botones y Acentos - Magenta */
+  --color-btn-primary: #A21A5C;
+  --color-btn-primary-hover: #8A1650;
 
   /* Botones Secundarios - Morado */
   --color-btn-secondary: #582574;
   --color-btn-secondary-hover: #481D5E;
 
-  /* Acentos y Estados Activos */
-  --color-accent-green: #76BC21;
-  --color-accent-green-hover: #5FA01A;
-  --color-accent-cyan: #00BED6;
-  --color-accent-cyan-hover: #00A3BA;
+  /* Acentos Magenta para interactividad */
+  --color-accent-magenta: #A21A5C;
+  --color-accent-magenta-hover: #8A1650;
 
   /* Colores por Tema */
-  --color-theme-vulnerabilidad: #AA182C;
-  --color-theme-riesgo: #FF8300;
+  --color-theme-vulnerabilidad: #A21A5C;
+  --color-theme-riesgo: #D0B787;
   --color-theme-amenazas: #582574;
-  --color-theme-impactos: #76BC21;
+  --color-theme-impactos: #A21A5C;
 
   /* Títulos y Textos */
   --color-title-purple: #582574;
   --color-title-purple-dark: #481D5E;
-  --color-text-dark: #333333;
+  --color-text-dark: #2D2D2D;
   --color-text-gray: #666666;
   --color-text-light: #999999;
 
-  /* Color complementario */
+  /* Detalles y bordes - Beige */
   --color-beige: #D0B787;
+  --color-beige-light: #E5D9C3;
 
   /* === FONDOS === */
 
@@ -59,17 +58,17 @@
   /* === ESTADOS === */
 
   --color-success: #76BC21;
-  --color-warning: #FF8300;
-  --color-error: #AA182C;
-  --color-info: #00BED6;
+  --color-warning: #D0B787;
+  --color-error: #A21A5C;
+  --color-info: #582574;
 
   /* === GRÁFICOS === */
 
-  --color-chart-primary: #FF8300;
+  --color-chart-primary: #A21A5C;
   --color-chart-secondary: #582574;
-  --color-chart-tertiary: #76BC21;
-  --color-chart-quaternary: #00BED6;
-  --color-chart-quinternary: #AA182C;
+  --color-chart-tertiary: #D0B787;
+  --color-chart-quaternary: #2D2D2D;
+  --color-chart-quinternary: #E5D9C3;
 
   /* === ESPACIADO === */
 

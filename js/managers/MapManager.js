@@ -219,16 +219,16 @@ export class MapManager {
       ? this.crearEstiloWFS(capaConfig.estilo)
       : new ol.style.Style({
           fill: new ol.style.Fill({
-            color: "rgba(80, 180, 152, 0.3)",
+            color: "rgba(162, 26, 92, 0.3)",
           }),
           stroke: new ol.style.Stroke({
-            color: "#50B498",
+            color: "#A21A5C",
             width: 2,
           }),
           image: new ol.style.Circle({
             radius: 6,
             fill: new ol.style.Fill({
-              color: "#50B498",
+              color: "#A21A5C",
             }),
             stroke: new ol.style.Stroke({
               color: "#fff",
@@ -257,16 +257,16 @@ export class MapManager {
   crearEstiloWFS(estiloConfig) {
     return new ol.style.Style({
       fill: new ol.style.Fill({
-        color: estiloConfig.fillColor || "rgba(80, 180, 152, 0.3)",
+        color: estiloConfig.fillColor || "rgba(162, 26, 92, 0.3)",
       }),
       stroke: new ol.style.Stroke({
-        color: estiloConfig.strokeColor || "#50B498",
+        color: estiloConfig.strokeColor || "#A21A5C",
         width: estiloConfig.strokeWidth || 2,
       }),
       image: new ol.style.Circle({
         radius: estiloConfig.pointRadius || 6,
         fill: new ol.style.Fill({
-          color: estiloConfig.pointFillColor || "#50B498",
+          color: estiloConfig.pointFillColor || "#A21A5C",
         }),
         stroke: new ol.style.Stroke({
           color: estiloConfig.pointStrokeColor || "#fff",
@@ -627,12 +627,12 @@ export class MapManager {
       .popup-layer-name {
         margin-bottom: 10px;
         padding-bottom: 8px;
-        border-bottom: 2px solid var(--color-accent-green, #50B498);
+        border-bottom: 2px solid var(--color-accent-magenta, #A21A5C);
         font-size: 1rem;
       }
-      
+
       .popup-info strong {
-        color: var(--color-accent-green, #50B498);
+        color: var(--color-accent-magenta, #A21A5C);
       }
     `;
     document.head.appendChild(style);

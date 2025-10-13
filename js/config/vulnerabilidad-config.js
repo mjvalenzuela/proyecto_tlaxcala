@@ -47,8 +47,8 @@ export const storyMapConfig = {
             visible: true,
             leyenda: true,
             estilo: {
-              fillColor: "rgba(80, 180, 152, 0.3)",
-              strokeColor: "#50B498",
+              fillColor: "rgba(162, 26, 92, 0.3)",
+              strokeColor: "#A21A5C",
               strokeWidth: 2,
             },
           },
@@ -123,8 +123,8 @@ export const storyMapConfig = {
             {
               label: "Temperatura Promedio (°C)",
               dato: "temperatura_promedio",
-              color: "rgba(244, 121, 33, 0.3)",
-              borderColor: "#F47921",
+              color: "rgba(162, 26, 92, 0.3)",
+              borderColor: "#A21A5C",
             },
             {
               label: "Días Calurosos",

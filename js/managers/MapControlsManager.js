@@ -411,12 +411,12 @@ export class MapControlsManager {
       }
 
       .toolbar-btn.active {
-        background: #50B498;
+        background: #A21A5C;
         color: white;
       }
 
       .toolbar-btn.active:hover {
-        background: #45A085;
+        background: #8A1650;
       }
 
       .toolbar-btn:disabled {
@@ -474,7 +474,7 @@ export class MapControlsManager {
       }
 
       .ol-tooltip-static {
-        background-color: #ff8c00;
+        background-color: #A21A5C;
         color: white;
         border: 2px solid white;
       }
@@ -492,7 +492,7 @@ export class MapControlsManager {
       }
 
       .ol-tooltip-static:before {
-        border-top-color: #ff8c00;
+        border-top-color: #A21A5C;
       }
 
       /* ===== LAYER SWIPE CONTROLS ===== */
@@ -517,7 +517,7 @@ export class MapControlsManager {
         outline: none;
         -webkit-appearance: none;
         appearance: none;
-        background: linear-gradient(to right, #50B498 0%, #50B498 50%, #F47921 50%, #F47921 100%);
+        background: linear-gradient(to right, #A21A5C 0%, #A21A5C 50%, #582574 50%, #582574 100%);
         cursor: pointer;
       }
 
@@ -528,7 +528,7 @@ export class MapControlsManager {
         height: 20px;
         border-radius: 50%;
         background: white;
-        border: 3px solid #50B498;
+        border: 3px solid #A21A5C;
         cursor: pointer;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       }
@@ -538,7 +538,7 @@ export class MapControlsManager {
         height: 20px;
         border-radius: 50%;
         background: white;
-        border: 3px solid #50B498;
+        border: 3px solid #A21A5C;
         cursor: pointer;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       }
@@ -565,11 +565,11 @@ export class MapControlsManager {
       }
 
       .swipe-label-left {
-        color: #50B498;
+        color: #A21A5C;
       }
 
       .swipe-label-right {
-        color: #F47921;
+        color: #582574;
       }
 
       /* ===== NOTIFICACIONES ===== */

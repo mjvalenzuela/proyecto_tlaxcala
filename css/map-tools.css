@@ -54,13 +54,13 @@
 }
 
 .toolbar-btn.active {
-  background: var(--color-accent-green, #50B498);
+  background: var(--color-accent-magenta, #A21A5C);
   color: white;
-  box-shadow: 0 2px 8px rgba(80, 180, 152, 0.3);
+  box-shadow: 0 2px 8px rgba(162, 26, 92, 0.3);
 }
 
 .toolbar-btn.active:hover {
-  background: var(--color-accent-green-hover, #45A085);
+  background: var(--color-accent-magenta-hover, #8A1650);
 }
 
 .toolbar-btn:disabled {
@@ -121,12 +121,12 @@
 .ol-tooltip-measure {
   opacity: 1;
   font-weight: bold;
-  background: rgba(255, 140, 0, 0.9);
+  background: rgba(162, 26, 92, 0.9);
   border: 2px solid white;
 }
 
 .ol-tooltip-static {
-  background-color: #ff8c00;
+  background-color: var(--color-accent-magenta, #A21A5C);
   color: white;
   border: 2px solid white;
   cursor: pointer;
@@ -134,12 +134,12 @@
 }
 
 .ol-tooltip-static:hover {
-  background-color: #ff7700;
+  background-color: var(--color-accent-magenta-hover, #8A1650);
 }
 
 .ol-tooltip-measure:before,
 .ol-tooltip-static:before {
-  border-top: 6px solid rgba(255, 140, 0, 0.9);
+  border-top: 6px solid rgba(162, 26, 92, 0.9);
   border-right: 6px solid transparent;
   border-left: 6px solid transparent;
   content: "";
@@ -150,7 +150,7 @@
 }
 
 .ol-tooltip-static:before {
-  border-top-color: #ff8c00;
+  border-top-color: var(--color-accent-magenta, #A21A5C);
 }
 
 /* ===== LAYER SWIPE CONTROLS ===== */
@@ -176,11 +176,11 @@
   -webkit-appearance: none;
   appearance: none;
   background: linear-gradient(
-    to right, 
-    var(--color-accent-green, #50B498) 0%, 
-    var(--color-accent-green, #50B498) 50%, 
-    var(--color-primary-orange, #F47921) 50%, 
-    var(--color-primary-orange, #F47921) 100%
+    to right,
+    var(--color-accent-magenta, #A21A5C) 0%,
+    var(--color-accent-magenta, #A21A5C) 50%,
+    var(--color-btn-secondary, #582574) 50%,
+    var(--color-btn-secondary, #582574) 100%
   );
   cursor: ew-resize;
   margin: 10px 0;
@@ -193,7 +193,7 @@
   height: 24px;
   border-radius: 50%;
   background: white;
-  border: 3px solid var(--color-accent-green, #50B498);
+  border: 3px solid var(--color-accent-magenta, #A21A5C);
   cursor: ew-resize;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease;
@@ -213,7 +213,7 @@
   height: 24px;
   border-radius: 50%;
   background: white;
-  border: 3px solid var(--color-accent-green, #50B498);
+  border: 3px solid var(--color-accent-magenta, #A21A5C);
   cursor: ew-resize;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease;
@@ -267,7 +267,7 @@
 }
 
 .swipe-label-left {
-  color: var(--color-accent-green, #50B498);
+  color: var(--color-accent-magenta, #A21A5C);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -277,12 +277,12 @@
   content: '';
   width: 12px;
   height: 12px;
-  background: var(--color-accent-green, #50B498);
+  background: var(--color-accent-magenta, #A21A5C);
   border-radius: 2px;
 }
 
 .swipe-label-right {
-  color: var(--color-primary-orange, #F47921);
+  color: var(--color-btn-secondary, #582574);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -292,7 +292,7 @@
   content: '';
   width: 12px;
   height: 12px;
-  background: var(--color-primary-orange, #F47921);
+  background: var(--color-btn-secondary, #582574);
   border-radius: 2px;
 }
 
@@ -482,12 +482,12 @@
 
 /* ===== ACCESIBILIDAD ===== */
 .toolbar-btn:focus {
-  outline: 2px solid var(--color-accent-green, #50B498);
+  outline: 2px solid var(--color-accent-magenta, #A21A5C);
   outline-offset: 2px;
 }
 
 .layer-swipe-range:focus {
-  outline: 2px solid var(--color-accent-green, #50B498);
+  outline: 2px solid var(--color-accent-magenta, #A21A5C);
   outline-offset: 2px;
 }
 

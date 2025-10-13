@@ -52,13 +52,13 @@
   transition: all var(--transition-normal);
   cursor: pointer;
   text-align: center;
-  border: 2px solid transparent;
+  border: 2px solid var(--color-beige-light);
 }
 
 .story-map-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 30px var(--color-shadow-lg);
-  border-color: var(--color-accent-cyan);
+  border-color: var(--color-accent-magenta);
 }
 
 .story-map-icon {
