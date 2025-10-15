@@ -24,6 +24,9 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 
+    <!-- Chart.js Datalabels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
     <!-- OpenLayers JS -->
     <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
 
@@ -99,27 +102,30 @@
             </div>
           </div>
 
-          <!-- Card combinada de gráfico e info (sin borde entre ellas) -->
-          <div class="chapter-chart-info">
-            <!-- Sección del gráfico -->
-            <div class="chart-section">
-              <h3 class="chart-title">Población vulnerable al cambio climático</h3>
-              <div class="chart-container">
-                <canvas id="chart-1"></canvas>
-              </div>
-            </div>
+<!-- Card combinada de gráfico e info (sin borde entre ellas) -->
+<div class="chapter-chart-info">
+  <!-- Título único para toda la card -->
+  <h2 class="chart-info-title">Población vulnerable al cambio climático</h2>
+  
+  <div class="chart-info-content">
+    <!-- Sección del gráfico -->
+    <div class="chart-section">
+      <div class="chart-container">
+        <canvas id="chart-1"></canvas>
+      </div>
+    </div>
 
-            <!-- Sección de texto explicativo -->
-            <div class="info-section">
-              <h3 class="info-title">Población vulnerable al cambio climático</h3>
-              <div class="info-content">
-                <p>
-                  <strong>107235 - 18111</strong><br>
-                  La vulnerabilidad al cambio climático refleja el grado en que un sistema es sensible y la capacidad adaptativa con los tres componentes que tienen, siendo su principal territorio enfrentar el cambio climático. Cada una considera las amenazas, exposición, sensibilidad y capacidad adaptativa, incluyendo salud, producción o recursos disponibles. Para Tlaxcala se analizó el análisis de PACET 2023-2030, y 304.
-                </p>
-              </div>
-            </div>
-          </div>
+    <!-- Sección de texto explicativo -->
+    <div class="info-section">
+      <div class="info-content">
+        <p>
+          La vulnerabilidad al cambio climático se refiere a: La exposición, la sensibilidad y la capacidad adaptativa son los tres componentes que determinan cómo un territorio enfrenta el cambio climático. Cada uno considera factores como eventos extremos, salud, producción o recursos disponibles. Para conocer a detalle las variables y su análisis, te invitamos a consultar el PACCET 2023-2030, P.300.
+
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
         </section>
 
         <!-- CAPÍTULO 2 -->

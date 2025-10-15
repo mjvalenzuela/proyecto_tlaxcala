@@ -40,10 +40,10 @@ export const storyMapConfig = {
         zoom: 10,
         capas: [
           {
-            nombre: "Límite Municipal",
+            nombre: "Vulnerabilidad por Municipio",
             tipo: "wfs", // WFS para permitir interacción con popup
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:Limite", // ✅ CORREGIDO
+            layers: "SEICCT:M82_Vulnerabilidad", // ✅ CORREGIDO
             visible: true,
             leyenda: true,
             estilo: {
@@ -58,18 +58,19 @@ export const storyMapConfig = {
       grafico: {
         tipo: "pie",
         datos: "data/cp1_poblacion_vulnerable.csv",
-        config: {          
+        config: {
           etiqueta: "categoria",
           valor: "poblacion",
           colores: [
-            "rgba(239, 68, 68, 0.8)", // Muy Alto - Rojo
-            "rgba(245, 158, 11, 0.8)", // Alto - Naranja
-            "rgba(234, 179, 8, 0.8)", // Medio - Amarillo
-            "rgba(34, 197, 94, 0.8)", // Bajo - Verde
-            "rgba(34, 250, 94, 0.8)", // Muy Bajo - Verde
+            "#78020e", // Muy Alto - Rojo oscuro
+            "#9a3c43", // Alto - Rojo medio
+            "#bc7678", // Medio - Rosa medio
+            "#ddb0ae", // Bajo - Rosa claro
+            "#ffeae3", // Muy Bajo - Rosa muy claro
           ],
           mostrarLeyenda: true,
-          mostrarPorcentaje: true,
+          mostrarPorcentaje: false,
+          mostrarValoresEnTorta: false, // No mostrar valores en la torta
         },
       },
 

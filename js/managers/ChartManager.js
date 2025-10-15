@@ -424,7 +424,12 @@ export class ChartManager {
     const labels = datos.map(row => row[config.etiqueta]);
     const values = datos.map(row => row[config.valor]);
 
-    return new Chart(ctx, {
+    // Desregistrar el plugin datalabels globalmente si existe
+    if (window.ChartDataLabels) {
+      Chart.unregister(ChartDataLabels);
+    }
+
+    const chartConfig = {
       type: 'pie',
       data: {
         labels: labels,
@@ -438,7 +443,21 @@ export class ChartManager {
           ],
           borderColor: '#ffffff',
           borderWidth: 3,
-          hoverOffset: 15
+          hoverOffset: 15,
+          // Configurar datalabels a nivel de dataset
+          datalabels: config.mostrarValoresEnTorta ? {
+            color: '#ffffff',
+            font: {
+              weight: 'bold',
+              size: 14
+            },
+            formatter: (value, context) => {
+              // Formatear el valor con separador de miles
+              return value.toLocaleString('es-MX');
+            }
+          } : {
+            display: false
+          }
         }]
       },
       options: {
@@ -457,12 +476,9 @@ export class ChartManager {
                 const data = chart.data;
                 if (data.labels.length && data.datasets.length) {
                   return data.labels.map((label, i) => {
-                    const value = data.datasets[0].data[i];
-                    const text = config.mostrarPorcentaje 
-                      ? `${label}: ${value}%` 
-                      : `${label}: ${value}`;
+                    // Solo mostrar la categoría, sin valores
                     return {
-                      text: text,
+                      text: label,
                       fillStyle: data.datasets[0].backgroundColor[i],
                       hidden: false,
                       index: i
@@ -485,18 +501,28 @@ export class ChartManager {
             titleFont: { size: 14 },
             bodyFont: { size: 13 },
             callbacks: {
+              // Eliminar el título del tooltip
+              title: function() {
+                return '';
+              },
+              // Mostrar el valor de población formateado (el color ya se muestra automáticamente)
               label: function(context) {
-                const label = context.label || '';
                 const value = context.parsed || 0;
-                return config.mostrarPorcentaje 
-                  ? `${label}: ${value}%` 
-                  : `${label}: ${value}`;
+                const valorFormateado = value.toLocaleString('es-MX');
+                return valorFormateado;
               }
             }
           }
         }
       }
-    });
+    };
+
+    // Si se debe mostrar valores en la torta, registrar el plugin solo para este gráfico
+    if (config.mostrarValoresEnTorta && window.ChartDataLabels) {
+      chartConfig.plugins = [ChartDataLabels];
+    }
+
+    return new Chart(ctx, chartConfig);
   }
 
   /**
