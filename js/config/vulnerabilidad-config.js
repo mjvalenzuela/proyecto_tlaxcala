@@ -32,7 +32,7 @@ export const storyMapConfig = {
     {
       id: "cap-1",
       numero: 1,
-      titulo: "Contexto Municipal",
+      titulo: "Índice de vulnerabilidad al CC por municipio",
       etiqueta: "Contexto",
 
       mapa: {
@@ -56,10 +56,27 @@ export const storyMapConfig = {
       },
 
       grafico: {
+        tipo: "pie",
+        datos: "data/cp1_poblacion_vulnerable.csv",
+        config: {          
+          etiqueta: "categoria",
+          valor: "poblacion",
+          colores: [
+            "rgba(239, 68, 68, 0.8)", // Muy Alto - Rojo
+            "rgba(245, 158, 11, 0.8)", // Alto - Naranja
+            "rgba(234, 179, 8, 0.8)", // Medio - Amarillo
+            "rgba(34, 197, 94, 0.8)", // Bajo - Verde
+            "rgba(34, 250, 94, 0.8)", // Muy Bajo - Verde
+          ],
+          mostrarLeyenda: true,
+          mostrarPorcentaje: true,
+        },
+      },
+
+      /*       grafico: {
         tipo: "bar",
-        datos: "data/municipios.csv",
-        config: {
-          titulo: "Vulnerabilidad por Municipio",
+        datos: "data/cp1_poblacion_vulnerable.csv",
+        config: {          
           ejeX: "municipio",
           ejeY: "vulnerabilidad",
           etiquetaY: "Índice de Vulnerabilidad",
@@ -67,7 +84,7 @@ export const storyMapConfig = {
           colorBorde: "rgba(239, 68, 68, 1)",
           mostrarLeyenda: false,
         },
-      },
+      }, */
     },
 
     // ==========================================
@@ -97,14 +114,11 @@ export const storyMapConfig = {
             nombre: "Localidades",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:Localidades", // ✅ CORREGIDO (usamos Localidades como segunda capa)
+            layers: "SEICCT:Localidades",
             visible: true,
             leyenda: true,
           },
         ],
-
-        // ⚠️ NOTA: El swipe está comentado porque requiere configuración adicional
-        // Para habilitarlo, descomentar y asegurar que MapManager lo soporte
 
         swipe: {
           enabled: true,
