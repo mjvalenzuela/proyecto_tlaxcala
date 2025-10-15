@@ -49,7 +49,7 @@ export const storyMapConfig = {
           }, 
           {
             nombre: "Vulnerabilidad por Municipio",
-            tipo: "wfs", // WFS para permitir interacción con popup
+            tipo: "wms", // WFS para permitir interacción con popup
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:M82Vulnerabilidad", 
             visible: true,
