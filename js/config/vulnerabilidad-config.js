@@ -40,17 +40,25 @@ export const storyMapConfig = {
         zoom: 10,
         capas: [
           {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          }, 
+          {
             nombre: "Vulnerabilidad por Municipio",
             tipo: "wfs", // WFS para permitir interacción con popup
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82_Vulnerabilidad", // ✅ CORREGIDO
+            layers: "SEICCT:M82Vulnerabilidad", 
             visible: true,
             leyenda: true,
-            estilo: {
+            /* estilo: {
               fillColor: "rgba(162, 26, 92, 0.3)",
               strokeColor: "#A21A5C",
               strokeWidth: 2,
-            },
+            }, */
           },
         ],
       },
