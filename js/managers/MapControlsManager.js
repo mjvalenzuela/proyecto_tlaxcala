@@ -36,6 +36,7 @@ export class MapControlsManager {
    */
   inicializar() {
     this.crearToolbar();
+    this.configurarMapControls();
     this.agregarEstilos();
   }
 
@@ -149,7 +150,10 @@ export class MapControlsManager {
    * Configura el botón de toggle para mostrar/ocultar toolbar
    */
   configurarToggle(toggleBtn) {
-    let toolbarVisible = true;
+    // Iniciar oculto por defecto
+    let toolbarVisible = false;
+    this.toolbar.classList.add('toolbar-hidden');
+    toggleBtn.classList.add('toolbar-collapsed');
 
     toggleBtn.addEventListener('click', () => {
       toolbarVisible = !toolbarVisible;
@@ -163,6 +167,59 @@ export class MapControlsManager {
       }
 
       // console.log(`🔧 Toolbar ${toolbarVisible ? 'mostrado' : 'ocultado'}`);
+    });
+  }
+
+  /**
+   * Configura el toggle para los controles de mapa existentes (.map-controls)
+   */
+  configurarMapControls() {
+    // Buscar el elemento .map-controls en el viewport del mapa
+    const viewport = this.map.getTargetElement();
+    const mapControls = viewport.querySelector('.map-controls');
+
+    if (!mapControls) {
+      // console.log('No se encontró .map-controls en este mapa');
+      return;
+    }
+
+    // Crear botón de toggle
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'map-controls-toggle-btn';
+    toggleBtn.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    `;
+    toggleBtn.title = 'Ocultar controles de capas';
+
+    // Insertar botón al inicio del panel
+    mapControls.insertBefore(toggleBtn, mapControls.firstChild);
+
+    // Configurar toggle
+    let controlsVisible = true;
+
+    toggleBtn.addEventListener('click', () => {
+      controlsVisible = !controlsVisible;
+
+      if (controlsVisible) {
+        mapControls.classList.remove('map-controls-hidden');
+        toggleBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        `;
+        toggleBtn.title = 'Ocultar controles de capas';
+      } else {
+        mapControls.classList.add('map-controls-hidden');
+        toggleBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3h18v18H3z"/>
+            <path d="M9 9h6v6H9z"/>
+          </svg>
+        `;
+        toggleBtn.title = 'Mostrar controles de capas';
+      }
     });
   }
 
@@ -704,6 +761,44 @@ export class MapControlsManager {
         color: #1565C0;
       }
 
+      /* ===== TOGGLE PARA MAP-CONTROLS ===== */
+      .map-controls-toggle-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+        background: transparent;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        color: #666;
+        padding: 0;
+        z-index: 10;
+      }
+
+      .map-controls-toggle-btn:hover {
+        background: #f5f5f5;
+        color: #A21A5C;
+      }
+
+      /* Estado oculto de .map-controls */
+      .map-controls.map-controls-hidden .map-controls-title,
+      .map-controls.map-controls-hidden .layer-control {
+        display: none;
+      }
+
+      .map-controls.map-controls-hidden {
+        padding: 8px;
+        min-width: auto;
+        width: 44px;
+        height: 44px;
+      }
+
       /* ===== RESPONSIVE ===== */
       @media (max-width: 768px) {
         .map-toolbar {
@@ -737,6 +832,7 @@ export class MapControlsManager {
           width: 90%;
           bottom: 140px;
         }
+
       }
     `;
 

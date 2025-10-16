@@ -1,6 +1,6 @@
 /* ===== CONTENEDOR PRINCIPAL DEL STORY MAP ===== */
 .story-map-container {
-  padding-top: 55px; /* Altura del navbar */
+  padding-top: 0; /* Sin padding ya que navbar está oculto */
   height: 100vh;
   overflow: hidden;
 }
@@ -68,7 +68,7 @@
 
 /* ===== CONTENEDOR DE CAPÍTULOS (SCROLL SNAP) ===== */
 .chapters-container {
-  height: calc(100vh - 55px - 60px); /* viewport - navbar - timeline */
+  height: calc(100vh - 60px); /* viewport - timeline (navbar oculto) */
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
@@ -76,7 +76,7 @@
 
 /* ===== CAPÍTULO INDIVIDUAL ===== */
 .chapter {
-  height: calc(100vh - 55px - 60px);
+  height: calc(100vh - 60px); /* viewport - timeline */
   scroll-snap-align: start;
   scroll-snap-stop: always;
   display: grid;
@@ -87,9 +87,35 @@
   background-color: var(--color-bg-light);
 }
 
+/* ===== CAPÍTULO 2 - BIODIVERSIDAD (Layout especial con título completo) ===== */
+.chapter-biodiversity {
+  grid-template-columns: 60% 40%;
+  grid-template-rows: auto 1fr 1fr;
+  grid-template-areas:
+    "map-title map-title"
+    "chapter-map chapter-text"
+    "chapter-map biodiversity-menu";
+}
+
+.chapter-biodiversity .map-title {
+  grid-area: map-title;
+}
+
+.chapter-biodiversity .chapter-map {
+  grid-area: chapter-map;
+}
+
+.chapter-biodiversity .chapter-text {
+  grid-area: chapter-text;
+}
+
+.chapter-biodiversity .biodiversity-menu {
+  grid-area: biodiversity-menu;
+}
+
 /* ===== TÍTULO DEL MAPA ===== */
 .map-title {
-  grid-column: 1;
+  grid-column: 1 / -1; /* Ocupa todo el ancho (todas las columnas) */
   grid-row: 1;
   font-size: 1.5rem;
   font-weight: 600;
@@ -130,6 +156,7 @@
   box-shadow: 0 2px 10px var(--color-shadow-md);
   z-index: 100; /* ← Debajo de la toolbar de herramientas (z-index: 500) */
   max-width: 250px;
+  transition: all 0.3s ease;
 }
 
 .map-controls-title {
@@ -237,6 +264,282 @@
   border-color: var(--color-beige);
 }
 
+/* ===== CARD DE INFORMACIÓN (Para capítulos sin gráfico) ===== */
+.chapter-info {
+  grid-column: 2;
+  grid-row: 3;
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  transition: all var(--transition-normal);
+  overflow-y: auto;
+}
+
+.chapter-info:hover {
+  box-shadow: 0 8px 25px var(--color-shadow-lg);
+  border-color: var(--color-beige);
+}
+
+.chapter-info .info-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-title-purple);
+}
+
+.chapter-info .info-content {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--color-text-gray);
+}
+
+.chapter-info .info-content p {
+  margin-bottom: 1rem;
+}
+
+.chapter-info .info-content p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ===== MENÚ DE BIODIVERSIDAD (Capítulo 2) ===== */
+.biodiversity-menu {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  overflow-y: auto;
+}
+
+.menu-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-title-purple);
+  text-align: center;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.menu-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.6rem 0.4rem;
+  background: linear-gradient(135deg, rgba(88, 37, 116, 0.05) 0%, rgba(162, 26, 92, 0.05) 100%);
+  border: 2px solid var(--color-beige-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  min-height: 65px;
+}
+
+.menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px var(--color-shadow-lg);
+  border-color: var(--color-btn-secondary);
+  background: linear-gradient(135deg, rgba(88, 37, 116, 0.1) 0%, rgba(162, 26, 92, 0.1) 100%);
+}
+
+.menu-card-icon {
+  font-size: 1.5rem;
+}
+
+.menu-card-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ===== SUB-CAPÍTULOS DE BIODIVERSIDAD (Layout 30%-70%) ===== */
+.subchapter-biodiversity {
+  grid-template-columns: 30% 70%;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "subchapter-title subchapter-menu"
+    "subchapter-text subchapter-map";
+}
+
+.subchapter-biodiversity .subchapter-title {
+  grid-area: subchapter-title;
+}
+
+.subchapter-biodiversity .subchapter-text {
+  grid-area: subchapter-text;
+}
+
+.subchapter-biodiversity .subchapter-menu {
+  grid-area: subchapter-menu;
+}
+
+.subchapter-biodiversity .subchapter-map {
+  grid-area: subchapter-map;
+}
+
+/* Título del sub-capítulo (30% izquierda arriba) */
+.subchapter-title {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  box-shadow: 0 2px 10px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.subchapter-title h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-title-purple);
+  margin: 0;
+}
+
+/* Card de texto del sub-capítulo (30% izquierda abajo) */
+.subchapter-text {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  overflow-y: auto;
+  transition: all var(--transition-normal);
+}
+
+.subchapter-text:hover {
+  box-shadow: 0 8px 25px var(--color-shadow-lg);
+  border-color: var(--color-beige);
+}
+
+.subchapter-text .text-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-title-purple);
+}
+
+.subchapter-text .text-content {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--color-text-gray);
+}
+
+.subchapter-text .text-content p {
+  margin-bottom: 1rem;
+}
+
+.subchapter-text .text-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Menú horizontal de navegación (70% derecha arriba) */
+.subchapter-menu {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 0.6rem;
+  box-shadow: 0 2px 10px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--color-btn-secondary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  transition: all var(--transition-normal);
+  flex-shrink: 0;
+}
+
+.back-button:hover {
+  background: var(--color-btn-primary-hover);
+  transform: translateX(-3px);
+}
+
+.menu-divider {
+  width: 2px;
+  height: 30px;
+  background: var(--color-beige);
+  flex-shrink: 0;
+}
+
+.subchapter-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.nav-item {
+  padding: 0.4rem 0.5rem;
+  background: var(--color-bg-gray);
+  border: 1px solid var(--color-beige-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-text-gray);
+  text-align: center;
+  line-height: 1.2;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-item:hover {
+  background: rgba(88, 37, 116, 0.1);
+  border-color: var(--color-btn-secondary);
+  color: var(--color-btn-secondary);
+}
+
+.nav-item.active {
+  background: var(--color-btn-secondary);
+  color: white;
+  border-color: var(--color-btn-secondary);
+}
+
+/* Mapa del sub-capítulo (70% derecha abajo) */
+.subchapter-map {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  position: relative;
+}
+
+.subchapter-map .map-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
 /* ===== CARD COMBINADA DE GRÁFICO E INFO (Capítulo 1) ===== */
 /* ===== CARD COMBINADA DE GRÁFICO E INFO (Capítulo 1) ===== */
 .chapter-chart-info {
@@ -281,6 +584,10 @@
   /*padding: 1.5rem;*/
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-height: 100%;
+  padding: 0.5rem;
 }
 
 /* Sección de información (derecha) */
@@ -319,13 +626,16 @@
 }
 
 .chart-container {
-  flex: 1;
   position: relative;
-  min-height: 0;
+  width: 100%;
+  max-width: 350px;
+  max-height: 350px;
+  margin: 0 auto;
 }
 
 .chart-container canvas {
   max-height: 100%;
+  max-width: 100%;
 }
 
 /* ===== TIMELINE INFERIOR ===== */
@@ -411,8 +721,7 @@
 /* ===== BOTONES DE NAVEGACIÓN ===== */
 .nav-buttons {
   position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 80px;
   z-index: 500;
   display: flex;
   gap: 1rem;
@@ -496,6 +805,12 @@
     max-width: 220px;
     padding: 0.85rem;
   }
+
+  /* Ajustar tamaño del gráfico en tablet */
+  .chart-container {
+    max-width: 280px;
+    max-height: 280px;
+  }
 }
 
 /* ===== RESPONSIVE - MOBILE ===== */
@@ -533,6 +848,12 @@
     min-height: 300px;
   }
 
+  .chapter-info {
+    grid-column: 1;
+    grid-row: 4;
+    min-height: 200px;
+  }
+
   /* Capítulo 1 - Layout especial en mobile */
   /* Capítulo 1 - Layout en mobile */
 .chapter-chart-info {
@@ -549,6 +870,13 @@
 .chart-section {
   border-bottom: 1px solid var(--color-beige-light);
   min-height: 250px;
+  padding: 1rem;
+}
+
+/* Ajustar tamaño del gráfico en mobile */
+.chart-container {
+  max-width: 100%;
+  max-height: 220px;
 }
 
 .info-section {
@@ -657,19 +985,11 @@
   left: 10px;
 }
 
-/* Ajustar posición de controles de capas cuando hay toolbar */
-.chapter-map:has(.map-toolbar) .map-controls {
-  top: auto;
-  bottom: 1rem;
+/* Mantener controles de capas siempre en top-right */
+.chapter-map .map-controls {
+  top: 1rem;
   right: 1rem;
-}
-
-/* Alternativa: poner controles a la izquierda si la toolbar está a la izquierda */
-@media (min-width: 769px) {
-  .chapter-map .map-controls {
-    right: 1rem;
-    left: auto;
-  }
+  left: auto;
 }
 
 /* ===== ESTADOS DE LOADING ===== */

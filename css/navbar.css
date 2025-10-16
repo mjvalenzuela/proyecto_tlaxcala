@@ -8,7 +8,33 @@
   background-color: var(--color-header-bg);
   backdrop-filter: blur(10px);
   box-shadow: 0 2px 10px var(--color-shadow-md);
+  transition: all 0.3s ease;
+  transform: translateY(-100%); /* Oculto por defecto */
+}
+
+.navbar:hover,
+.navbar.visible {
+  transform: translateY(0); /* Visible al hacer hover */
+}
+
+/* Indicador para mostrar el navbar */
+.navbar-indicator {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--color-beige);
+  z-index: 999;
+  border-radius: 0 0 4px 4px;
+  cursor: pointer;
   transition: all var(--transition-normal);
+}
+
+.navbar-indicator:hover {
+  height: 8px;
+  background: var(--color-btn-secondary);
 }
 
 .navbar-container {

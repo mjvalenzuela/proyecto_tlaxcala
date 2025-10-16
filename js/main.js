@@ -90,6 +90,9 @@ class StoryMapApp {
 
     // Intersection Observer para capítulos
     this.configurarIntersectionObserver();
+
+    // Navegación de sub-capítulos de biodiversidad
+    this.configurarNavegacionSubcapitulos();
   }
 
   /**
@@ -113,13 +116,16 @@ class StoryMapApp {
    */
   async inicializarCapitulos() {
     // console.log('📦 Inicializando todos los capítulos...');
-    
-    // Inicializar cada capítulo
-    for (let i = 1; i <= this.totalCapitulos; i++) {
-      await this.inicializarCapitulo(i);
+
+    // Inicializar solo capítulos principales (no sub-capítulos)
+    // Los sub-capítulos se inicializan dinámicamente cuando se visitan
+    const capitulosPrincipales = this.config.capitulos.filter(cap => !cap.esSubcapitulo);
+
+    for (const capitulo of capitulosPrincipales) {
+      await this.inicializarCapitulo(capitulo.numero);
     }
-    
-    // console.log(`✅ ${this.totalCapitulos} capítulos inicializados`);
+
+    // console.log(`✅ ${capitulosPrincipales.length} capítulos principales inicializados`);
   }
 
 
@@ -169,22 +175,165 @@ class StoryMapApp {
         }, 500);
       }
 
-      // Crear gráfico para el capítulo
-    const chartElementId = `chart-${numero}`;
-    
-    // ✅ AHORA PASAMOS LOS PARÁMETROS CORRECTOS:
-    // - canvasId: el ID del elemento canvas en el DOM
-    // - graficoConfig: el objeto completo capitulo.grafico
-    // - numeroCapitulo: el número del capítulo
-    await this.chartManager.crearGrafico(
-      chartElementId,      // ID del canvas
-      capitulo.grafico,    // ✅ OBJETO COMPLETO (contiene tipo, datos, config)
-      numero               // Número del capítulo
-    );
+      // Crear gráfico para el capítulo (solo si tiene configuración de gráfico)
+      if (capitulo.grafico) {
+        const chartElementId = `chart-${numero}`;
+
+        // ✅ AHORA PASAMOS LOS PARÁMETROS CORRECTOS:
+        // - canvasId: el ID del elemento canvas en el DOM
+        // - graficoConfig: el objeto completo capitulo.grafico
+        // - numeroCapitulo: el número del capítulo
+        await this.chartManager.crearGrafico(
+          chartElementId,      // ID del canvas
+          capitulo.grafico,    // ✅ OBJETO COMPLETO (contiene tipo, datos, config)
+          numero               // Número del capítulo
+        );
+      }
 
       // console.log(`✅ Capítulo ${numero} inicializado correctamente`);
     } catch (error) {
       console.error(`❌ Error al inicializar capítulo ${numero}:`, error);
+    }
+  }
+
+  /**
+   * Configura la navegación de sub-capítulos de biodiversidad
+   */
+  configurarNavegacionSubcapitulos() {
+    // Botones del menú de biodiversidad (Capítulo 2)
+    const menuCards = document.querySelectorAll('.biodiversity-menu .menu-card');
+    menuCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const subcapitulo = card.dataset.subcapitulo;
+        this.mostrarSubcapitulo(subcapitulo);
+      });
+    });
+
+    // Botones "Volver a Biodiversidad" en cada sub-capítulo
+    const backButtons = document.querySelectorAll('.back-button[data-action="back-to-biodiversity"]');
+    backButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        this.volverABiodiversidad();
+      });
+    });
+
+    // Navegación entre sub-capítulos (botones horizontales)
+    const navItems = document.querySelectorAll('.subchapter-nav .nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const subcapitulo = item.dataset.subcapitulo;
+        this.mostrarSubcapitulo(subcapitulo);
+      });
+    });
+  }
+
+  /**
+   * Muestra un sub-capítulo específico (2.1 - 2.8)
+   */
+  async mostrarSubcapitulo(subcapitulo) {
+    console.log(`🔍 Mostrando sub-capítulo: ${subcapitulo}`);
+
+    // Convertir "2.1" a "2-1" para el ID del elemento
+    const subcapituloId = subcapitulo.replace('.', '-');
+
+    // Ocultar el Capítulo 2 principal
+    const chapter2 = document.getElementById('chapter-2');
+    if (chapter2) {
+      chapter2.style.display = 'none';
+    }
+
+    // Ocultar todos los sub-capítulos
+    const todosSubcapitulos = document.querySelectorAll('.subchapter-biodiversity');
+    todosSubcapitulos.forEach(sub => {
+      sub.style.display = 'none';
+    });
+
+    // Mostrar el sub-capítulo seleccionado
+    const subcapituloElement = document.getElementById(`chapter-${subcapituloId}`);
+    if (!subcapituloElement) {
+      console.error(`❌ No se encontró el sub-capítulo: chapter-${subcapituloId}`);
+      return;
+    }
+
+    subcapituloElement.style.display = 'grid';
+    console.log(`✅ Sub-capítulo ${subcapitulo} mostrado`);
+
+    // Actualizar estado activo en los botones de navegación
+    const navItems = subcapituloElement.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      if (item.dataset.subcapitulo === subcapitulo) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // Inicializar el mapa del sub-capítulo si no está inicializado
+    const numeroSubcapitulo = parseFloat(subcapitulo);
+    const capitulo = this.config.capitulos.find(cap => cap.numero === numeroSubcapitulo);
+
+    if (capitulo) {
+      const mapElementId = `map-${subcapituloId}`;  // Usar ID con guion
+      const mapaId = `cap-${subcapituloId}`;         // Usar ID con guion
+
+      // Verificar si el mapa ya existe
+      if (!this.mapManager.mapas[mapaId]) {
+        console.log(`📦 Inicializando mapa para sub-capítulo ${subcapitulo}`);
+        // Inicializar el mapa del sub-capítulo
+        this.mapManager.inicializarMapaCapitulo(
+          mapElementId,
+          capitulo,
+          numeroSubcapitulo
+        );
+
+        // Actualizar tamaño del mapa después de un breve delay
+        setTimeout(() => {
+          this.mapManager.actualizarTamano(mapaId);
+        }, 300);
+      } else {
+        // Si ya existe, solo actualizar tamaño
+        setTimeout(() => {
+          this.mapManager.actualizarTamano(mapaId);
+        }, 100);
+      }
+    }
+
+    // Scroll al inicio del sub-capítulo
+    subcapituloElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+
+  /**
+   * Vuelve al Capítulo 2 principal (Biodiversidad)
+   */
+  volverABiodiversidad() {
+    // Ocultar todos los sub-capítulos
+    const todosSubcapitulos = document.querySelectorAll('.subchapter-biodiversity');
+    todosSubcapitulos.forEach(sub => {
+      sub.style.display = 'none';
+    });
+
+    // Mostrar el Capítulo 2 principal
+    const chapter2 = document.getElementById('chapter-2');
+    if (chapter2) {
+      chapter2.style.display = 'grid';
+
+      // Scroll al Capítulo 2
+      chapter2.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+
+      // Actualizar el tamaño del mapa del Capítulo 2
+      setTimeout(() => {
+        this.mapManager.actualizarTamano('cap-2');
+      }, 300);
+
+      // Actualizar estado del capítulo actual
+      this.capituloActual = 2;
+      this.activarCapitulo(2);
     }
   }
 
@@ -195,6 +344,27 @@ class StoryMapApp {
     // Validar rango
     if (numeroCapitulo < 1 || numeroCapitulo > this.totalCapitulos) {
       return;
+    }
+
+    // Si estamos navegando al Capítulo 2, asegurarse de que esté visible
+    // (en caso de que estemos viendo un sub-capítulo)
+    if (numeroCapitulo === 2) {
+      this.volverABiodiversidad();
+      return; // volverABiodiversidad() ya hace el scroll y actualiza el estado
+    }
+
+    // Para otros capítulos, ocultar sub-capítulos si están visibles
+    if (numeroCapitulo !== 2) {
+      const todosSubcapitulos = document.querySelectorAll('.subchapter-biodiversity');
+      todosSubcapitulos.forEach(sub => {
+        sub.style.display = 'none';
+      });
+
+      // Asegurarse de que el Capítulo 2 también esté oculto si navegamos a otro capítulo
+      const chapter2 = document.getElementById('chapter-2');
+      if (chapter2) {
+        chapter2.style.display = 'grid';
+      }
     }
 
     // Scroll suave al capítulo
@@ -242,18 +412,27 @@ class StoryMapApp {
    * Detecta qué capítulo está visible actualmente
    */
   detectarCapituloVisible() {
+    // Solo considerar capítulos visibles (no ocultos con display: none)
     const chapters = document.querySelectorAll('.chapter');
     const containerRect = this.elementos.chaptersContainer.getBoundingClientRect();
-    
-    chapters.forEach((chapter, index) => {
+
+    chapters.forEach((chapter) => {
+      // Ignorar capítulos ocultos (sub-capítulos no activos)
+      if (chapter.style.display === 'none') {
+        return;
+      }
+
       const chapterRect = chapter.getBoundingClientRect();
       const chapterTop = chapterRect.top - containerRect.top;
       const chapterBottom = chapterRect.bottom - containerRect.top;
-      
+
       // Si el capítulo está más del 50% visible
       if (chapterTop < containerRect.height / 2 && chapterBottom > containerRect.height / 2) {
-        const numeroCapitulo = index + 1;
-        if (numeroCapitulo !== this.capituloActual) {
+        const numeroCapituloStr = chapter.dataset.chapter;
+        const numeroCapitulo = parseInt(numeroCapituloStr);
+
+        // Solo actualizar si es un capítulo principal (número entero)
+        if (Number.isInteger(numeroCapitulo) && numeroCapitulo !== this.capituloActual) {
           this.capituloActual = numeroCapitulo;
           this.activarCapitulo(numeroCapitulo);
         }

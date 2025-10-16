@@ -468,8 +468,10 @@ export class ChartManager {
             display: config.mostrarLeyenda !== false,
             position: 'bottom',
             labels: {
-              font: { size: 12 },
-              padding: 15,
+              font: { size: 10 },
+              padding: 8,
+              boxWidth: 12,
+              boxHeight: 12,
               usePointStyle: true,
               pointStyle: 'circle',
               generateLabels: function(chart) {

@@ -60,6 +60,9 @@
       </div>
     </nav>
 
+    <!-- Indicador para mostrar el navbar -->
+    <div class="navbar-indicator" id="navbarIndicator"></div>
+
     <!-- Contenedor principal del Story Map -->
     <div class="story-map-container">
       <!-- Contenedor de capítulos con scroll-snap -->
@@ -129,9 +132,9 @@
         </section>
 
         <!-- CAPÍTULO 2 -->
-        <section class="chapter" id="chapter-2" data-chapter="2">
+        <section class="chapter chapter-biodiversity" id="chapter-2" data-chapter="2">
           <!-- Título del mapa -->
-          <h2 class="map-title">Tendencias Climáticas</h2>
+          <h2 class="map-title">Vulnerabilidad de la biodiversidad - Riqueza de especies</h2>
 
           <!-- Mapa -->
           <div class="chapter-map">
@@ -139,46 +142,464 @@
             <!-- Los controles de capas se generan dinámicamente -->
           </div>
 
-          <!-- Card de texto -->
+          <!-- Card de texto superior -->
           <div class="chapter-text">
-            <span class="chapter-number">Capítulo 2</span>
-            <h2 class="chapter-title">Tendencias Climáticas</h2>
+            <h2 class="chapter-title">Riqueza Biológica en Tlaxcala</h2>
             <div class="chapter-content">
               <p>
-                En las últimas décadas, Tlaxcala ha experimentado cambios
-                significativos en sus patrones climáticos. Los datos
-                meteorológicos revelan una tendencia clara: aumento sostenido de
-                la temperatura promedio y disminución gradual de la
-                precipitación anual.
+                La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.
               </p>
               <p>
-                Entre 2010 y 2024, la temperatura promedio anual ha aumentado
-                aproximadamente 3.7°C, mientras que la precipitación ha
-                disminuido cerca de 40%. Este cambio tiene impactos directos en
-                la agricultura, principal actividad económica de la región, y en
-                la disponibilidad de agua para consumo humano.
+                Localiza espacialmente la cantidad de especies para las cuales existe idoneidad climática en una zona determinada y hacer comparaciones entre diferentes proyecciones.
               </p>
               <p>
-                Los días calurosos (con temperaturas superiores a 30°C) han
-                incrementado de 45 a 102 días al año, mientras que los eventos
-                climáticos extremos se han cuadriplicado en el mismo período.
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
               </p>
             </div>
           </div>
 
-          <!-- Card de gráfico -->
-          <div class="chapter-chart">
-            <h3 class="chart-title">Evolución Climática 2010-2024</h3>
-            <div class="chart-container">
-              <canvas id="chart-2"></canvas>
+          <!-- Menú de navegación a sub-capítulos -->
+          <div class="biodiversity-menu">
+            <h3 class="menu-title">Explora por Grupo Taxonómico</h3>
+            <div class="menu-grid">
+              <button class="menu-card" data-subcapitulo="2.1">
+                <span class="menu-card-icon">🐝</span>
+                <span class="menu-card-title">Abejas</span>
+              </button>
+              <button class="menu-card" data-subcapitulo="2.2">
+                <span class="menu-card-icon">🌵</span>
+                <span class="menu-card-title">Agaves</span>
+              </button>
+              <button class="menu-card" data-subcapitulo="2.3">
+                <span class="menu-card-icon">🍄</span>
+                <span class="menu-card-title">Hongos</span>
+              </button>
+              <button class="menu-card" data-subcapitulo="2.4">
+                <span class="menu-card-icon">🦋</span>
+                <span class="menu-card-title">Polillas</span>
+              </button>
+              <button class="menu-card" data-subcapitulo="2.5">
+                <span class="menu-card-icon">🦇</span>
+                <span class="menu-card-title">Murciélagos</span>
+              </button>
+              <button class="menu-card" data-subcapitulo="2.6">
+                <span class="menu-card-icon">⭐</span>
+                <span class="menu-card-title">Especies de Interés</span>
+              </button>
+              <button class="menu-card" data-subcapitulo="2.7">
+                <span class="menu-card-icon">⚠️</span>
+                <span class="menu-card-title">Especies en Riesgo/Prioritarias</span>
+              </button>
+              <button class="menu-card" data-subcapitulo="2.8">
+                <span class="menu-card-icon">🧬</span>
+                <span class="menu-card-title">Subespecies</span>
+              </button>
             </div>
+          </div>
+        </section>
+
+        <!-- SUB-CAPÍTULO 2.1: ABEJAS -->
+        <section class="chapter subchapter-biodiversity" id="chapter-2-1" data-chapter="2.1" style="display: none;">
+          <!-- Título del sub-capítulo -->
+          <div class="subchapter-title">
+            <h2>🐝 Abejas</h2>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="subchapter-text">
+            <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
+            <div class="text-content">
+              <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
+              <p>
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
+              </p>
+              <p>Entre ellas destacan:🐝 Abejas • 🌵 Agaves • 🍄 Hongos • 🦇 Murciélagos • 🦋 Polillas • ⭐ Especies de interés, • ⚠️ Especies en riesgo o prioritarias • 🧬 Subespecies</p>
+            </div>
+          </div>
+
+          <!-- Menú de navegación superior -->
+          <div class="subchapter-menu">
+            <button class="back-button" data-action="back-to-biodiversity">
+              ← Volver a Biodiversidad
+            </button>
+            <span class="menu-divider"></span>
+            <div class="subchapter-nav">
+              <button class="nav-item active" data-subcapitulo="2.1">🐝 Abejas</button>
+              <button class="nav-item" data-subcapitulo="2.2">🌵 Agaves</button>
+              <button class="nav-item" data-subcapitulo="2.3">🍄 Hongos</button>
+              <button class="nav-item" data-subcapitulo="2.4">🦋 Polillas</button>
+              <button class="nav-item" data-subcapitulo="2.5">🦇 Murciélagos</button>
+              <button class="nav-item" data-subcapitulo="2.6">⭐ Especies de Interés</button>
+              <button class="nav-item" data-subcapitulo="2.7">⚠️ En Riesgo</button>
+              <button class="nav-item" data-subcapitulo="2.8">🧬 Subespecies</button>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="subchapter-map">
+            <div class="map-container" id="map-2-1"></div>
+          </div>
+        </section>
+
+        <!-- SUB-CAPÍTULO 2.2: AGAVES -->
+        <section class="chapter subchapter-biodiversity" id="chapter-2-2" data-chapter="2.2" style="display: none;">
+          <!-- Título del sub-capítulo -->
+          <div class="subchapter-title">
+            <h2>🌵 Agaves</h2>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="subchapter-text">
+            <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
+            <div class="text-content">
+              <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
+              <p>
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
+              </p>
+              <p>Entre ellas destacan:🐝 Abejas • 🌵 Agaves • 🍄 Hongos • 🦇 Murciélagos • 🦋 Polillas • ⭐ Especies de interés, • ⚠️ Especies en riesgo o prioritarias • 🧬 Subespecies</p>
+            </div>
+          </div>
+
+          <!-- Menú de navegación superior -->
+          <div class="subchapter-menu">
+            <button class="back-button" data-action="back-to-biodiversity">
+              ← Volver a Biodiversidad
+            </button>
+            <span class="menu-divider"></span>
+            <div class="subchapter-nav">
+              <button class="nav-item" data-subcapitulo="2.1">🐝 Abejas</button>
+              <button class="nav-item active" data-subcapitulo="2.2">🌵 Agaves</button>
+              <button class="nav-item" data-subcapitulo="2.3">🍄 Hongos</button>
+              <button class="nav-item" data-subcapitulo="2.4">🦋 Polillas</button>
+              <button class="nav-item" data-subcapitulo="2.5">🦇 Murciélagos</button>
+              <button class="nav-item" data-subcapitulo="2.6">⭐ Especies de Interés</button>
+              <button class="nav-item" data-subcapitulo="2.7">⚠️ En Riesgo</button>
+              <button class="nav-item" data-subcapitulo="2.8">🧬 Subespecies</button>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="subchapter-map">
+            <div class="map-container" id="map-2-2"></div>
+          </div>
+        </section>
+
+        <!-- SUB-CAPÍTULO 2.3: HONGOS -->
+        <section class="chapter subchapter-biodiversity" id="chapter-2-3" data-chapter="2.3" style="display: none;">
+          <!-- Título del sub-capítulo -->
+          <div class="subchapter-title">
+            <h2>🍄 Hongos</h2>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="subchapter-text">
+            <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
+            <div class="text-content">
+              <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
+              <p>
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
+              </p>
+              <p>Entre ellas destacan:🐝 Abejas • 🌵 Agaves • 🍄 Hongos • 🦇 Murciélagos • 🦋 Polillas • ⭐ Especies de interés, • ⚠️ Especies en riesgo o prioritarias • 🧬 Subespecies</p>
+            </div>
+          </div>
+
+          <!-- Menú de navegación superior -->
+          <div class="subchapter-menu">
+            <button class="back-button" data-action="back-to-biodiversity">
+              ← Volver a Biodiversidad
+            </button>
+            <span class="menu-divider"></span>
+            <div class="subchapter-nav">
+              <button class="nav-item" data-subcapitulo="2.1">🐝 Abejas</button>
+              <button class="nav-item" data-subcapitulo="2.2">🌵 Agaves</button>
+              <button class="nav-item active" data-subcapitulo="2.3">🍄 Hongos</button>
+              <button class="nav-item" data-subcapitulo="2.4">🦋 Polillas</button>
+              <button class="nav-item" data-subcapitulo="2.5">🦇 Murciélagos</button>
+              <button class="nav-item" data-subcapitulo="2.6">⭐ Especies de Interés</button>
+              <button class="nav-item" data-subcapitulo="2.7">⚠️ En Riesgo</button>
+              <button class="nav-item" data-subcapitulo="2.8">🧬 Subespecies</button>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="subchapter-map">
+            <div class="map-container" id="map-2-3"></div>
+          </div>
+        </section>
+
+        <!-- SUB-CAPÍTULO 2.4: POLILLAS -->
+        <section class="chapter subchapter-biodiversity" id="chapter-2-4" data-chapter="2.4" style="display: none;">
+          <!-- Título del sub-capítulo -->
+          <div class="subchapter-title">
+            <h2>🦋 Polillas</h2>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="subchapter-text">
+            <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
+            <div class="text-content">
+              <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
+              <p>
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
+              </p>
+              <p>Entre ellas destacan:🐝 Abejas • 🌵 Agaves • 🍄 Hongos • 🦇 Murciélagos • 🦋 Polillas • ⭐ Especies de interés, • ⚠️ Especies en riesgo o prioritarias • 🧬 Subespecies</p>
+            </div>
+          </div>
+
+          <!-- Menú de navegación superior -->
+          <div class="subchapter-menu">
+            <button class="back-button" data-action="back-to-biodiversity">
+              ← Volver a Biodiversidad
+            </button>
+            <span class="menu-divider"></span>
+            <div class="subchapter-nav">
+              <button class="nav-item" data-subcapitulo="2.1">🐝 Abejas</button>
+              <button class="nav-item" data-subcapitulo="2.2">🌵 Agaves</button>
+              <button class="nav-item" data-subcapitulo="2.3">🍄 Hongos</button>
+              <button class="nav-item active" data-subcapitulo="2.4">🦋 Polillas</button>
+              <button class="nav-item" data-subcapitulo="2.5">🦇 Murciélagos</button>
+              <button class="nav-item" data-subcapitulo="2.6">⭐ Especies de Interés</button>
+              <button class="nav-item" data-subcapitulo="2.7">⚠️ En Riesgo</button>
+              <button class="nav-item" data-subcapitulo="2.8">🧬 Subespecies</button>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="subchapter-map">
+            <div class="map-container" id="map-2-4"></div>
+          </div>
+        </section>
+
+        <!-- SUB-CAPÍTULO 2.5: MURCIÉLAGOS -->
+        <section class="chapter subchapter-biodiversity" id="chapter-2-5" data-chapter="2.5" style="display: none;">
+          <!-- Título del sub-capítulo -->
+          <div class="subchapter-title">
+            <h2>🦇 Murciélagos</h2>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="subchapter-text">
+           <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
+            <div class="text-content">
+              <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
+              <p>
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
+              </p>
+              <p>Entre ellas destacan:🐝 Abejas • 🌵 Agaves • 🍄 Hongos • 🦇 Murciélagos • 🦋 Polillas • ⭐ Especies de interés, • ⚠️ Especies en riesgo o prioritarias • 🧬 Subespecies</p>
+            </div>
+          </div>
+
+          <!-- Menú de navegación superior -->
+          <div class="subchapter-menu">
+            <button class="back-button" data-action="back-to-biodiversity">
+              ← Volver a Biodiversidad
+            </button>
+            <span class="menu-divider"></span>
+            <div class="subchapter-nav">
+              <button class="nav-item" data-subcapitulo="2.1">🐝 Abejas</button>
+              <button class="nav-item" data-subcapitulo="2.2">🌵 Agaves</button>
+              <button class="nav-item" data-subcapitulo="2.3">🍄 Hongos</button>
+              <button class="nav-item" data-subcapitulo="2.4">🦋 Polillas</button>
+              <button class="nav-item active" data-subcapitulo="2.5">🦇 Murciélagos</button>
+              <button class="nav-item" data-subcapitulo="2.6">⭐ Especies de Interés</button>
+              <button class="nav-item" data-subcapitulo="2.7">⚠️ En Riesgo</button>
+              <button class="nav-item" data-subcapitulo="2.8">🧬 Subespecies</button>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="subchapter-map">
+            <div class="map-container" id="map-2-5"></div>
+          </div>
+        </section>
+
+        <!-- SUB-CAPÍTULO 2.6: ESPECIES DE INTERÉS -->
+        <section class="chapter subchapter-biodiversity" id="chapter-2-6" data-chapter="2.6" style="display: none;">
+          <!-- Título del sub-capítulo -->
+          <div class="subchapter-title">
+            <h2>⭐ Especies de Interés</h2>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="subchapter-text">
+           <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
+            <div class="text-content">
+              <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
+              <p>
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
+              </p>
+              <p>Entre ellas destacan:🐝 Abejas • 🌵 Agaves • 🍄 Hongos • 🦇 Murciélagos • 🦋 Polillas • ⭐ Especies de interés, • ⚠️ Especies en riesgo o prioritarias • 🧬 Subespecies</p>
+            </div>
+          </div>
+
+          <!-- Menú de navegación superior -->
+          <div class="subchapter-menu">
+            <button class="back-button" data-action="back-to-biodiversity">
+              ← Volver a Biodiversidad
+            </button>
+            <span class="menu-divider"></span>
+            <div class="subchapter-nav">
+              <button class="nav-item" data-subcapitulo="2.1">🐝 Abejas</button>
+              <button class="nav-item" data-subcapitulo="2.2">🌵 Agaves</button>
+              <button class="nav-item" data-subcapitulo="2.3">🍄 Hongos</button>
+              <button class="nav-item" data-subcapitulo="2.4">🦋 Polillas</button>
+              <button class="nav-item" data-subcapitulo="2.5">🦇 Murciélagos</button>
+              <button class="nav-item active" data-subcapitulo="2.6">⭐ Especies de Interés</button>
+              <button class="nav-item" data-subcapitulo="2.7">⚠️ En Riesgo</button>
+              <button class="nav-item" data-subcapitulo="2.8">🧬 Subespecies</button>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="subchapter-map">
+            <div class="map-container" id="map-2-6"></div>
+          </div>
+        </section>
+
+        <!-- SUB-CAPÍTULO 2.7: ESPECIES EN RIESGO/PRIORITARIAS -->
+        <section class="chapter subchapter-biodiversity" id="chapter-2-7" data-chapter="2.7" style="display: none;">
+          <!-- Título del sub-capítulo -->
+          <div class="subchapter-title">
+            <h2>⚠️ Especies en Riesgo/Prioritarias</h2>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="subchapter-text">
+            <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
+            <div class="text-content">
+              <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
+              <p>
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
+              </p>
+              <p>Entre ellas destacan:🐝 Abejas • 🌵 Agaves • 🍄 Hongos • 🦇 Murciélagos • 🦋 Polillas • ⭐ Especies de interés, • ⚠️ Especies en riesgo o prioritarias • 🧬 Subespecies</p>
+            </div>
+          </div>
+
+          <!-- Menú de navegación superior -->
+          <div class="subchapter-menu">
+            <button class="back-button" data-action="back-to-biodiversity">
+              ← Volver a Biodiversidad
+            </button>
+            <span class="menu-divider"></span>
+            <div class="subchapter-nav">
+              <button class="nav-item" data-subcapitulo="2.1">🐝 Abejas</button>
+              <button class="nav-item" data-subcapitulo="2.2">🌵 Agaves</button>
+              <button class="nav-item" data-subcapitulo="2.3">🍄 Hongos</button>
+              <button class="nav-item" data-subcapitulo="2.4">🦋 Polillas</button>
+              <button class="nav-item" data-subcapitulo="2.5">🦇 Murciélagos</button>
+              <button class="nav-item" data-subcapitulo="2.6">⭐ Especies de Interés</button>
+              <button class="nav-item active" data-subcapitulo="2.7">⚠️ En Riesgo</button>
+              <button class="nav-item" data-subcapitulo="2.8">🧬 Subespecies</button>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="subchapter-map">
+            <div class="map-container" id="map-2-7"></div>
+          </div>
+        </section>
+
+        <!-- SUB-CAPÍTULO 2.8: SUBESPECIES -->
+        <section class="chapter subchapter-biodiversity" id="chapter-2-8" data-chapter="2.8" style="display: none;">
+          <!-- Título del sub-capítulo -->
+          <div class="subchapter-title">
+            <h2>🧬 Subespecies</h2>
+          </div>
+
+          <!-- Card de texto -->
+          <div class="subchapter-text">
+           <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
+            <div class="text-content">
+              <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
+              <p>
+                <ul>
+                  <li>* 2,968 especies registradas (13 phyla, 36 clases, 161 ordenes, 496 familias, 1567 géneros).</li>
+                  <li>* 441 especies endémicas de México.</li>
+                  <li>* 691 especies en la Lista Roja de la IUCN.</li>
+                  <li>* 79 especies bajo alguna categoría de riesgo (NOM-059-SEMARNAT-2010).</li>
+                  <li>* 25 especies prioritarias.</li>
+                </ul>
+              </p>
+              <p>Entre ellas destacan:🐝 Abejas • 🌵 Agaves • 🍄 Hongos • 🦇 Murciélagos • 🦋 Polillas • ⭐ Especies de interés, • ⚠️ Especies en riesgo o prioritarias • 🧬 Subespecies</p>
+            </div>
+          </div>
+
+          <!-- Menú de navegación superior -->
+          <div class="subchapter-menu">
+            <button class="back-button" data-action="back-to-biodiversity">
+              ← Volver a Biodiversidad
+            </button>
+            <span class="menu-divider"></span>
+            <div class="subchapter-nav">
+              <button class="nav-item" data-subcapitulo="2.1">🐝 Abejas</button>
+              <button class="nav-item" data-subcapitulo="2.2">🌵 Agaves</button>
+              <button class="nav-item" data-subcapitulo="2.3">🍄 Hongos</button>
+              <button class="nav-item" data-subcapitulo="2.4">🦋 Polillas</button>
+              <button class="nav-item" data-subcapitulo="2.5">🦇 Murciélagos</button>
+              <button class="nav-item" data-subcapitulo="2.6">⭐ Especies de Interés</button>
+              <button class="nav-item" data-subcapitulo="2.7">⚠️ En Riesgo</button>
+              <button class="nav-item active" data-subcapitulo="2.8">🧬 Subespecies</button>
+            </div>
+          </div>
+
+          <!-- Mapa -->
+          <div class="subchapter-map">
+            <div class="map-container" id="map-2-8"></div>
           </div>
         </section>
 
         <!-- CAPÍTULO 3 -->
         <section class="chapter" id="chapter-3" data-chapter="3">
           <!-- Título del mapa -->
-          <h2 class="map-title">Distribución de Vulnerabilidad</h2>
+          <h2 class="map-title">Vulnerabilidad de la biodiversidad - Pérdida de Idoneidad</h2>
 
           <!-- Mapa -->
           <div class="chapter-map">
@@ -188,38 +609,21 @@
 
           <!-- Card de texto -->
           <div class="chapter-text">
-            <span class="chapter-number">Capítulo 3</span>
-            <h2 class="chapter-title">Distribución de Vulnerabilidad</h2>
+            <!-- <span class="chapter-number">Capítulo 3</span> -->
+            <h2 class="chapter-title">Pérdida de Idoneidad</h2>
             <div class="chapter-content">
-              <p>
-                La vulnerabilidad climática no se distribuye de manera uniforme
-                en el territorio tlaxcalteca. Un análisis detallado revela que
-                el 25% de las zonas presentan vulnerabilidad muy alta,
-                requiriendo atención inmediata y medidas de adaptación urgentes.
-              </p>
-              <p>
-                El 35% del territorio se clasifica como de alta vulnerabilidad,
-                zonas donde la combinación de factores socioeconómicos y
-                ambientales incrementa significativamente el riesgo ante eventos
-                climáticos extremos. Estas áreas incluyen municipios con alta
-                densidad poblacional y limitada infraestructura de respuesta.
-              </p>
-              <p>
-                Solo el 12% del territorio presenta baja vulnerabilidad,
-                generalmente correspondiente a zonas con mejor infraestructura,
-                mayor capacidad económica y geografía menos expuesta a fenómenos
-                climáticos extremos.
-              </p>
+              <p>El cambio climático está reduciendo las áreas donde nuestras especies pueden vivir: se pierde su idoneidad climática</p>
+              <p>Los hotspots son áreas críticas de Tlaxcala donde se concentra la pérdida de idoneidad climática de especies altamente vulnerables. Por lo que deben de convertirse en áreas prioritarias para impulsar acciones de adaptación.</p>
             </div>
           </div>
 
           <!-- Card de gráfico -->
-          <div class="chapter-chart">
+<!--           <div class="chapter-chart">
             <h3 class="chart-title">Categorías de Vulnerabilidad</h3>
             <div class="chart-container">
               <canvas id="chart-3"></canvas>
             </div>
-          </div>
+          </div> -->
         </section>
       </div>
 
@@ -227,15 +631,15 @@
       <div class="timeline" id="timeline">
         <div class="timeline-item" data-chapter="1">
           <div class="timeline-circle">1</div>
-          <div class="timeline-label">Contexto</div>
+          <div class="timeline-label">Índice cambio climático</div>
         </div>
         <div class="timeline-item" data-chapter="2">
           <div class="timeline-circle">2</div>
-          <div class="timeline-label">Tendencias</div>
+          <div class="timeline-label">Vulnerabilidad de Biodiversidad - Riqueza</div>
         </div>
         <div class="timeline-item" data-chapter="3">
           <div class="timeline-circle">3</div>
-          <div class="timeline-label">Distribución</div>
+          <div class="timeline-label">Vulnerabilidad de Biodiversidad - Pérdida</div>
         </div>
       </div>
 

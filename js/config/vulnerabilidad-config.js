@@ -36,7 +36,7 @@ export const storyMapConfig = {
       etiqueta: "Contexto",
 
       mapa: {
-        centro: [-98.2377, 19.3138],
+        centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
           {
@@ -96,17 +96,354 @@ export const storyMapConfig = {
       }, */
     },
 
-    // ==========================================
-    // CAPÍTULO 2: COMPARACIÓN TEMPORAL
+        // ==========================================
+    // CAPÍTULO 2: CONTEXTO MUNICIPAL
     // ==========================================
     {
       id: "cap-2",
       numero: 2,
-      titulo: "Comparación Temporal de Vulnerabilidad",
+      titulo: "Índice de vulnerabilidad al CC por municipio",
+      etiqueta: "Contexto",
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          }, 
+          {
+            nombre: "Vulnerabilidad por Municipio",
+            tipo: "wms", // WFS para permitir interacción con popup
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad", 
+            visible: true,
+            leyenda: true,
+            /* estilo: {
+              fillColor: "rgba(162, 26, 92, 0.3)",
+              strokeColor: "#A21A5C",
+              strokeWidth: 2,
+            }, */
+          },
+        ],
+      },
+
+/*       grafico: {
+        tipo: "pie",
+        datos: "data/cp1_poblacion_vulnerable.csv",
+        config: {
+          etiqueta: "categoria",
+          valor: "poblacion",
+          colores: [
+            "#78020e", // Muy Alto - Rojo oscuro
+            "#9a3c43", // Alto - Rojo medio
+            "#bc7678", // Medio - Rosa medio
+            "#ddb0ae", // Bajo - Rosa claro
+            "#ffeae3", // Muy Bajo - Rosa muy claro
+          ],
+          mostrarLeyenda: true,
+          mostrarPorcentaje: false,
+          mostrarValoresEnTorta: false, // No mostrar valores en la torta
+        },
+      }, */
+
+      /*       grafico: {
+        tipo: "bar",
+        datos: "data/cp1_poblacion_vulnerable.csv",
+        config: {          
+          ejeX: "municipio",
+          ejeY: "vulnerabilidad",
+          etiquetaY: "Índice de Vulnerabilidad",
+          color: "rgba(239, 68, 68, 0.8)",
+          colorBorde: "rgba(239, 68, 68, 1)",
+          mostrarLeyenda: false,
+        },
+      }, */
+    },
+
+    // ==========================================
+    // SUB-CAPÍTULOS DE BIODIVERSIDAD (2.1 - 2.8)
+    // ==========================================
+    // SUB-CAPÍTULO 2.1: ABEJAS
+    {
+      id: "cap-2-1",
+      numero: 2.1,
+      titulo: "Abejas",
+      etiqueta: "Abejas",
+      esSubcapitulo: true,
+      capituloPadre: 2,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Abejas - Vulnerabilidad",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 2.2: AGAVES
+    {
+      id: "cap-2-2",
+      numero: 2.2,
+      titulo: "Agaves",
+      etiqueta: "Agaves",
+      esSubcapitulo: true,
+      capituloPadre: 2,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Agaves - Vulnerabilidad",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 2.3: HONGOS
+    {
+      id: "cap-2-3",
+      numero: 2.3,
+      titulo: "Hongos",
+      etiqueta: "Hongos",
+      esSubcapitulo: true,
+      capituloPadre: 2,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Hongos - Vulnerabilidad",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 2.4: POLILLAS
+    {
+      id: "cap-2-4",
+      numero: 2.4,
+      titulo: "Polillas",
+      etiqueta: "Polillas",
+      esSubcapitulo: true,
+      capituloPadre: 2,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Polillas - Vulnerabilidad",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 2.5: MURCIÉLAGOS
+    {
+      id: "cap-2-5",
+      numero: 2.5,
+      titulo: "Murciélagos",
+      etiqueta: "Murciélagos",
+      esSubcapitulo: true,
+      capituloPadre: 2,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Murciélagos - Vulnerabilidad",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 2.6: ESPECIES DE INTERÉS
+    {
+      id: "cap-2-6",
+      numero: 2.6,
+      titulo: "Especies de Interés",
+      etiqueta: "Especies de Interés",
+      esSubcapitulo: true,
+      capituloPadre: 2,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Especies de Interés - Vulnerabilidad",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 2.7: ESPECIES EN RIESGO/PRIORITARIAS
+    {
+      id: "cap-2-7",
+      numero: 2.7,
+      titulo: "Especies en Riesgo/Prioritarias",
+      etiqueta: "En Riesgo",
+      esSubcapitulo: true,
+      capituloPadre: 2,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Especies en Riesgo - Vulnerabilidad",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 2.8: SUBESPECIES
+    {
+      id: "cap-2-8",
+      numero: 2.8,
+      titulo: "Subespecies",
+      etiqueta: "Subespecies",
+      esSubcapitulo: true,
+      capituloPadre: 2,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Subespecies - Vulnerabilidad",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // ==========================================
+    // CAPÍTULO 3: COMPARACIÓN TEMPORAL
+    // ==========================================
+    {
+      id: "cap-3",
+      numero: 3,
+      titulo: "Vulnerabilidad de la biodiversidad",
       etiqueta: "Comparación",
 
       mapa: {
-        centro: [-98.2377, 19.3138],
+        centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
           // Capa izquierda del swipe (si está habilitado)
@@ -136,7 +473,7 @@ export const storyMapConfig = {
         },
       },
 
-      grafico: {
+      /* grafico: {
         tipo: "line",
         datos: "data/temperatura.csv",
         config: {
@@ -159,15 +496,15 @@ export const storyMapConfig = {
           mostrarLeyenda: true,
           mostrarPuntos: true,
         },
-      },
+      }, */
     },
 
     // ==========================================
-    // CAPÍTULO 3: DISTRIBUCIÓN DE VULNERABILIDAD
+    // CAPÍTULO 4: DISTRIBUCIÓN DE VULNERABILIDAD
     // ==========================================
-    {
-      id: "cap-3",
-      numero: 3,
+    /* {
+      id: "cap-4",
+      numero: 4,
       titulo: "Distribución de Vulnerabilidad",
       etiqueta: "Distribución",
 
@@ -175,14 +512,6 @@ export const storyMapConfig = {
         centro: [-98.2377, 19.3138],
         zoom: 10,
         capas: [
-          /*           {
-            nombre: 'Índice de Vulnerabilidad',
-            tipo: 'wms',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Municipios',  // ✅ CORREGIDO
-            visible: true,
-            leyenda: true
-          }, */
           {
             nombre: "Localidades",
             tipo: "wfs",
@@ -212,7 +541,7 @@ export const storyMapConfig = {
           mostrarPorcentaje: true,
         },
       },
-    },
+    }, */
   ],
 
   // ==========================================
@@ -275,11 +604,21 @@ export function validarConfiguracion(config) {
 
   // Validar cada capítulo
   config.capitulos.forEach((cap, index) => {
-    // Validar estructura básica
-    if (!cap.mapa || !cap.grafico) {
+    // Validar que tenga al menos el mapa
+    if (!cap.mapa) {
       throw new Error(
-        `El capítulo ${index + 1} debe tener configuración de mapa y gráfico`
+        `El capítulo ${index + 1} debe tener configuración de mapa`
       );
+    }
+
+    // El gráfico es opcional, solo validar si existe
+    if (cap.grafico) {
+      // Validar configuración del gráfico
+      if (!cap.grafico.tipo || !cap.grafico.datos || !cap.grafico.config) {
+        throw new Error(
+          `El capítulo ${index + 1} tiene configuración incompleta del gráfico`
+        );
+      }
     }
 
     // Validar que las capas existen
@@ -327,13 +666,6 @@ export function validarConfiguracion(config) {
           `Capa derecha del swipe no encontrada: ${cap.mapa.swipe.capaDerecha}`
         );
       }
-    }
-
-    // Validar configuración del gráfico
-    if (!cap.grafico.tipo || !cap.grafico.datos || !cap.grafico.config) {
-      throw new Error(
-        `El capítulo ${index + 1} tiene configuración incompleta del gráfico`
-      );
     }
   });
 
