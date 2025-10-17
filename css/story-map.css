@@ -638,6 +638,85 @@
   max-width: 100%;
 }
 
+/* ===== CURSORES PERSONALIZADOS PARA SUB-CAPÍTULOS DE BIODIVERSIDAD ===== */
+#chapter-2-1 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🐝</text></svg>'), auto;
+}
+
+#chapter-2-2 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🌵</text></svg>'), auto;
+}
+
+#chapter-2-3 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🍄</text></svg>'), auto;
+}
+
+#chapter-2-4 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🦋</text></svg>'), auto;
+}
+
+#chapter-2-5 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🦇</text></svg>'), auto;
+}
+
+#chapter-2-6 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">⭐</text></svg>'), auto;
+}
+
+#chapter-2-7 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">⚠️</text></svg>'), auto;
+}
+
+#chapter-2-8 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🧬</text></svg>'), auto;
+}
+
+#chapter-2-9 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">📊</text></svg>'), auto;
+}
+
+/* ===== SUB-CAPÍTULO 2.9: COMPARATIVA GENERAL (Layout especial sin gap) ===== */
+#chapter-2-9.subchapter-biodiversity {
+  gap: 10;
+}
+
+#chapter-2-9 .subchapter-text {
+  grid-area: subchapter-text;
+}
+
+#chapter-2-9 .subchapter-menu {
+  grid-area: subchapter-menu;
+  margin-bottom: 0;
+}
+
+#chapter-2-9 .chapter-chart {
+  grid-area: subchapter-map;
+  grid-row: 2;
+  margin-top: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#chapter-2-9 .chart-container {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#chapter-2-9 .chart-container img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
 /* ===== TIMELINE INFERIOR ===== */
 .timeline {
   position: fixed;
