@@ -31,7 +31,7 @@ export class ComparisonManager {
    */
   inicializar() {
     this.crearControlUI();
-    console.log('🔍 ComparisonManager inicializado');
+    //console.log('🔍 ComparisonManager inicializado');
   }
 
   /**
@@ -97,7 +97,7 @@ export class ComparisonManager {
       });
     });
 
-    console.log('✅ Control de comparación creado');
+    //console.log('✅ Control de comparación creado');
   }
 
   /**
@@ -123,7 +123,7 @@ export class ComparisonManager {
     }
 
     this.modoActual = modo;
-    console.log(`🔄 Modo activado: ${modo}`);
+    //console.log(`🔄 Modo activado: ${modo}`);
   }
 
   /**
@@ -221,7 +221,7 @@ export class ComparisonManager {
     // Render inicial
     this.mapa.render();
 
-    console.log('⚡ Modo Split activado - Arrastra la barra para comparar');
+    //console.log('⚡ Modo Split activado - Arrastra la barra para comparar');
   }
 
   desactivarSplitMode() {
@@ -311,7 +311,7 @@ export class ComparisonManager {
     this.capaA.setVisible(true);
     this.capaB.setVisible(true);
 
-    console.log('👁️ Modo Rayos X activado - Mueve el cursor sobre el mapa');
+    //console.log('👁️ Modo Rayos X activado - Mueve el cursor sobre el mapa');
   }
 
   desactivarXRayMode() {
@@ -412,10 +412,10 @@ export class ComparisonManager {
       this.mapa.removeInteraction(this.areaInteraction);
       this.areaInteraction = null;
 
-      console.log('✅ Área de interés dibujada - Capa B visible dentro del área');
+      //console.log('✅ Área de interés dibujada - Capa B visible dentro del área');
     });
 
-    console.log('📍 Modo Área de Interés activado - Haz click y arrastra para dibujar un círculo');
+    //console.log('📍 Modo Área de Interés activado - Haz click y arrastra para dibujar un círculo');
   }
 
   desactivarAreaMode() {
@@ -453,6 +453,6 @@ export class ComparisonManager {
       this.controlElement = null;
     }
 
-    console.log('🧹 ComparisonManager destruido');
+    //console.log('🧹 ComparisonManager destruido');
   }
 }

@@ -631,7 +631,7 @@ export class MapManager {
       return false;
     }
 
-    console.log(`🔄 Actualizando capas del mapa: ${mapaId}`);
+    //console.log(`🔄 Actualizando capas del mapa: ${mapaId}`);
 
     // Obtener las capas actuales (excluyendo la capa base)
     const layers = mapa.getLayers();
@@ -673,7 +673,7 @@ export class MapManager {
       mapa.updateSize();
     }, 100);
 
-    console.log(`✅ Capas actualizadas: ${nuevasCapas.length} capas cargadas`);
+    //console.log(`✅ Capas actualizadas: ${nuevasCapas.length} capas cargadas`);
     return true;
   }
 
@@ -872,7 +872,7 @@ export class MapManager {
     const capasComparables = this.detectarCapasComparables(mapaId);
 
     if (!capasComparables) {
-      console.log(`ℹ️ No hay capas comparables en ${mapaId}`);
+      //console.log(`ℹ️ No hay capas comparables en ${mapaId}`);
       return false;
     }
 
@@ -897,7 +897,7 @@ export class MapManager {
 
     this.comparisonManagers[mapaId] = comparisonManager;
 
-    console.log(`✅ ComparisonManager inicializado para ${mapaId}`);
+    //console.log(`✅ ComparisonManager inicializado para ${mapaId}`);
     return true;
   }
 
@@ -909,7 +909,7 @@ export class MapManager {
     if (comparisonManager) {
       comparisonManager.destruir();
       delete this.comparisonManagers[mapaId];
-      console.log(`🧹 ComparisonManager destruido para ${mapaId}`);
+      //console.log(`🧹 ComparisonManager destruido para ${mapaId}`);
     }
   }
 }

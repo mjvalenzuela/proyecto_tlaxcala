@@ -239,7 +239,7 @@ class StoryMapApp {
    * Muestra un sub-capítulo específico (2.1 - 2.8)
    */
   async mostrarSubcapitulo(subcapitulo) {
-    console.log(`🔍 Mostrando sub-capítulo: ${subcapitulo}`);
+    //console.log(`🔍 Mostrando sub-capítulo: ${subcapitulo}`);
 
     // Convertir "2.1" a "2-1" para el ID del elemento
     const subcapituloId = subcapitulo.replace('.', '-');
@@ -264,7 +264,7 @@ class StoryMapApp {
     }
 
     subcapituloElement.style.display = 'grid';
-    console.log(`✅ Sub-capítulo ${subcapitulo} mostrado`);
+    //console.log(`✅ Sub-capítulo ${subcapitulo} mostrado`);
 
     // Actualizar estado activo en los botones de navegación
     const navItems = subcapituloElement.querySelectorAll('.nav-item');
@@ -286,7 +286,7 @@ class StoryMapApp {
 
       // Verificar si el mapa ya existe
       if (!this.mapManager.mapas[mapaId]) {
-        console.log(`📦 Inicializando mapa para sub-capítulo ${subcapitulo}`);
+        //console.log(`📦 Inicializando mapa para sub-capítulo ${subcapitulo}`);
         // Inicializar el mapa del sub-capítulo
         this.mapManager.inicializarMapaCapitulo(
           mapElementId,
@@ -353,7 +353,7 @@ class StoryMapApp {
     const modelo = modelButton.dataset.model;
     const subcapitulo = modelButton.dataset.subcapitulo;
 
-    console.log(`🌡️ Cambiando modelo climático: ${modelo} en subcapítulo ${subcapitulo}`);
+    //console.log(`🌡️ Cambiando modelo climático: ${modelo} en subcapítulo ${subcapitulo}`);
 
     // Remover clase active de todos los modelos del mismo subcapítulo
     const todosModelos = modelButton.parentElement.querySelectorAll('.model-item');
@@ -390,7 +390,7 @@ class StoryMapApp {
     const resultado = this.mapManager.actualizarCapasMapa(mapaId, capasDelModelo);
 
     if (resultado) {
-      console.log(`✅ Modelo ${modelo} activado con ${capasDelModelo.length} capas en subcapítulo ${subcapitulo}`);
+      //console.log(`✅ Modelo ${modelo} activado con ${capasDelModelo.length} capas en subcapítulo ${subcapitulo}`);
 
       // Si estamos en un subcapítulo del Capítulo 3, inicializar comparación automáticamente
       const numeroCapitulo = Math.floor(parseFloat(subcapitulo));
@@ -399,7 +399,7 @@ class StoryMapApp {
         setTimeout(() => {
           const inicializado = this.mapManager.inicializarComparacion(mapaId, mapElementId);
           if (inicializado) {
-            console.log(`🔍 Control de comparación disponible para ${subcapitulo}`);
+            //console.log(`🔍 Control de comparación disponible para ${subcapitulo}`);
           }
         }, 500); // Pequeño delay para asegurar que las capas estén cargadas
       }

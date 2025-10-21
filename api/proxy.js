@@ -42,9 +42,9 @@ export default async function handler(req, res) {
     // Ejemplo: /geoserver/SEICCT/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&...
     const targetUrl = `${geoserverBaseUrl}${pathParam}`;
     
-    console.log('🔄 Proxy Vercel:');
-    console.log('   Origen:', req.url);
-    console.log('   Destino:', targetUrl);
+    //console.log('🔄 Proxy Vercel:');
+    //console.log('   Origen:', req.url);
+    //console.log('   Destino:', targetUrl);
 
     // ==========================================
     // 4. HACER PETICIÓN A GEOSERVER
@@ -93,27 +93,27 @@ export default async function handler(req, res) {
     if (contentType.includes('image')) {
       const arrayBuffer = await response.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      console.log(`✅ Imagen servida: ${buffer.length} bytes`);
+      //console.log(`✅ Imagen servida: ${buffer.length} bytes`);
       return res.status(200).send(buffer);
     }
     
     // Si es XML (WMS GetCapabilities, GetFeatureInfo, etc.)
     if (contentType.includes('xml')) {
       const text = await response.text();
-      console.log(`✅ XML servido: ${text.length} caracteres`);
+      //console.log(`✅ XML servido: ${text.length} caracteres`);
       return res.status(200).send(text);
     }
     
     // Si es JSON (WFS, algunos formatos)
     if (contentType.includes('json')) {
       const text = await response.text();
-      console.log(`✅ JSON servido: ${text.length} caracteres`);
+      //console.log(`✅ JSON servido: ${text.length} caracteres`);
       return res.status(200).send(text);
     }
     
     // Cualquier otro tipo de contenido (text/plain, application/octet-stream, etc.)
     const text = await response.text();
-    console.log(`✅ Contenido servido (${contentType}): ${text.length} caracteres`);
+   // console.log(`✅ Contenido servido (${contentType}): ${text.length} caracteres`);
     return res.status(200).send(text);
 
   } catch (error) {
