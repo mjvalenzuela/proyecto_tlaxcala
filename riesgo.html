@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Story Map sobre el Riesgo Clim&aacute;tico en Tlaxcala"
+    />
+    <title>Riesgo Clim&aacute;tico - Tlaxcala</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/story-map.css" />
+
+    <!-- OpenLayers CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
+    <!-- Chart.js Datalabels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <!-- OpenLayers JS -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+
+    <!-- Papa Parse para CSVs -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <!--         <span class="navbar-brand-icon"><
+</span> -->
+          <span>Tlaxcala</span>
+        </a>
+
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú;">
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <a href="index.html" class="navbar-link">Inicio</a>
+          <a href="vulnerabilidad.html" class="navbar-link">Vulnerabilidad</a>
+          <a href="riesgo.html" class="navbar-link active">Riesgo</a>
+          <a href="amenazas.html" class="navbar-link">Amenazas</a>
+          <a href="impactos.html" class="navbar-link">Impactos</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Indicador para mostrar el navbar -->
+    <div class="navbar-indicator" id="navbarIndicator"></div>
+
+    <!-- Contenedor principal del Story Map -->
+    <div class="story-map-container">
+      <!-- Contenedor de capítulos con scroll-snap -->
+      <div class="chapters-container" id="chaptersContainer">
+        <!-- CAPÍTULO 1 -->
+        <section class="chapter" id="risk-chapter-1" data-chapter="1">
+          <!-- Título del mapa -->
+          <h2 class="map-title">Riesgo clim&aacute;tico por municipio</h2>
+
+          <!-- Card de texto (izquierda, 30%) -->
+          <div class="chapter-text">
+            <h2 class="chapter-title">&iquest;Qu&eacute; es el riesgo?</h2>
+            <div class="chapter-content">
+              <p>
+                El riesgo es la posibilidad de que una amenaza, como una inundación o sequía, cause daños reales en una comunidad, área o sector.
+              </p>
+              <p>No depende solo de la presencia de la amenaza, sino también de qué tan vulnerables son las personas o ecosistemas expuestos y de su capacidad de respuesta.</p>
+              <p>En pocas palabras: la amenaza es el evento; el riesgo es la probabilidad de que ese evento afecte de forma significativa.</p>
+              <button class="btn-atlas" id="btnAtlasRiesgo">Atlas de Riesgo</button>
+            </div>
+          </div>
+
+          <!-- Mapa (derecha, 70%) -->
+          <div class="chapter-map">
+            <div class="map-container" id="map-1"></div>
+            <!-- Los controles de capas se generan dinámicamente -->
+          </div>
+        </section>
+
+        <!-- CAPÍTULO 2 -->
+        <section class="chapter" id="risk-chapter-2" data-chapter="2">
+          <!-- Título del capítulo -->
+          <h2 class="map-title">Eventos por a&ntilde;o y declaratorias</h2>
+
+          <!-- Contenedor izquierdo (50%) -->
+          <div class="chapter-left">
+            <!-- Texto superior -->
+            <div class="chapter-text">
+              <div class="chapter-content">
+                <p>
+                  En Tlaxcala, los riesgos clim&aacute;ticos se manifiestan en heladas, lluvias intensas, sequ&iacute;as, granizadas e incluso nevadas at&iacute;picas. Estos fen&oacute;menos, cada vez m&aacute;s frecuentes por el cambio clim&aacute;tico, afectan cosechas, viviendas, infraestructura y la salud de la poblaci&oacute;n. Reconocer estas amenazas es el primer paso para reducir riesgos y fortalecer la adaptaci&oacute;n de nuestras comunidades.
+                </p>
+                <ul class="events-list">
+                  <li>&#10052;&#65039; Nevadas, heladas y granizadas: 197 eventos.</li>
+                  <li>&#127783;&#65039; Lluvias intensas: 121 eventos.</li>
+                  <li>&#127797; Sequ&iacute;as: 88 eventos.</li>
+                  <li>&#10052;&#65039; Heladas reportadas aparte: 61 eventos.</li>
+                  <li>&#127755; Actividad volc&aacute;nica (Popocat&eacute;petl): 60 eventos.</li>
+                  <li>&#127758; Sismos: 40 eventos.</li>
+                  <li>&#129398; Bajas temperaturas: 17 eventos.</li>
+                  <li>&#127744; Ciclones tropicales: 5 eventos.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Imagen de tortas (abajo) -->
+            <div class="chapter-chart-image">
+              <img src="images/declaratoriaxaño_tortas.png" alt="Gr&aacute;fico de declaratorias por tipo">
+            </div>
+          </div>
+
+          <!-- Contenedor derecho (50%) - Imagen de líneas -->
+          <div class="chapter-right">
+            <div class="chapter-image-full">
+              <img src="images/declaratoriaxaño_lineas.png" alt="Gr&aacute;fico de declaratorias por a&ntilde;o">
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Timeline inferior -->
+      <div class="timeline" id="timeline">
+        <div class="timeline-item" data-chapter="1">
+          <div class="timeline-circle">1</div>
+          <div class="timeline-label">Riesgo climático</div>
+        </div>
+        <div class="timeline-item" data-chapter="2">
+          <div class="timeline-circle">2</div>
+          <div class="timeline-label"></div>
+        </div>
+      </div>
+
+      <!-- Botones de navegación -->
+      <div class="nav-buttons left" id="navButtonsLeft">
+        <button class="nav-btn" id="btnPrev" aria-label="Capítulo anterior">
+          ←
+        </button>
+      </div>
+      <div class="nav-buttons right" id="navButtonsRight">
+        <button class="nav-btn" id="btnNext" aria-label="Siguiente capítulo">
+          →
+        </button>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="js/main.js"></script>
+
+    <script>
+      // Mostrar/ocultar navbar con el indicador
+      const navbar = document.querySelector(".navbar");
+      const navbarIndicator = document.getElementById("navbarIndicator");
+
+      // Mostrar navbar al hacer hover sobre el indicador
+      navbarIndicator.addEventListener("mouseenter", () => {
+        navbar.classList.add("visible");
+      });
+
+      // Mantener navbar visible mientras el mouse está sobre él
+      navbar.addEventListener("mouseenter", () => {
+        navbar.classList.add("visible");
+      });
+
+      // Ocultar navbar cuando el mouse sale
+      navbar.addEventListener("mouseleave", () => {
+        navbar.classList.remove("visible");
+      });
+
+      // Click en indicador para toggle del navbar
+      navbarIndicator.addEventListener("click", () => {
+        navbar.classList.toggle("visible");
+      });
+
+      // Toggle del menú móvil (inline para que funcione antes de cargar main.js)
+      const navbarToggle = document.getElementById("navbarToggle");
+      const navbarMenu = document.getElementById("navbarMenu");
+
+      navbarToggle.addEventListener("click", () => {
+        navbarToggle.classList.toggle("active");
+        navbarMenu.classList.toggle("active");
+        // Asegurar que el navbar esté visible cuando se abre el menú móvil
+        navbar.classList.add("visible");
+      });
+
+      // Cerrar menú al hacer click en un link
+      const navbarLinks = document.querySelectorAll(".navbar-link");
+      navbarLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navbarToggle.classList.remove("active");
+          navbarMenu.classList.remove("active");
+        });
+      });
+
+      // Efecto scroll en navbar
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Event listener para el botón Atlas de Riesgo
+      const btnAtlasRiesgo = document.getElementById("btnAtlasRiesgo");
+      if (btnAtlasRiesgo) {
+        btnAtlasRiesgo.addEventListener("click", () => {
+          // Abrir el PDF del Atlas de Riesgo en una nueva pestaña
+          window.open("http://rmgir.proyectomesoamerica.org/PDFAtlasEstatales/TLAXCALA_2006.pdf", "_blank");
+        });
+      }
+    </script>
+  </body>
+</html>

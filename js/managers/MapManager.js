@@ -219,33 +219,48 @@ export class MapManager {
       strategy: ol.loadingstrategy.bbox,
     });
 
-    const estilo = capaConfig.estilo
-      ? this.crearEstiloWFS(capaConfig.estilo)
-      : new ol.style.Style({
+    // Si la capa es transparente (para interacción solamente), usar estilo invisible
+    let estilo;
+    if (capaConfig.transparente) {
+      estilo = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: "rgba(0, 0, 0, 0)", // Completamente transparente
+        }),
+        stroke: new ol.style.Stroke({
+          color: "rgba(0, 0, 0, 0)", // Completamente transparente
+          width: 0,
+        }),
+      });
+    } else if (capaConfig.estilo) {
+      estilo = this.crearEstiloWFS(capaConfig.estilo);
+    } else {
+      // Estilo por defecto
+      estilo = new ol.style.Style({
+        fill: new ol.style.Fill({
+          color: "rgba(162, 26, 92, 0.3)",
+        }),
+        stroke: new ol.style.Stroke({
+          color: "#A21A5C",
+          width: 2,
+        }),
+        image: new ol.style.Circle({
+          radius: 6,
           fill: new ol.style.Fill({
-            color: "rgba(162, 26, 92, 0.3)",
+            color: "#A21A5C",
           }),
           stroke: new ol.style.Stroke({
-            color: "#A21A5C",
+            color: "#fff",
             width: 2,
           }),
-          image: new ol.style.Circle({
-            radius: 6,
-            fill: new ol.style.Fill({
-              color: "#A21A5C",
-            }),
-            stroke: new ol.style.Stroke({
-              color: "#fff",
-              width: 2,
-            }),
-          }),
-        });
+        }),
+      });
+    }
 
     const capa = new ol.layer.Vector({
       source: vectorSource,
       style: estilo,
       visible: capaConfig.visible,
-      zIndex: 2,
+      zIndex: 3, // Mayor z-index para estar encima del WMS
     });
 
     capa.set("nombre", capaConfig.nombre);
@@ -259,6 +274,34 @@ export class MapManager {
    * Crea un estilo personalizado para WFS
    */
   crearEstiloWFS(estiloConfig) {
+    // Si el estilo tiene una función de clasificación por atributo
+    if (estiloConfig.tipo === 'clasificado' && estiloConfig.atributo && estiloConfig.rangos) {
+      return (feature) => {
+        const valor = feature.get(estiloConfig.atributo);
+
+        // Buscar el rango correspondiente
+        let colorFill = estiloConfig.colorPorDefecto || "rgba(200, 200, 200, 0.5)";
+
+        for (const rango of estiloConfig.rangos) {
+          if (valor >= rango.min && valor <= rango.max) {
+            colorFill = rango.color;
+            break;
+          }
+        }
+
+        return new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: colorFill,
+          }),
+          stroke: new ol.style.Stroke({
+            color: estiloConfig.strokeColor || "#333333",
+            width: estiloConfig.strokeWidth || 1,
+          }),
+        });
+      };
+    }
+
+    // Estilo simple (sin clasificación)
     return new ol.style.Style({
       fill: new ol.style.Fill({
         color: estiloConfig.fillColor || "rgba(162, 26, 92, 0.3)",
@@ -395,10 +438,12 @@ export class MapManager {
         const layer = firstItem.layer;
         const properties = feature.getProperties();
 
+        // Limpiar el nombre de la capa (remover "(Interacción)" si existe)
+        let nombreCapa = layer.get("nombre") || "Información";
+        nombreCapa = nombreCapa.replace(/\s*\(Interacción\)\s*/gi, '').trim();
+
         let contenido = '<div class="popup-info">';
-        contenido += `<p class="popup-layer-name"><strong>${layer.get(
-          "nombre"
-        )}</strong></p>`;
+        contenido += `<p class="popup-layer-name"><strong>${nombreCapa}</strong></p>`;
 
         for (const key in properties) {
           const value = properties[key];
@@ -465,9 +510,15 @@ export class MapManager {
     // Limpiar contenido anterior
     controlsContainer.innerHTML = '<div class="map-controls-title">Capas</div>';
 
-    // Generar controles para cada capa
+    // Generar controles para cada capa (excluyendo capas de interacción transparentes)
     capas.forEach((capa, index) => {
       const nombreCapa = capa.get('nombre') || `Capa ${index + 1}`;
+
+      // No mostrar capas de interacción (transparentes) en el control
+      if (nombreCapa.includes('(Interacción)') || nombreCapa.includes('Interacción')) {
+        return; // Saltar esta capa
+      }
+
       const visible = capa.getVisible();
       const checkboxId = `layer-${index}-${numeroCapitulo}`;
 

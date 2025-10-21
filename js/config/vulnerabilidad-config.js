@@ -46,19 +46,23 @@ export const storyMapConfig = {
             layers: 'SEICCT:Limite',
             visible: true,
             leyenda: true
-          }, 
+          },
           {
             nombre: "Vulnerabilidad por Municipio",
-            tipo: "wms", // WFS para permitir interacción con popup
+            tipo: "wms", // WMS para mostrar estilos SLD de GeoServer
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad", 
+            layers: "SEICCT:M82_Vulnerabilidad_CC",
             visible: true,
-            leyenda: true,
-            /* estilo: {
-              fillColor: "rgba(162, 26, 92, 0.3)",
-              strokeColor: "#A21A5C",
-              strokeWidth: 2,
-            }, */
+            leyenda: false,
+          },
+          {
+            nombre: "Vulnerabilidad por Municipio (Interacción)",
+            tipo: "wfs", // WFS transparente solo para clicks
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82_Vulnerabilidad_CC",
+            visible: true,
+            leyenda: false,
+            transparente: true, // Marca para aplicar estilo transparente
           },
         ],
       },
@@ -121,7 +125,7 @@ export const storyMapConfig = {
             nombre: "Vulnerabilidad por Municipio",
             tipo: "wms", // WFS para permitir interacción con popup
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad", 
+            layers: "SEICCT:M82_Vulnerabilidad_CC", 
             visible: true,
             leyenda: true,
             /* estilo: {
@@ -183,18 +187,18 @@ export const storyMapConfig = {
         zoom: 10,
         capas: [
           {
-            nombre: 'Límite',
+            nombre: 'Riqueza de Abejas',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:riqueza_abejas',
             visible: true,
             leyenda: true
           },
           {
-            nombre: "Abejas - Vulnerabilidad",
+            nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
+            layers: "SEICCT:Limite",
             visible: true,
             leyenda: true,
           },
@@ -216,18 +220,18 @@ export const storyMapConfig = {
         zoom: 10,
         capas: [
           {
-            nombre: 'Límite',
+            nombre: 'Riqueza de Agaves',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:riqueza_agaves',
             visible: true,
             leyenda: true
           },
           {
-            nombre: "Agaves - Vulnerabilidad",
+            nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
+            layers: "SEICCT:Limite",
             visible: true,
             leyenda: true,
           },
@@ -248,19 +252,19 @@ export const storyMapConfig = {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
-          {
-            nombre: 'Límite',
+           {
+            nombre: 'Riqueza de Hongos',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:riqueza_hongos',
             visible: true,
             leyenda: true
           },
           {
-            nombre: "Hongos - Vulnerabilidad",
+            nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
+            layers: "SEICCT:Limite",
             visible: true,
             leyenda: true,
           },
@@ -281,19 +285,19 @@ export const storyMapConfig = {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
-          {
-            nombre: 'Límite',
+            {
+            nombre: 'Riqueza de Polillas',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:riqueza_polillas',
             visible: true,
             leyenda: true
           },
           {
-            nombre: "Polillas - Vulnerabilidad",
+            nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
+            layers: "SEICCT:Limite",
             visible: true,
             leyenda: true,
           },
@@ -314,19 +318,19 @@ export const storyMapConfig = {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
-          {
-            nombre: 'Límite',
+            {
+            nombre: 'Riqueza de Murciélagos',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:riqueza_murcielagos',
             visible: true,
             leyenda: true
           },
           {
-            nombre: "Murciélagos - Vulnerabilidad",
+            nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
+            layers: "SEICCT:Limite",
             visible: true,
             leyenda: true,
           },
@@ -347,19 +351,19 @@ export const storyMapConfig = {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
-          {
-            nombre: 'Límite',
+            {
+            nombre: 'Especies de Interés',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:riqueza_interes',
             visible: true,
             leyenda: true
           },
           {
-            nombre: "Especies de Interés - Vulnerabilidad",
+            nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
+            layers: "SEICCT:Limite",
             visible: true,
             leyenda: true,
           },
@@ -380,19 +384,19 @@ export const storyMapConfig = {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
-          {
-            nombre: 'Límite',
+            {
+            nombre: 'Especies en Riesgo/Prioritarias',
             tipo: 'wms',
             url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
+            layers: 'SEICCT:riqueza_riesgo',
             visible: true,
             leyenda: true
           },
           {
-            nombre: "Especies en Riesgo - Vulnerabilidad",
+            nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
+            layers: "SEICCT:Limite",
             visible: true,
             leyenda: true,
           },
@@ -413,6 +417,39 @@ export const storyMapConfig = {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
+            {
+            nombre: 'Subespecies',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:riqueza_subespecies',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Límite",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // ==========================================
+    // CAPÍTULO 3: GANANCIA/PÉRDIDA DE IDONEIDAD
+    // ==========================================
+    {
+      id: "cap-3",
+      numero: 3,
+      titulo: "Vulnerabilidad de la biodiversidad - Ganancia/Pérdida",
+      etiqueta: "Ganancia/Pérdida",
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
           {
             nombre: 'Límite',
             tipo: 'wms',
@@ -422,7 +459,7 @@ export const storyMapConfig = {
             leyenda: true
           },
           {
-            nombre: "Subespecies - Vulnerabilidad",
+            nombre: "Vulnerabilidad por Municipio",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:M82Vulnerabilidad",
@@ -434,69 +471,295 @@ export const storyMapConfig = {
     },
 
     // ==========================================
-    // CAPÍTULO 3: COMPARACIÓN TEMPORAL
+    // SUB-CAPÍTULOS DEL CAPÍTULO 3 (3.1 - 3.9)
     // ==========================================
+    // SUB-CAPÍTULO 3.1: ABEJAS
     {
-      id: "cap-3",
-      numero: 3,
-      titulo: "Vulnerabilidad de la biodiversidad",
-      etiqueta: "Comparación",
+      id: "cap-3-1",
+      numero: 3.1,
+      titulo: "Abejas",
+      etiqueta: "Abejas",
+      esSubcapitulo: true,
+      capituloPadre: 3,
 
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
-          // Capa izquierda del swipe (si está habilitado)
           {
-            nombre: "Municipios",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:Municipios", // ✅ CORREGIDO
+            nombre: 'Pérdida/Ganancia de Abejas',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:perdida_abejas',
             visible: true,
-            leyenda: true,
+            leyenda: true
           },
-          // Capa derecha del swipe (si está habilitado)
           {
-            nombre: "Localidades",
+            nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:Localidades",
+            layers: "SEICCT:Limite",
             visible: true,
             leyenda: true,
           },
         ],
-
-        swipe: {
-          enabled: true,
-          capaIzquierda: "Municipios",
-          capaDerecha: "Localidades",
-        },
       },
+    },
 
-      /* grafico: {
-        tipo: "line",
-        datos: "data/temperatura.csv",
-        config: {
-          titulo: "Evolución Temporal de Vulnerabilidad",
-          ejeX: "año",
-          datasets: [
-            {
-              label: "Temperatura Promedio (°C)",
-              dato: "temperatura_promedio",
-              color: "rgba(162, 26, 92, 0.3)",
-              borderColor: "#A21A5C",
-            },
-            {
-              label: "Días Calurosos",
-              dato: "dias_calurosos",
-              color: "rgba(239, 68, 68, 0.3)",
-              borderColor: "#EF4444",
-            },
-          ],
-          mostrarLeyenda: true,
-          mostrarPuntos: true,
-        },
-      }, */
+    // SUB-CAPÍTULO 3.2: AGAVES
+    {
+      id: "cap-3-2",
+      numero: 3.2,
+      titulo: "Agaves",
+      etiqueta: "Agaves",
+      esSubcapitulo: true,
+      capituloPadre: 3,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:perdida_agaves',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Agaves - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 3.3: HONGOS
+    {
+      id: "cap-3-3",
+      numero: 3.3,
+      titulo: "Hongos",
+      etiqueta: "Hongos",
+      esSubcapitulo: true,
+      capituloPadre: 3,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Hongos - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 3.4: POLILLAS
+    {
+      id: "cap-3-4",
+      numero: 3.4,
+      titulo: "Polillas",
+      etiqueta: "Polillas",
+      esSubcapitulo: true,
+      capituloPadre: 3,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Polillas - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 3.5: MURCIÉLAGOS
+    {
+      id: "cap-3-5",
+      numero: 3.5,
+      titulo: "Murciélagos",
+      etiqueta: "Murciélagos",
+      esSubcapitulo: true,
+      capituloPadre: 3,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Murciélagos - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 3.6: ESPECIES DE INTERÉS
+    {
+      id: "cap-3-6",
+      numero: 3.6,
+      titulo: "Especies de Interés",
+      etiqueta: "Especies de Interés",
+      esSubcapitulo: true,
+      capituloPadre: 3,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Especies de Interés - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 3.7: ESPECIES EN RIESGO/PRIORITARIAS
+    {
+      id: "cap-3-7",
+      numero: 3.7,
+      titulo: "Especies en Riesgo/Prioritarias",
+      etiqueta: "En Riesgo",
+      esSubcapitulo: true,
+      capituloPadre: 3,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Especies en Riesgo - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 3.8: SUBESPECIES
+    {
+      id: "cap-3-8",
+      numero: 3.8,
+      titulo: "Subespecies",
+      etiqueta: "Subespecies",
+      esSubcapitulo: true,
+      capituloPadre: 3,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Subespecies - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 3.9: COMPARATIVA GENERAL
+    {
+      id: "cap-3-9",
+      numero: 3.9,
+      titulo: "Comparativa General",
+      etiqueta: "Comparativa",
+      esSubcapitulo: true,
+      capituloPadre: 3,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+        ],
+      },
     },
 
     // ==========================================

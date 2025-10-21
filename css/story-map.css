@@ -68,7 +68,7 @@
 
 /* ===== CONTENEDOR DE CAPÍTULOS (SCROLL SNAP) ===== */
 .chapters-container {
-  height: calc(100vh - 60px); /* viewport - timeline (navbar oculto) */
+  height: calc(100vh - 65px); /* viewport - timeline (navbar oculto) */
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
@@ -76,7 +76,7 @@
 
 /* ===== CAPÍTULO INDIVIDUAL ===== */
 .chapter {
-  height: calc(100vh - 60px); /* viewport - timeline */
+  height: calc(100vh - 65px); /* viewport - timeline */
   scroll-snap-align: start;
   scroll-snap-stop: always;
   display: grid;
@@ -638,6 +638,11 @@
   max-width: 100%;
 }
 
+/* ===== CAPÍTULO 3 - TEXTO EXPANDIDO ===== */
+#chapter-3 .chapter-text {
+  grid-row: 2;
+}
+
 /* ===== CAPÍTULO 4 - MAPA COMO IMAGEN Y TEXTO EXPANDIDO ===== */
 #chapter-4 .chapter-text {
   grid-row: 2 / 4;
@@ -748,7 +753,7 @@
 /* ===== TIMELINE INFERIOR ===== */
 .timeline {
   position: fixed;
-  bottom: 0;
+  bottom: 5px;
   left: 0;
   right: 0;
   height: 60px;
@@ -760,7 +765,7 @@
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  padding: 0 2rem;
+  padding: 2rem;
   z-index: 999;
 }
 
@@ -774,8 +779,8 @@
 }
 
 .timeline-circle {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background-color: var(--color-bg-gray);
   border: 3px solid var(--color-border);
@@ -800,15 +805,16 @@
 }
 
 .timeline-label {
-  font-size: 0.75rem;
-  color: var(--color-header-text-secondary);
-  font-weight: 500;
+  font-size: 1rem;
+  color: white;
+  font-weight: 100;
   transition: all var(--transition-normal);
+  text-align: center;  
 }
 
 .timeline-item.active .timeline-label {
-  color: var(--color-header-text);
-  font-weight: 600;
+  color: rgb(207, 200, 207);
+  font-weight: 700;
 }
 
 /* Línea conectora entre círculos */
@@ -1112,6 +1118,153 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+}
+
+/* ===== CAPÍTULO 1 DE RIESGO - LAYOUT INVERTIDO (30% texto izquierda, 70% mapa derecha) ===== */
+#risk-chapter-1 {
+  grid-template-columns: 30% 70%;
+  grid-template-rows: auto 1fr;
+}
+
+#risk-chapter-1 .chapter-text {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#risk-chapter-1 .chapter-map {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Botón Atlas de Riesgo */
+.btn-atlas {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: var(--color-btn-primary);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 15px rgba(162, 26, 92, 0.3);
+  width: 100%;
+}
+
+.btn-atlas:hover {
+  background: var(--color-btn-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(162, 26, 92, 0.4);
+}
+
+/* ===== CAPÍTULO 2 DE RIESGO - LAYOUT 50%-50% ===== */
+#risk-chapter-2 {
+  grid-template-columns: 50% 50%;
+  grid-template-rows: auto 1fr;
+}
+
+#risk-chapter-2 .map-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+/* Contenedor izquierdo (50%) - texto arriba, imagen abajo */
+.chapter-left {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chapter-left .chapter-text {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: 50%;
+  overflow-y: auto;
+}
+
+.chapter-left .chapter-chart-image {
+  flex: 1 1 auto;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  min-height: 0;
+}
+
+.chapter-left .chapter-chart-image:hover {
+  box-shadow: 0 8px 25px var(--color-shadow-lg);
+  border-color: var(--color-beige);
+}
+
+.chapter-left .chapter-chart-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-height: 100%;
+}
+
+/* Contenedor derecho (50%) - imagen altura completa */
+.chapter-right {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chapter-image-full {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  min-height: 0;
+}
+
+.chapter-image-full:hover {
+  box-shadow: 0 8px 25px var(--color-shadow-lg);
+  border-color: var(--color-beige);
+}
+
+.chapter-image-full img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+/* Lista de eventos con emojis */
+.events-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0;
+}
+
+.events-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
 /* ===== PRINT STYLES ===== */
