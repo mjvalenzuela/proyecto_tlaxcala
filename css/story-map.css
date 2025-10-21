@@ -446,6 +446,72 @@
   margin-bottom: 0;
 }
 
+/* Submenú de Modelos Climáticos */
+.models-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.models-menu-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-title-purple);
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-beige);
+}
+
+.models-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.model-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-background);
+  border: 1px solid var(--color-beige-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.model-item:hover {
+  background: var(--color-beige-light);
+  border-color: var(--color-accent-magenta);
+  transform: translateX(5px);
+}
+
+.model-item.active {
+  background: var(--color-accent-magenta);
+  color: white;
+  border-color: var(--color-accent-magenta);
+  font-weight: 600;
+}
+
+.model-item.active .model-icon {
+  filter: brightness(0) invert(1);
+}
+
+.model-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.model-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Menú horizontal de navegación (70% derecha arriba) */
 .subchapter-menu {
   background: white;
@@ -834,7 +900,7 @@
 /* ===== BOTONES DE NAVEGACIÓN ===== */
 .nav-buttons {
   position: fixed;
-  bottom: 80px;
+  bottom: 15px;
   z-index: 500;
   display: flex;
   gap: 1rem;
@@ -1286,5 +1352,188 @@
     height: auto;
     page-break-inside: avoid;
     page-break-after: always;
+  }
+}
+
+/* ===== CONTROL DE COMPARACIÓN DE CAPAS ===== */
+.comparison-control {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+.comparison-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 2px solid var(--color-btn-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px var(--color-shadow-md);
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-btn-secondary);
+  transition: all var(--transition-fast);
+}
+
+.comparison-toggle-btn:hover {
+  background: var(--color-btn-secondary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--color-shadow-lg);
+}
+
+.comparison-toggle-btn.active {
+  background: var(--color-accent-magenta);
+  border-color: var(--color-accent-magenta);
+  color: white;
+}
+
+.comparison-icon {
+  font-size: 1.2rem;
+}
+
+.comparison-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 15px var(--color-shadow-lg);
+  overflow: hidden;
+  min-width: 200px;
+}
+
+.comparison-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: none;
+  border-bottom: 1px solid var(--color-beige-light);
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+.comparison-mode-btn:last-child {
+  border-bottom: none;
+}
+
+.comparison-mode-btn:hover {
+  background: var(--color-beige-light);
+}
+
+.comparison-mode-btn.comparison-mode-close {
+  color: #e11d48;
+  font-weight: 600;
+}
+
+.comparison-mode-btn.comparison-mode-close:hover {
+  background: #fee2e2;
+}
+
+.mode-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.mode-label {
+  flex: 1;
+}
+
+/* ===== MODO SPLIT ===== */
+.comparison-split-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  cursor: ew-resize;
+  z-index: 999;
+}
+
+.comparison-split-bar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 60px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.comparison-split-bar::after {
+  content: '⇄';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-btn-secondary);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* ===== MODO RAYOS X ===== */
+.comparison-xray-circle {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 998;
+  background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+.comparison-xray-circle::before {
+  content: '👁️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .comparison-control {
+    top: 5px;
+    right: 5px;
+  }
+
+  .comparison-toggle-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .comparison-label {
+    display: none;
+  }
+
+  .comparison-menu {
+    min-width: 180px;
+  }
+
+  .comparison-split-bar {
+    width: 3px;
+  }
+
+  .comparison-xray-circle {
+    width: 150px;
+    height: 150px;
   }
 }

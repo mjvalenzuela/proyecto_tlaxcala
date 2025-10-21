@@ -225,6 +225,14 @@ class StoryMapApp {
         this.mostrarSubcapitulo(subcapitulo);
       });
     });
+
+    // Event listeners para el menú de modelos climáticos (Capítulo 3)
+    const modelItems = document.querySelectorAll('.model-item');
+    modelItems.forEach(item => {
+      item.addEventListener('click', () => {
+        this.cambiarModeloClimatico(item);
+      });
+    });
   }
 
   /**
@@ -334,6 +342,69 @@ class StoryMapApp {
       // Actualizar estado del capítulo actual
       this.capituloActual = 2;
       this.activarCapitulo(2);
+    }
+  }
+
+  /**
+   * Cambia el modelo climático seleccionado y actualiza las capas del mapa
+   */
+  cambiarModeloClimatico(modelButton) {
+    // Obtener el modelo y subcapítulo
+    const modelo = modelButton.dataset.model;
+    const subcapitulo = modelButton.dataset.subcapitulo;
+
+    console.log(`🌡️ Cambiando modelo climático: ${modelo} en subcapítulo ${subcapitulo}`);
+
+    // Remover clase active de todos los modelos del mismo subcapítulo
+    const todosModelos = modelButton.parentElement.querySelectorAll('.model-item');
+    todosModelos.forEach(item => item.classList.remove('active'));
+
+    // Agregar clase active al modelo seleccionado
+    modelButton.classList.add('active');
+
+    // Buscar la configuración del capítulo en el config
+    const subcapituloId = subcapitulo.replace('.', '-');
+    const capituloConfig = this.config.capitulos.find(cap => cap.id === `cap-${subcapituloId}`);
+
+    if (!capituloConfig) {
+      console.error(`❌ No se encontró configuración para subcapítulo: ${subcapitulo}`);
+      return;
+    }
+
+    // Verificar si el capítulo tiene configuración de modelos climáticos
+    if (!capituloConfig.modelosClimaticos || !capituloConfig.modelosClimaticos[modelo]) {
+      console.warn(`⚠️ No hay configuración de capas para el modelo: ${modelo}`);
+      return;
+    }
+
+    // Obtener las capas del modelo seleccionado
+    const capasDelModelo = capituloConfig.modelosClimaticos[modelo].capas;
+
+    if (!capasDelModelo || capasDelModelo.length === 0) {
+      console.warn(`⚠️ El modelo ${modelo} no tiene capas configuradas`);
+      return;
+    }
+
+    // Actualizar las capas del mapa
+    const mapaId = `cap-${subcapituloId}`;
+    const resultado = this.mapManager.actualizarCapasMapa(mapaId, capasDelModelo);
+
+    if (resultado) {
+      console.log(`✅ Modelo ${modelo} activado con ${capasDelModelo.length} capas en subcapítulo ${subcapitulo}`);
+
+      // Si estamos en un subcapítulo del Capítulo 3, inicializar comparación automáticamente
+      const numeroCapitulo = Math.floor(parseFloat(subcapitulo));
+      if (numeroCapitulo === 3) {
+        const mapElementId = `map-${subcapituloId}`;
+        setTimeout(() => {
+          const inicializado = this.mapManager.inicializarComparacion(mapaId, mapElementId);
+          if (inicializado) {
+            console.log(`🔍 Control de comparación disponible para ${subcapitulo}`);
+          }
+        }, 500); // Pequeño delay para asegurar que las capas estén cargadas
+      }
+    } else {
+      console.error(`❌ Error al actualizar capas del modelo ${modelo}`);
     }
   }
 

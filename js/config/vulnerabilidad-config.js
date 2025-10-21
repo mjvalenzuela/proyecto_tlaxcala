@@ -443,7 +443,7 @@ export const storyMapConfig = {
     {
       id: "cap-3",
       numero: 3,
-      titulo: "Vulnerabilidad de la biodiversidad - Ganancia/Pérdida",
+      titulo: "Vulnerabilidad de la biodiversidad - Ganancia",
       etiqueta: "Ganancia/Pérdida",
 
       mapa: {
@@ -485,25 +485,55 @@ export const storyMapConfig = {
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
-        capas: [
-          {
-            nombre: 'Pérdida/Ganancia de Abejas',
-            tipo: 'wms',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:perdida_abejas',
-            visible: true,
-            leyenda: true
-          },
-          {
-            nombre: "Límite",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:Limite",
-            visible: true,
-            leyenda: true,
-          },
-        ],
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
       },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            // TODO: Agregar capas para este modelo
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "Ganancia de Abejas MPI.ESM1.2.HR_ssp585_2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_idoneidad_grupo_abejas_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Ganancia de Abejas MPI.ESM1.2.HR_ssp585_2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_idoneidad_grupo_abejas_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            // TODO: Agregar capas para este modelo
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            // TODO: Agregar capas para este modelo
+          ]
+        }
+      }
     },
 
     // SUB-CAPÍTULO 3.2: AGAVES
@@ -884,11 +914,14 @@ export function validarConfiguracion(config) {
       }
     }
 
-    // Validar que las capas existen
+    // Validar que las capas existen (excepto si tiene modelos climáticos configurados)
     if (!cap.mapa.capas || cap.mapa.capas.length === 0) {
-      throw new Error(
-        `El capítulo ${index + 1} debe tener al menos una capa de mapa`
-      );
+      // Si el capítulo tiene modelos climáticos, las capas se cargan dinámicamente
+      if (!cap.modelosClimaticos) {
+        throw new Error(
+          `El capítulo ${index + 1} debe tener al menos una capa de mapa o configuración de modelos climáticos`
+        );
+      }
     }
 
     // Validar capas WMS/WFS

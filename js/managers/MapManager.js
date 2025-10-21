@@ -2,9 +2,11 @@
  * MapManager - Gestor de mapas con OpenLayers (ACTUALIZADO)
  * Maneja la creación, actualización y control de mapas interactivos
  * INCLUYE: Integración con MapControlsManager para herramientas
+ * INCLUYE: Integración con ComparisonManager para comparar capas
  */
 
 import { MapControlsManager } from "./MapControlsManager.js";
+import { ComparisonManager } from "./ComparisonManager.js";
 
 export class MapManager {
   constructor(config) {
@@ -12,7 +14,8 @@ export class MapManager {
     this.mapas = {};
     this.capas = {};
     this.overlays = {};
-    this.controlsManagers = {}; // ← NUEVO: Gestores de controles de herramientas
+    this.controlsManagers = {}; // ← Gestores de controles de herramientas
+    this.comparisonManagers = {}; // ← NUEVO: Gestores de comparación de capas
   }
 
   /**
@@ -58,7 +61,8 @@ export class MapManager {
    */
    inicializarMapaCapitulo(containerId, capituloConfig, numeroCapitulo) {
     const mapaConfig = capituloConfig.mapa;
-    const mapaId = `cap-${numeroCapitulo}`;
+    // Convertir número a formato con guión (ej: 3.1 -> 3-1)
+    const mapaId = `cap-${numeroCapitulo.toString().replace('.', '-')}`;
 
     // ✅ NUEVO: Limpiar mapa existente si ya existe
     if (this.mapas[mapaId]) {
@@ -618,6 +622,62 @@ export class MapManager {
   }
 
   /**
+   * Actualiza las capas de un mapa con nuevas configuraciones
+   */
+  actualizarCapasMapa(mapaId, nuevasCapasConfig) {
+    const mapa = this.mapas[mapaId];
+    if (!mapa) {
+      console.error(`❌ No se encontró el mapa: ${mapaId}`);
+      return false;
+    }
+
+    console.log(`🔄 Actualizando capas del mapa: ${mapaId}`);
+
+    // Obtener las capas actuales (excluyendo la capa base)
+    const layers = mapa.getLayers();
+    const capasActuales = layers.getArray().slice(); // Copiar array
+
+    // Remover todas las capas excepto la primera (capa base)
+    for (let i = capasActuales.length - 1; i > 0; i--) {
+      mapa.removeLayer(capasActuales[i]);
+    }
+
+    // Limpiar referencia de capas antiguas
+    this.capas[mapaId] = [];
+
+    // Crear y agregar nuevas capas
+    const nuevasCapas = nuevasCapasConfig.map((capaConfig) => {
+      if (capaConfig.tipo === "wfs") {
+        return this.crearCapaWFS(capaConfig);
+      } else {
+        return this.crearCapaWMS(capaConfig);
+      }
+    });
+
+    // Agregar nuevas capas al mapa
+    nuevasCapas.forEach(capa => {
+      mapa.addLayer(capa);
+    });
+
+    // Guardar referencia de nuevas capas
+    this.capas[mapaId] = nuevasCapas;
+
+    // Regenerar controles de capas
+    const numeroCapitulo = parseFloat(mapaId.replace('cap-', '').replace('-', '.'));
+    const containerId = `map-${mapaId.replace('cap-', '')}`;
+    this.generarLeyendaDinamica(containerId, nuevasCapas, numeroCapitulo);
+    this.configurarControlesCapas(numeroCapitulo, nuevasCapas);
+
+    // Actualizar tamaño del mapa
+    setTimeout(() => {
+      mapa.updateSize();
+    }, 100);
+
+    console.log(`✅ Capas actualizadas: ${nuevasCapas.length} capas cargadas`);
+    return true;
+  }
+
+  /**
    * Actualiza el tamaño del mapa
    */
   actualizarTamano(mapaId) {
@@ -775,5 +835,81 @@ export class MapManager {
 
     controlsManager.configurarSwipe(capaIzq, capaDer);
     return true;
+  }
+
+  /**
+   * ⬇️ NUEVO: Detecta capas comparables (que terminan en 2021-2040 y 2041-2060)
+   */
+  detectarCapasComparables(mapaId) {
+    const capas = this.capas[mapaId];
+    if (!capas || capas.length < 2) return null;
+
+    let capa2021 = null;
+    let capa2041 = null;
+
+    capas.forEach(capa => {
+      const layers = capa.get('layers');
+      if (!layers) return;
+
+      if (layers.includes('2021.2040') || layers.includes('2021-2040')) {
+        capa2021 = capa;
+      } else if (layers.includes('2041.2060') || layers.includes('2041-2060')) {
+        capa2041 = capa;
+      }
+    });
+
+    if (capa2021 && capa2041) {
+      return { capaA: capa2021, capaB: capa2041 };
+    }
+
+    return null;
+  }
+
+  /**
+   * ⬇️ NUEVO: Inicializa el control de comparación de capas
+   */
+  inicializarComparacion(mapaId, containerId) {
+    const capasComparables = this.detectarCapasComparables(mapaId);
+
+    if (!capasComparables) {
+      console.log(`ℹ️ No hay capas comparables en ${mapaId}`);
+      return false;
+    }
+
+    const mapa = this.mapas[mapaId];
+    if (!mapa) {
+      console.error(`❌ No se encontró el mapa: ${mapaId}`);
+      return false;
+    }
+
+    // Destruir comparación anterior si existe
+    if (this.comparisonManagers[mapaId]) {
+      this.comparisonManagers[mapaId].destruir();
+    }
+
+    // Crear nuevo ComparisonManager
+    const comparisonManager = new ComparisonManager(
+      mapa,
+      capasComparables.capaA,
+      capasComparables.capaB,
+      containerId
+    );
+
+    this.comparisonManagers[mapaId] = comparisonManager;
+
+    console.log(`✅ ComparisonManager inicializado para ${mapaId}`);
+    return true;
+  }
+
+  /**
+   * ⬇️ NUEVO: Destruye el control de comparación
+   */
+  destruirComparacion(mapaId) {
+    const comparisonManager = this.comparisonManagers[mapaId];
+    if (comparisonManager) {
+      comparisonManager.destruir();
+      delete this.comparisonManagers[mapaId];
+      console.log(`🧹 ComparisonManager destruido para ${mapaId}`);
+    }
   }
 }
