@@ -159,6 +159,13 @@
   transition: all 0.3s ease;
 }
 
+/* Controles de mapa específicos para Capítulo 3 (Ganancia/Pérdida) */
+[id^="chapter-3-"] .map-controls {
+  top: 5rem;
+  max-width: 300px;
+  padding: 0.5rem;
+}
+
 .map-controls-title {
   font-size: 0.9rem;
   font-weight: 600;
@@ -1485,6 +1492,34 @@
   font-weight: bold;
 }
 
+/* Etiquetas de capas en modo Split */
+.comparison-split-label {
+  position: absolute;
+  bottom: 10px;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 998;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comparison-split-label-left {
+  left: 10px;
+}
+
+.comparison-split-label-right {
+  right: 10px;
+}
+
 /* ===== MODO RAYOS X ===== */
 .comparison-xray-circle {
   position: absolute;
@@ -1535,5 +1570,11 @@
   .comparison-xray-circle {
     width: 150px;
     height: 150px;
+  }
+
+  .comparison-split-label {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    max-width: 150px;
   }
 }

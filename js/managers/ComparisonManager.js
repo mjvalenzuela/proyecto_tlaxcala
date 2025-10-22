@@ -14,6 +14,7 @@ export class ComparisonManager {
 
     // Referencias a los modos y sus listeners
     this.splitBar = null;
+    this.splitLabels = { left: null, right: null };
     this.splitListeners = { prerender: null, postrender: null };
 
     this.xrayCircle = null;
@@ -163,6 +164,19 @@ export class ComparisonManager {
     mapContainer.appendChild(splitBar);
     this.splitBar = splitBar;
 
+    // Crear etiquetas de capas
+    const labelLeft = document.createElement('div');
+    labelLeft.className = 'comparison-split-label comparison-split-label-left';
+    labelLeft.textContent = this.capaA.get('nombre') || 'Capa A';
+    mapContainer.appendChild(labelLeft);
+    this.splitLabels.left = labelLeft;
+
+    const labelRight = document.createElement('div');
+    labelRight.className = 'comparison-split-label comparison-split-label-right';
+    labelRight.textContent = this.capaB.get('nombre') || 'Capa B';
+    mapContainer.appendChild(labelRight);
+    this.splitLabels.right = labelRight;
+
     let isDragging = false;
     let currentPosition = 0.5; // 50%
 
@@ -235,6 +249,16 @@ export class ComparisonManager {
       // Remover elemento
       this.splitBar.remove();
       this.splitBar = null;
+    }
+
+    // Remover etiquetas
+    if (this.splitLabels.left) {
+      this.splitLabels.left.remove();
+      this.splitLabels.left = null;
+    }
+    if (this.splitLabels.right) {
+      this.splitLabels.right.remove();
+      this.splitLabels.right = null;
     }
 
     // Limpiar listeners de OpenLayers
