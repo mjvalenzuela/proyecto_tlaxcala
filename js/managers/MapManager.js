@@ -491,6 +491,201 @@ export class MapManager {
   }
 
   /**
+   * Configura el hover de municipios para resaltar y mostrar tooltip
+   */
+  configurarHoverMunicipios(mapaId, containerId) {
+    const mapa = this.mapas[mapaId];
+    if (!mapa) return;
+
+    const mapElement = document.getElementById(containerId);
+    if (!mapElement) return;
+
+    // Crear tooltip
+    const tooltip = document.createElement('div');
+    tooltip.className = 'municipio-hover-tooltip';
+    tooltip.style.display = 'none';
+    mapElement.appendChild(tooltip);
+
+    // Variable para almacenar el feature actualmente resaltado
+    let currentFeature = null;
+    let defaultStyle = null;
+
+    // Estilo de hover (borde amarillo grueso)
+    const hoverStyle = new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: '#FFD700', // Dorado
+        width: 4
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(255, 215, 0, 0.2)' // Amarillo translúcido
+      })
+    });
+
+    // Listener de movimiento del mouse
+    mapa.on('pointermove', (evt) => {
+      const pixel = mapa.getEventPixel(evt.originalEvent);
+
+      // Restaurar estilo del feature anterior
+      if (currentFeature) {
+        currentFeature.setStyle(defaultStyle);
+        currentFeature = null;
+        tooltip.style.display = 'none';
+      }
+
+      // Buscar feature bajo el cursor (solo capas WFS)
+      mapa.forEachFeatureAtPixel(pixel, (feature, layer) => {
+        if (layer && layer.get('tipo') === 'wfs') {
+          currentFeature = feature;
+          defaultStyle = feature.getStyle() || layer.getStyle();
+
+          // Aplicar estilo de hover
+          feature.setStyle(hoverStyle);
+
+          // Obtener nombre del municipio
+          const properties = feature.getProperties();
+          const nombreMunicipio = properties.Municipio || properties.MUNICIPIO || properties.nombre || properties.NOMBRE || 'Municipio';
+
+          // Actualizar tooltip
+          tooltip.textContent = nombreMunicipio;
+          tooltip.style.display = 'block';
+          tooltip.style.left = `${evt.originalEvent.offsetX + 15}px`;
+          tooltip.style.top = `${evt.originalEvent.offsetY + 15}px`;
+
+          return true; // Detener búsqueda
+        }
+      });
+    });
+
+    // Agregar estilos CSS para el tooltip
+    this.agregarEstilosHoverTooltip();
+  }
+
+  /**
+   * Agrega estilos CSS para el tooltip de hover
+   */
+  agregarEstilosHoverTooltip() {
+    if (document.getElementById('hover-tooltip-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'hover-tooltip-styles';
+    style.textContent = `
+      .municipio-hover-tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        pointer-events: none;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        white-space: nowrap;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  /**
+   * Resalta municipios en el mapa según una categoría de vulnerabilidad
+   */
+  resaltarMunicipiosPorCategoria(mapaId, categoria) {
+    const mapa = this.mapas[mapaId];
+    if (!mapa) return;
+
+    // Guardar features resaltados para poder restaurarlos después
+    if (!this.featuresResaltados) {
+      this.featuresResaltados = {};
+    }
+
+    // Restaurar estilos anteriores
+    if (this.featuresResaltados[mapaId]) {
+      this.featuresResaltados[mapaId].forEach(({ feature, style }) => {
+        feature.setStyle(style);
+      });
+      this.featuresResaltados[mapaId] = [];
+    }
+
+    // Si categoria es null, solo limpiar resaltados
+    if (!categoria) {
+      return;
+    }
+
+    // Buscar la capa WFS
+    const capas = this.capas[mapaId];
+    if (!capas) return;
+
+    const capaWFS = capas.find(capa => capa.get('tipo') === 'wfs');
+    if (!capaWFS) return;
+
+    const source = capaWFS.getSource();
+    const features = source.getFeatures();
+
+    // Mapa de colores por categoría (mismo que el gráfico)
+    const coloresPorCategoria = {
+      'Muy Alto': '#78020e',
+      'Alto': '#9a3c43',
+      'Medio': '#bc7678',
+      'Bajo': '#ddb0ae',
+      'Muy Bajo': '#ffeae3'
+    };
+
+    const colorCategoria = coloresPorCategoria[categoria] || '#FFD700';
+
+    // Estilo de resaltado
+    const resaltadoStyle = new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: colorCategoria,
+        width: 5
+      }),
+      fill: new ol.style.Fill({
+        color: this.hexToRgba(colorCategoria, 0.5)
+      })
+    });
+
+    this.featuresResaltados[mapaId] = [];
+
+    // Resaltar features que coincidan con la categoría
+    features.forEach(feature => {
+      const properties = feature.getProperties();
+
+      // Buscar el campo de vulnerabilidad (puede tener diferentes nombres)
+      const vulnerabilidad = properties.Vulnerabilidad ||
+                            properties.VULNERABILIDAD ||
+                            properties.vulnerabilidad ||
+                            properties.Categoria ||
+                            properties.CATEGORIA ||
+                            properties.categoria ||
+                            properties.Nivel ||
+                            properties.nivel;
+
+      if (vulnerabilidad && vulnerabilidad.trim() === categoria) {
+        const estiloOriginal = feature.getStyle() || capaWFS.getStyle();
+        this.featuresResaltados[mapaId].push({
+          feature: feature,
+          style: estiloOriginal
+        });
+        feature.setStyle(resaltadoStyle);
+      }
+    });
+
+    // Renderizar el mapa
+    mapa.render();
+  }
+
+  /**
+   * Convierte color hexadecimal a rgba
+   */
+  hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  /**
    * ⬇️ NUEVO: Genera la leyenda dinámica basada en las capas del mapa
    */
   generarLeyendaDinamica(containerId, capas, numeroCapitulo) {

@@ -151,6 +151,14 @@ class StoryMapApp {
         numero
       );
 
+      // ✅ Configurar hover para municipios en capítulo 1
+      if (numero === 1) {
+        const mapaId = `cap-${numero}`;
+        setTimeout(() => {
+          this.mapManager.configurarHoverMunicipios(mapaId, mapElementId);
+        }, 500);
+      }
+
       // ⬇️ Verificar si el capítulo tiene swipe habilitado
       if (capitulo.mapa.swipe && capitulo.mapa.swipe.enabled) {
         // console.log(`🔀 Configurando swipe para capítulo ${numero}`);
@@ -179,14 +187,22 @@ class StoryMapApp {
       if (capitulo.grafico) {
         const chartElementId = `chart-${numero}`;
 
+        // ✅ Callback para capítulo 1: resaltar municipios al hacer click en gráfico
+        const onClickCallback = (numero === 1) ? (categoria) => {
+          const mapaId = `cap-${numero}`;
+          this.mapManager.resaltarMunicipiosPorCategoria(mapaId, categoria);
+        } : null;
+
         // ✅ AHORA PASAMOS LOS PARÁMETROS CORRECTOS:
         // - canvasId: el ID del elemento canvas en el DOM
         // - graficoConfig: el objeto completo capitulo.grafico
         // - numeroCapitulo: el número del capítulo
+        // - onClickCallback: función para manejar clicks (solo capítulo 1)
         await this.chartManager.crearGrafico(
           chartElementId,      // ID del canvas
           capitulo.grafico,    // ✅ OBJETO COMPLETO (contiene tipo, datos, config)
-          numero               // Número del capítulo
+          numero,              // Número del capítulo
+          onClickCallback      // Callback para click en gráfico
         );
       }
 

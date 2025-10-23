@@ -108,19 +108,20 @@ export class MapControlsManager {
       <div class="toolbar-divider"></div>
 
       <div class="toolbar-group">
-        <button 
-          class="toolbar-btn" 
+        <button
+          class="toolbar-btn"
           id="btn-export-${this.mapId}"
           data-tool="export"
-          title="Exportar como imagen">
+          title="Exportar como imagen"
+          style="display: none;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
           </svg>
           <span class="toolbar-label">Exportar</span>
         </button>
 
-        <button 
-          class="toolbar-btn" 
+        <button
+          class="toolbar-btn"
           id="btn-swipe-${this.mapId}"
           data-tool="swipe"
           title="Comparar capas"

@@ -113,7 +113,7 @@ export class ChartManager {
    * CREA UN GRÁFICO SEGÚN LA CONFIGURACIÓN
    * ==========================================
    */
-  async crearGrafico(canvasId, graficoConfig, numeroCapitulo) {
+  async crearGrafico(canvasId, graficoConfig, numeroCapitulo, onClickCallback = null) {
     try {
       // console.log(`📊 Creando gráfico ${graficoConfig.tipo} para capítulo ${numeroCapitulo}`);
 
@@ -139,7 +139,7 @@ export class ChartManager {
           grafico = this.crearGraficoLineas(canvasId, datos, graficoConfig.config);
           break;
         case 'pie':
-          grafico = this.crearGraficoTorta(canvasId, datos, graficoConfig.config);
+          grafico = this.crearGraficoTorta(canvasId, datos, graficoConfig.config, onClickCallback);
           break;
         default:
           throw new Error(`Tipo de gráfico no soportado: ${graficoConfig.tipo}`);
@@ -154,7 +154,7 @@ export class ChartManager {
 
     } catch (error) {
       console.error(`❌ Error al crear gráfico:`, error);
-      
+
       // Mostrar error en el canvas
       this.mostrarErrorEnCanvas(canvasId, error.message);
       throw error;
@@ -418,7 +418,7 @@ export class ChartManager {
    * CREA UN GRÁFICO DE TORTA
    * ==========================================
    */
-  crearGraficoTorta(canvasId, datos, config) {
+  crearGraficoTorta(canvasId, datos, config, onClickCallback = null) {
     const ctx = document.getElementById(canvasId).getContext('2d');
 
     const labels = datos.map(row => row[config.etiqueta]);
@@ -463,6 +463,13 @@ export class ChartManager {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        onClick: onClickCallback ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const categoria = labels[index];
+            onClickCallback(categoria);
+          }
+        } : undefined,
         plugins: {
           legend: {
             display: config.mostrarLeyenda !== false,
@@ -488,7 +495,12 @@ export class ChartManager {
                   });
                 }
                 return [];
-              }
+              },
+              onClick: onClickCallback ? (event, legendItem, legend) => {
+                // También permitir click en la leyenda
+                const categoria = legendItem.text;
+                onClickCallback(categoria);
+              } : undefined
             }
           },
           title: {
