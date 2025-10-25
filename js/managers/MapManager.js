@@ -592,8 +592,13 @@ export class MapManager {
    * Resalta municipios en el mapa según una categoría de vulnerabilidad
    */
   resaltarMunicipiosPorCategoria(mapaId, categoria) {
+    console.log(`🔍 Resaltando municipios por categoría: "${categoria}" en mapa: ${mapaId}`);
+
     const mapa = this.mapas[mapaId];
-    if (!mapa) return;
+    if (!mapa) {
+      console.error(`❌ Mapa no encontrado: ${mapaId}`);
+      return;
+    }
 
     // Guardar features resaltados para poder restaurarlos después
     if (!this.featuresResaltados) {
@@ -602,6 +607,7 @@ export class MapManager {
 
     // Restaurar estilos anteriores
     if (this.featuresResaltados[mapaId]) {
+      console.log(`↩️ Restaurando ${this.featuresResaltados[mapaId].length} features anteriores`);
       this.featuresResaltados[mapaId].forEach(({ feature, style }) => {
         feature.setStyle(style);
       });
@@ -610,18 +616,31 @@ export class MapManager {
 
     // Si categoria es null, solo limpiar resaltados
     if (!categoria) {
+      console.log('⚠️ Categoría null, solo limpiando');
       return;
     }
 
     // Buscar la capa WFS
     const capas = this.capas[mapaId];
-    if (!capas) return;
+    if (!capas) {
+      console.error(`❌ No hay capas para mapa: ${mapaId}`);
+      return;
+    }
+
+    console.log(`📊 Total de capas en mapa: ${capas.length}`);
 
     const capaWFS = capas.find(capa => capa.get('tipo') === 'wfs');
-    if (!capaWFS) return;
+    if (!capaWFS) {
+      console.error('❌ No se encontró capa WFS');
+      return;
+    }
+
+    console.log(`✅ Capa WFS encontrada: ${capaWFS.get('nombre')}`);
 
     const source = capaWFS.getSource();
     const features = source.getFeatures();
+
+    console.log(`📍 Total de features: ${features.length}`);
 
     // Mapa de colores por categoría (mismo que el gráfico)
     const coloresPorCategoria = {
@@ -647,21 +666,59 @@ export class MapManager {
 
     this.featuresResaltados[mapaId] = [];
 
+    // Debug: Mostrar propiedades del primer feature
+    if (features.length > 0) {
+      const primerasPropiedades = features[0].getProperties();
+      console.log('📋 Propiedades del primer feature:', Object.keys(primerasPropiedades));
+      console.log('📋 Valores del primer feature:', primerasPropiedades);
+    }
+
+    // Mapeo de categorías del gráfico a valores de la capa WFS
+    const mapeoCategoria = {
+      'Muy Alto': ['Muy alta', 'Muy Alto', 'MUY ALTA', 'MUY ALTO'],
+      'Alto': ['Alta', 'Alto', 'ALTA', 'ALTO'],
+      'Medio': ['Media', 'Medio', 'MEDIA', 'MEDIO'],
+      'Bajo': ['Baja', 'Bajo', 'BAJA', 'BAJO'],
+      'Muy Bajo': ['Muy baja', 'Muy Bajo', 'MUY BAJA', 'MUY BAJO']
+    };
+
+    // Obtener los valores equivalentes para la categoría seleccionada
+    const valoresEquivalentes = mapeoCategoria[categoria] || [categoria];
+
+    let contadorCoincidencias = 0;
+
     // Resaltar features que coincidan con la categoría
-    features.forEach(feature => {
+    features.forEach((feature, index) => {
       const properties = feature.getProperties();
 
       // Buscar el campo de vulnerabilidad (puede tener diferentes nombres)
-      const vulnerabilidad = properties.Vulnerabilidad ||
+      const vulnerabilidad = properties.grado ||
+                            properties.Grado ||
+                            properties.GRADO ||
+                            properties.Vulnerabilidad ||
                             properties.VULNERABILIDAD ||
                             properties.vulnerabilidad ||
                             properties.Categoria ||
                             properties.CATEGORIA ||
                             properties.categoria ||
                             properties.Nivel ||
-                            properties.nivel;
+                            properties.nivel ||
+                            properties.Prioridad ||
+                            properties.PRIORIDAD ||
+                            properties.prioridad;
 
-      if (vulnerabilidad && vulnerabilidad.trim() === categoria) {
+      // Debug para los primeros 3 features
+      if (index < 3) {
+        console.log(`Feature ${index}:`, {
+          vulnerabilidad,
+          categoria,
+          valoresEquivalentes,
+          coincide: vulnerabilidad && valoresEquivalentes.includes(vulnerabilidad.trim())
+        });
+      }
+
+      if (vulnerabilidad && valoresEquivalentes.includes(vulnerabilidad.trim())) {
+        contadorCoincidencias++;
         const estiloOriginal = feature.getStyle() || capaWFS.getStyle();
         this.featuresResaltados[mapaId].push({
           feature: feature,
@@ -670,6 +727,8 @@ export class MapManager {
         feature.setStyle(resaltadoStyle);
       }
     });
+
+    console.log(`✨ Features resaltados: ${contadorCoincidencias} de ${features.length}`);
 
     // Renderizar el mapa
     mapa.render();

@@ -189,7 +189,9 @@ class StoryMapApp {
 
         // ✅ Callback para capítulo 1: resaltar municipios al hacer click en gráfico
         const onClickCallback = (numero === 1) ? (categoria) => {
+          console.log(`📊 Click en gráfico - Categoría: "${categoria}"`);
           const mapaId = `cap-${numero}`;
+          console.log(`🗺️ Llamando a resaltarMunicipiosPorCategoria con mapaId: ${mapaId}`);
           this.mapManager.resaltarMunicipiosPorCategoria(mapaId, categoria);
         } : null;
 
