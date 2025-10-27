@@ -206,12 +206,14 @@ export class ComparisonManager {
     this.capaB.on('postrender', postrenderFn);
 
     // Event listeners para arrastrar
-    const onMouseDown = () => {
+    const onMouseDown = (e) => {
+      e.preventDefault(); // Prevenir selección de texto
       isDragging = true;
     };
 
     const onMouseMove = (e) => {
       if (!isDragging) return;
+      e.preventDefault(); // Prevenir selección de texto
 
       const rect = mapContainer.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -221,7 +223,8 @@ export class ComparisonManager {
       this.mapa.render();
     };
 
-    const onMouseUp = () => {
+    const onMouseUp = (e) => {
+      e.preventDefault(); // Prevenir selección de texto
       isDragging = false;
     };
 

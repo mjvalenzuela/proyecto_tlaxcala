@@ -64,7 +64,21 @@ export class MapManager {
     // Convertir número a formato con guión (ej: 3.1 -> 3-1)
     const mapaId = `cap-${numeroCapitulo.toString().replace('.', '-')}`;
 
-    // ✅ NUEVO: Limpiar mapa existente si ya existe
+    // Verificar si el contenedor del mapa existe
+    const container = document.getElementById(containerId);
+    if (!container) {
+      //console.log(`⚠️ No se encontró contenedor de mapa para ${mapaId} - Capítulo usa imagen estática`);
+      return null;
+    }
+
+    // Verificar si hay capas para mostrar
+    // Solo retornar null si no hay capas Y tampoco tiene modelos climáticos configurados
+    if ((!mapaConfig.capas || mapaConfig.capas.length === 0) && !capituloConfig.modelosClimaticos) {
+      //console.log(`⚠️ No hay capas configuradas para ${mapaId} - Capítulo usa imagen estática`);
+      return null;
+    }
+
+    // Limpiar mapa existente si ya existe
     if (this.mapas[mapaId]) {
       // console.log(`🧹 Limpiando mapa existente: ${mapaId}`);
       this.limpiarMapa(mapaId);
@@ -810,7 +824,7 @@ export class MapManager {
       const checkboxId = `layer-${i}-${numeroCapitulo}`;
       const checkbox = document.getElementById(checkboxId);
 
-      // ✅ NUEVO: Solo configurar si el checkbox existe en el DOM
+      // Solo configurar si el checkbox existe en el DOM
       if (checkbox) {
         try {
           checkbox.addEventListener("change", (e) => {
@@ -822,12 +836,12 @@ export class MapManager {
           console.error(`❌ Error al configurar control para capa ${i}:`, error);
         }
       } else {
-        // ✅ NUEVO: Log informativo, NO error crítico
+        // Log informativo, NO error crítico
         // console.log(`ℹ️ Checkbox no encontrado: ${checkboxId} (opcional - UI sin controles de capa)`);
       }
     }
 
-    // ✅ NUEVO: Log resumen de configuración
+    // Log resumen de configuración
     // if (controlesConfigurados > 0) {
     //   console.log(`✅ ${controlesConfigurados} controles de capa configurados para capítulo ${numeroCapitulo}`);
     // } else {

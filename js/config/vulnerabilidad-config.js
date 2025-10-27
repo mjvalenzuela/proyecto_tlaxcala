@@ -446,27 +446,12 @@ export const storyMapConfig = {
       titulo: "Vulnerabilidad de la biodiversidad - Ganancia",
       etiqueta: "Ganancia/Pérdida",
 
+      // Este capítulo muestra una imagen estática en lugar de un mapa interactivo
+      tieneImagen: true,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
-        capas: [
-          {
-            nombre: 'Límite',
-            tipo: 'wms',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
-            visible: true,
-            leyenda: true
-          },
-          {
-            nombre: "Vulnerabilidad por Municipio",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
-            visible: true,
-            leyenda: true,
-          },
-        ],
+        capas: [], // Sin capas - se muestra imagen estática
       },
     },
 
@@ -1049,25 +1034,180 @@ export const storyMapConfig = {
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
-        capas: [
-          {
-            nombre: 'Límite',
-            tipo: 'wms',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
-            visible: true,
-            leyenda: true
-          },
-          {
-            nombre: "Polillas - Pérdida/Ganancia",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
-            visible: true,
-            leyenda: true,
-          },
-        ],
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
       },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_HadGEM3.GC31.LL_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_polillas_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
     },
 
     // SUB-CAPÍTULO 3.5: MURCIÉLAGOS
@@ -1148,25 +1288,180 @@ export const storyMapConfig = {
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
-        capas: [
-          {
-            nombre: 'Límite',
-            tipo: 'wms',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
-            visible: true,
-            leyenda: true
-          },
-          {
-            nombre: "Especies en Riesgo - Pérdida/Ganancia",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
-            visible: true,
-            leyenda: true,
-          },
-        ],
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
       },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_HadGEM3.GC31.LL_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_rpc_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
     },
 
     // SUB-CAPÍTULO 3.8: SUBESPECIES
@@ -1181,35 +1476,963 @@ export const storyMapConfig = {
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
-        capas: [
-          {
-            nombre: 'Límite',
-            tipo: 'wms',
-            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
-            layers: 'SEICCT:Limite',
-            visible: true,
-            leyenda: true
-          },
-          {
-            nombre: "Subespecies - Pérdida/Ganancia",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:M82Vulnerabilidad",
-            visible: true,
-            leyenda: true,
-          },
-        ],
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
+      },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_HadGEM3.GC31.LL_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:ganancia_spp_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
+    },
+
+    // ==========================================
+    // CAPÍTULO 4: PÉRDIDA DE IDONEIDAD
+    // ==========================================
+    {
+      id: "cap-4",
+      numero: 4,
+      titulo: "Vulnerabilidad de la biodiversidad - Pérdida de Idoneidad",
+      etiqueta: "Pérdida de Idoneidad",
+
+      // Este capítulo muestra una imagen estática en lugar de un mapa interactivo
+      tieneImagen: true,
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [], // Sin capas - se muestra imagen estática
       },
     },
 
-    // SUB-CAPÍTULO 3.9: COMPARATIVA GENERAL
+    // ==========================================
+    // SUB-CAPÍTULOS DEL CAPÍTULO 4 (4.1 - 4.8)
+    // ==========================================
+    // SUB-CAPÍTULO 4.1: ABEJAS
     {
-      id: "cap-3-9",
-      numero: 3.9,
-      titulo: "Comparativa General",
-      etiqueta: "Comparativa",
+      id: "cap-4-1",
+      numero: 4.1,
+      titulo: "Abejas",
+      etiqueta: "Abejas",
       esSubcapitulo: true,
-      capituloPadre: 3,
+      capituloPadre: 4,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
+      },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+             {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+                        {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+                        {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+                        {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_abejas_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
+    },
+
+    // SUB-CAPÍTULO 4.2: AGAVES
+    {
+      id: "cap-4-2",
+      numero: 4.2,
+      titulo: "Agaves",
+      etiqueta: "Agaves",
+      esSubcapitulo: true,
+      capituloPadre: 4,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
+      },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: '	SEICCT:perdida_agaves_HadGEM3.GC31.LL_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: '	SEICCT:perdida_agaves_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: '	SEICCT:perdida_agaves_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_agaves_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
+    },
+
+    // SUB-CAPÍTULO 4.3: HONGOS
+    {
+      id: "cap-4-3",
+      numero: 4.3,
+      titulo: "Hongos",
+      etiqueta: "Hongos",
+      esSubcapitulo: true,
+      capituloPadre: 4,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
+      },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_HadGEM3.GC31.LL_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_hongos_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
+    },
+
+    // SUB-CAPÍTULO 4.4: POLILLAS
+    {
+      id: "cap-4-4",
+      numero: 4.4,
+      titulo: "Polillas",
+      etiqueta: "Polillas",
+      esSubcapitulo: true,
+      capituloPadre: 4,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
+      },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_HadGEM3.GC31.LL_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_polillas_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
+    },
+
+    // SUB-CAPÍTULO 4.5: MURCIÉLAGOS
+    {
+      id: "cap-4-5",
+      numero: 4.5,
+      titulo: "Murciélagos",
+      etiqueta: "Murciélagos",
+      esSubcapitulo: true,
+      capituloPadre: 4,
 
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
@@ -1223,8 +2446,425 @@ export const storyMapConfig = {
             visible: true,
             leyenda: true
           },
+          {
+            nombre: "Murciélagos - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
         ],
       },
+    },
+
+    // SUB-CAPÍTULO 4.6: ESPECIES DE INTERÉS
+    {
+      id: "cap-4-6",
+      numero: 4.6,
+      titulo: "Especies de Interés",
+      etiqueta: "Especies de Interés",
+      esSubcapitulo: true,
+      capituloPadre: 4,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [
+          {
+            nombre: 'Límite',
+            tipo: 'wms',
+            url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+            layers: 'SEICCT:Limite',
+            visible: true,
+            leyenda: true
+          },
+          {
+            nombre: "Especies de Interés - Pérdida/Ganancia",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82Vulnerabilidad",
+            visible: true,
+            leyenda: true,
+          },
+        ],
+      },
+    },
+
+    // SUB-CAPÍTULO 4.7: ESPECIES EN RIESGO/PRIORITARIAS
+    {
+      id: "cap-4-7",
+      numero: 4.7,
+      titulo: "Especies en Riesgo/Prioritarias",
+      etiqueta: "En Riesgo",
+      esSubcapitulo: true,
+      capituloPadre: 4,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
+      },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_HadGEM3.GC31.LL_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_rpc_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
+    },
+
+    // SUB-CAPÍTULO 4.8: SUBESPECIES
+    {
+      id: "cap-4-8",
+      numero: 4.8,
+      titulo: "Subespecies",
+      etiqueta: "Subespecies",
+      esSubcapitulo: true,
+      capituloPadre: 4,
+
+      mapa: {
+        centro: [-98.16560203447955, 19.42964878131165],
+        zoom: 10,
+        capas: [], // Inicia sin capas - se cargan al seleccionar modelo climático
+      },
+
+      // Configuración de capas por modelo climático
+      modelosClimaticos: {
+        "HadGEM3.GC31.LL_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_HadGEM3.GC31.LL_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_HadGEM3.GC31.LL_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "HadGEM3.GC31.LL_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_HadGEM3.GC31.LL_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_HadGEM3.GC31.LL_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_MPI.ESM1.2.HR_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_MPI.ESM1.2.HR_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MPI.ESM1.2.HR_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_MPI.ESM1.2.HR_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_MPI.ESM1.2.HR_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp245": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_MIROC6_ssp245_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_MIROC6_ssp245_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        },
+        "MIROC6_ssp585": {
+          capas: [
+            {
+              nombre: "2021.2040",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_MIROC6_ssp585_2021.2040',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "2041.2060",
+              tipo: 'wms',
+              url: 'https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows',
+              layers: 'SEICCT:perdida_spp_MIROC6_ssp585_2041.2060',
+              visible: true,
+              leyenda: true
+            },
+            {
+              nombre: "Municipios",
+              tipo: "wms",
+              url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+              layers: "SEICCT:municipios_ganaperd",
+              visible: true,
+              leyenda: true,
+            },
+          ]
+        }
+      }
     },
 
     // ==========================================
@@ -1349,10 +2989,11 @@ export function validarConfiguracion(config) {
       }
     }
 
-    // Validar que las capas existen (excepto si tiene modelos climáticos configurados)
+    // Validar que las capas existen (excepto si tiene modelos climáticos configurados o usa imagen estática)
     if (!cap.mapa.capas || cap.mapa.capas.length === 0) {
       // Si el capítulo tiene modelos climáticos, las capas se cargan dinámicamente
-      if (!cap.modelosClimaticos) {
+      // Si el capítulo tiene tieneImagen=true, muestra imagen estática en lugar de mapa
+      if (!cap.modelosClimaticos && !cap.tieneImagen) {
         throw new Error(
           `El capítulo ${index + 1} debe tener al menos una capa de mapa o configuración de modelos climáticos`
         );

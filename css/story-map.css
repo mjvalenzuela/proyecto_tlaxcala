@@ -148,7 +148,7 @@
 /* ===== CONTROLES DE CAPAS (Panel derecho superior) ===== */
 .map-controls {
   position: absolute;
-  top: 1rem;
+  top: 5rem;
   right: 1rem;
   background: white;
   border-radius: var(--radius-md);
@@ -255,7 +255,7 @@
 /* ===== CARD DE GRÁFICO (Abajo derecha) ===== */
 .chapter-chart {
   grid-column: 2;
-  grid-row: 3;
+  grid-row: 2;
   background: white;
   border-radius: var(--radius-lg);
   padding: 1.5rem;
@@ -746,39 +746,105 @@
 
 /* ===== CURSORES PERSONALIZADOS PARA SUB-CAPÍTULOS DE BIODIVERSIDAD ===== */
 #chapter-2-1 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🐝</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'), auto;
 }
 
 #chapter-2-2 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🌵</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'), auto;
 }
 
 #chapter-2-3 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🍄</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'), auto;
 }
 
 #chapter-2-4 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🦋</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'), auto;
 }
 
 #chapter-2-5 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🦇</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'), auto;
 }
 
 #chapter-2-6 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">⭐</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'), auto;
 }
 
 #chapter-2-7 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">⚠️</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'), auto;
 }
 
 #chapter-2-8 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🧬</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'), auto;
 }
 
 #chapter-2-9 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">📊</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">📊</text></svg>'), auto;
+}
+
+/* ===== CURSORES PERSONALIZADOS PARA SUB-CAPÍTULOS DEL CAPÍTULO 3 (GANANCIA) ===== */
+#chapter-3-1 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'), auto;
+}
+
+#chapter-3-2 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'), auto;
+}
+
+#chapter-3-3 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'), auto;
+}
+
+#chapter-3-4 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'), auto;
+}
+
+#chapter-3-5 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'), auto;
+}
+
+#chapter-3-6 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'), auto;
+}
+
+#chapter-3-7 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'), auto;
+}
+
+#chapter-3-8 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'), auto;
+}
+
+/* ===== CURSORES PERSONALIZADOS PARA SUB-CAPÍTULOS DEL CAPÍTULO 4 (PÉRDIDA) ===== */
+#chapter-4-1 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'), auto;
+}
+
+#chapter-4-2 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'), auto;
+}
+
+#chapter-4-3 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'), auto;
+}
+
+#chapter-4-4 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'), auto;
+}
+
+#chapter-4-5 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'), auto;
+}
+
+#chapter-4-6 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'), auto;
+}
+
+#chapter-4-7 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'), auto;
+}
+
+#chapter-4-8 {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'), auto;
 }
 
 /* ===== SUB-CAPÍTULO 2.9: COMPARATIVA GENERAL (Layout especial sin gap) ===== */
@@ -1173,7 +1239,7 @@
 
 /* Mantener controles de capas siempre en top-right */
 .chapter-map .map-controls {
-  top: 1rem;
+  top: 5rem;
   right: 1rem;
   left: auto;
 }
@@ -1466,6 +1532,10 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   cursor: ew-resize;
   z-index: 999;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .comparison-split-bar::before {

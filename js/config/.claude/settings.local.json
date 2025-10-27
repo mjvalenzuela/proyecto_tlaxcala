@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/AJohanna/Trabajos/09_Freelancer/11_Asesorias/Proyectos/proyecto_tlaxcala/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -227,11 +227,18 @@ class StoryMapApp {
       });
     });
 
-    // Botones "Volver a Biodiversidad" en cada sub-capítulo
+    // Botones "Volver" en cada sub-capítulo
     const backButtons = document.querySelectorAll('.back-button[data-action="back-to-biodiversity"]');
     backButtons.forEach(button => {
       button.addEventListener('click', () => {
-        this.volverABiodiversidad();
+        // Obtener el capítulo padre del botón (si existe)
+        const parentChapter = button.dataset.parentChapter;
+        if (parentChapter) {
+          this.volverACapituloPadre(parseInt(parentChapter));
+        } else {
+          // Por defecto, volver al capítulo 2 (para compatibilidad)
+          this.volverABiodiversidad();
+        }
       });
     });
 
@@ -364,6 +371,42 @@ class StoryMapApp {
   }
 
   /**
+   * Vuelve al capítulo padre especificado (genérico para capítulos 2, 3, 4, etc.)
+   */
+  volverACapituloPadre(numeroCapitulo) {
+    // Ocultar todos los sub-capítulos
+    const todosSubcapitulos = document.querySelectorAll('.subchapter-biodiversity');
+    todosSubcapitulos.forEach(sub => {
+      sub.style.display = 'none';
+    });
+
+    // Mostrar el capítulo padre especificado
+    const chapterId = `chapter-${numeroCapitulo}`;
+    const chapter = document.getElementById(chapterId);
+    if (chapter) {
+      chapter.style.display = 'grid';
+
+      // Scroll al capítulo
+      chapter.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+
+      // Actualizar el tamaño del mapa si el capítulo tiene mapa
+      setTimeout(() => {
+        const mapaId = `cap-${numeroCapitulo}`;
+        if (this.mapManager.mapas[mapaId]) {
+          this.mapManager.actualizarTamano(mapaId);
+        }
+      }, 300);
+
+      // Actualizar estado del capítulo actual
+      this.capituloActual = numeroCapitulo;
+      this.activarCapitulo(numeroCapitulo);
+    }
+  }
+
+  /**
    * Cambia el modelo climático seleccionado y actualiza las capas del mapa
    */
   cambiarModeloClimatico(modelButton) {
@@ -410,9 +453,9 @@ class StoryMapApp {
     if (resultado) {
       //console.log(`✅ Modelo ${modelo} activado con ${capasDelModelo.length} capas en subcapítulo ${subcapitulo}`);
 
-      // Si estamos en un subcapítulo del Capítulo 3, inicializar comparación automáticamente
+      // Si estamos en un subcapítulo del Capítulo 3 o 4, inicializar comparación automáticamente
       const numeroCapitulo = Math.floor(parseFloat(subcapitulo));
-      if (numeroCapitulo === 3) {
+      if (numeroCapitulo === 3 || numeroCapitulo === 4) {
         const mapElementId = `map-${subcapituloId}`;
         setTimeout(() => {
           const inicializado = this.mapManager.inicializarComparacion(mapaId, mapElementId);
