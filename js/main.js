@@ -453,15 +453,19 @@ class StoryMapApp {
     if (resultado) {
       //console.log(`✅ Modelo ${modelo} activado con ${capasDelModelo.length} capas en subcapítulo ${subcapitulo}`);
 
-      // Si estamos en un subcapítulo del Capítulo 3 o 4, inicializar comparación automáticamente
+      // Si estamos en un subcapítulo del Capítulo 3 o 4, inicializar comparación y hover automáticamente
       const numeroCapitulo = Math.floor(parseFloat(subcapitulo));
       if (numeroCapitulo === 3 || numeroCapitulo === 4) {
         const mapElementId = `map-${subcapituloId}`;
         setTimeout(() => {
+          // Inicializar control de comparación
           const inicializado = this.mapManager.inicializarComparacion(mapaId, mapElementId);
           if (inicializado) {
             //console.log(`🔍 Control de comparación disponible para ${subcapitulo}`);
           }
+
+          // Configurar hover de municipios
+          this.mapManager.configurarHoverMunicipios(mapaId, mapElementId);
         }, 500); // Pequeño delay para asegurar que las capas estén cargadas
       }
     } else {

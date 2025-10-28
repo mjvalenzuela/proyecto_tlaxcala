@@ -16,6 +16,7 @@ export class MapManager {
     this.overlays = {};
     this.controlsManagers = {}; // ← Gestores de controles de herramientas
     this.comparisonManagers = {}; // ← NUEVO: Gestores de comparación de capas
+    this.hoverListeners = {}; // ← NUEVO: Listeners de hover de municipios
   }
 
   /**
@@ -514,6 +515,29 @@ export class MapManager {
     const mapElement = document.getElementById(containerId);
     if (!mapElement) return;
 
+    // ⬇️ LIMPIAR hover anterior si existe
+    if (this.hoverListeners[mapaId]) {
+      const prevData = this.hoverListeners[mapaId];
+
+      // Restaurar estilo del feature anterior si existe
+      if (prevData.currentFeature) {
+        prevData.currentFeature.setStyle(prevData.defaultStyle);
+      }
+
+      // Remover tooltip anterior
+      if (prevData.tooltip && prevData.tooltip.parentNode) {
+        prevData.tooltip.remove();
+      }
+
+      // Remover listener anterior
+      if (prevData.listener) {
+        mapa.un('pointermove', prevData.listener);
+      }
+
+      // Limpiar referencia
+      delete this.hoverListeners[mapaId];
+    }
+
     // Crear tooltip
     const tooltip = document.createElement('div');
     tooltip.className = 'municipio-hover-tooltip';
@@ -524,19 +548,19 @@ export class MapManager {
     let currentFeature = null;
     let defaultStyle = null;
 
-    // Estilo de hover (borde amarillo grueso)
+    // Estilo de hover (borde lila grueso)
     const hoverStyle = new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: '#FFD700', // Dorado
+        color: '#A21A5C', // Lila principal del proyecto
         width: 4
       }),
       fill: new ol.style.Fill({
-        color: 'rgba(255, 215, 0, 0.2)' // Amarillo translúcido
+        color: 'rgba(162, 26, 92, 0.2)' // Lila translúcido
       })
     });
 
     // Listener de movimiento del mouse
-    mapa.on('pointermove', (evt) => {
+    const pointerMoveListener = (evt) => {
       const pixel = mapa.getEventPixel(evt.originalEvent);
 
       // Restaurar estilo del feature anterior
@@ -557,7 +581,23 @@ export class MapManager {
 
           // Obtener nombre del municipio
           const properties = feature.getProperties();
-          const nombreMunicipio = properties.Municipio || properties.MUNICIPIO || properties.nombre || properties.NOMBRE || 'Municipio';
+
+          // Buscar el nombre del municipio en diferentes variantes de propiedad
+          const nombreMunicipio =
+            properties.Municipio ||
+            properties.MUNICIPIO ||
+            properties.municipio ||
+            properties.nombre ||
+            properties.NOMBRE ||
+            properties.NOM_MUN ||
+            properties.nom_mun ||
+            properties.NOMGEO ||
+            properties.nomgeo ||
+            properties.CVE_MUN ||
+            properties.cve_mun ||
+            properties.nombre_municipio ||
+            properties.NOMBRE_MUNICIPIO ||
+            'Municipio';
 
           // Actualizar tooltip
           tooltip.textContent = nombreMunicipio;
@@ -568,7 +608,22 @@ export class MapManager {
           return true; // Detener búsqueda
         }
       });
-    });
+
+      // Guardar referencias actualizadas
+      this.hoverListeners[mapaId].currentFeature = currentFeature;
+      this.hoverListeners[mapaId].defaultStyle = defaultStyle;
+    };
+
+    // Agregar el listener al mapa
+    mapa.on('pointermove', pointerMoveListener);
+
+    // ⬇️ GUARDAR referencias para limpiar después
+    this.hoverListeners[mapaId] = {
+      listener: pointerMoveListener,
+      tooltip: tooltip,
+      currentFeature: null,
+      defaultStyle: null
+    };
 
     // Agregar estilos CSS para el tooltip
     this.agregarEstilosHoverTooltip();
@@ -913,6 +968,11 @@ export class MapManager {
     // Limpiar referencia de capas antiguas
     this.capas[mapaId] = [];
 
+    // Verificar si hay capa de municipios WMS para agregar capa WFS de interacción
+    const tieneMunicipiosWMS = nuevasCapasConfig.some(capa =>
+      capa.layers && capa.layers.includes('municipios_ganaperd') && capa.tipo === 'wms'
+    );
+
     // Crear y agregar nuevas capas
     const nuevasCapas = nuevasCapasConfig.map((capaConfig) => {
       if (capaConfig.tipo === "wfs") {
@@ -921,6 +981,20 @@ export class MapManager {
         return this.crearCapaWMS(capaConfig);
       }
     });
+
+    // Si tiene capa de municipios WMS, agregar capa WFS transparente para hover
+    if (tieneMunicipiosWMS) {
+      const capaWFSMunicipios = this.crearCapaWFS({
+        nombre: "Municipios (Interacción)",
+        tipo: "wfs",
+        url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+        layers: "SEICCT:municipios_ganaperd",
+        visible: true,
+        leyenda: false,
+        transparente: true,
+      });
+      nuevasCapas.push(capaWFSMunicipios);
+    }
 
     // Agregar nuevas capas al mapa
     nuevasCapas.forEach(capa => {
