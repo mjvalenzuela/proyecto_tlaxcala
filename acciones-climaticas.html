@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mapa Interactivo de Acciones Climáticas en Tlaxcala">
+  <title>Acciones Climáticas</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Leaflet MarkerCluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/acciones-climaticas.css">
+  <link rel="stylesheet" href="css/acciones-responsive.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <span>Tlaxcala</span>
+      </a>
+
+      <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú">
+        <span class="navbar-toggle-line"></span>
+        <span class="navbar-toggle-line"></span>
+        <span class="navbar-toggle-line"></span>
+      </button>
+
+      <div class="navbar-menu" id="navbarMenu">
+        <a href="index.html" class="navbar-link">Inicio</a>
+        <a href="vulnerabilidad.html" class="navbar-link">Vulnerabilidad</a>
+        <a href="riesgo.html" class="navbar-link">Riesgo</a>
+        <a href="amenazas.html" class="navbar-link">Amenazas</a>
+        <a href="impactos.html" class="navbar-link">Impactos</a>
+        <a href="acciones-climaticas.html" class="navbar-link active">Acciones Climáticas</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header con título y estadísticas -->
+  <header class="acciones-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1 class="header-title">Acciones Climáticas</h1>
+        <p class="header-subtitle">Proyectos y programas de cambio climático</p>
+      </div>
+      <div class="header-right">
+        <div class="stats-container">
+          <div class="stat-item">
+            <span class="stat-number" id="statTotal">0</span>
+            <span class="stat-label">Acciones</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="statUbicaciones">0</span>
+            <span class="stat-label">Ubicaciones</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="statDependencias">0</span>
+            <span class="stat-label">Dependencias</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor principal -->
+  <main class="main-container">
+    <!-- Mapa -->
+    <div class="map-wrapper">
+      <div id="map" class="map-container"></div>
+
+      <!-- Loading overlay -->
+      <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Cargando acciones climáticas...</p>
+      </div>
+
+      <!-- Botón de centrar mapa -->
+      <button id="centerMapBtn" class="map-control-btn center-btn" title="Centrar en Tlaxcala">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="22" y1="12" x2="18" y2="12"></line>
+          <line x1="6" y1="12" x2="2" y2="12"></line>
+          <line x1="12" y1="6" x2="12" y2="2"></line>
+          <line x1="12" y1="22" x2="12" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Timeline (estructura no funcional por ahora) -->
+    <div class="timeline-container">
+      <div class="timeline-header">
+        <h3 class="timeline-title">Línea de Tiempo</h3>
+        <span class="timeline-range" id="timelineRange">2021 - 2024</span>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-track">
+          <div class="timeline-bar"></div>
+          <div class="timeline-slider" id="timelineSlider">
+            <input type="range" id="timelineStart" class="timeline-input" min="2021" max="2024" value="2021" disabled>
+            <input type="range" id="timelineEnd" class="timeline-input" min="2021" max="2024" value="2024" disabled>
+          </div>
+        </div>
+      </div>
+      <p class="timeline-note">La línea de tiempo estará disponible próximamente</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2024 Cambio Climático Tlaxcala. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet MarkerCluster JS -->
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+  <!-- JavaScript modules -->
+  <script src="js/acciones/config.js"></script>
+  <script src="js/acciones/data.js"></script>
+  <script src="js/acciones/popup.js"></script>
+  <script src="js/acciones/map.js"></script>
+  <script src="js/acciones/main.js"></script>
+
+  <!-- Navbar script -->
+  <script>
+    // Toggle del menú móvil
+    const navbarToggle = document.getElementById('navbarToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+
+    navbarToggle.addEventListener('click', () => {
+      navbarToggle.classList.toggle('active');
+      navbarMenu.classList.toggle('active');
+    });
+
+    // Cerrar menú al hacer click en un link
+    const navbarLinks = document.querySelectorAll('.navbar-link');
+    navbarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navbarToggle.classList.remove('active');
+        navbarMenu.classList.remove('active');
+      });
+    });
+
+    // Efecto scroll en navbar
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>
