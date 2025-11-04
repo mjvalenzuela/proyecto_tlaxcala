@@ -561,6 +561,17 @@ export class MapManager {
 
     // Listener de movimiento del mouse
     const pointerMoveListener = (evt) => {
+      // ⬇️ VERIFICAR: Si hay comparación activa, no hacer hover
+      if (this.tieneComparacionActiva(mapaId)) {
+        // Restaurar estilo del feature anterior si existe
+        if (currentFeature) {
+          currentFeature.setStyle(defaultStyle);
+          currentFeature = null;
+          tooltip.style.display = 'none';
+        }
+        return;
+      }
+
       const pixel = mapa.getEventPixel(evt.originalEvent);
 
       // Restaurar estilo del feature anterior
@@ -1253,5 +1264,21 @@ export class MapManager {
       delete this.comparisonManagers[mapaId];
       //console.log(`🧹 ComparisonManager destruido para ${mapaId}`);
     }
+  }
+
+  /**
+   * ⬇️ NUEVO: Verifica si hay una comparación activa para un mapa
+   * @param {string} mapaId - ID del mapa
+   * @returns {boolean} - true si hay comparación activa, false si no
+   */
+  tieneComparacionActiva(mapaId) {
+    const comparisonManager = this.comparisonManagers[mapaId];
+    if (!comparisonManager) {
+      return false;
+    }
+
+    // Verificar si hay un modo activo (split, xray, area)
+    // Si modoActual es 'none' o null, no hay comparación activa
+    return comparisonManager.modoActual && comparisonManager.modoActual !== 'none';
   }
 }

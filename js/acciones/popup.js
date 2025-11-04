@@ -213,18 +213,35 @@ class PopupGenerator {
   }
 
   /**
-   * Genera el footer del popup
+   * Genera el footer del popup con 3 botones
    */
   generateFooter(accion) {
     return `
       <div class="popup-footer">
-        <button class="popup-btn" onclick="console.log('Ver más:', ${accion.id})">
+        <button class="popup-btn popup-btn-pdf" onclick="console.log('Ver PDF:', ${accion.id})" title="Ver documento PDF">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 16 16 12 12 8"></polyline>
-            <line x1="8" y1="12" x2="16" y2="12"></line>
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <line x1="10" y1="9" x2="8" y2="9"></line>
           </svg>
-          Ver detalles
+          PDF
+        </button>
+        <button class="popup-btn popup-btn-fotos" onclick="console.log('Ver Fotos:', ${accion.id})" title="Ver galería de fotos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          Fotos
+        </button>
+        <button class="popup-btn popup-btn-videos" onclick="console.log('Ver Videos:', ${accion.id})" title="Ver videos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+          </svg>
+          Videos
         </button>
       </div>
     `;

@@ -329,9 +329,19 @@
     gap: 0.5rem;
   }
 
+  .popup-footer {
+    gap: 0.4rem;
+  }
+
   .popup-btn {
-    padding: 0.65rem;
-    font-size: 0.813rem;
+    padding: 0.5rem 0.3rem;
+    font-size: 0.7rem;
+    gap: 0.3rem;
+  }
+
+  .popup-btn svg {
+    width: 12px;
+    height: 12px;
   }
 
   /* Footer */

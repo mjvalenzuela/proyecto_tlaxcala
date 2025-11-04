@@ -382,6 +382,7 @@
   letter-spacing: 0.5px;
   margin: 0 0 0.35rem 0;
   opacity: 0.95;
+  color: white;
 }
 
 .popup-title {
@@ -390,6 +391,7 @@
   font-weight: 700;
   margin: 0;
   line-height: 1.3;
+  color: white;
 }
 
 /* Body */
@@ -562,26 +564,29 @@
   line-height: 1.4;
 }
 
-/* Footer con botón */
+/* Footer con botones */
 .popup-footer {
   margin-top: 0.625rem;
   padding-top: 0.625rem;
   border-top: 1px solid #f0f0f0;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
 }
 
 .popup-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  width: 100%;
-  padding: 0.625rem;
+  gap: 0.35rem;
+  flex: 1;
+  padding: 0.5rem 0.4rem;
   background: var(--secondary-color);
   color: white;
   border: none;
   border-radius: 8px;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.813rem;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -589,8 +594,9 @@
 }
 
 .popup-btn svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
   transition: transform 0.3s ease;
 }
 
@@ -604,7 +610,20 @@
 }
 
 .popup-btn:hover svg {
-  transform: translateX(2px);
+  transform: scale(1.1);
+}
+
+/* Estilos opcionales para cada tipo de botón */
+.popup-btn-pdf:hover {
+  background: #c91b5e;
+}
+
+.popup-btn-fotos:hover {
+  background: #c91b5e;
+}
+
+.popup-btn-videos:hover {
+  background: #c91b5e;
 }
 
 /* ===================================
