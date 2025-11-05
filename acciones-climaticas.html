@@ -50,6 +50,9 @@
     </div>
   </nav>
 
+  <!-- Indicador para mostrar el navbar -->
+  <div class="navbar-indicator" id="navbarIndicator"></div>
+
   <!-- Header con título y estadísticas -->
   <header class="acciones-header">
     <div class="header-content">
@@ -115,7 +118,7 @@
           </div>
         </div>
       </div>
-      <p class="timeline-note">La línea de tiempo estará disponible próximamente</p>
+      <p class="timeline-note">línea de tiempo</p>
     </div>
   </main>
 
@@ -132,6 +135,7 @@
 
   <!-- JavaScript modules -->
   <script src="js/acciones/config.js"></script>
+  <script src="js/acciones/data-adapter.js"></script>
   <script src="js/acciones/data.js"></script>
   <script src="js/acciones/popup.js"></script>
   <script src="js/acciones/map.js"></script>
@@ -139,13 +143,18 @@
 
   <!-- Navbar script -->
   <script>
-    // Toggle del menú móvil
+    // Navbar y navbar indicator
+    const navbar = document.querySelector('.navbar');
+    const navbarIndicator = document.getElementById('navbarIndicator');
     const navbarToggle = document.getElementById('navbarToggle');
     const navbarMenu = document.getElementById('navbarMenu');
 
+    // Toggle del menú móvil
     navbarToggle.addEventListener('click', () => {
       navbarToggle.classList.toggle('active');
       navbarMenu.classList.toggle('active');
+      // Asegurar que el navbar esté visible cuando se abre el menú móvil
+      navbar.classList.add('visible');
     });
 
     // Cerrar menú al hacer click en un link
@@ -159,12 +168,32 @@
 
     // Efecto scroll en navbar
     window.addEventListener('scroll', () => {
-      const navbar = document.querySelector('.navbar');
       if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
       } else {
         navbar.classList.remove('scrolled');
       }
+    });
+
+    // Mostrar/ocultar navbar con el indicador
+    // Mostrar navbar al hacer hover sobre el indicador
+    navbarIndicator.addEventListener('mouseenter', () => {
+      navbar.classList.add('visible');
+    });
+
+    // Mantener navbar visible mientras el mouse está sobre él
+    navbar.addEventListener('mouseenter', () => {
+      navbar.classList.add('visible');
+    });
+
+    // Ocultar navbar cuando el mouse sale
+    navbar.addEventListener('mouseleave', () => {
+      navbar.classList.remove('visible');
+    });
+
+    // Click en indicador para toggle del navbar
+    navbarIndicator.addEventListener('click', () => {
+      navbar.classList.toggle('visible');
     });
   </script>
 </body>

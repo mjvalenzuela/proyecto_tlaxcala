@@ -49,7 +49,7 @@ export const storyMapConfig = {
           },
           {
             nombre: "Vulnerabilidad por Municipio",
-            tipo: "wms", // WMS para mostrar estilos SLD de GeoServer
+            tipo: "wms", 
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:M82_Vulnerabilidad_CC",
             visible: true,

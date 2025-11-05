@@ -718,7 +718,7 @@
 
 /* ===== CAPÍTULO 4 - MAPA COMO IMAGEN Y TEXTO EXPANDIDO ===== */
 #chapter-4 .chapter-text {
-  grid-row: 2 / 4;
+  grid-row: 2;
 }
 
 .chapter-map-image {

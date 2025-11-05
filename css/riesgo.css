@@ -1,0 +1,319 @@
+/**
+ * Estilos específicos para riesgo.html
+ */
+
+/* ===================================
+   LISTA DE EVENTOS
+   =================================== */
+.events-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.events-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(88, 37, 116, 0.1);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.events-list li:last-child {
+  border-bottom: none;
+}
+
+/* ===================================
+   BOTÓN ATLAS
+   =================================== */
+.btn-atlas {
+  display: inline-block !important;
+  padding: 0.75rem 1.5rem !important;
+  background-color: #582574 !important;
+  background: #582574 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 0.938rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  box-shadow: 0 2px 8px rgba(88, 37, 116, 0.2) !important;
+  outline: none !important;
+}
+
+.btn-atlas:hover {
+  background-color: #a21a5c !important;
+  background: #a21a5c !important;
+  color: white !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(88, 37, 116, 0.3) !important;
+  text-decoration: none !important;
+}
+
+.btn-atlas:active {
+  background-color: #7a1444 !important;
+  background: #7a1444 !important;
+  color: white !important;
+  transform: translateY(0) !important;
+}
+
+.btn-atlas:focus {
+  color: white !important;
+  outline: 2px solid rgba(88, 37, 116, 0.5) !important;
+  outline-offset: 2px !important;
+}
+
+.btn-atlas:visited {
+  color: white !important;
+}
+
+/* ===================================
+   POPUP DE OPENLAYERS (Capítulo 3)
+   =================================== */
+.ol-popup {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  bottom: 12px;
+  left: -50px;
+  min-width: 280px;
+  z-index: 1000;
+}
+
+.ol-popup:after,
+.ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.ol-popup:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+
+.ol-popup:before {
+  border-top-color: #ddd;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+
+.ol-popup-closer {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  color: #999;
+  font-size: 18px;
+  line-height: 20px;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.ol-popup-closer:hover {
+  color: #582574;
+}
+
+.ol-popup-closer:before {
+  content: "✕";
+}
+
+.ol-popup-content {
+  max-width: 400px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.ol-popup-content a:hover {
+  background: #a21a5c !important;
+}
+
+/* ===================================
+   INFORMACIÓN DE ATLAS (Capítulo 3)
+   =================================== */
+#atlas-info {
+  margin-top: 1rem;  
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+}
+
+#atlas-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+#atlas-info p {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* ===================================
+   CAPÍTULO 3 - ANCHOS PERSONALIZADOS (20% texto / 80% mapa)
+   =================================== */
+#risk-chapter-3 {
+  display: grid !important;
+  grid-template-columns: 20% 80% !important;
+  grid-template-rows: auto 1fr !important;
+  gap: 1rem !important;
+}
+
+#risk-chapter-3 .map-title {
+  grid-column: 1 / 3 !important;
+  grid-row: 1 !important;
+}
+
+#risk-chapter-3 .chapter-text {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+  min-width: unset !important;
+}
+
+#risk-chapter-3 .chapter-map {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+}
+
+/* ===================================
+   IMÁGENES DE GRÁFICOS (Capítulo 2)
+   =================================== */
+.chapter-chart-image {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.chapter-chart-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+}
+
+.chapter-image-full {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.chapter-image-full img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+}
+
+/* ===================================
+   RESPONSIVE - TABLET
+   =================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .events-list {
+    font-size: 0.85rem;
+  }
+
+  #atlas-info h3 {
+    font-size: 1rem;
+  }
+
+  .btn-atlas {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  /* Capítulo 3 en tablet - 25% texto / 75% mapa */
+  #risk-chapter-3 {
+    grid-template-columns: 25% 75% !important;
+  }
+}
+
+/* ===================================
+   RESPONSIVE - MÓVIL
+   =================================== */
+@media (max-width: 767px) {
+  .events-list {
+    font-size: 0.813rem;
+  }
+
+  .events-list li {
+    padding: 0.4rem 0;
+  }
+
+  #atlas-info {
+    padding: 0.875rem;
+  }
+
+  #atlas-info h3 {
+    font-size: 0.938rem;
+  }
+
+  #atlas-info p {
+    font-size: 0.813rem;
+  }
+
+  .btn-atlas {
+    padding: 0.6rem 1rem;
+    font-size: 0.813rem;
+    width: 100%;
+  }
+
+  .chapter-chart-image,
+  .chapter-image-full {
+    border-radius: 8px;
+  }
+
+  .chapter-chart-image img,
+  .chapter-image-full img {
+    padding: 0.5rem;
+  }
+
+  /* Capítulo 3 en móvil - layout vertical */
+  #risk-chapter-3 {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto 1fr !important;
+  }
+
+  #risk-chapter-3 .map-title {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  #risk-chapter-3 .chapter-text {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  #risk-chapter-3 .chapter-map {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+  }
+}

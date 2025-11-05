@@ -6,6 +6,25 @@ class DataManager {
   constructor() {
     this.data = null;
     this.config = window.AccionesConfig;
+    this.dataSource = this.getDataSource(); // Detecta fuente de datos desde URL
+  }
+
+  /**
+   * Detecta la fuente de datos desde el parámetro URL
+   * Por defecto: 'apps-script' (Google Apps Script)
+   * Con ?source=api: 'api' (API Real)
+   */
+  getDataSource() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const source = urlParams.get('source');
+
+    if (source === 'api') {
+      console.log('📡 Fuente de datos: API Real');
+      return 'api';
+    } else {
+      console.log('📡 Fuente de datos: Google Apps Script');
+      return 'apps-script';
+    }
   }
 
   /**
@@ -23,22 +42,14 @@ class DataManager {
         }
       }
 
-      // Si no hay caché, hacer fetch al API
-      //console.log('Cargando datos desde API...');
-      const response = await this.fetchWithTimeout(
-        this.config.API_URL,
-        this.config.API_TIMEOUT
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // Validar estructura de datos
-      if (!data || !data.acciones || !Array.isArray(data.acciones)) {
-        throw new Error('Estructura de datos inválida');
+      // Obtener datos según la fuente configurada
+      let data;
+      if (this.dataSource === 'api') {
+        // OPCIÓN 1: API Real (requiere transformación)
+        data = await this.fetchFromAPIReal();
+      } else {
+        // OPCIÓN 2: Google Apps Script (formato directo)
+        data = await this.fetchFromGoogleAppsScript();
       }
 
       // Guardar en caché
@@ -53,6 +64,49 @@ class DataManager {
       console.error('Error al cargar datos:', error);
       throw error;
     }
+  }
+
+  /**
+   * OPCIÓN 1: Obtiene datos de Google Apps Script (fuente actual)
+   * Retorna formato: { acciones: [], metadata: {} }
+   */
+  async fetchFromGoogleAppsScript() {
+    console.log('🔄 Cargando desde Google Apps Script...');
+
+    const response = await this.fetchWithTimeout(
+      this.config.API_URL,
+      this.config.API_TIMEOUT
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // Validar estructura de datos
+    if (!data || !data.acciones || !Array.isArray(data.acciones)) {
+      throw new Error('Estructura de datos inválida');
+    }
+
+    console.log(`✅ ${data.acciones.length} acciones cargadas desde Google Apps Script`);
+    return data;
+  }
+
+  /**
+   * OPCIÓN 2: Obtiene datos de la API Real (fuente alternativa)
+   * Usa DataAdapter para transformar al formato esperado
+   */
+  async fetchFromAPIReal() {
+    // Verificar que DataAdapter esté disponible
+    if (!window.DataAdapter) {
+      throw new Error('DataAdapter no está cargado. Verifica que data-adapter.js esté incluido.');
+    }
+
+    const adapter = new window.DataAdapter();
+    const data = await adapter.obtenerDatosAPI();
+
+    return data;
   }
 
   /**
