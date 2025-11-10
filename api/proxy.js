@@ -12,9 +12,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  // ==========================================
-  // 2. PARSEAR URL CORRECTAMENTE
-  // ==========================================
   try {
     // Obtener la URL completa de la petición
     const fullUrl = new URL(req.url, `https://${req.headers.host}`);
@@ -38,13 +35,8 @@ export default async function handler(req, res) {
     // ==========================================
     const geoserverBaseUrl = 'https://api.cambioclimaticotlaxcala.mx';
     
-    // El pathParam ya contiene toda la query string de GeoServer
-    // Ejemplo: /geoserver/SEICCT/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&...
     const targetUrl = `${geoserverBaseUrl}${pathParam}`;
     
-    //console.log('🔄 Proxy Vercel:');
-    //console.log('   Origen:', req.url);
-    //console.log('   Destino:', targetUrl);
 
     // ==========================================
     // 4. HACER PETICIÓN A GEOSERVER
@@ -54,7 +46,6 @@ export default async function handler(req, res) {
       headers: {
         'Accept': '*/*',
         'User-Agent': 'Vercel-Serverless-Proxy/2.0',
-        // No enviar cookies ni auth headers por seguridad
       },
       // Timeout de 30 segundos
       signal: AbortSignal.timeout(30000)
@@ -64,7 +55,7 @@ export default async function handler(req, res) {
     // 5. VERIFICAR RESPUESTA
     // ==========================================
     if (!response.ok) {
-      console.error(`❌ GeoServer respondió: ${response.status} ${response.statusText}`);
+      console.error(`GeoServer respondió: ${response.status} ${response.statusText}`);
       return res.status(response.status).json({
         error: 'Error en GeoServer',
         status: response.status,
@@ -79,7 +70,6 @@ export default async function handler(req, res) {
     const contentType = response.headers.get('content-type') || 'application/octet-stream';
     res.setHeader('Content-Type', contentType);
     
-    // Copiar otros headers útiles
     const contentLength = response.headers.get('content-length');
     if (contentLength) {
       res.setHeader('Content-Length', contentLength);
@@ -93,34 +83,29 @@ export default async function handler(req, res) {
     if (contentType.includes('image')) {
       const arrayBuffer = await response.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      //console.log(`✅ Imagen servida: ${buffer.length} bytes`);
       return res.status(200).send(buffer);
     }
     
     // Si es XML (WMS GetCapabilities, GetFeatureInfo, etc.)
     if (contentType.includes('xml')) {
       const text = await response.text();
-      //console.log(`✅ XML servido: ${text.length} caracteres`);
       return res.status(200).send(text);
     }
     
     // Si es JSON (WFS, algunos formatos)
     if (contentType.includes('json')) {
       const text = await response.text();
-      //console.log(`✅ JSON servido: ${text.length} caracteres`);
       return res.status(200).send(text);
     }
     
-    // Cualquier otro tipo de contenido (text/plain, application/octet-stream, etc.)
     const text = await response.text();
-   // console.log(`✅ Contenido servido (${contentType}): ${text.length} caracteres`);
     return res.status(200).send(text);
 
   } catch (error) {
     // ==========================================
     // 8. MANEJO DE ERRORES
     // ==========================================
-    console.error('❌ Error en proxy:', error.message);
+    console.error('Error en proxy:', error.message);
     
     // Error de timeout
     if (error.name === 'AbortError') {

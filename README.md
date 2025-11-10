@@ -192,7 +192,7 @@ npx http-server -p 5500
 **Características:**
 - Mapa Leaflet con clustering de markers
 - **API Nativa** exclusiva: `https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/`
-- ✅ Agrupación inteligente: Múltiples actividades se agrupan por proyecto (email + nombre + objetivo)
+- Agrupación inteligente: Múltiples actividades se agrupan por proyecto (email + nombre + objetivo)
 - **Popup complejo tipo formulario** con todos los campos disponibles
 - Filtrado por dependencia
 - Estadísticas en header (proyectos, ubicaciones, dependencias)
@@ -462,16 +462,15 @@ lsof -i :3001                 # Linux/Mac
 
 ## Mantenimiento de Código
 
-### ✅ Migración a API Nativa Completada (Noviembre 2025)
+### Migración a API Nativa Completada (Noviembre 2025)
 
 **Archivos actualizados:**
-- ✅ `js/acciones/data-adapter.js` - Reescrito con lógica de agrupación por email+nombre+objetivo
-- ✅ `js/acciones/config.js` - API nativa exclusiva, cache TTL optimizado (5 min)
-- ✅ `js/acciones/data.js` - Eliminado Google Sheets, solo API nativa
-- ✅ `js/acciones/popup.js` - **Popup complejo tipo formulario** + chip colapsable para multi-ubicación
-- ✅ `css/popups.css` - **Estilos tipo formulario sin degradados** + animaciones de toggle
-- ✅ `js/acciones/map.js` - Markers mejorados con badges numéricos y anillos para multi-ubicación
-- ✅ `css/acciones-climaticas.css` - Estilos para markers personalizados y tooltips (sin degradados)
+- `js/acciones/data-adapter.js` - Reescrito con lógica de agrupación por email+nombre+objetivo
+- `js/acciones/config.js` - API nativa exclusiva, cache TTL optimizado (5 min)
+- `js/acciones/popup.js` - **Popup complejo tipo formulario** + chip colapsable para multi-ubicación
+- `css/popups.css` - **Estilos tipo formulario sin degradados** + animaciones de toggle
+- `js/acciones/map.js` - Markers mejorados con badges numéricos y anillos para multi-ubicación
+- `css/acciones-climaticas.css` - Estilos para markers personalizados y tooltips (sin degradados)
 
 **Arquitectura actual:**
 1. **API Backend** → Retorna array de actividades individuales
@@ -484,98 +483,5 @@ lsof -i :3001                 # Linux/Mac
 - Cada proyecto puede tener múltiples ubicaciones
 - Flags: `es_multiubicacion`, `es_estatal`, `coordenadas_fallback`
 
-## Roadmap
-
-### Completado
-
-- [x] Proxy Node.js con CORS para GeoServer y API
-- [x] Estructura modular del proyecto
-- [x] Landing page con cards
-- [x] Story Map de Vulnerabilidad (4 capítulos completos)
-- [x] Story Map de Riesgo (3 capítulos)
-- [x] Mapa de Acciones Climáticas con Leaflet
-- [x] Sistema de configuración por archivos
-- [x] MapManager con OpenLayers (WMS/WFS)
-- [x] ChartManager con Chart.js
-- [x] ScrollManager para navegación
-- [x] TimelineManager para capítulos
-- [x] Comparación de mapas (Split, Área de interés, Rayos X)
-- [x] Hover sobre municipios
-- [x] Popups interactivos
-- [x] ~~Sistema dual de fuentes de datos~~ → **Migración a API Nativa completada**
-- [x] **Agrupación inteligente de actividades por proyecto**
-- [x] **3 tipos de popups diferenciados (Individual, Multi-ubicación, Estatal)**
-- [x] Responsive completo
-- [x] Navbar contraído con hover
-- [x] Sistema de caché optimizado (5 min TTL)
-
-### Pendiente
-
-- [ ] Story Map de Amenazas
-- [ ] Story Map de Impactos
-- [ ] Animaciones de transición entre capítulos
-- [ ] Filtros avanzados en Acciones Climáticas
-- [ ] Búsqueda de proyectos
-- [ ] Exportar datos a PDF
-- [ ] Testing automatizado
-- [ ] Optimización de performance
-- [ ] PWA (Progressive Web App)
-- [ ] Modo oscuro
-
-## Despliegue
-
-### Vercel (Recomendado)
-
-1. Instala Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
-
-2. Desde la raíz del proyecto:
-   ```bash
-   vercel
-   ```
-
-3. El proxy serverless se configura automáticamente con `api/proxy.js`
-
-### GitHub Pages
-
-1. Configura el repositorio en GitHub
-2. Habilita GitHub Pages en Settings > Pages
-3. Nota: Necesitarás un proxy externo para CORS (Vercel recomendado)
-
-## Contribución
-
-Para agregar nuevos story maps:
-
-1. Crea un nuevo archivo HTML (ej: `nuevo-tema.html`)
-2. Crea su configuración en `js/config/nuevo-tema-config.js`
-3. Agrega el link en el navbar de todos los archivos:
-   ```html
-   <a href="nuevo-tema.html" class="navbar-link">Nuevo Tema</a>
-   ```
-4. Agrega una card en `index.html`:
-   ```html
-   <a href="nuevo-tema.html" class="card">
-     <h3>Nuevo Tema</h3>
-     <p>Descripción...</p>
-   </a>
-   ```
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT.
-
-## Soporte
-
-Para dudas o problemas:
-
-1. Verifica que el proxy esté corriendo: `http://localhost:3001/health`
-2. Revisa la consola del navegador (F12) para errores
-3. Verifica que GeoServer esté activo
-4. Limpia el caché del navegador y localStorage
-5. Revisa los logs del servidor proxy
-
----
 
 **Última actualización:** Noviembre 2025

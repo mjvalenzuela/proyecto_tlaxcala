@@ -27,53 +27,53 @@ class RiesgoApp {
    * Configurar el navbar
    */
   setupNavbar() {
-    const navbar = document.querySelector('.navbar');
-    const navbarIndicator = document.getElementById('navbarIndicator');
-    const navbarToggle = document.getElementById('navbarToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
+    const navbar = document.querySelector(".navbar");
+    const navbarIndicator = document.getElementById("navbarIndicator");
+    const navbarToggle = document.getElementById("navbarToggle");
+    const navbarMenu = document.getElementById("navbarMenu");
 
     // Mostrar navbar al hacer hover sobre el indicador
-    navbarIndicator.addEventListener('mouseenter', () => {
-      navbar.classList.add('visible');
+    navbarIndicator.addEventListener("mouseenter", () => {
+      navbar.classList.add("visible");
     });
 
     // Mantener navbar visible mientras el mouse está sobre él
-    navbar.addEventListener('mouseenter', () => {
-      navbar.classList.add('visible');
+    navbar.addEventListener("mouseenter", () => {
+      navbar.classList.add("visible");
     });
 
     // Ocultar navbar cuando el mouse sale
-    navbar.addEventListener('mouseleave', () => {
-      navbar.classList.remove('visible');
+    navbar.addEventListener("mouseleave", () => {
+      navbar.classList.remove("visible");
     });
 
     // Click en indicador para toggle del navbar
-    navbarIndicator.addEventListener('click', () => {
-      navbar.classList.toggle('visible');
+    navbarIndicator.addEventListener("click", () => {
+      navbar.classList.toggle("visible");
     });
 
     // Toggle del menú móvil
-    navbarToggle.addEventListener('click', () => {
-      navbarToggle.classList.toggle('active');
-      navbarMenu.classList.toggle('active');
-      navbar.classList.add('visible');
+    navbarToggle.addEventListener("click", () => {
+      navbarToggle.classList.toggle("active");
+      navbarMenu.classList.toggle("active");
+      navbar.classList.add("visible");
     });
 
     // Cerrar menú al hacer click en un link
-    const navbarLinks = document.querySelectorAll('.navbar-link');
+    const navbarLinks = document.querySelectorAll(".navbar-link");
     navbarLinks.forEach((link) => {
-      link.addEventListener('click', () => {
-        navbarToggle.classList.remove('active');
-        navbarMenu.classList.remove('active');
+      link.addEventListener("click", () => {
+        navbarToggle.classList.remove("active");
+        navbarMenu.classList.remove("active");
       });
     });
 
     // Efecto scroll en navbar
-    window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
       if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
+        navbar.classList.add("scrolled");
       } else {
-        navbar.classList.remove('scrolled');
+        navbar.classList.remove("scrolled");
       }
     });
   }
@@ -82,34 +82,34 @@ class RiesgoApp {
    * Configurar navegación del story map
    */
   setupNavigation() {
-    const chaptersContainer = document.getElementById('chaptersContainer');
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    const btnPrev = document.getElementById('btnPrev');
-    const btnNext = document.getElementById('btnNext');
+    const chaptersContainer = document.getElementById("chaptersContainer");
+    const timelineItems = document.querySelectorAll(".timeline-item");
+    const btnPrev = document.getElementById("btnPrev");
+    const btnNext = document.getElementById("btnNext");
 
     // Click en timeline
     timelineItems.forEach((item) => {
-      item.addEventListener('click', () => {
+      item.addEventListener("click", () => {
         const chapterNumber = parseInt(item.dataset.chapter);
         this.activateChapter(chapterNumber);
       });
     });
 
     // Botones de navegación
-    btnPrev.addEventListener('click', () => {
+    btnPrev.addEventListener("click", () => {
       this.activateChapter(this.currentChapter - 1);
     });
 
-    btnNext.addEventListener('click', () => {
+    btnNext.addEventListener("click", () => {
       this.activateChapter(this.currentChapter + 1);
     });
 
     // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         e.preventDefault();
         this.activateChapter(this.currentChapter - 1);
-      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
         this.activateChapter(this.currentChapter + 1);
       }
@@ -117,10 +117,10 @@ class RiesgoApp {
 
     // Detectar scroll y actualizar capítulo actual
     let scrollTimeout;
-    chaptersContainer.addEventListener('scroll', () => {
+    chaptersContainer.addEventListener("scroll", () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
-        const chapters = document.querySelectorAll('.chapter');
+        const chapters = document.querySelectorAll(".chapter");
         const containerRect = chaptersContainer.getBoundingClientRect();
 
         chapters.forEach((chapter) => {
@@ -146,7 +146,10 @@ class RiesgoApp {
    * Activar un capítulo
    */
   activateChapter(chapterNumber) {
-    if (chapterNumber < 1 || chapterNumber > this.config.timeline.totalChapters) {
+    if (
+      chapterNumber < 1 ||
+      chapterNumber > this.config.timeline.totalChapters
+    ) {
       return;
     }
 
@@ -155,7 +158,7 @@ class RiesgoApp {
     // Hacer scroll al capítulo
     const chapter = document.getElementById(`risk-chapter-${chapterNumber}`);
     if (chapter) {
-      chapter.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      chapter.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     this.updateTimelineAndButtons();
@@ -165,33 +168,34 @@ class RiesgoApp {
    * Actualizar timeline y botones
    */
   updateTimelineAndButtons() {
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    const btnPrev = document.getElementById('btnPrev');
-    const btnNext = document.getElementById('btnNext');
+    const timelineItems = document.querySelectorAll(".timeline-item");
+    const btnPrev = document.getElementById("btnPrev");
+    const btnNext = document.getElementById("btnNext");
 
     // Actualizar timeline
     timelineItems.forEach((item) => {
       const itemChapter = parseInt(item.dataset.chapter);
       if (itemChapter === this.currentChapter) {
-        item.classList.add('active');
+        item.classList.add("active");
       } else {
-        item.classList.remove('active');
+        item.classList.remove("active");
       }
     });
 
     // Actualizar botones de navegación
     btnPrev.disabled = this.currentChapter === 1;
-    btnNext.disabled = this.currentChapter === this.config.timeline.totalChapters;
+    btnNext.disabled =
+      this.currentChapter === this.config.timeline.totalChapters;
   }
 
   /**
    * Configurar botón de Atlas de Riesgo
    */
   setupAtlasButton() {
-    const btnAtlasRiesgo = document.getElementById('btnAtlasRiesgo');
+    const btnAtlasRiesgo = document.getElementById("btnAtlasRiesgo");
     if (btnAtlasRiesgo) {
-      btnAtlasRiesgo.addEventListener('click', () => {
-        window.open(this.config.links.atlasEstatal, '_blank');
+      btnAtlasRiesgo.addEventListener("click", () => {
+        window.open(this.config.links.atlasEstatal, "_blank");
       });
     }
   }
@@ -204,29 +208,29 @@ class RiesgoApp {
 
     // Observer para capítulo 1
     const observerCap1 = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.target.id === 'risk-chapter-1') {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.target.id === "risk-chapter-1") {
           this.initMap(1);
         }
       });
     }, observerOptions);
 
-    const chapter1 = document.getElementById('risk-chapter-1');
+    const chapter1 = document.getElementById("risk-chapter-1");
     if (chapter1) {
       observerCap1.observe(chapter1);
     }
 
     // Observer para capítulo 3
     const observerCap3 = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.target.id === 'risk-chapter-3') {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.target.id === "risk-chapter-3") {
           this.initMap(3);
           this.loadAtlasCSV();
         }
       });
     }, observerOptions);
 
-    const chapter3 = document.getElementById('risk-chapter-3');
+    const chapter3 = document.getElementById("risk-chapter-3");
     if (chapter3) {
       observerCap3.observe(chapter3);
     }
@@ -236,42 +240,41 @@ class RiesgoApp {
    * Inicializar mapa de un capítulo
    */
   initMap(chapterNumber) {
-    const capitulo = this.config.capitulos.find(c => c.id === chapterNumber);
+    const capitulo = this.config.capitulos.find((c) => c.id === chapterNumber);
 
     if (!capitulo || !capitulo.mapId) {
-      console.warn(`No hay configuración de mapa para capítulo ${chapterNumber}`);
+      console.warn(
+        `No hay configuración de mapa para capítulo ${chapterNumber}`
+      );
       return;
     }
 
     // Verificar si el mapa ya existe
     if (this.maps[capitulo.mapId]) {
-      //console.log(`Mapa ${capitulo.mapId} ya está inicializado`);
       return;
     }
-
-    //console.log(`Inicializando mapa para capítulo ${chapterNumber}:`, capitulo.mapId);
 
     // Crear el mapa
     const map = new ol.Map({
       target: capitulo.mapId,
       layers: [
         new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
+          source: new ol.source.OSM(),
+        }),
       ],
       view: new ol.View({
         center: ol.proj.fromLonLat(this.config.defaultCenter),
-        zoom: this.config.defaultZoom
+        zoom: this.config.defaultZoom,
       }),
       controls: ol.control.defaults.defaults({
         zoom: true,
-        attribution: false
-      })
+        attribution: false,
+      }),
     });
 
     // Agregar capas de GeoServer
     if (capitulo.capas) {
-      capitulo.capas.forEach(capaConfig => {
+      capitulo.capas.forEach((capaConfig) => {
         const layer = this.createLayer(capaConfig);
         if (layer) {
           map.addLayer(layer);
@@ -282,14 +285,15 @@ class RiesgoApp {
     // Guardar referencia del mapa
     this.maps[capitulo.mapId] = {
       map: map,
-      layers: {}
+      layers: {},
     };
 
     // Si es el capítulo 3, guaregar referencia y agregar capa de interacción
     if (chapterNumber === 3) {
-      this.maps[capitulo.mapId].municipiosLayer = map.getLayers().getArray().find(
-        layer => layer.get('name') === 'Municipios'
-      );
+      this.maps[capitulo.mapId].municipiosLayer = map
+        .getLayers()
+        .getArray()
+        .find((layer) => layer.get("name") === "Municipios");
 
       // Agregar capa WFS transparente para interacción (sin CORS)
       this.addInteractionLayer(map);
@@ -303,19 +307,14 @@ class RiesgoApp {
    * Crear una capa de OpenLayers según configuración
    */
   createLayer(config) {
-    if (config.tipo === 'wms') {
-      //console.log('Creando capa WMS:', config.nombre, config.layer);
-
+    if (config.tipo === "wms") {
       // Extraer workspace de la capa (ej: "SEICCT:Municipios" -> "SEICCT")
-      const layerParts = config.layer.split(':');
-      const workspace = layerParts.length > 1 ? layerParts[0] : 'SEICCT';
+      const layerParts = config.layer.split(":");
+      const workspace = layerParts.length > 1 ? layerParts[0] : "SEICCT";
 
       // Obtener URL del proxy
       const proxyBase = this.config.proxy.url;
-      const isVercelProxy = proxyBase.includes('proxy?path=');
-
-      //console.log(`  📡 Proxy base: ${proxyBase}`);
-      //console.log(`  🗂️ Workspace: ${workspace}`);
+      const isVercelProxy = proxyBase.includes("proxy?path=");
 
       // Construir URL WMS según el tipo de proxy
       let wmsUrl;
@@ -323,46 +322,50 @@ class RiesgoApp {
 
       if (isVercelProxy) {
         // Para Vercel: usar loader personalizado
-        //console.log('  ☁️ Usando proxy de Vercel con loader personalizado');
-        wmsUrl = proxyBase.replace('?path=', '');
+        wmsUrl = proxyBase.replace("?path=", "");
 
         // Loader personalizado para Vercel
-        tileLoadFunction = function(imageTile, src) {
+        tileLoadFunction = function (imageTile, src) {
           const url = new URL(src, window.location.origin);
           const searchParams = url.searchParams;
           const queryString = searchParams.toString();
           const fullPath = `/geoserver/${workspace}/wms?${queryString}`;
           const encodedPath = encodeURIComponent(fullPath);
-          const finalUrl = `${proxyBase.replace('?path=', '')}?path=${encodedPath}`;
+          const finalUrl = `${proxyBase.replace(
+            "?path=",
+            ""
+          )}?path=${encodedPath}`;
 
           imageTile.getImage().src = finalUrl;
         };
       } else {
         // Para local: concatenar directamente
         wmsUrl = `${proxyBase}/${workspace}/wms`;
-        //console.log(`  🏠 URL WMS local: ${wmsUrl}`);
       }
 
       const wmsSource = new ol.source.TileWMS({
         url: wmsUrl,
         params: {
-          'LAYERS': config.layer,
-          'TILED': true,
-          'VERSION': '1.1.0',
-          'STYLES': config.style || '',
-          'FORMAT': 'image/png',
-          'TRANSPARENT': true
+          LAYERS: config.layer,
+          TILED: true,
+          VERSION: "1.1.0",
+          STYLES: config.style || "",
+          FORMAT: "image/png",
+          TRANSPARENT: true,
         },
-        serverType: 'geoserver',
-        crossOrigin: 'anonymous',
-        ...(tileLoadFunction && { tileLoadFunction })
+        serverType: "geoserver",
+        crossOrigin: "anonymous",
+        ...(tileLoadFunction && { tileLoadFunction }),
       });
 
       // Manejar errores de carga de tiles
-      wmsSource.on('tileloaderror', (event) => {
+      wmsSource.on("tileloaderror", (event) => {
         const tile = event.tile;
-        console.error(`❌ Error cargando tile de capa ${config.nombre}`);
-        console.error(`   URL que falló:`, tile.getImage ? tile.getImage().src : 'URL no disponible');
+        console.error(`Error cargando tile de capa ${config.nombre}`);
+        console.error(
+          `   URL que falló:`,
+          tile.getImage ? tile.getImage().src : "URL no disponible"
+        );
         console.error(`   Evento completo:`, event);
       });
 
@@ -370,18 +373,16 @@ class RiesgoApp {
         source: wmsSource,
         opacity: config.opacity || 1,
         zIndex: config.zIndex || 0,
-        visible: true
+        visible: true,
       });
 
       // Guardar nombre para identificación
-      layer.set('name', config.nombre);
-
-      //console.log(`✅ Capa ${config.nombre} creada con zIndex:`, config.zIndex);
+      layer.set("name", config.nombre);
 
       return layer;
     }
 
-    console.warn('Tipo de capa no soportado:', config.tipo);
+    console.warn("Tipo de capa no soportado:", config.tipo);
     return null;
   }
 
@@ -390,47 +391,44 @@ class RiesgoApp {
    */
   loadAtlasCSV() {
     if (Object.keys(this.atlasData).length > 0) {
-      //console.log('Atlas CSV ya cargado');
-      // Si ya está cargado, configurar la UI inmediatamente
       this.setupAtlasUI();
       return;
     }
 
-    const capitulo3 = this.config.capitulos.find(c => c.id === 3);
+    const capitulo3 = this.config.capitulos.find((c) => c.id === 3);
     if (!capitulo3 || !capitulo3.atlasCSV) {
-      console.warn('No hay configuración de atlas CSV');
+      console.warn("No hay configuración de atlas CSV");
       return;
     }
 
     Papa.parse(capitulo3.atlasCSV, {
       download: true,
       header: true,
-      encoding: 'UTF-8',
+      encoding: "UTF-8",
       skipEmptyLines: true,
       complete: (results) => {
         // Procesar los datos del CSV
-        results.data.forEach(row => {
-          const municipio = row.Municipio ? row.Municipio.trim() : '';
-          const anio = row['Año de publicación'] || row['Ano de publicacion'] || '';
-          const link = row.Link ? row.Link.trim() : '';
+        results.data.forEach((row) => {
+          const municipio = row.Municipio ? row.Municipio.trim() : "";
+          const anio =
+            row["Año de publicación"] || row["Ano de publicacion"] || "";
+          const link = row.Link ? row.Link.trim() : "";
 
           if (municipio && link) {
             this.atlasData[municipio.toLowerCase()] = {
               nombre: municipio,
               anio: anio,
-              link: link
+              link: link,
             };
           }
         });
-
-        //console.log('Atlas municipales cargados:', this.atlasData);
 
         // Una vez cargados los datos, configurar la UI
         this.setupAtlasUI();
       },
       error: (error) => {
-        console.error('Error al cargar links.csv:', error);
-      }
+        console.error("Error al cargar links.csv:", error);
+      },
     });
   }
 
@@ -438,11 +436,13 @@ class RiesgoApp {
    * Configurar UI de atlas después de cargar datos
    */
   setupAtlasUI() {
-    const mapData = this.maps['map-3'];
+    const mapData = this.maps["map-3"];
     if (mapData && mapData.map && mapData.municipiosLayer) {
       this.setupAtlasHover(mapData.map, mapData.municipiosLayer);
     } else {
-      console.warn('No se pudo configurar UI de atlas: mapa o capa no disponible');
+      console.warn(
+        "No se pudo configurar UI de atlas: mapa o capa no disponible"
+      );
     }
   }
 
@@ -451,22 +451,22 @@ class RiesgoApp {
    */
   addHoverOnlyLayer(map, mapId) {
     const proxyBase = this.config.proxy.url;
-    const workspace = 'SEICCT';
-    const typeName = 'SEICCT:municipios_ganaperd';
-    const isVercelProxy = proxyBase.includes('proxy?path=');
+    const workspace = "SEICCT";
+    const typeName = "SEICCT:municipios_ganaperd";
+    const isVercelProxy = proxyBase.includes("proxy?path=");
 
     // Crear capa WFS
     const vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
       url: (extent) => {
         const params = new URLSearchParams({
-          service: 'WFS',
-          version: '1.1.0',
-          request: 'GetFeature',
+          service: "WFS",
+          version: "1.1.0",
+          request: "GetFeature",
           typename: typeName,
-          outputFormat: 'application/json',
-          srsname: 'EPSG:3857',
-          bbox: `${extent.join(',')},EPSG:3857`
+          outputFormat: "application/json",
+          srsname: "EPSG:3857",
+          bbox: `${extent.join(",")},EPSG:3857`,
         });
 
         // Construir URL según el tipo de proxy
@@ -474,7 +474,7 @@ class RiesgoApp {
         if (isVercelProxy) {
           const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
           const encodedPath = encodeURIComponent(wfsPath);
-          finalUrl = `${proxyBase.replace('?path=', '')}?path=${encodedPath}`;
+          finalUrl = `${proxyBase.replace("?path=", "")}?path=${encodedPath}`;
         } else {
           const wfsPath = `/${workspace}/ows?${params.toString()}`;
           finalUrl = `${proxyBase}${wfsPath}`;
@@ -482,25 +482,25 @@ class RiesgoApp {
 
         return finalUrl;
       },
-      strategy: ol.loadingstrategy.bbox
+      strategy: ol.loadingstrategy.bbox,
     });
 
     const interactionLayer = new ol.layer.Vector({
       source: vectorSource,
       style: new ol.style.Style({
         fill: new ol.style.Fill({
-          color: 'rgba(0, 0, 0, 0)' // Completamente transparente
+          color: "rgba(0, 0, 0, 0)", // Completamente transparente
         }),
         stroke: new ol.style.Stroke({
-          color: 'rgba(0, 0, 0, 0)',
-          width: 0
-        })
+          color: "rgba(0, 0, 0, 0)",
+          width: 0,
+        }),
       }),
-      zIndex: 100
+      zIndex: 100,
     });
 
-    interactionLayer.set('name', 'Municipios-Hover');
-    interactionLayer.set('tipo', 'wfs'); // Marcar como WFS para hover
+    interactionLayer.set("name", "Municipios-Hover");
+    interactionLayer.set("tipo", "wfs"); // Marcar como WFS para hover
     map.addLayer(interactionLayer);
 
     // Solo configurar hover (sin popup)
@@ -512,24 +512,22 @@ class RiesgoApp {
    */
   addInteractionLayer(map) {
     const proxyBase = this.config.proxy.url;
-    const workspace = 'SEICCT';
-    const typeName = 'SEICCT:municipios_ganaperd'; // Usar la misma capa que funciona en vulnerabilidad
-    const isVercelProxy = proxyBase.includes('proxy?path=');
-
-    //console.log('📍 Agregando capa de interacción WFS para clicks');
+    const workspace = "SEICCT";
+    const typeName = "SEICCT:municipios_ganaperd"; // Usar la misma capa que funciona en vulnerabilidad
+    const isVercelProxy = proxyBase.includes("proxy?path=");
 
     // Crear capa WFS
     const vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
       url: (extent) => {
         const params = new URLSearchParams({
-          service: 'WFS',
-          version: '1.1.0',
-          request: 'GetFeature',
+          service: "WFS",
+          version: "1.1.0",
+          request: "GetFeature",
           typename: typeName,
-          outputFormat: 'application/json',
-          srsname: 'EPSG:3857',
-          bbox: `${extent.join(',')},EPSG:3857`
+          outputFormat: "application/json",
+          srsname: "EPSG:3857",
+          bbox: `${extent.join(",")},EPSG:3857`,
         });
 
         // Construir URL según el tipo de proxy
@@ -537,48 +535,45 @@ class RiesgoApp {
         if (isVercelProxy) {
           const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
           const encodedPath = encodeURIComponent(wfsPath);
-          finalUrl = `${proxyBase.replace('?path=', '')}?path=${encodedPath}`;
+          finalUrl = `${proxyBase.replace("?path=", "")}?path=${encodedPath}`;
         } else {
           const wfsPath = `/${workspace}/ows?${params.toString()}`;
           finalUrl = `${proxyBase}${wfsPath}`;
         }
 
-        //console.log('🔗 URL WFS para interacción:', finalUrl);
         return finalUrl;
       },
-      strategy: ol.loadingstrategy.bbox
+      strategy: ol.loadingstrategy.bbox,
     });
 
     // Manejar errores de carga WFS
-    vectorSource.on('featuresloaderror', (event) => {
-      console.error('❌ Error cargando features WFS:', event);
+    vectorSource.on("featuresloaderror", (event) => {
+      console.error("Error cargando features WFS:", event);
     });
 
     const interactionLayer = new ol.layer.Vector({
       source: vectorSource,
       style: new ol.style.Style({
         fill: new ol.style.Fill({
-          color: 'rgba(0, 0, 0, 0)' // Completamente transparente
+          color: "rgba(0, 0, 0, 0)", // Completamente transparente
         }),
         stroke: new ol.style.Stroke({
-          color: 'rgba(0, 0, 0, 0)',
-          width: 0
-        })
+          color: "rgba(0, 0, 0, 0)",
+          width: 0,
+        }),
       }),
-      zIndex: 100
+      zIndex: 100,
     });
 
-    interactionLayer.set('name', 'Municipios-Interaction');
-    interactionLayer.set('tipo', 'wfs'); // Marcar como WFS para hover
+    interactionLayer.set("name", "Municipios-Interaction");
+    interactionLayer.set("tipo", "wfs"); // Marcar como WFS para hover
     map.addLayer(interactionLayer);
 
     // Crear popup overlay
     this.setupClickPopup(map, interactionLayer);
 
     // Configurar hover para resaltar municipios
-    this.setupMunicipiosHover(map, 'map-3');
-
-    //console.log('✅ Capa de interacción agregada');
+    this.setupMunicipiosHover(map, "map-3");
   }
 
   /**
@@ -589,8 +584,8 @@ class RiesgoApp {
     if (!mapElement) return;
 
     // Crear tooltip
-    const tooltip = document.createElement('div');
-    tooltip.className = 'municipio-hover-tooltip';
+    const tooltip = document.createElement("div");
+    tooltip.className = "municipio-hover-tooltip";
     tooltip.style.cssText = `
       position: absolute;
       background: rgba(0, 0, 0, 0.85);
@@ -613,28 +608,28 @@ class RiesgoApp {
     // Estilo de hover (borde lila grueso)
     const hoverStyle = new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: '#A21A5C',
-        width: 4
+        color: "#A21A5C",
+        width: 4,
       }),
       fill: new ol.style.Fill({
-        color: 'rgba(162, 26, 92, 0.2)'
-      })
+        color: "rgba(162, 26, 92, 0.2)",
+      }),
     });
 
     // Listener de movimiento del mouse
-    map.on('pointermove', (evt) => {
+    map.on("pointermove", (evt) => {
       const pixel = map.getEventPixel(evt.originalEvent);
 
       // Restaurar estilo del feature anterior
       if (currentFeature) {
         currentFeature.setStyle(defaultStyle);
         currentFeature = null;
-        tooltip.style.display = 'none';
+        tooltip.style.display = "none";
       }
 
       // Buscar feature bajo el cursor (solo capas WFS)
       map.forEachFeatureAtPixel(pixel, (feature, layer) => {
-        if (layer && layer.get('tipo') === 'wfs') {
+        if (layer && layer.get("tipo") === "wfs") {
           currentFeature = feature;
           defaultStyle = feature.getStyle() || layer.getStyle();
 
@@ -643,20 +638,21 @@ class RiesgoApp {
 
           // Obtener nombre del municipio
           const properties = feature.getProperties();
-          const nombreMunicipio = properties.Municipio ||
-                                 properties.MUNICIPIO ||
-                                 properties.municipio ||
-                                 properties.nombre ||
-                                 properties.NOMBRE ||
-                                 properties.NOM_MUN ||
-                                 properties.nom_mun ||
-                                 properties.NOMGEO ||
-                                 properties.nomgeo ||
-                                 'Municipio';
+          const nombreMunicipio =
+            properties.Municipio ||
+            properties.MUNICIPIO ||
+            properties.municipio ||
+            properties.nombre ||
+            properties.NOMBRE ||
+            properties.NOM_MUN ||
+            properties.nom_mun ||
+            properties.NOMGEO ||
+            properties.nomgeo ||
+            "Municipio";
 
           // Actualizar tooltip
           tooltip.textContent = nombreMunicipio;
-          tooltip.style.display = 'block';
+          tooltip.style.display = "block";
           tooltip.style.left = `${evt.originalEvent.offsetX + 15}px`;
           tooltip.style.top = `${evt.originalEvent.offsetY + 15}px`;
 
@@ -671,8 +667,8 @@ class RiesgoApp {
    */
   setupClickPopup(map, interactionLayer) {
     // Crear elemento del popup
-    const popupElement = document.createElement('div');
-    popupElement.className = 'ol-popup';
+    const popupElement = document.createElement("div");
+    popupElement.className = "ol-popup";
     popupElement.innerHTML = `
       <div class="ol-popup-closer" id="popup-closer"></div>
       <div class="ol-popup-content" id="popup-content"></div>
@@ -683,20 +679,20 @@ class RiesgoApp {
       element: popupElement,
       autoPan: {
         animation: {
-          duration: 250
-        }
-      }
+          duration: 250,
+        },
+      },
     });
     map.addOverlay(popup);
 
     // Cerrar popup
-    popupElement.querySelector('#popup-closer').onclick = () => {
+    popupElement.querySelector("#popup-closer").onclick = () => {
       popup.setPosition(undefined);
       return false;
     };
 
     // Click en el mapa
-    map.on('click', (evt) => {
+    map.on("click", (evt) => {
       const coordinate = evt.coordinate;
       let found = false;
 
@@ -706,15 +702,16 @@ class RiesgoApp {
           const properties = feature.getProperties();
 
           // Buscar nombre del municipio
-          const nombreMunicipio = properties.Municipio ||
-                                 properties.MUNICIPIO ||
-                                 properties.municipio ||
-                                 properties.NOMGEO ||
-                                 properties.nomgeo ||
-                                 properties.NOM_MUN ||
-                                 properties.nom_mun ||
-                                 properties.nombre ||
-                                 properties.NOMBRE;
+          const nombreMunicipio =
+            properties.Municipio ||
+            properties.MUNICIPIO ||
+            properties.municipio ||
+            properties.NOMGEO ||
+            properties.nomgeo ||
+            properties.NOM_MUN ||
+            properties.nom_mun ||
+            properties.nombre ||
+            properties.NOMBRE;
 
           if (nombreMunicipio) {
             const nombreLower = nombreMunicipio.toLowerCase();
@@ -722,7 +719,7 @@ class RiesgoApp {
 
             // Solo mostrar popup si el municipio tiene atlas
             if (atlas) {
-              const content = popupElement.querySelector('#popup-content');
+              const content = popupElement.querySelector("#popup-content");
               content.innerHTML = `
                 <div style="padding: 0.5rem;">
                   <h3 style="margin: 0 0 0.5rem 0; color: #582574; font-size: 1rem;">
@@ -755,21 +752,22 @@ class RiesgoApp {
     });
 
     // Cambiar cursor al pasar sobre municipios con atlas
-    map.on('pointermove', (evt) => {
+    map.on("pointermove", (evt) => {
       let hasAtlas = false;
 
       map.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
         if (layer === interactionLayer) {
           const properties = feature.getProperties();
-          const nombreMunicipio = properties.Municipio ||
-                                 properties.MUNICIPIO ||
-                                 properties.municipio ||
-                                 properties.NOMGEO ||
-                                 properties.nomgeo ||
-                                 properties.NOM_MUN ||
-                                 properties.nom_mun ||
-                                 properties.nombre ||
-                                 properties.NOMBRE;
+          const nombreMunicipio =
+            properties.Municipio ||
+            properties.MUNICIPIO ||
+            properties.municipio ||
+            properties.NOMGEO ||
+            properties.nomgeo ||
+            properties.NOM_MUN ||
+            properties.nom_mun ||
+            properties.nombre ||
+            properties.NOMBRE;
 
           if (nombreMunicipio) {
             const nombreLower = nombreMunicipio.toLowerCase();
@@ -779,7 +777,7 @@ class RiesgoApp {
         }
       });
 
-      map.getTargetElement().style.cursor = hasAtlas ? 'pointer' : '';
+      map.getTargetElement().style.cursor = hasAtlas ? "pointer" : "";
     });
   }
 
@@ -790,24 +788,26 @@ class RiesgoApp {
    * con atlas en la información de la card.
    */
   setupAtlasHover(map, municipiosLayer) {
-    const atlasInfo = document.getElementById('atlas-info');
+    const atlasInfo = document.getElementById("atlas-info");
     if (!atlasInfo) {
-      console.warn('No se encontró elemento #atlas-info');
+      console.warn("No se encontró elemento #atlas-info");
       return;
     }
 
     // Mostrar lista de municipios con atlas disponibles
-    const titleElement = atlasInfo.querySelector('h3');
-    const descElement = atlasInfo.querySelector('p');
+    const titleElement = atlasInfo.querySelector("h3");
+    const descElement = atlasInfo.querySelector("p");
 
     //titleElement.textContent = 'Municipios con Atlas disponibles:';
 
     // Crear lista de municipios
     const municipiosList = Object.values(this.atlasData)
-      .map(atlas => `<li><strong>${atlas.nombre}</strong> (${atlas.anio})</li>`)
-      .join('');
+      .map(
+        (atlas) => `<li><strong>${atlas.nombre}</strong> (${atlas.anio})</li>`
+      )
+      .join("");
 
-/*     descElement.innerHTML = `
+    /*     descElement.innerHTML = `
       <ul style="list-style: none; padding-left: 0; margin: 0.5rem 0;">
         ${municipiosList}
       </ul>
@@ -817,13 +817,13 @@ class RiesgoApp {
     `; */
 
     // Ocultar el enlace individual del atlas
-    const linkElement = atlasInfo.querySelector('a.btn-atlas');
+    const linkElement = atlasInfo.querySelector("a.btn-atlas");
     if (linkElement) {
-      linkElement.style.display = 'none';
+      linkElement.style.display = "none";
     }
 
     // Mostrar la información
-    atlasInfo.style.display = 'block';
+    atlasInfo.style.display = "block";
 
     // Agregar botones para cada municipio
     this.addAtlasButtons(atlasInfo);
@@ -834,18 +834,19 @@ class RiesgoApp {
    */
   addAtlasButtons(atlasInfo) {
     // Crear contenedor de botones si no existe
-    let buttonsContainer = atlasInfo.querySelector('.atlas-buttons');
+    let buttonsContainer = atlasInfo.querySelector(".atlas-buttons");
     if (!buttonsContainer) {
-      buttonsContainer = document.createElement('div');
-      buttonsContainer.className = 'atlas-buttons';
-      buttonsContainer.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; margin-top: 1rem;';
+      buttonsContainer = document.createElement("div");
+      buttonsContainer.className = "atlas-buttons";
+      buttonsContainer.style.cssText =
+        "display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; margin-top: 1rem;";
       atlasInfo.appendChild(buttonsContainer);
     }
 
     // Crear un botón para cada municipio
-    Object.values(this.atlasData).forEach(atlas => {
-      const button = document.createElement('button');
-      button.className = 'btn-atlas-mini';
+    Object.values(this.atlasData).forEach((atlas) => {
+      const button = document.createElement("button");
+      button.className = "btn-atlas-mini";
       button.style.cssText = `
         padding: 0.5rem 0.75rem;
         background: #a21a5c;
@@ -863,18 +864,18 @@ class RiesgoApp {
       button.textContent = `${atlas.nombre} - ${atlas.anio}`;
       button.title = `Ver Atlas de Riesgo de ${atlas.nombre} (${atlas.anio})`;
 
-      button.addEventListener('click', () => {
-        window.open(atlas.link, '_blank');
+      button.addEventListener("click", () => {
+        window.open(atlas.link, "_blank");
       });
 
-      button.addEventListener('mouseenter', () => {
-        button.style.transform = 'translateY(-2px)';
-        button.style.boxShadow = '0 4px 8px rgba(88, 37, 116, 0.3)';
+      button.addEventListener("mouseenter", () => {
+        button.style.transform = "translateY(-2px)";
+        button.style.boxShadow = "0 4px 8px rgba(88, 37, 116, 0.3)";
       });
 
-      button.addEventListener('mouseleave', () => {
-        button.style.transform = 'translateY(0)';
-        button.style.boxShadow = '0 2px 4px rgba(88, 37, 116, 0.2)';
+      button.addEventListener("mouseleave", () => {
+        button.style.transform = "translateY(0)";
+        button.style.boxShadow = "0 2px 4px rgba(88, 37, 116, 0.2)";
       });
 
       buttonsContainer.appendChild(button);
@@ -883,8 +884,8 @@ class RiesgoApp {
 }
 
 // Inicializar la aplicación cuando el DOM esté listo
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
     new RiesgoApp();
   });
 } else {

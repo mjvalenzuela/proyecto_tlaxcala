@@ -14,8 +14,7 @@ class DataManager {
    * SIEMPRE usa la API nativa (Google Sheets eliminado)
    */
   getDataSource() {
-    console.log('📡 Fuente de datos: API Nativa');
-    return 'api';
+    return "api";
   }
 
   /**
@@ -27,7 +26,6 @@ class DataManager {
       if (this.config.CACHE.enabled) {
         const cachedData = this.getCachedData();
         if (cachedData) {
-          console.log('✅ Datos cargados desde caché');
           this.data = cachedData;
           return cachedData;
         }
@@ -43,9 +41,8 @@ class DataManager {
 
       this.data = data;
       return data;
-
     } catch (error) {
-      console.error('❌ Error al cargar datos:', error);
+      console.error("Error al cargar datos:", error);
       throw error;
     }
   }
@@ -58,7 +55,9 @@ class DataManager {
   async fetchFromAPIReal() {
     // Verificar que DataAdapter esté disponible
     if (!window.DataAdapter) {
-      throw new Error('DataAdapter no está cargado. Verifica que data-adapter.js esté incluido.');
+      throw new Error(
+        "DataAdapter no está cargado. Verifica que data-adapter.js esté incluido."
+      );
     }
 
     const adapter = new window.DataAdapter();
@@ -77,17 +76,17 @@ class DataManager {
     try {
       const response = await fetch(url, {
         signal: controller.signal,
-        mode: 'cors',
+        mode: "cors",
         headers: {
-          'Accept': 'application/json'
-        }
+          Accept: "application/json",
+        },
       });
       clearTimeout(timeoutId);
       return response;
     } catch (error) {
       clearTimeout(timeoutId);
-      if (error.name === 'AbortError') {
-        throw new Error('La solicitud excedió el tiempo límite');
+      if (error.name === "AbortError") {
+        throw new Error("La solicitud excedió el tiempo límite");
       }
       throw error;
     }
@@ -112,7 +111,7 @@ class DataManager {
 
       return data;
     } catch (error) {
-      console.error('Error al leer caché:', error);
+      console.error("Error al leer caché:", error);
       return null;
     }
   }
@@ -124,11 +123,11 @@ class DataManager {
     try {
       const cacheObject = {
         data: data,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       localStorage.setItem(this.config.CACHE.key, JSON.stringify(cacheObject));
     } catch (error) {
-      console.error('Error al guardar en caché:', error);
+      console.error("Error al guardar en caché:", error);
     }
   }
 
@@ -138,9 +137,8 @@ class DataManager {
   clearCache() {
     try {
       localStorage.removeItem(this.config.CACHE.key);
-      //console.log('Caché limpiado');
     } catch (error) {
-      console.error('Error al limpiar caché:', error);
+      console.error("Error al limpiar caché:", error);
     }
   }
 
@@ -158,7 +156,7 @@ class DataManager {
       programas: data.metadata?.tipos?.programas || 0,
       activos: data.metadata?.estados?.activos || 0,
       concluidos: data.metadata?.estados?.concluidos || 0,
-      planeados: data.metadata?.estados?.planeados || 0
+      planeados: data.metadata?.estados?.planeados || 0,
     };
   }
 
@@ -171,14 +169,14 @@ class DataManager {
 
     const markers = [];
 
-    data.acciones.forEach(accion => {
+    data.acciones.forEach((accion) => {
       // Verificar que la acción tenga ubicaciones válidas
       if (!accion.ubicaciones || !Array.isArray(accion.ubicaciones)) {
         return;
       }
 
       // Crear un marker por cada ubicación
-      accion.ubicaciones.forEach(ubicacion => {
+      accion.ubicaciones.forEach((ubicacion) => {
         // Validar coordenadas
         if (!this.isValidCoordinate(ubicacion.lat, ubicacion.lng)) {
           console.warn(`Coordenadas inválidas para: ${accion.nombre_proyecto}`);
@@ -189,7 +187,7 @@ class DataManager {
           ...accion,
           currentUbicacion: ubicacion,
           lat: ubicacion.lat,
-          lng: ubicacion.lng
+          lng: ubicacion.lng,
         });
       });
     });
@@ -222,6 +220,6 @@ class DataManager {
 }
 
 // Hacer DataManager disponible globalmente
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.DataManager = DataManager;
 }

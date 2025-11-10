@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="css/navbar.css">
   <link rel="stylesheet" href="css/acciones-climaticas.css">
   <link rel="stylesheet" href="css/popups.css">
+  <link rel="stylesheet" href="css/filters.css">
   <link rel="stylesheet" href="css/acciones-responsive.css">
 </head>
 <body>
@@ -79,6 +80,60 @@
       </div>
     </div>
   </header>
+
+  <!-- Panel de Filtros -->
+  <div class="filters-wrapper">
+    <div class="filters-container">
+      <!-- Botón toggle para móvil -->
+      <button id="toggleFiltersBtn" class="filters-toggle-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+        </svg>
+        <span>Filtros</span>
+        <span class="filter-count" id="filterResultsCount">0</span>
+      </button>
+
+      <!-- Panel de filtros -->
+      <div id="filtersPanel" class="filters-panel">
+        <div class="filters-header">
+          <h3 class="filters-title">Filtros</h3>
+          <button id="clearFiltersBtn" class="filters-clear-btn">Limpiar</button>
+        </div>
+
+        <div class="filters-content">
+          <!-- Filtro por Dependencia -->
+          <div class="filter-group">
+            <h4 class="filter-group-title">Dependencia</h4>
+            <div class="filter-options" id="filterDependencias">
+              <!-- Se generará dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Filtro por Tipo -->
+          <div class="filter-group">
+            <h4 class="filter-group-title">Tipo</h4>
+            <div class="filter-options" id="filterTipos">
+              <!-- Se generará dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Filtro por Estado -->
+          <div class="filter-group">
+            <h4 class="filter-group-title">Estado</h4>
+            <div class="filter-options" id="filterEstados">
+              <!-- Se generará dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <div class="filters-footer">
+          <p class="filters-results">
+            Mostrando <strong id="filterResultsCount2">0</strong> resultados
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Contenedor principal -->
   <main class="main-container">
@@ -140,6 +195,7 @@
   <script src="js/acciones/data.js"></script>
   <script src="js/acciones/popup.js"></script>
   <script src="js/acciones/map.js"></script>
+  <script src="js/acciones/filters.js"></script>
   <script src="js/acciones/main.js"></script>
 
   <!-- Navbar script -->

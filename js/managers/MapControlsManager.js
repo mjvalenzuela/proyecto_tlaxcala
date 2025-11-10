@@ -7,27 +7,32 @@
  * - Animaciones
  */
 
-import { MeasurementTool, ExportTool, LayerSwipeTool, AnimationTool } from '../utils/MapTools.js';
+import {
+  MeasurementTool,
+  ExportTool,
+  LayerSwipeTool,
+  AnimationTool,
+} from "../utils/MapTools.js";
 
 export class MapControlsManager {
   constructor(map, mapId) {
     this.map = map;
     this.mapId = mapId;
-    
+
     // Instancias de herramientas
     this.measurementTool = new MeasurementTool(map);
     this.exportTool = new ExportTool(map);
     this.animationTool = new AnimationTool(map);
     this.layerSwipeTool = null; // Se inicializa cuando se necesite
-    
+
     // Estados
     this.herramientaActiva = null;
     this.modoMedicion = null; // 'distance' o 'area'
-    
+
     // Elementos del DOM
     this.toolbar = null;
     this.botones = {};
-    
+
     this.inicializar();
   }
 
@@ -45,13 +50,13 @@ export class MapControlsManager {
    */
   crearToolbar() {
     // Crear contenedor principal con botón de toggle
-    const toolbarWrapper = document.createElement('div');
-    toolbarWrapper.className = 'map-toolbar-wrapper';
+    const toolbarWrapper = document.createElement("div");
+    toolbarWrapper.className = "map-toolbar-wrapper";
     toolbarWrapper.id = `toolbar-wrapper-${this.mapId}`;
 
     // Crear botón de toggle
-    const toggleBtn = document.createElement('button');
-    toggleBtn.className = 'toolbar-toggle-btn';
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "toolbar-toggle-btn";
     toggleBtn.id = `toolbar-toggle-${this.mapId}`;
     toggleBtn.innerHTML = `
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -60,11 +65,11 @@ export class MapControlsManager {
         <circle cx="12" cy="19" r="1"/>
       </svg>
     `;
-    toggleBtn.title = 'Mostrar/ocultar herramientas';
+    toggleBtn.title = "Mostrar/ocultar herramientas";
 
     // Crear toolbar
-    this.toolbar = document.createElement('div');
-    this.toolbar.className = 'map-toolbar';
+    this.toolbar = document.createElement("div");
+    this.toolbar.className = "map-toolbar";
     this.toolbar.id = `toolbar-${this.mapId}`;
 
     // HTML de la toolbar
@@ -153,21 +158,19 @@ export class MapControlsManager {
   configurarToggle(toggleBtn) {
     // Iniciar oculto por defecto
     let toolbarVisible = false;
-    this.toolbar.classList.add('toolbar-hidden');
-    toggleBtn.classList.add('toolbar-collapsed');
+    this.toolbar.classList.add("toolbar-hidden");
+    toggleBtn.classList.add("toolbar-collapsed");
 
-    toggleBtn.addEventListener('click', () => {
+    toggleBtn.addEventListener("click", () => {
       toolbarVisible = !toolbarVisible;
 
       if (toolbarVisible) {
-        this.toolbar.classList.remove('toolbar-hidden');
-        toggleBtn.classList.remove('toolbar-collapsed');
+        this.toolbar.classList.remove("toolbar-hidden");
+        toggleBtn.classList.remove("toolbar-collapsed");
       } else {
-        this.toolbar.classList.add('toolbar-hidden');
-        toggleBtn.classList.add('toolbar-collapsed');
+        this.toolbar.classList.add("toolbar-hidden");
+        toggleBtn.classList.add("toolbar-collapsed");
       }
-
-      // console.log(`🔧 Toolbar ${toolbarVisible ? 'mostrado' : 'ocultado'}`);
     });
   }
 
@@ -177,22 +180,21 @@ export class MapControlsManager {
   configurarMapControls() {
     // Buscar el elemento .map-controls en el viewport del mapa
     const viewport = this.map.getTargetElement();
-    const mapControls = viewport.querySelector('.map-controls');
+    const mapControls = viewport.querySelector(".map-controls");
 
     if (!mapControls) {
-      // console.log('No se encontró .map-controls en este mapa');
       return;
     }
 
     // Crear botón de toggle
-    const toggleBtn = document.createElement('button');
-    toggleBtn.className = 'map-controls-toggle-btn';
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "map-controls-toggle-btn";
     toggleBtn.innerHTML = `
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 6L6 18M6 6l12 12"/>
       </svg>
     `;
-    toggleBtn.title = 'Ocultar controles de capas';
+    toggleBtn.title = "Ocultar controles de capas";
 
     // Insertar botón al inicio del panel
     mapControls.insertBefore(toggleBtn, mapControls.firstChild);
@@ -200,26 +202,26 @@ export class MapControlsManager {
     // Configurar toggle
     let controlsVisible = true;
 
-    toggleBtn.addEventListener('click', () => {
+    toggleBtn.addEventListener("click", () => {
       controlsVisible = !controlsVisible;
 
       if (controlsVisible) {
-        mapControls.classList.remove('map-controls-hidden');
+        mapControls.classList.remove("map-controls-hidden");
         toggleBtn.innerHTML = `
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 6L6 18M6 6l12 12"/>
           </svg>
         `;
-        toggleBtn.title = 'Ocultar controles de capas';
+        toggleBtn.title = "Ocultar controles de capas";
       } else {
-        mapControls.classList.add('map-controls-hidden');
+        mapControls.classList.add("map-controls-hidden");
         toggleBtn.innerHTML = `
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 3h18v18H3z"/>
             <path d="M9 9h6v6H9z"/>
           </svg>
         `;
-        toggleBtn.title = 'Mostrar controles de capas';
+        toggleBtn.title = "Mostrar controles de capas";
       }
     });
   }
@@ -229,25 +231,29 @@ export class MapControlsManager {
    */
   configurarEventos() {
     // Botón medir distancia
-    const btnDistance = document.getElementById(`btn-measure-distance-${this.mapId}`);
-    btnDistance.addEventListener('click', () => this.activarMedicionDistancia());
+    const btnDistance = document.getElementById(
+      `btn-measure-distance-${this.mapId}`
+    );
+    btnDistance.addEventListener("click", () =>
+      this.activarMedicionDistancia()
+    );
 
     // Botón medir área
     const btnArea = document.getElementById(`btn-measure-area-${this.mapId}`);
-    btnArea.addEventListener('click', () => this.activarMedicionArea());
+    btnArea.addEventListener("click", () => this.activarMedicionArea());
 
     // Botón limpiar mediciones
     const btnClear = document.getElementById(`btn-clear-measure-${this.mapId}`);
-    btnClear.addEventListener('click', () => this.limpiarMediciones());
+    btnClear.addEventListener("click", () => this.limpiarMediciones());
 
     // Botón exportar
     const btnExport = document.getElementById(`btn-export-${this.mapId}`);
-    btnExport.addEventListener('click', () => this.exportarMapa());
+    btnExport.addEventListener("click", () => this.exportarMapa());
 
     // Botón swipe (si existe)
     const btnSwipe = document.getElementById(`btn-swipe-${this.mapId}`);
     if (btnSwipe) {
-      btnSwipe.addEventListener('click', () => this.toggleSwipe());
+      btnSwipe.addEventListener("click", () => this.toggleSwipe());
     }
 
     // Guardar referencias
@@ -256,7 +262,7 @@ export class MapControlsManager {
       area: btnArea,
       clear: btnClear,
       export: btnExport,
-      swipe: btnSwipe
+      swipe: btnSwipe,
     };
   }
 
@@ -265,7 +271,7 @@ export class MapControlsManager {
    */
   activarMedicionDistancia() {
     // Si ya está activo, desactivar
-    if (this.herramientaActiva === 'measure-distance') {
+    if (this.herramientaActiva === "measure-distance") {
       this.desactivarHerramienta();
       return;
     }
@@ -275,13 +281,11 @@ export class MapControlsManager {
 
     // Activar medición de distancia
     this.measurementTool.medirDistancia();
-    this.herramientaActiva = 'measure-distance';
-    this.modoMedicion = 'distance';
+    this.herramientaActiva = "measure-distance";
+    this.modoMedicion = "distance";
 
     // Actualizar UI
-    this.botones.distance.classList.add('active');
-    
-    //console.log('📏 Medición de distancia activada');
+    this.botones.distance.classList.add("active");
   }
 
   /**
@@ -289,7 +293,7 @@ export class MapControlsManager {
    */
   activarMedicionArea() {
     // Si ya está activo, desactivar
-    if (this.herramientaActiva === 'measure-area') {
+    if (this.herramientaActiva === "measure-area") {
       this.desactivarHerramienta();
       return;
     }
@@ -299,13 +303,11 @@ export class MapControlsManager {
 
     // Activar medición de área
     this.measurementTool.medirArea();
-    this.herramientaActiva = 'measure-area';
-    this.modoMedicion = 'area';
+    this.herramientaActiva = "measure-area";
+    this.modoMedicion = "area";
 
     // Actualizar UI
-    this.botones.area.classList.add('active');
-    
-    //console.log('📐 Medición de área activada');
+    this.botones.area.classList.add("active");
   }
 
   /**
@@ -314,8 +316,6 @@ export class MapControlsManager {
   limpiarMediciones() {
     this.measurementTool.limpiar();
     this.desactivarHerramienta();
-    
-    //console.log('🧹 Mediciones limpiadas');
   }
 
   /**
@@ -323,25 +323,23 @@ export class MapControlsManager {
    */
   exportarMapa() {
     const filename = `mapa-${this.mapId}-${Date.now()}`;
-    
+
     // Feedback visual
-    this.botones.export.classList.add('loading');
+    this.botones.export.classList.add("loading");
     this.botones.export.disabled = true;
-    
+
     // Mostrar mensaje
-    this.mostrarNotificacion('Exportando mapa...', 'info');
+    this.mostrarNotificacion("Exportando mapa...", "info");
 
     // Ejecutar export
     this.exportTool.exportarPNG(filename);
 
     // Restaurar botón después de 2 segundos
     setTimeout(() => {
-      this.botones.export.classList.remove('loading');
+      this.botones.export.classList.remove("loading");
       this.botones.export.disabled = false;
-      this.mostrarNotificacion('Mapa exportado correctamente', 'success');
+      this.mostrarNotificacion("Mapa exportado correctamente", "success");
     }, 2000);
-
-    //console.log('💾 Mapa exportado:', filename);
   }
 
   /**
@@ -349,25 +347,25 @@ export class MapControlsManager {
    */
   toggleSwipe() {
     if (!this.layerSwipeTool) {
-      console.warn('⚠️ Layer Swipe no configurado. Usa configurarSwipe() primero.');
+      console.warn(
+        "Layer Swipe no configurado. Usa configurarSwipe() primero."
+      );
       return;
     }
 
     // Si ya está activo, desactivar
-    if (this.herramientaActiva === 'swipe') {
+    if (this.herramientaActiva === "swipe") {
       this.layerSwipeTool.desactivar();
       this.herramientaActiva = null;
-      this.botones.swipe.classList.remove('active');
-      //console.log('❌ Layer Swipe desactivado');
+      this.botones.swipe.classList.remove("active");
     } else {
       // Desactivar herramienta anterior
       this.desactivarHerramienta();
-      
+
       // Activar swipe
       this.layerSwipeTool.activar();
-      this.herramientaActiva = 'swipe';
-      this.botones.swipe.classList.add('active');
-      //console.log('✅ Layer Swipe activado');
+      this.herramientaActiva = "swipe";
+      this.botones.swipe.classList.add("active");
     }
   }
 
@@ -376,14 +374,16 @@ export class MapControlsManager {
    */
   configurarSwipe(capaIzquierda, capaDerecha) {
     // Crear instancia de swipe
-    this.layerSwipeTool = new LayerSwipeTool(this.map, capaIzquierda, capaDerecha);
-    
+    this.layerSwipeTool = new LayerSwipeTool(
+      this.map,
+      capaIzquierda,
+      capaDerecha
+    );
+
     // Mostrar botón de swipe
     if (this.botones.swipe) {
-      this.botones.swipe.style.display = 'flex';
+      this.botones.swipe.style.display = "flex";
     }
-
-    //console.log('🔀 Layer Swipe configurado');
   }
 
   /**
@@ -393,13 +393,13 @@ export class MapControlsManager {
     if (!this.herramientaActiva) return;
 
     // Desactivar según tipo
-    if (this.herramientaActiva.startsWith('measure')) {
+    if (this.herramientaActiva.startsWith("measure")) {
       this.measurementTool.detener();
-      this.botones.distance?.classList.remove('active');
-      this.botones.area?.classList.remove('active');
-    } else if (this.herramientaActiva === 'swipe') {
+      this.botones.distance?.classList.remove("active");
+      this.botones.area?.classList.remove("active");
+    } else if (this.herramientaActiva === "swipe") {
       this.layerSwipeTool?.desactivar();
-      this.botones.swipe?.classList.remove('active');
+      this.botones.swipe?.classList.remove("active");
     }
 
     this.herramientaActiva = null;
@@ -409,9 +409,9 @@ export class MapControlsManager {
   /**
    * Muestra una notificación temporal
    */
-  mostrarNotificacion(mensaje, tipo = 'info') {
+  mostrarNotificacion(mensaje, tipo = "info") {
     // Crear elemento de notificación
-    const notif = document.createElement('div');
+    const notif = document.createElement("div");
     notif.className = `map-notification map-notification-${tipo}`;
     notif.textContent = mensaje;
 
@@ -420,11 +420,11 @@ export class MapControlsManager {
     viewport.appendChild(notif);
 
     // Animar entrada
-    setTimeout(() => notif.classList.add('show'), 10);
+    setTimeout(() => notif.classList.add("show"), 10);
 
     // Remover después de 3 segundos
     setTimeout(() => {
-      notif.classList.remove('show');
+      notif.classList.remove("show");
       setTimeout(() => notif.remove(), 300);
     }, 3000);
   }
@@ -458,10 +458,10 @@ export class MapControlsManager {
    */
   agregarEstilos() {
     // Verificar si ya existen los estilos
-    if (document.getElementById('map-toolbar-styles')) return;
+    if (document.getElementById("map-toolbar-styles")) return;
 
-    const style = document.createElement('style');
-    style.id = 'map-toolbar-styles';
+    const style = document.createElement("style");
+    style.id = "map-toolbar-styles";
     style.textContent = `
       /* ===== TOOLBAR WRAPPER ===== */
       .map-toolbar-wrapper {

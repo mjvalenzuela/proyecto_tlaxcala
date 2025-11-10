@@ -24,27 +24,38 @@ class MapManager {
         minZoom: this.config.MAP.minZoom,
         maxZoom: this.config.MAP.maxZoom,
         scrollWheelZoom: this.config.MAP.scrollWheelZoom,
-        zoomControl: this.config.MAP.zoomControl
+        zoomControl: this.config.MAP.zoomControl,
       });
 
       // Agregar capa de tiles
       L.tileLayer(this.config.TILES.url, {
         attribution: this.config.TILES.attribution,
-        maxZoom: this.config.MAP.maxZoom
+        maxZoom: this.config.MAP.maxZoom,
       }).addTo(this.map);
+
+      // Agregar capa WMS de municipios de Tlaxcala
+      this.municipiosLayer = L.tileLayer
+        .wms("https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows", {
+          layers: "SEICCT:municipios_ganaperd",
+          format: "image/png",
+          transparent: true,
+          attribution: "GeoServer - SEICCT",
+          opacity: 0.6,
+        })
+        .addTo(this.map);
 
       // Inicializar capa de markers con clustering
       this.markersLayer = L.markerClusterGroup(this.config.CLUSTER);
       this.map.addLayer(this.markersLayer);
 
       // Agregar control de escala
-      L.control.scale({ position: 'bottomleft', imperial: false }).addTo(this.map);
+      L.control
+        .scale({ position: "bottomleft", imperial: false })
+        .addTo(this.map);
 
-      //console.log('Mapa inicializado correctamente');
       return true;
-
     } catch (error) {
-      console.error('Error al inicializar mapa:', error);
+      console.error("Error al inicializar mapa:", error);
       return false;
     }
   }
@@ -54,12 +65,12 @@ class MapManager {
    */
   addMarkers(markersData) {
     if (!this.map || !this.markersLayer) {
-      console.error('Mapa no inicializado');
+      console.error("Mapa no inicializado");
       return;
     }
 
     if (!markersData || markersData.length === 0) {
-      console.warn('No hay markers para agregar');
+      console.warn("No hay markers para agregar");
       return;
     }
 
@@ -67,7 +78,7 @@ class MapManager {
     this.clearMarkers();
 
     // Crear markers
-    markersData.forEach(data => {
+    markersData.forEach((data) => {
       try {
         const marker = this.createMarker(data);
         if (marker) {
@@ -75,11 +86,9 @@ class MapManager {
           this.markers.push(marker);
         }
       } catch (error) {
-        console.error('Error al crear marker:', error, data);
+        console.error("Error al crear marker:", error, data);
       }
     });
-
-    //console.log(`${this.markers.length} markers agregados al mapa`);
   }
 
   /**
@@ -89,12 +98,13 @@ class MapManager {
     try {
       // Validar coordenadas
       if (!data.lat || !data.lng) {
-        console.warn('Marker sin coordenadas:', data.nombre_proyecto);
+        console.warn("Marker sin coordenadas:", data.nombre_proyecto);
         return null;
       }
 
       // Obtener color según dependencia
-      const color = this.config.COLORS[data.dependencia] || this.config.COLORS.default;
+      const color =
+        this.config.COLORS[data.dependencia] || this.config.COLORS.default;
 
       // Crear ícono personalizado
       const icon = this.createCustomIcon(data, color);
@@ -102,7 +112,7 @@ class MapManager {
       // Crear marker
       const marker = L.marker([data.lat, data.lng], {
         icon: icon,
-        title: data.nombre_proyecto
+        title: data.nombre_proyecto,
       });
 
       // Agregar popup
@@ -110,22 +120,21 @@ class MapManager {
       marker.bindPopup(popupContent, {
         maxWidth: 520,
         minWidth: 360,
-        className: 'custom-popup'
+        className: "custom-popup",
       });
 
       // Agregar tooltip (hover)
       marker.bindTooltip(data.nombre_proyecto, {
-        direction: 'top',
-        offset: [0, -20]
+        direction: "top",
+        offset: [0, -20],
       });
 
       // Guardar referencia a los datos
       marker.accionData = data;
 
       return marker;
-
     } catch (error) {
-      console.error('Error al crear marker:', error);
+      console.error("Error al crear marker:", error);
       return null;
     }
   }
@@ -135,8 +144,8 @@ class MapManager {
    */
   createCustomIcon(data, color) {
     // Determinar forma según tipo
-    const isProyecto = data.tipo === 'Proyecto';
-    const shape = isProyecto ? 'shield' : 'circle';
+    const isProyecto = data.tipo === "Proyecto";
+    const shape = isProyecto ? "shield" : "circle";
 
     // SVG del ícono (con badge de multi-ubicación si aplica)
     const svgIcon = this.generateSVGIcon(
@@ -149,10 +158,10 @@ class MapManager {
 
     return L.divIcon({
       html: svgIcon,
-      className: 'custom-marker-icon',
+      className: "custom-marker-icon",
       iconSize: [36, 44],
       iconAnchor: [18, 44],
-      popupAnchor: [0, -44]
+      popupAnchor: [0, -44],
     });
   }
 
@@ -166,23 +175,30 @@ class MapManager {
    */
   generateSVGIcon(shape, color, isMulti, totalUbicaciones, isEstatal) {
     // Badge para multi-ubicación con número
-    const badge = isMulti && totalUbicaciones > 1 ? `
+    const badge =
+      isMulti && totalUbicaciones > 1
+        ? `
       <circle cx="28" cy="8" r="8" fill="#FF9800" stroke="white" stroke-width="2.5"/>
       <text x="28" y="11.5" font-size="9" fill="white" text-anchor="middle" font-weight="bold">${totalUbicaciones}</text>
-    ` : '';
+    `
+        : "";
 
     // Indicador estatal (pequeño ícono de edificio gubernamental)
-    const estatalIcon = isEstatal ? `
+    const estatalIcon = isEstatal
+      ? `
       <circle cx="6" cy="8" r="6" fill="#5e3b8c" stroke="white" stroke-width="2"/>
       <text x="6" y="11" font-size="10" fill="white" text-anchor="middle" font-weight="bold">🏛</text>
-    ` : '';
+    `
+      : "";
 
     // Anillo exterior para multi-ubicación (hace más visible el marker)
-    const ringMulti = isMulti ? `
+    const ringMulti = isMulti
+      ? `
       <circle cx="18" cy="18" r="16" fill="none" stroke="#FF9800" stroke-width="2" opacity="0.6"/>
-    ` : '';
+    `
+      : "";
 
-    if (shape === 'shield') {
+    if (shape === "shield") {
       return `
         <svg width="36" height="44" viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg">
           ${ringMulti}
@@ -268,6 +284,6 @@ class MapManager {
 }
 
 // Hacer MapManager disponible globalmente
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.MapManager = MapManager;
 }

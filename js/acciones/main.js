@@ -6,7 +6,9 @@ class AccionesClimaticasApp {
   constructor() {
     this.dataManager = null;
     this.mapManager = null;
+    this.filterManager = null;
     this.data = null;
+    this.markersData = null;
     this.isInitialized = false;
   }
 
@@ -15,16 +17,14 @@ class AccionesClimaticasApp {
    */
   async init() {
     try {
-      //console.log('Iniciando aplicación Acciones Climáticas...');
-
       // Inicializar managers
       this.dataManager = new DataManager();
-      this.mapManager = new MapManager('map');
+      this.mapManager = new MapManager("map");
 
       // Inicializar el mapa
       const mapInitialized = this.mapManager.initMap();
       if (!mapInitialized) {
-        throw new Error('Error al inicializar el mapa');
+        throw new Error("Error al inicializar el mapa");
       }
 
       // Cargar datos
@@ -34,10 +34,8 @@ class AccionesClimaticasApp {
       this.setupEventListeners();
 
       this.isInitialized = true;
-      //console.log('Aplicación inicializada correctamente');
-
     } catch (error) {
-      console.error('Error al inicializar aplicación:', error);
+      console.error("Error al inicializar aplicación:", error);
       this.showError(error.message);
     }
   }
@@ -53,17 +51,18 @@ class AccionesClimaticasApp {
       this.data = await this.dataManager.fetchData();
 
       if (!this.data || !this.data.acciones) {
-        throw new Error('No se pudieron cargar los datos');
+        throw new Error("No se pudieron cargar los datos");
       }
-
-      //console.log(`${this.data.total} acciones cargadas`);
 
       // Actualizar estadísticas en el header
       this.updateStats(this.data);
 
       // Procesar y agregar markers al mapa
-      const markers = this.dataManager.processAccionesForMap(this.data);
-      this.mapManager.addMarkers(markers);
+      this.markersData = this.dataManager.processAccionesForMap(this.data);
+      this.mapManager.addMarkers(this.markersData);
+
+      // Inicializar sistema de filtros
+      this.initFilters();
 
       // Ajustar vista para mostrar todos los markers
       setTimeout(() => {
@@ -71,7 +70,6 @@ class AccionesClimaticasApp {
       }, 300);
 
       this.showLoading(false);
-
     } catch (error) {
       this.showLoading(false);
       throw error;
@@ -85,9 +83,9 @@ class AccionesClimaticasApp {
     const stats = this.dataManager.getStats(data);
 
     if (stats) {
-      this.updateStatElement('statTotal', stats.total);
-      this.updateStatElement('statUbicaciones', stats.ubicaciones);
-      this.updateStatElement('statDependencias', stats.dependencias);
+      this.updateStatElement("statTotal", stats.total);
+      this.updateStatElement("statUbicaciones", stats.ubicaciones);
+      this.updateStatElement("statDependencias", stats.dependencias);
     }
   }
 
@@ -121,20 +119,83 @@ class AccionesClimaticasApp {
   }
 
   /**
+   * Inicializa el sistema de filtros
+   */
+  initFilters() {
+    try {
+      // Obtener estadísticas para generar opciones de filtro
+      const stats = FilterManager.getFilterStats(this.data);
+      const options = FilterManager.generateFilterOptions(stats);
+
+      // Generar HTML de opciones de filtro
+      this.generateFilterHTML(
+        "filterDependencias",
+        options.dependencias,
+        "dependencia"
+      );
+      this.generateFilterHTML("filterTipos", options.tipos, "tipo");
+      this.generateFilterHTML("filterEstados", options.estados, "estado");
+
+      // Inicializar FilterManager
+      this.filterManager = new FilterManager(this.mapManager, this.data);
+      this.filterManager.init(this.markersData);
+
+      // Actualizar contador inicial
+      this.filterManager.updateResultsCount(this.markersData.length);
+    } catch (error) {
+      console.error("Error al inicializar filtros:", error);
+    }
+  }
+
+  /**
+   * Genera el HTML de las opciones de filtro
+   */
+  generateFilterHTML(containerId, options, filterName) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const html = options
+      .map(
+        (option) => `
+      <div class="filter-checkbox">
+        <input type="checkbox"
+               id="${filterName}-${this.sanitizeId(option.value)}"
+               name="${filterName}"
+               value="${option.value}">
+        <label for="${filterName}-${this.sanitizeId(option.value)}">
+          <span>${option.label}</span>
+          <span class="filter-checkbox-count">${option.count}</span>
+        </label>
+      </div>
+    `
+      )
+      .join("");
+
+    container.innerHTML = html;
+  }
+
+  /**
+   * Sanitiza un ID para usarlo en HTML
+   */
+  sanitizeId(str) {
+    return str.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase();
+  }
+
+  /**
    * Configura event listeners
    */
   setupEventListeners() {
     // Botón de centrar mapa
-    const centerBtn = document.getElementById('centerMapBtn');
+    const centerBtn = document.getElementById("centerMapBtn");
     if (centerBtn) {
-      centerBtn.addEventListener('click', () => {
+      centerBtn.addEventListener("click", () => {
         this.mapManager.centerMap();
       });
     }
 
     // Detectar cambios en el tamaño de la ventana
     let resizeTimeout;
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
         if (this.mapManager && this.mapManager.map) {
@@ -148,12 +209,12 @@ class AccionesClimaticasApp {
    * Muestra u oculta el loading overlay
    */
   showLoading(show) {
-    const overlay = document.getElementById('loadingOverlay');
+    const overlay = document.getElementById("loadingOverlay");
     if (overlay) {
       if (show) {
-        overlay.classList.remove('hidden');
+        overlay.classList.remove("hidden");
       } else {
-        overlay.classList.add('hidden');
+        overlay.classList.add("hidden");
       }
     }
   }
@@ -162,7 +223,7 @@ class AccionesClimaticasApp {
    * Muestra un mensaje de error
    */
   showError(message) {
-    const overlay = document.getElementById('loadingOverlay');
+    const overlay = document.getElementById("loadingOverlay");
     if (overlay) {
       overlay.innerHTML = `
         <div style="text-align: center; padding: 2rem;">
@@ -183,7 +244,7 @@ class AccionesClimaticasApp {
           </button>
         </div>
       `;
-      overlay.classList.remove('hidden');
+      overlay.classList.remove("hidden");
     }
   }
 
@@ -194,8 +255,13 @@ class AccionesClimaticasApp {
     if (this.mapManager) {
       this.mapManager.destroy();
     }
+    if (this.filterManager) {
+      this.filterManager.destroy();
+    }
     this.dataManager = null;
+    this.filterManager = null;
     this.data = null;
+    this.markersData = null;
     this.isInitialized = false;
   }
 }
@@ -203,19 +269,19 @@ class AccionesClimaticasApp {
 // Inicializar la aplicación cuando el DOM esté listo
 let app;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   app = new AccionesClimaticasApp();
   app.init();
 });
 
 // Cleanup al salir de la página
-window.addEventListener('beforeunload', () => {
+window.addEventListener("beforeunload", () => {
   if (app) {
     app.destroy();
   }
 });
 
 // Hacer la app disponible globalmente para debugging
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.AccionesApp = app;
 }

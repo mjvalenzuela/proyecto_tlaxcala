@@ -18,7 +18,7 @@ const CONFIG = {
     }
 
     // FALLBACK: Conexión directa (puede tener problemas CORS)
-    console.warn("⚠️ Entorno desconocido - Usando conexión directa (puede tener problemas CORS)");
+    console.warn("Entorno desconocido - Usando conexión directa (puede tener problemas CORS)");
     return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/";
   })(),
 

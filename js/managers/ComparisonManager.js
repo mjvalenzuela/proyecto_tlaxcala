@@ -32,7 +32,6 @@ export class ComparisonManager {
    */
   inicializar() {
     this.crearControlUI();
-    //console.log('🔍 ComparisonManager inicializado');
   }
 
   /**
@@ -43,8 +42,8 @@ export class ComparisonManager {
     if (!mapContainer) return;
 
     // Crear contenedor del control
-    const controlDiv = document.createElement('div');
-    controlDiv.className = 'comparison-control';
+    const controlDiv = document.createElement("div");
+    controlDiv.className = "comparison-control";
     controlDiv.innerHTML = `
       <button class="comparison-toggle-btn" title="Comparar capas">
         <span class="comparison-icon">🔍</span>
@@ -74,31 +73,29 @@ export class ComparisonManager {
     this.controlElement = controlDiv;
 
     // Event listeners
-    const toggleBtn = controlDiv.querySelector('.comparison-toggle-btn');
-    const menu = controlDiv.querySelector('.comparison-menu');
-    const modeButtons = controlDiv.querySelectorAll('.comparison-mode-btn');
+    const toggleBtn = controlDiv.querySelector(".comparison-toggle-btn");
+    const menu = controlDiv.querySelector(".comparison-menu");
+    const modeButtons = controlDiv.querySelectorAll(".comparison-mode-btn");
 
-    toggleBtn.addEventListener('click', () => {
-      const isVisible = menu.style.display !== 'none';
-      menu.style.display = isVisible ? 'none' : 'block';
+    toggleBtn.addEventListener("click", () => {
+      const isVisible = menu.style.display !== "none";
+      menu.style.display = isVisible ? "none" : "block";
     });
 
-    modeButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
+    modeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
         const mode = btn.dataset.mode;
         this.activarModo(mode);
-        menu.style.display = 'none';
+        menu.style.display = "none";
 
         // Actualizar estado visual del botón
-        if (mode !== 'none') {
-          toggleBtn.classList.add('active');
+        if (mode !== "none") {
+          toggleBtn.classList.add("active");
         } else {
-          toggleBtn.classList.remove('active');
+          toggleBtn.classList.remove("active");
         }
       });
     });
-
-    //console.log('✅ Control de comparación creado');
   }
 
   /**
@@ -109,22 +106,21 @@ export class ComparisonManager {
     this.desactivarModoActual();
 
     switch (modo) {
-      case 'split':
+      case "split":
         this.activarSplitMode();
         break;
-      case 'xray':
+      case "xray":
         this.activarXRayMode();
         break;
-      case 'area':
+      case "area":
         this.activarAreaMode();
         break;
-      case 'none':
+      case "none":
         // Solo desactivar, ya se hizo arriba
         break;
     }
 
     this.modoActual = modo;
-    //console.log(`🔄 Modo activado: ${modo}`);
   }
 
   /**
@@ -134,13 +130,13 @@ export class ComparisonManager {
     if (!this.modoActual) return;
 
     switch (this.modoActual) {
-      case 'split':
+      case "split":
         this.desactivarSplitMode();
         break;
-      case 'xray':
+      case "xray":
         this.desactivarXRayMode();
         break;
-      case 'area':
+      case "area":
         this.desactivarAreaMode();
         break;
     }
@@ -158,22 +154,23 @@ export class ComparisonManager {
     const mapElement = this.mapa.getTargetElement();
 
     // Crear barra divisoria
-    const splitBar = document.createElement('div');
-    splitBar.className = 'comparison-split-bar';
-    splitBar.style.left = '50%';
+    const splitBar = document.createElement("div");
+    splitBar.className = "comparison-split-bar";
+    splitBar.style.left = "50%";
     mapContainer.appendChild(splitBar);
     this.splitBar = splitBar;
 
     // Crear etiquetas de capas
-    const labelLeft = document.createElement('div');
-    labelLeft.className = 'comparison-split-label comparison-split-label-left';
-    labelLeft.textContent = this.capaA.get('nombre') || 'Capa A';
+    const labelLeft = document.createElement("div");
+    labelLeft.className = "comparison-split-label comparison-split-label-left";
+    labelLeft.textContent = this.capaA.get("nombre") || "Capa A";
     mapContainer.appendChild(labelLeft);
     this.splitLabels.left = labelLeft;
 
-    const labelRight = document.createElement('div');
-    labelRight.className = 'comparison-split-label comparison-split-label-right';
-    labelRight.textContent = this.capaB.get('nombre') || 'Capa B';
+    const labelRight = document.createElement("div");
+    labelRight.className =
+      "comparison-split-label comparison-split-label-right";
+    labelRight.textContent = this.capaB.get("nombre") || "Capa B";
     mapContainer.appendChild(labelRight);
     this.splitLabels.right = labelRight;
 
@@ -202,8 +199,8 @@ export class ComparisonManager {
     this.splitListeners.postrender = postrenderFn;
 
     // Aplicar listeners
-    this.capaB.on('prerender', prerenderFn);
-    this.capaB.on('postrender', postrenderFn);
+    this.capaB.on("prerender", prerenderFn);
+    this.capaB.on("postrender", postrenderFn);
 
     // Event listeners para arrastrar
     const onMouseDown = (e) => {
@@ -228,26 +225,24 @@ export class ComparisonManager {
       isDragging = false;
     };
 
-    splitBar.addEventListener('mousedown', onMouseDown);
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    splitBar.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
 
     // Guardar referencias para limpiar después
     this.splitBar._listeners = { onMouseDown, onMouseMove, onMouseUp };
 
     // Render inicial
     this.mapa.render();
-
-    //console.log('⚡ Modo Split activado - Arrastra la barra para comparar');
   }
 
   desactivarSplitMode() {
     if (this.splitBar) {
       // Remover event listeners
       const { onMouseDown, onMouseMove, onMouseUp } = this.splitBar._listeners;
-      this.splitBar.removeEventListener('mousedown', onMouseDown);
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      this.splitBar.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
 
       // Remover elemento
       this.splitBar.remove();
@@ -266,11 +261,11 @@ export class ComparisonManager {
 
     // Limpiar listeners de OpenLayers
     if (this.splitListeners.prerender) {
-      this.capaB.un('prerender', this.splitListeners.prerender);
+      this.capaB.un("prerender", this.splitListeners.prerender);
       this.splitListeners.prerender = null;
     }
     if (this.splitListeners.postrender) {
-      this.capaB.un('postrender', this.splitListeners.postrender);
+      this.capaB.un("postrender", this.splitListeners.postrender);
       this.splitListeners.postrender = null;
     }
 
@@ -285,9 +280,9 @@ export class ComparisonManager {
     const radioLupa = 100; // píxeles
 
     // Crear círculo de rayos X
-    const xrayCircle = document.createElement('div');
-    xrayCircle.className = 'comparison-xray-circle';
-    xrayCircle.style.display = 'none'; // Oculto hasta que se mueva el mouse
+    const xrayCircle = document.createElement("div");
+    xrayCircle.className = "comparison-xray-circle";
+    xrayCircle.style.display = "none"; // Oculto hasta que se mueva el mouse
     mapContainer.appendChild(xrayCircle);
     this.xrayCircle = xrayCircle;
 
@@ -313,8 +308,8 @@ export class ComparisonManager {
     this.xrayListeners.postrender = postrenderFn;
 
     // Aplicar listeners a la capa B
-    this.capaB.on('prerender', prerenderFn);
-    this.capaB.on('postrender', postrenderFn);
+    this.capaB.on("prerender", prerenderFn);
+    this.capaB.on("postrender", postrenderFn);
 
     // Listener de movimiento del mouse
     const onMouseMove = (e) => {
@@ -323,7 +318,7 @@ export class ComparisonManager {
       mouseY = e.clientY - rect.top;
 
       // Posicionar círculo visual
-      xrayCircle.style.display = 'block';
+      xrayCircle.style.display = "block";
       xrayCircle.style.left = `${mouseX - radioLupa}px`;
       xrayCircle.style.top = `${mouseY - radioLupa}px`;
 
@@ -332,20 +327,21 @@ export class ComparisonManager {
     };
 
     this.xrayListeners.mousemove = onMouseMove;
-    mapContainer.addEventListener('mousemove', onMouseMove);
+    mapContainer.addEventListener("mousemove", onMouseMove);
 
     // Hacer solo la capa A visible inicialmente
     this.capaA.setVisible(true);
     this.capaB.setVisible(true);
-
-    //console.log('👁️ Modo Rayos X activado - Mueve el cursor sobre el mapa');
   }
 
   desactivarXRayMode() {
     if (this.xrayCircle) {
       const mapContainer = document.getElementById(this.containerId);
       if (this.xrayListeners.mousemove) {
-        mapContainer.removeEventListener('mousemove', this.xrayListeners.mousemove);
+        mapContainer.removeEventListener(
+          "mousemove",
+          this.xrayListeners.mousemove
+        );
         this.xrayListeners.mousemove = null;
       }
       this.xrayCircle.remove();
@@ -354,11 +350,11 @@ export class ComparisonManager {
 
     // Limpiar listeners de OpenLayers
     if (this.xrayListeners.prerender) {
-      this.capaB.un('prerender', this.xrayListeners.prerender);
+      this.capaB.un("prerender", this.xrayListeners.prerender);
       this.xrayListeners.prerender = null;
     }
     if (this.xrayListeners.postrender) {
-      this.capaB.un('postrender', this.xrayListeners.postrender);
+      this.capaB.un("postrender", this.xrayListeners.postrender);
       this.xrayListeners.postrender = null;
     }
 
@@ -370,8 +366,8 @@ export class ComparisonManager {
    */
   activarAreaMode() {
     // Verificar que ol esté disponible
-    if (typeof ol === 'undefined') {
-      console.error('❌ OpenLayers (ol) no está disponible');
+    if (typeof ol === "undefined") {
+      console.error("OpenLayers (ol) no está disponible");
       return;
     }
 
@@ -381,15 +377,15 @@ export class ComparisonManager {
       source: source,
       style: new ol.style.Style({
         fill: new ol.style.Fill({
-          color: 'rgba(255, 255, 255, 0.1)'
+          color: "rgba(255, 255, 255, 0.1)",
         }),
         stroke: new ol.style.Stroke({
-          color: '#3399CC',
+          color: "#3399CC",
           width: 2,
-          lineDash: [5, 5]
-        })
+          lineDash: [5, 5],
+        }),
       }),
-      zIndex: 1000
+      zIndex: 1000,
     });
 
     this.mapa.addLayer(this.drawLayer);
@@ -397,13 +393,13 @@ export class ComparisonManager {
     // Crear interacción de dibujo (círculo)
     this.areaInteraction = new ol.interaction.Draw({
       source: source,
-      type: 'Circle'
+      type: "Circle",
     });
 
     this.mapa.addInteraction(this.areaInteraction);
 
     // Al terminar de dibujar, aplicar clip
-    this.areaInteraction.on('drawend', (event) => {
+    this.areaInteraction.on("drawend", (event) => {
       const geometry = event.feature.getGeometry();
       const center = geometry.getCenter();
       const radius = geometry.getRadius();
@@ -430,19 +426,15 @@ export class ComparisonManager {
       this.areaListeners.postrender = postrenderFn;
 
       // Aplicar listeners
-      this.capaB.on('prerender', prerenderFn);
-      this.capaB.on('postrender', postrenderFn);
+      this.capaB.on("prerender", prerenderFn);
+      this.capaB.on("postrender", postrenderFn);
 
       this.mapa.render();
 
       // Remover interacción después de dibujar
       this.mapa.removeInteraction(this.areaInteraction);
       this.areaInteraction = null;
-
-      //console.log('✅ Área de interés dibujada - Capa B visible dentro del área');
     });
-
-    //console.log('📍 Modo Área de Interés activado - Haz click y arrastra para dibujar un círculo');
   }
 
   desactivarAreaMode() {
@@ -458,11 +450,11 @@ export class ComparisonManager {
 
     // Limpiar listeners de OpenLayers
     if (this.areaListeners.prerender) {
-      this.capaB.un('prerender', this.areaListeners.prerender);
+      this.capaB.un("prerender", this.areaListeners.prerender);
       this.areaListeners.prerender = null;
     }
     if (this.areaListeners.postrender) {
-      this.capaB.un('postrender', this.areaListeners.postrender);
+      this.capaB.un("postrender", this.areaListeners.postrender);
       this.areaListeners.postrender = null;
     }
 
@@ -479,7 +471,5 @@ export class ComparisonManager {
       this.controlElement.remove();
       this.controlElement = null;
     }
-
-    //console.log('🧹 ComparisonManager destruido');
   }
 }

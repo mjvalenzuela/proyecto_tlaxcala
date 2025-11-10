@@ -14,9 +14,11 @@
   justify-content: center;
   text-align: center;
   padding: 2rem;
-  background: linear-gradient(135deg,
+  background: linear-gradient(
+    135deg,
     var(--color-primary-light, rgba(37, 99, 235, 0.05)) 0%,
-    var(--color-background, #ffffff) 100%);
+    var(--color-background, #ffffff) 100%
+  );
 }
 
 .story-intro-title {
@@ -43,7 +45,7 @@
   border-radius: var(--radius-lg);
   box-shadow: 0 10px 30px var(--color-shadow-lg);
   animation: fadeInUp 0.8s ease 0.4s both;
-  position: relative; /* ← IMPORTANTE para herramientas del mapa */
+  position: relative;
 }
 
 .btn-start {
@@ -136,13 +138,13 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 15px var(--color-shadow-md);
-  position: relative; /* ← IMPORTANTE para herramientas del mapa */
+  position: relative;
 }
 
 .map-container {
   width: 100%;
   height: 100%;
-  position: relative; /* ← IMPORTANTE para OpenLayers */
+  position: relative;
 }
 
 /* ===== CONTROLES DE CAPAS (Panel derecho superior) ===== */
@@ -310,7 +312,6 @@
   margin-bottom: 0;
 }
 
-
 /* ===== MENÚ DE BIODIVERSIDAD (Capítulo 2) ===== */
 .biodiversity-menu {
   background: white;
@@ -343,7 +344,11 @@
   justify-content: center;
   gap: 0.3rem;
   padding: 0.6rem 0.4rem;
-  background: linear-gradient(135deg, rgba(88, 37, 116, 0.05) 0%, rgba(162, 26, 92, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(88, 37, 116, 0.05) 0%,
+    rgba(162, 26, 92, 0.05) 100%
+  );
   border: 2px solid var(--color-beige-light);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -355,7 +360,11 @@
   transform: translateY(-3px);
   box-shadow: 0 6px 20px var(--color-shadow-lg);
   border-color: var(--color-btn-secondary);
-  background: linear-gradient(135deg, rgba(88, 37, 116, 0.1) 0%, rgba(162, 26, 92, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(88, 37, 116, 0.1) 0%,
+    rgba(162, 26, 92, 0.1) 100%
+  );
 }
 
 .menu-card-icon {
@@ -746,105 +755,130 @@
 
 /* ===== CURSORES PERSONALIZADOS PARA SUB-CAPÍTULOS DE BIODIVERSIDAD ===== */
 #chapter-2-1 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'),
+    auto;
 }
 
 #chapter-2-2 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'),
+    auto;
 }
 
 #chapter-2-3 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'),
+    auto;
 }
 
 #chapter-2-4 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'),
+    auto;
 }
 
 #chapter-2-5 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'),
+    auto;
 }
 
 #chapter-2-6 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'),
+    auto;
 }
 
 #chapter-2-7 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'),
+    auto;
 }
 
 #chapter-2-8 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'),
+    auto;
 }
 
 #chapter-2-9 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">📊</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">📊</text></svg>'),
+    auto;
 }
 
 /* ===== CURSORES PERSONALIZADOS PARA SUB-CAPÍTULOS DEL CAPÍTULO 3 (GANANCIA) ===== */
 #chapter-3-1 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'),
+    auto;
 }
 
 #chapter-3-2 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'),
+    auto;
 }
 
 #chapter-3-3 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'),
+    auto;
 }
 
 #chapter-3-4 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'),
+    auto;
 }
 
 #chapter-3-5 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'),
+    auto;
 }
 
 #chapter-3-6 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'),
+    auto;
 }
 
 #chapter-3-7 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'),
+    auto;
 }
 
 #chapter-3-8 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'),
+    auto;
 }
 
 /* ===== CURSORES PERSONALIZADOS PARA SUB-CAPÍTULOS DEL CAPÍTULO 4 (PÉRDIDA) ===== */
 #chapter-4-1 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🐝</text></svg>'),
+    auto;
 }
 
 #chapter-4-2 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🌵</text></svg>'),
+    auto;
 }
 
 #chapter-4-3 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🍄</text></svg>'),
+    auto;
 }
 
 #chapter-4-4 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦋</text></svg>'),
+    auto;
 }
 
 #chapter-4-5 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🦇</text></svg>'),
+    auto;
 }
 
 #chapter-4-6 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⭐</text></svg>'),
+    auto;
 }
 
 #chapter-4-7 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">⚠️</text></svg>'),
+    auto;
 }
 
 #chapter-4-8 {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'), auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><text y="20" font-size="20">🧬</text></svg>'),
+    auto;
 }
 
 /* ===== SUB-CAPÍTULO 2.9: COMPARATIVA GENERAL (Layout especial sin gap) ===== */
@@ -948,7 +982,7 @@
   color: white;
   font-weight: 100;
   transition: all var(--transition-normal);
-  text-align: center;  
+  text-align: center;
 }
 
 .timeline-item.active .timeline-label {
@@ -958,7 +992,7 @@
 
 /* Línea conectora entre círculos */
 .timeline::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1108,34 +1142,34 @@
 
   /* Capítulo 1 - Layout especial en mobile */
   /* Capítulo 1 - Layout en mobile */
-.chapter-chart-info {
-  grid-column: 1;
-  grid-row: 4;
-  min-height: 500px;
-}
+  .chapter-chart-info {
+    grid-column: 1;
+    grid-row: 4;
+    min-height: 500px;
+  }
 
-.chart-info-content {
-  grid-template-columns: 1fr; /* Una sola columna en mobile */
-  grid-template-rows: auto auto;
-}
+  .chart-info-content {
+    grid-template-columns: 1fr; /* Una sola columna en mobile */
+    grid-template-rows: auto auto;
+  }
 
-.chart-section {
-  border-bottom: 1px solid var(--color-beige-light);
-  min-height: 250px;
-  padding: 1rem;
-}
+  .chart-section {
+    border-bottom: 1px solid var(--color-beige-light);
+    min-height: 250px;
+    padding: 1rem;
+  }
 
-/* Ajustar tamaño del gráfico en mobile */
-.chart-container {
-  max-width: 100%;
-  max-height: 220px;
-}
+  /* Ajustar tamaño del gráfico en mobile */
+  .chart-container {
+    max-width: 100%;
+    max-height: 220px;
+  }
 
-.info-section {
-  min-height: 200px;
-  border-left: none;
-  border-top: 1px solid var(--color-beige-light);
-}
+  .info-section {
+    min-height: 200px;
+    border-left: none;
+    border-top: 1px solid var(--color-beige-light);
+  }
 
   .map-controls {
     max-width: 180px;
@@ -1246,7 +1280,7 @@
 
 /* ===== ESTADOS DE LOADING ===== */
 .chapter-map.loading::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -1539,7 +1573,7 @@
 }
 
 .comparison-split-bar::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1552,7 +1586,7 @@
 }
 
 .comparison-split-bar::after {
-  content: '⇄';
+  content: "⇄";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1597,14 +1631,15 @@
   height: 200px;
   border: 3px solid white;
   border-radius: 50%;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5),
+    inset 0 0 20px rgba(255, 255, 255, 0.3);
   pointer-events: none;
   z-index: 998;
   background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.2) 100%);
 }
 
 .comparison-xray-circle::before {
-  content: '👁️';
+  content: "👁️";
   position: absolute;
   top: 50%;
   left: 50%;

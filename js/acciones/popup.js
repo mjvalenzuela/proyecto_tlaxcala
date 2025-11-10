@@ -35,11 +35,17 @@ class PopupGenerator {
       <div class="popup-header" style="background-color: ${accion.color}">
         <div class="popup-header-field">
           <label>Dependencia</label>
-          <div class="header-value">${this.truncate(accion.dependencia, 60)}</div>
+          <div class="header-value">${this.truncate(
+            accion.dependencia,
+            60
+          )}</div>
         </div>
         <div class="popup-header-field">
           <label>Nombre del programa o proyecto</label>
-          <div class="header-value header-title">${this.truncate(accion.nombre_proyecto, 80)}</div>
+          <div class="header-value header-title">${this.truncate(
+            accion.nombre_proyecto,
+            80
+          )}</div>
         </div>
       </div>
     `;
@@ -56,22 +62,26 @@ class PopupGenerator {
         <div class="popup-row">
           <div class="popup-field popup-field-half">           
             <div class="field-value">
-              <span class="badge badge-tipo ${accion.tipo === 'Proyecto' ? 'badge-proyecto' : 'badge-programa'}">
+              <span class="badge badge-tipo ${
+                accion.tipo === "Proyecto" ? "badge-proyecto" : "badge-programa"
+              }">
                 ${accion.tipo}
               </span>
             </div>
           </div>
           <div class="popup-field popup-field-half">     
             <div class="field-value">
-              <span class="badge badge-estado ${accion.estado === 'activo' ? 'badge-activo' : 'badge-concluido'}">
-                ${accion.estado === 'activo' ? 'Activo' : 'Concluido'}
+              <span class="badge badge-estado ${
+                accion.estado === "activo" ? "badge-activo" : "badge-concluido"
+              }">
+                ${accion.estado === "activo" ? "Activo" : "Concluido"}
               </span>
             </div>
           </div>
         </div>
 
         <!-- Multi-ubicación (destacado) -->
-        ${esMultiUbicacion ? this.generateMultiUbicacionSection(accion) : ''}
+        ${esMultiUbicacion ? this.generateMultiUbicacionSection(accion) : ""}
 
         <!-- Ubicación actual -->
         ${this.generateUbicacionSection(ubicacion, esEstatal)}
@@ -92,29 +102,37 @@ class PopupGenerator {
         <div class="popup-field popup-field-full">
           <label>Actividad</label>
           <div class="field-value field-value-textarea">
-            ${ubicacion?.activity || accion.actividades || 'Sin especificar'}
+            ${ubicacion?.activity || accion.actividades || "Sin especificar"}
           </div>
         </div>
 
         <!-- Objetivo (campo grande) -->
-        ${accion.objetivos ? `
+        ${
+          accion.objetivos
+            ? `
           <div class="popup-field popup-field-full">
             <label>Objetivo del programa o proyecto</label>
             <div class="field-value field-value-textarea">
               ${this.truncate(accion.objetivos, 300)}
             </div>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
 
         <!-- Población Objetivo (campo grande) -->
-        ${accion.alineacion ? `
+        ${
+          accion.alineacion
+            ? `
           <div class="popup-field popup-field-full">
             <label>Población Objetivo</label>
             <div class="field-value field-value-textarea">
               ${this.truncate(accion.alineacion, 250)}
             </div>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
     `;
   }
@@ -125,7 +143,7 @@ class PopupGenerator {
 
   generateMultiUbicacionSection(accion) {
     // Generar ID único para este popup
-    const uniqueId = `ubicaciones-${accion.id.replace(/[^a-zA-Z0-9]/g, '-')}`;
+    const uniqueId = `ubicaciones-${accion.id.replace(/[^a-zA-Z0-9]/g, "-")}`;
 
     return `
       <div class="popup-field popup-field-full popup-field-destacado">
@@ -142,18 +160,31 @@ class PopupGenerator {
         </label>
         <div class="field-value">
           <div class="ubicaciones-mini-list collapsed" id="list-${uniqueId}">
-            ${accion.ubicaciones.slice(0, 3).map(ub => `
+            ${accion.ubicaciones
+              .slice(0, 3)
+              .map(
+                (ub) => `
               <div class="ubicacion-mini-item">
-                📌 ${ub.lugar}${ub.activity ? ` - ${this.truncate(ub.activity, 30)}` : ''}
+                📌 ${ub.lugar}${
+                  ub.activity ? ` - ${this.truncate(ub.activity, 30)}` : ""
+                }
               </div>
-            `).join('')}
-            ${accion.total_ubicaciones > 3 ? `
+            `
+              )
+              .join("")}
+            ${
+              accion.total_ubicaciones > 3
+                ? `
               <div class="ubicacion-mini-item more">
                 ... y ${accion.total_ubicaciones - 3} ubicaciones más
               </div>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
-          <button class="btn-ver-ubicaciones" id="btn-${uniqueId}" style="display: none;" onclick="verTodasUbicaciones('${accion.id}')">
+          <button class="btn-ver-ubicaciones" id="btn-${uniqueId}" style="display: none;" onclick="verTodasUbicaciones('${
+      accion.id
+    }')">
             Ver todas las ubicaciones
           </button>
         </div>
@@ -166,23 +197,33 @@ class PopupGenerator {
   // ============================================
 
   generateUbicacionSection(ubicacion, esEstatal) {
-    const icono = esEstatal ? '🏛️' : '📍';
-    const tipoTexto = esEstatal ? 'Nivel Estatal' : 'Ubicación específica';
+    const icono = esEstatal ? "🏛️" : "📍";
+    const tipoTexto = esEstatal ? "Nivel Estatal" : "Ubicación específica";
 
     return `
       <div class="popup-field popup-field-full">
         <label>
           ${icono} Ubicación
-          ${esEstatal ? '<span class="badge badge-estatal">Estatal</span>' : ''}
+          ${esEstatal ? '<span class="badge badge-estatal">Estatal</span>' : ""}
         </label>
         <div class="field-value">
-          <strong>${ubicacion?.lugar || 'Sin especificar'}</strong>
-          ${esEstatal ? '<div class="ubicacion-alcance">Alcance: Todo el Estado de Tlaxcala</div>' : ''}
-          ${ubicacion?.lat && ubicacion?.lng && !esEstatal ? `
+          <strong>${ubicacion?.lugar || "Sin especificar"}</strong>
+          ${
+            esEstatal
+              ? '<div class="ubicacion-alcance">Alcance: Todo el Estado de Tlaxcala</div>'
+              : ""
+          }
+          ${
+            ubicacion?.lat && ubicacion?.lng && !esEstatal
+              ? `
             <div class="ubicacion-coords">
-              Coordenadas: ${ubicacion.lat.toFixed(5)}, ${ubicacion.lng.toFixed(5)}
+              Coordenadas: ${ubicacion.lat.toFixed(5)}, ${ubicacion.lng.toFixed(
+                  5
+                )}
             </div>
-          ` : ''}
+          `
+              : ""
+          }
         </div>
       </div>
     `;
@@ -229,14 +270,14 @@ class PopupGenerator {
    * Formatea una fecha ISO a formato legible
    */
   formatDate(dateString) {
-    if (!dateString) return 'N/A';
+    if (!dateString) return "N/A";
 
     try {
       const date = new Date(dateString);
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      return date.toLocaleDateString('es-MX', options);
+      const options = { year: "numeric", month: "short", day: "numeric" };
+      return date.toLocaleDateString("es-MX", options);
     } catch (error) {
-      return 'N/A';
+      return "N/A";
     }
   }
 
@@ -244,7 +285,7 @@ class PopupGenerator {
    * Calcula la temporalidad del proyecto
    */
   calcularTemporalidad(accion) {
-    if (!accion.created_at) return 'N/A';
+    if (!accion.created_at) return "N/A";
 
     try {
       const inicio = new Date(accion.created_at);
@@ -256,7 +297,7 @@ class PopupGenerator {
       if (diffDays < 365) return `${Math.floor(diffDays / 30)} meses`;
       return `${Math.floor(diffDays / 365)} años`;
     } catch (error) {
-      return 'N/A';
+      return "N/A";
     }
   }
 
@@ -264,9 +305,9 @@ class PopupGenerator {
    * Trunca un texto a un máximo de caracteres
    */
   truncate(text, maxLength) {
-    if (!text) return '';
+    if (!text) return "";
     if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength - 3) + '...';
+    return text.substring(0, maxLength - 3) + "...";
   }
 }
 
@@ -277,34 +318,22 @@ class PopupGenerator {
 /**
  * Muestra el detalle PDF de una acción
  */
-function verDetallePDF(accionId) {
-  console.log('📄 Ver PDF de acción:', accionId);
-  //alert('Funcionalidad de PDF próximamente.\n\nEsta función mostrará el documento PDF del proyecto cuando esté disponible en la API.');
-}
+function verDetallePDF(accionId) {}
 
 /**
  * Muestra fotos de una acción
  */
-function verFotos(accionId) {
-  console.log('📸 Ver fotos de acción:', accionId);
-  //alert('Funcionalidad de fotos próximamente.\n\nEsta función abrirá una galería de fotos cuando estén disponibles en la API.');
-}
+function verFotos(accionId) {}
 
 /**
  * Muestra videos de una acción
  */
-function verVideos(accionId) {
-  console.log('🎥 Ver videos de acción:', accionId);
-  //alert('Funcionalidad de videos próximamente.\n\nEsta función reproducirá los videos cuando estén disponibles en la API.');
-}
+function verVideos(accionId) {}
 
 /**
  * Muestra todas las ubicaciones de un proyecto multi-ubicación
  */
-function verTodasUbicaciones(accionId) {
-  console.log('📍 Ver todas las ubicaciones de:', accionId);
-  //alert('Funcionalidad de ver todas las ubicaciones próximamente.\n\nEsta función mostrará un modal con todas las ubicaciones del proyecto en el mapa.');
-}
+function verTodasUbicaciones(accionId) {}
 
 /**
  * Toggle para expandir/contraer la lista de ubicaciones
@@ -317,20 +346,17 @@ function toggleUbicaciones(uniqueId) {
   if (!list || !chip) return;
 
   // Toggle clase collapsed
-  list.classList.toggle('collapsed');
-  chip.classList.toggle('expanded');
+  list.classList.toggle("collapsed");
+  chip.classList.toggle("expanded");
 
   // Controlar visibilidad del botón (sincronizado con la lista)
-  const isExpanded = !list.classList.contains('collapsed');
+  const isExpanded = !list.classList.contains("collapsed");
   if (btn) {
-    btn.style.display = isExpanded ? 'block' : 'none';
+    btn.style.display = isExpanded ? "block" : "none";
   }
-
-  // Logging para debugging
-  console.log(`📌 Ubicaciones ${isExpanded ? 'expandidas' : 'contraídas'}`);
 }
 
 // Hacer PopupGenerator disponible globalmente
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.PopupGenerator = PopupGenerator;
 }
