@@ -3,26 +3,23 @@
  */
 
 const CONFIG = {
-  // URL del API de Google Apps Script (fuente actual)
-  API_URL: 'https://script.google.com/macros/s/AKfycbwiTxbC89VgotyF_s_dgRnrA16-AfovMV7PRWfOj5oL8-QFO76n6FSXko0_JnJx8abV1A/exec',
-
-  // URL de la API Real (fuente alternativa) - Con proxy para CORS
+  // URL de la API Backend - Sin parámetros (retorna todas las actividades)
   API_REAL_URL: (() => {
     const hostname = window.location.hostname;
 
     // ENTORNO LOCAL (Live Server, http-server, etc.)
     if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://localhost:3001/api/v1/projects/";
+      return "http://localhost:3001/api/v1/surveys-geoserver/";
     }
 
     // ENTORNO VERCEL (Producción)
     if (hostname.includes("vercel.app")) {
-      return "/api/proxy?path=api/v1/projects/";
+      return "/api/proxy?path=api/v1/surveys-geoserver/";
     }
 
     // FALLBACK: Conexión directa (puede tener problemas CORS)
     console.warn("⚠️ Entorno desconocido - Usando conexión directa (puede tener problemas CORS)");
-    return "https://api.cambioclimaticotlaxcala.mx/api/v1/projects/";
+    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/";
   })(),
 
   // Coordenadas del centro de Tlaxcala
@@ -93,8 +90,8 @@ const CONFIG = {
   // Cache
   CACHE: {
     enabled: true,
-    ttl: 30 * 60 * 1000, // 30 minutos en milisegundos
-    key: 'acciones_climaticas_data'
+    ttl: 5 * 60 * 1000, // 5 minutos en milisegundos
+    key: 'acciones_climaticas_cache'
   },
 
   // Timeout para la carga del API

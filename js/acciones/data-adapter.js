@@ -1,9 +1,9 @@
 /**
- * Adaptador de datos para la API Real
- * Transforma el formato de la API de proyectos al formato esperado por el mapa
+ * Adaptador de datos para la API de Acciones Climáticas
+ * Transforma el formato de la API al formato esperado por el mapa
  *
- * API REAL: { data: [], pagination: {} }
- * FORMATO ESPERADO: { acciones: [], metadata: {} }
+ * IMPORTANTE: Cada elemento del array JSON = 1 ACTIVIDAD (no 1 proyecto completo)
+ * Los proyectos se agrupan por: email + nombre + objetivo
  */
 
 class DataAdapter {
@@ -11,237 +11,267 @@ class DataAdapter {
     this.config = window.AccionesConfig;
   }
 
-  /**
-   * MAPEO DE DEPENDENCIAS
-   * Convierte ID numérico a nombre completo y color
-   */
-  static DEPENDENCIAS = {
-    1: {
-      nombre: 'Comisión Estatal del Agua y Saneamiento',
-      color: '#4A90E2'
-    },
-    2: {
-      nombre: 'Secretaría de Medio Ambiente y Recursos Naturales',
-      color: '#76BC21'
-    },
-    3: {
-      nombre: 'Secretaría de Desarrollo Rural',
-      color: '#8B6F47'
-    },
-    4: {
-      nombre: 'Secretaría de Obras Públicas, Desarrollo Urbano y Vivienda',
-      color: '#D0B787'
-    },
-    5: {
-      nombre: 'Secretaría de Desarrollo Económico',
-      color: '#A21A5C'
-    }
+  // ============================================
+  // CONFIGURACIÓN
+  // ============================================
+
+  static CACHE_KEY = 'acciones_climaticas_cache';
+  static CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+
+  // Coordenadas del centro de Tlaxcala (para proyectos estatales)
+  static TLAXCALA_CENTER = {
+    lat: 19.318154,
+    lng: -98.237232
   };
 
+  // Mapeo de IDs de dependencias
+  static DEPENDENCIAS = {
+    1: { nombre: 'Comisión Estatal del Agua y Saneamiento', color: '#4A90E2' },
+    2: { nombre: 'Secretaría de Medio Ambiente y Recursos Naturales', color: '#76BC21' },
+    3: { nombre: 'Secretaría de Desarrollo Rural', color: '#8B6F47' },
+    4: { nombre: 'Secretaría de Obras Públicas, Desarrollo Urbano y Vivienda', color: '#D0B787' },
+    5: { nombre: 'Secretaría de Desarrollo Económico', color: '#A21A5C' }
+  };
+
+  // ============================================
+  // FUNCIÓN PRINCIPAL
+  // ============================================
+
   /**
-   * Obtiene datos de la API real con paginación
+   * Obtiene todas las acciones climáticas desde la API
+   * @returns {Promise<Object>} Objeto con acciones agrupadas y metadata
    */
   async obtenerDatosAPI() {
     try {
-      console.log('🔄 Cargando datos desde API Real...');
-
-      let todosLosProyectos = [];
-      let paginaActual = 1;
-      let tieneMasPaginas = true;
-
-      // Obtener todas las páginas
-      while (tieneMasPaginas) {
-        const url = `${this.config.API_REAL_URL}?page=${paginaActual}`;
-        const response = await fetch(url, {
-          method: 'GET',
-          mode: 'cors',
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const resultado = await response.json();
-
-        // Agregar proyectos de esta página
-        if (resultado.data && Array.isArray(resultado.data)) {
-          todosLosProyectos = todosLosProyectos.concat(resultado.data);
-        }
-
-        // Verificar si hay más páginas
-        if (resultado.pagination && resultado.pagination.current_page < resultado.pagination.total_pages) {
-          paginaActual++;
-        } else {
-          tieneMasPaginas = false;
-        }
+      // 1. Verificar caché
+      const cached = this.getCache();
+      if (cached) {
+        console.log('✅ Cargando desde caché');
+        return cached;
       }
 
-      console.log(`✅ ${todosLosProyectos.length} proyectos cargados desde API Real`);
+      // 2. Fetch a API
+      console.log('🌐 Consultando API...');
+      const response = await fetch(this.config.API_REAL_URL, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
 
-      // Transformar al formato esperado
-      return this.transformarDatos(todosLosProyectos);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const actividades = await response.json();
+      console.log(`📦 ${actividades.length} actividades recibidas`);
+
+      // 3. Filtrar solo aprobadas
+      const aprobadas = actividades.filter(a => a.status === 'approved');
+      console.log(`✅ ${aprobadas.length} actividades aprobadas`);
+
+      // 4. Agrupar actividades por proyecto
+      const proyectos = this.agruparActividadesPorProyecto(aprobadas);
+      console.log(`🗂️ ${proyectos.length} proyectos agrupados`);
+
+      // 5. Calcular metadata
+      const metadata = this.calcularMetadata(proyectos);
+
+      const resultado = {
+        acciones: proyectos,
+        total: proyectos.length,
+        metadata: metadata
+      };
+
+      // 6. Guardar en caché
+      this.setCache(resultado);
+
+      return resultado;
 
     } catch (error) {
-      console.error('❌ Error al obtener datos de API Real:', error);
+      console.error('❌ Error al obtener acciones:', error);
       throw error;
     }
   }
 
+  // ============================================
+  // AGRUPACIÓN DE ACTIVIDADES
+  // ============================================
+
   /**
-   * Transforma los datos de la API al formato esperado por el mapa
+   * Agrupa actividades por proyecto usando email + nombre + objetivo
+   * @param {Array} actividades - Array de actividades de la API
+   * @returns {Array} Array de proyectos con sus ubicaciones
    */
-  transformarDatos(proyectos) {
-    // Filtrar solo proyectos aprobados
-    const proyectosAprobados = proyectos.filter(p => p.status === 'approved');
+  agruparActividadesPorProyecto(actividades) {
+    const proyectosMap = new Map();
 
-    console.log(`📊 ${proyectosAprobados.length} proyectos aprobados de ${proyectos.length} totales`);
+    actividades.forEach(actividadData => {
+      try {
+        // 1. Extraer datos básicos del proyecto
+        const nombreAnswer = actividadData.answers.find(
+          a => a.question_title === 'Nombre del programa o proyecto'
+        );
 
-    // Transformar cada proyecto
-    const acciones = proyectosAprobados
-      .map(proyecto => this.transformarProyecto(proyecto))
-      .filter(accion => accion !== null); // Eliminar proyectos inválidos
+        const objetivoAnswer = actividadData.answers.find(
+          a => a.question_title === 'Objetivo del programa o proyecto'
+        );
 
-    // Calcular metadata
-    const metadata = this.calcularMetadata(acciones);
+        if (!nombreAnswer) {
+          console.warn('⚠️ Actividad sin nombre de proyecto, omitiendo');
+          return;
+        }
 
-    return {
-      acciones: acciones,
-      total: acciones.length,
-      metadata: metadata
-    };
+        const nombreProyecto = nombreAnswer.display_value;
+        const objetivo = objetivoAnswer ? objetivoAnswer.display_value : '';
+
+        // 2. Crear clave única para agrupar
+        // Usamos email + nombre + objetivo (NO created_at)
+        const claveProyecto = `${actividadData.email}|${nombreProyecto}|${objetivo}`;
+
+        // 3. Extraer ubicación de esta actividad
+        const actividadAnswer = actividadData.answers.find(
+          a => a.question_title === 'Actividades principales'
+        );
+
+        if (!actividadAnswer || typeof actividadAnswer.display_value !== 'object') {
+          console.warn('⚠️ Actividad sin ubicación válida');
+          return;
+        }
+
+        const ubicacion = this.procesarUbicacion(actividadAnswer.display_value);
+
+        if (!ubicacion) {
+          return; // No es una ubicación válida
+        }
+
+        // 4. Si el proyecto ya existe, agregar ubicación
+        if (proyectosMap.has(claveProyecto)) {
+          const proyecto = proyectosMap.get(claveProyecto);
+          proyecto.ubicaciones.push(ubicacion);
+        } else {
+          // 5. Si es nuevo, crear proyecto
+          const depInfo = DataAdapter.DEPENDENCIAS[actividadData.dependency] || {
+            nombre: `Dependencia ${actividadData.dependency}`,
+            color: '#582574'
+          };
+
+          // Extraer otros campos del proyecto
+          const alineacionAnswer = actividadData.answers.find(
+            a => a.question_title === '¿Cuáles son los ejes y medidas a los que abona este proyecto/programa al PACCET 2023-2030?'
+          );
+
+          proyectosMap.set(claveProyecto, {
+            id: claveProyecto,
+            nombre_proyecto: nombreProyecto,
+            objetivos: objetivo.substring(0, 500),
+            actividades: actividadAnswer.display_value.activity || '',
+            alineacion: alineacionAnswer ? alineacionAnswer.display_value : '',
+            dependencia: depInfo.nombre,
+            color: depInfo.color,
+            dependencia_id: actividadData.dependency,
+            tipo: this.determinarTipo(nombreProyecto),
+            estado: 'activo',
+            email: actividadData.email,
+            ubicaciones: [ubicacion],
+            total_ubicaciones: 1,
+            es_multiubicacion: false,
+            created_at: actividadData.created_at,
+            updated_at: actividadData.updated_at
+          });
+        }
+
+      } catch (error) {
+        console.error('❌ Error al procesar actividad:', error);
+      }
+    });
+
+    // 6. Convertir Map a Array y actualizar flags
+    const proyectosArray = Array.from(proyectosMap.values());
+
+    proyectosArray.forEach(proyecto => {
+      proyecto.total_ubicaciones = proyecto.ubicaciones.length;
+      proyecto.es_multiubicacion = proyecto.ubicaciones.length > 1;
+    });
+
+    return proyectosArray;
   }
 
+  // ============================================
+  // PROCESAMIENTO DE UBICACIONES
+  // ============================================
+
   /**
-   * Transforma un proyecto individual
+   * Procesa una ubicación individual
+   * @param {Object} actividadData - Objeto de actividad del API
+   * @returns {Object|null} Ubicación procesada o null
    */
-  transformarProyecto(proyecto) {
+  procesarUbicacion(actividadData) {
     try {
-      // Extraer información de answers
-      const nombre = this.extraerRespuesta(proyecto.answers, 'Nombre del programa o proyecto');
-      const objetivos = this.extraerRespuesta(proyecto.answers, 'Objetivo del programa o proyecto');
-      const actividadesStr = this.extraerRespuesta(proyecto.answers, 'Actividades principales');
-      const alineacion = this.extraerRespuesta(proyecto.answers, '¿Cuáles son los ejes y medidas a los que abona este proyecto/programa al PACCET 2023-2030?');
+      const { activity, type, latitude, longitude, place } = actividadData;
 
-      // Debug: mostrar datos extraídos
-      console.log(`📝 Proyecto ${proyecto.id}:`, {
-        nombre,
-        actividadesStr: actividadesStr?.substring(0, 100) + '...'
-      });
+      // Caso 1: Tipo Local con coordenadas
+      if (type === 'Local' && latitude !== null && longitude !== null) {
+        // Validar rango de coordenadas
+        if (!this.validarCoordenadasTlaxcala(latitude, longitude)) {
+          console.warn('⚠️ Coordenadas fuera de rango:', latitude, longitude);
+          return null;
+        }
 
-      // Parsear ubicaciones del string de actividades
-      const ubicaciones = this.parsearUbicaciones(actividadesStr);
-
-      console.log(`📍 Proyecto ${proyecto.id} - Ubicaciones encontradas:`, ubicaciones.length);
-
-      // Si no hay ubicaciones válidas, omitir este proyecto
-      if (!ubicaciones || ubicaciones.length === 0) {
-        console.warn(`⚠️ Proyecto ${proyecto.id} sin ubicaciones válidas`);
-        return null;
+        return {
+          activity: activity || 'Actividad sin nombre',
+          lat: parseFloat(latitude),
+          lng: parseFloat(longitude),
+          lugar: place || 'Ubicación sin especificar',
+          tipo: 'Local',
+          es_estatal: false
+        };
       }
 
-      // Obtener información de dependencia
-      const dependenciaInfo = DataAdapter.DEPENDENCIAS[proyecto.dependency] || {
-        nombre: 'Dependencia Desconocida',
-        color: '#582574'
-      };
+      // Caso 2: Tipo Estatal (sin coordenadas)
+      if (type === 'Estatal') {
+        return {
+          activity: activity || 'Actividad sin nombre',
+          lat: DataAdapter.TLAXCALA_CENTER.lat,
+          lng: DataAdapter.TLAXCALA_CENTER.lng,
+          lugar: 'Todo el Estado de Tlaxcala',
+          tipo: 'Estatal',
+          es_estatal: true
+        };
+      }
 
-      return {
-        id: proyecto.id,
-        nombre_proyecto: nombre || 'Sin nombre',
-        objetivos: objetivos || '',
-        actividades: actividadesStr || '',
-        alineacion: alineacion || '',
-        dependencia: dependenciaInfo.nombre,
-        color: dependenciaInfo.color,
-        ubicaciones: ubicaciones,
-        tipo: this.determinarTipo(nombre),
-        estado: 'activo', // Por defecto, ya que status === 'approved'
-        created_at: proyecto.created_at,
-        updated_at: proyecto.updated_at
-      };
+      // Caso 3: Tipo Local sin coordenadas (error de datos)
+      if (type === 'Local' && (latitude === null || longitude === null)) {
+        console.warn('⚠️ Actividad Local sin coordenadas, usando centro de Tlaxcala');
+        return {
+          activity: activity || 'Actividad sin nombre',
+          lat: DataAdapter.TLAXCALA_CENTER.lat,
+          lng: DataAdapter.TLAXCALA_CENTER.lng,
+          lugar: place || 'Ubicación sin especificar',
+          tipo: 'Local',
+          es_estatal: false,
+          coordenadas_fallback: true
+        };
+      }
+
+      return null;
 
     } catch (error) {
-      console.error(`❌ Error al transformar proyecto ${proyecto.id}:`, error);
+      console.error('❌ Error al procesar ubicación:', error);
       return null;
     }
   }
 
   /**
-   * Extrae una respuesta específica del array de answers
+   * Valida que las coordenadas estén dentro del rango de Tlaxcala
+   * @param {number} lat - Latitud
+   * @param {number} lng - Longitud
+   * @returns {boolean} true si son válidas
    */
-  extraerRespuesta(answers, questionTitle) {
-    if (!answers || !Array.isArray(answers)) return null;
-
-    const respuesta = answers.find(a => a.question_title === questionTitle);
-    return respuesta ? respuesta.display_value : null;
-  }
-
-  /**
-   * Parsea ubicaciones del string de actividades
-   * Input: "Actividad 1. LIMPIEZA — Tipo: Local — Lat: 19.56704, Lon: -98.59764 — Lugar: Calpulalpan"
-   * Output: [{ lat: 19.56704, lng: -98.59764, lugar: 'Calpulalpan', tipo: 'Local' }]
-   */
-  parsearUbicaciones(actividadesStr) {
-    if (!actividadesStr) return [];
-
-    const ubicaciones = [];
-
-    // Separar por | para multi-ubicación
-    const actividades = actividadesStr.split('|').map(a => a.trim());
-
-    actividades.forEach(actividad => {
-      // Regex para coordenadas
-      const coordRegex = /Lat:\s*([\d.-]+),?\s*Lon:\s*([\d.-]+)/i;
-      const coordMatch = actividad.match(coordRegex);
-
-      if (coordMatch) {
-        const lat = parseFloat(coordMatch[1]);
-        const lng = parseFloat(coordMatch[2]);
-
-        // Validar coordenadas dentro de Tlaxcala
-        if (this.validarCoordenadas(lat, lng)) {
-          // Extraer lugar
-          const lugarRegex = /Lugar:\s*([^—|]+)/i;
-          const lugarMatch = actividad.match(lugarRegex);
-          const lugar = lugarMatch ? lugarMatch[1].trim() : 'Sin especificar';
-
-          // Extraer tipo
-          const tipoRegex = /Tipo:\s*([^—|]+)/i;
-          const tipoMatch = actividad.match(tipoRegex);
-          const tipo = tipoMatch ? tipoMatch[1].trim() : 'Local';
-
-          ubicaciones.push({
-            lat: lat,
-            lng: lng,
-            lugar: lugar,
-            tipo: tipo
-          });
-        } else {
-          console.warn(`⚠️ Coordenadas fuera de rango: lat=${lat}, lng=${lng}`);
-        }
-      } else if (actividad.toLowerCase().includes('tipo: estatal')) {
-        // Proyecto estatal sin coordenadas específicas
-        ubicaciones.push({
-          lat: 19.318154,  // Centro de Tlaxcala
-          lng: -98.237232,
-          lugar: 'Tlaxcala (Estatal)',
-          tipo: 'Estatal'
-        });
-      }
-    });
-
-    return ubicaciones;
-  }
-
-  /**
-   * Valida que las coordenadas estén dentro de Tlaxcala
-   */
-  validarCoordenadas(lat, lng) {
-    // Límites aproximados de Tlaxcala
-    const limites = {
+  validarCoordenadasTlaxcala(lat, lng) {
+    const LIMITES = {
       latMin: 19.0,
       latMax: 19.8,
       lngMin: -98.8,
@@ -249,10 +279,10 @@ class DataAdapter {
     };
 
     return (
-      lat >= limites.latMin &&
-      lat <= limites.latMax &&
-      lng >= limites.lngMin &&
-      lng <= limites.lngMax
+      lat >= LIMITES.latMin &&
+      lat <= LIMITES.latMax &&
+      lng >= LIMITES.lngMin &&
+      lng <= LIMITES.lngMax
     );
   }
 
@@ -260,12 +290,16 @@ class DataAdapter {
    * Determina el tipo (proyecto o programa) basado en el nombre
    */
   determinarTipo(nombre) {
-    if (!nombre) return 'proyecto';
+    if (!nombre) return 'Proyecto';
 
     const nombreLower = nombre.toLowerCase();
-    if (nombreLower.includes('programa')) return 'programa';
-    return 'proyecto';
+    if (nombreLower.includes('programa')) return 'Programa';
+    return 'Proyecto';
   }
+
+  // ============================================
+  // METADATA
+  // ============================================
 
   /**
    * Calcula metadata a partir de las acciones transformadas
@@ -280,7 +314,7 @@ class DataAdapter {
       dependenciasSet.add(accion.dependencia);
       totalUbicaciones += accion.ubicaciones.length;
 
-      if (accion.tipo === 'programa') {
+      if (accion.tipo === 'Programa') {
         tiposCount.programas++;
       } else {
         tiposCount.proyectos++;
@@ -298,9 +332,46 @@ class DataAdapter {
     return {
       total_ubicaciones: totalUbicaciones,
       dependencias: Array.from(dependenciasSet),
+      total_dependencias: dependenciasSet.size,
       tipos: tiposCount,
       estados: estadosCount
     };
+  }
+
+  // ============================================
+  // SISTEMA DE CACHÉ
+  // ============================================
+
+  getCache() {
+    try {
+      const cached = localStorage.getItem(DataAdapter.CACHE_KEY);
+      if (!cached) return null;
+
+      const { data, timestamp } = JSON.parse(cached);
+      const now = Date.now();
+
+      if (now - timestamp > DataAdapter.CACHE_TTL) {
+        localStorage.removeItem(DataAdapter.CACHE_KEY);
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error al leer caché:', error);
+      return null;
+    }
+  }
+
+  setCache(data) {
+    try {
+      const cache = {
+        data: data,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(DataAdapter.CACHE_KEY, JSON.stringify(cache));
+    } catch (error) {
+      console.error('Error al guardar caché:', error);
+    }
   }
 }
 

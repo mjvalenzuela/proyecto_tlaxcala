@@ -329,28 +329,17 @@
   font-family: 'Open Sans', sans-serif;
 }
 
-/* Header mejorado */
-.popup-header {
+/* Header mejorado - SIN DEGRADADOS */
+.popup-header-old {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.875rem;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: var(--primary-color);
   color: white;
   border-radius: 12px 12px 0 0;
   position: relative;
   overflow: hidden;
-}
-
-.popup-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-  pointer-events: none;
 }
 
 .popup-header-icon {
@@ -642,6 +631,74 @@
   color: white;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
+}
+
+/* ===================================
+   MARKERS PERSONALIZADOS
+   =================================== */
+
+/* Contenedor del marker */
+.custom-marker-icon {
+  background: transparent;
+  border: none;
+}
+
+.custom-marker-icon svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.2s ease;
+}
+
+/* Efecto hover en markers */
+.leaflet-marker-icon:hover .custom-marker-icon svg {
+  transform: scale(1.1);
+}
+
+/* Animación de entrada para markers */
+.custom-marker-icon {
+  animation: markerPop 0.3s ease-out;
+}
+
+@keyframes markerPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Tooltip (hover sobre marker) */
+.leaflet-tooltip {
+  background-color: rgba(0, 0, 0, 0.85);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: rgba(0, 0, 0, 0.85);
+}
+
+.leaflet-tooltip-bottom:before {
+  border-bottom-color: rgba(0, 0, 0, 0.85);
+}
+
+.leaflet-tooltip-left:before {
+  border-left-color: rgba(0, 0, 0, 0.85);
+}
+
+.leaflet-tooltip-right:before {
+  border-right-color: rgba(0, 0, 0, 0.85);
 }
 
 /* Footer */
