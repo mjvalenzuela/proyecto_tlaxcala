@@ -34,72 +34,86 @@ export default async function handler(req, res) {
     // 3. CONSTRUIR URL A GEOSERVER
     // ==========================================
     const geoserverBaseUrl = 'https://api.cambioclimaticotlaxcala.mx';
-    
-    const targetUrl = `${geoserverBaseUrl}${pathParam}`;
-    
+
+    // Asegurar que pathParam empiece con /
+    const normalizedPath = pathParam.startsWith('/') ? pathParam : `/${pathParam}`;
+    const targetUrl = `${geoserverBaseUrl}${normalizedPath}`;
+
+    console.log('Proxy: Fetching URL:', targetUrl);
+
 
     // ==========================================
     // 4. HACER PETICIÓN A GEOSERVER
     // ==========================================
-    const response = await fetch(targetUrl, {
-      method: req.method,
-      headers: {
-        'Accept': '*/*',
-        'User-Agent': 'Vercel-Serverless-Proxy/2.0',
-      },
-      // Timeout de 30 segundos
-      signal: AbortSignal.timeout(30000)
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-    // ==========================================
-    // 5. VERIFICAR RESPUESTA
-    // ==========================================
-    if (!response.ok) {
-      console.error(`GeoServer respondió: ${response.status} ${response.statusText}`);
-      return res.status(response.status).json({
-        error: 'Error en GeoServer',
-        status: response.status,
-        statusText: response.statusText,
-        url: targetUrl
+    try {
+      const response = await fetch(targetUrl, {
+        method: req.method,
+        headers: {
+          'Accept': '*/*',
+          'User-Agent': 'Vercel-Serverless-Proxy/2.0',
+        },
+        signal: controller.signal
       });
-    }
 
-    // ==========================================
-    // 6. OBTENER CONTENT-TYPE
-    // ==========================================
-    const contentType = response.headers.get('content-type') || 'application/octet-stream';
-    res.setHeader('Content-Type', contentType);
-    
-    const contentLength = response.headers.get('content-length');
-    if (contentLength) {
-      res.setHeader('Content-Length', contentLength);
-    }
+      clearTimeout(timeoutId);
 
-    // ==========================================
-    // 7. ENVIAR RESPUESTA SEGÚN TIPO
-    // ==========================================
-    
-    // Si es imagen (PNG, JPEG, GIF, etc.)
-    if (contentType.includes('image')) {
-      const arrayBuffer = await response.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      return res.status(200).send(buffer);
-    }
-    
-    // Si es XML (WMS GetCapabilities, GetFeatureInfo, etc.)
-    if (contentType.includes('xml')) {
+      // ==========================================
+      // 5. VERIFICAR RESPUESTA
+      // ==========================================
+      if (!response.ok) {
+        console.error(`GeoServer respondió: ${response.status} ${response.statusText}`);
+        return res.status(response.status).json({
+          error: 'Error en GeoServer',
+          status: response.status,
+          statusText: response.statusText,
+          url: targetUrl
+        });
+      }
+
+      // ==========================================
+      // 6. OBTENER CONTENT-TYPE
+      // ==========================================
+      const contentType = response.headers.get('content-type') || 'application/octet-stream';
+      res.setHeader('Content-Type', contentType);
+
+      const contentLength = response.headers.get('content-length');
+      if (contentLength) {
+        res.setHeader('Content-Length', contentLength);
+      }
+
+      // ==========================================
+      // 7. ENVIAR RESPUESTA SEGÚN TIPO
+      // ==========================================
+
+      // Si es imagen (PNG, JPEG, GIF, etc.)
+      if (contentType.includes('image')) {
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        return res.status(200).send(buffer);
+      }
+
+      // Si es XML (WMS GetCapabilities, GetFeatureInfo, etc.)
+      if (contentType.includes('xml')) {
+        const text = await response.text();
+        return res.status(200).send(text);
+      }
+
+      // Si es JSON (WFS, algunos formatos)
+      if (contentType.includes('json')) {
+        const text = await response.text();
+        return res.status(200).send(text);
+      }
+
       const text = await response.text();
       return res.status(200).send(text);
+
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      throw fetchError;
     }
-    
-    // Si es JSON (WFS, algunos formatos)
-    if (contentType.includes('json')) {
-      const text = await response.text();
-      return res.status(200).send(text);
-    }
-    
-    const text = await response.text();
-    return res.status(200).send(text);
 
   } catch (error) {
     // ==========================================

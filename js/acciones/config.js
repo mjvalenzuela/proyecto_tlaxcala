@@ -14,7 +14,7 @@ const CONFIG = {
 
     // ENTORNO VERCEL (Producción)
     if (hostname.includes("vercel.app")) {
-      return "/api/proxy?path=api/v1/surveys-geoserver/";
+      return "/api/proxy?path=/api/v1/surveys-geoserver/";
     }
 
     // FALLBACK: Conexión directa (puede tener problemas CORS)
