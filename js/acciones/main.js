@@ -225,21 +225,45 @@ class AccionesClimaticasApp {
   showError(message) {
     const overlay = document.getElementById("loadingOverlay");
     if (overlay) {
+      // Determinar tipo de error y mensaje personalizado
+      let errorTitle = "Error al cargar datos";
+      let errorMessage = message;
+      let errorDetails = "";
+
+      if (message.includes("502") || message.includes("Bad Gateway")) {
+        errorTitle = "Servidor no disponible";
+        errorMessage = "El servidor de datos está temporalmente fuera de servicio.";
+        errorDetails = "Por favor, intenta de nuevo en unos minutos.";
+      } else if (message.includes("Timeout") || message.includes("tiempo")) {
+        errorTitle = "Conexión lenta";
+        errorMessage = "La conexión está tardando más de lo esperado.";
+        errorDetails = "Verifica tu conexión a internet e intenta de nuevo.";
+      } else if (message.includes("Network") || message.includes("Failed to fetch")) {
+        errorTitle = "Sin conexión";
+        errorMessage = "No se pudo conectar al servidor.";
+        errorDetails = "Verifica tu conexión a internet.";
+      }
+
       overlay.innerHTML = `
-        <div style="text-align: center; padding: 2rem;">
+        <div style="text-align: center; padding: 2rem; max-width: 400px; margin: 0 auto;">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#F44336" stroke-width="2">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <h3 style="margin: 1rem 0 0.5rem 0; color: #F44336; font-family: 'Montserrat', sans-serif;">
-            Error al cargar datos
+          <h3 style="margin: 1rem 0 0.5rem 0; color: #F44336; font-family: 'Montserrat', sans-serif; font-size: 20px;">
+            ${errorTitle}
           </h3>
-          <p style="margin: 0; color: #666; font-family: 'Open Sans', sans-serif;">
-            ${message}
+          <p style="margin: 0 0 0.5rem 0; color: #333; font-family: 'Open Sans', sans-serif; font-size: 14px;">
+            ${errorMessage}
           </p>
+          ${errorDetails ? `
+            <p style="margin: 0; color: #666; font-family: 'Open Sans', sans-serif; font-size: 13px;">
+              ${errorDetails}
+            </p>
+          ` : ''}
           <button onclick="location.reload()"
-                  style="margin-top: 1.5rem; padding: 0.75rem 1.5rem; background: #5e3b8c; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600;">
+                  style="margin-top: 1.5rem; padding: 0.75rem 1.5rem; background: #5e3b8c; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 14px;">
             Reintentar
           </button>
         </div>

@@ -9,6 +9,8 @@ class DataAdapter {
 
   static CACHE_KEY = "acciones_climaticas_cache";
   static CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+  static API_TIMEOUT = 15000; // 15 segundos
+  static MAX_RETRIES = 3; // Número máximo de reintentos
 
   // Coordenadas del centro de Tlaxcala (para proyectos estatales)
   static TLAXCALA_CENTER = {
@@ -41,51 +43,114 @@ class DataAdapter {
    */
   async obtenerDatosAPI() {
     try {
-      // 1. Verificar caché
+      // 1. Verificar caché válido
       const cached = this.getCache();
       if (cached) {
         return cached;
       }
 
-      // 2. Fetch a API
-      const response = await fetch(this.config.API_REAL_URL, {
+      // 2. Intentar fetch con retry logic
+      let lastError = null;
+      for (let attempt = 1; attempt <= DataAdapter.MAX_RETRIES; attempt++) {
+        try {
+          const actividades = await this.fetchConTimeout(
+            this.config.API_REAL_URL,
+            DataAdapter.API_TIMEOUT
+          );
+
+          // 3. Filtrar solo aprobadas
+          const aprobadas = actividades.filter((a) => a.status === "approved");
+
+          // 4. Agrupar actividades por proyecto
+          const proyectos = this.agruparActividadesPorProyecto(aprobadas);
+
+          // 5. Calcular metadata
+          const metadata = this.calcularMetadata(proyectos);
+
+          const resultado = {
+            acciones: proyectos,
+            total: proyectos.length,
+            metadata: metadata,
+          };
+
+          // 6. Guardar en caché
+          this.setCache(resultado);
+
+          return resultado;
+
+        } catch (error) {
+          lastError = error;
+
+          // Esperar antes de reintentar (exponential backoff)
+          if (attempt < DataAdapter.MAX_RETRIES) {
+            const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+            await this.sleep(delay);
+          }
+        }
+      }
+
+      // 7. Si todos los intentos fallaron, intentar usar caché expirado como fallback
+      const expiredCache = this.getCacheIgnoreExpiry();
+      if (expiredCache) {
+        console.warn('Usando cache expirado como fallback');
+        return expiredCache;
+      }
+
+      // 8. Si no hay caché, lanzar el último error
+      throw new Error(
+        `No se pudo conectar con el servidor después de ${DataAdapter.MAX_RETRIES} intentos. ${
+          lastError?.message || 'Error desconocido'
+        }`
+      );
+
+    } catch (error) {
+      console.error("Error al obtener acciones:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Fetch con timeout
+   */
+  async fetchConTimeout(url, timeout) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    try {
+      const response = await fetch(url, {
         method: "GET",
         mode: "cors",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const actividades = await response.json();
+      return await response.json();
 
-      // 3. Filtrar solo aprobadas
-      const aprobadas = actividades.filter((a) => a.status === "approved");
-
-      // 4. Agrupar actividades por proyecto
-      const proyectos = this.agruparActividadesPorProyecto(aprobadas);
-
-      // 5. Calcular metadata
-      const metadata = this.calcularMetadata(proyectos);
-
-      const resultado = {
-        acciones: proyectos,
-        total: proyectos.length,
-        metadata: metadata,
-      };
-
-      // 6. Guardar en caché
-      this.setCache(resultado);
-
-      return resultado;
     } catch (error) {
-      console.error("Error al obtener acciones:", error);
+      clearTimeout(timeoutId);
+
+      if (error.name === 'AbortError') {
+        throw new Error(`Timeout: La solicitud tardó más de ${timeout / 1000} segundos`);
+      }
+
       throw error;
     }
+  }
+
+  /**
+   * Sleep utility
+   */
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   // ============================================
@@ -357,6 +422,18 @@ class DataAdapter {
       return data;
     } catch (error) {
       console.error("Error al leer caché:", error);
+      return null;
+    }
+  }
+
+  getCacheIgnoreExpiry() {
+    try {
+      const cached = localStorage.getItem(DataAdapter.CACHE_KEY);
+      if (!cached) return null;
+
+      const { data } = JSON.parse(cached);
+      return data;
+    } catch (error) {
       return null;
     }
   }
