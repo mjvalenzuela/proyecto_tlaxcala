@@ -73,9 +73,8 @@ proyecto_tlaxcala/
 ### Requisitos previos
 
 - Node.js (v14 o superior)
-- GeoServer funcionando (local o remoto con capas SEICCT)
+- GeoServer funcionando con capas SEICCT
 - API de Proyectos en `https://api.cambioclimaticotlaxcala.mx/api/v1/projects/`
-- Navegador web moderno
 
 ### Paso 1: Instalar dependencias del proxy
 
@@ -187,24 +186,24 @@ npx http-server -p 5500
 
 ### Acciones Climáticas (acciones-climaticas.html)
 
-**🎯 ACTUALIZACIÓN NOVIEMBRE 2025: API Nativa Implementada**
+**API Implementada**
 
 **Características:**
 - Mapa Leaflet con clustering de markers
 - **API Nativa** exclusiva: `https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/`
-- Agrupación inteligente: Múltiples actividades se agrupan por proyecto (email + nombre + objetivo)
-- **Popup complejo tipo formulario** con todos los campos disponibles
+- Agrupación: Múltiples actividades se agrupan por proyecto (email + nombre + objetivo)
+- **Popup** con todos los campos disponibles
 - Filtrado por dependencia
 - Estadísticas en header (proyectos, ubicaciones, dependencias)
 - Sistema de caché optimizado (localStorage, 5 min TTL)
 - Validación de coordenadas dentro de Tlaxcala
 
-**Popup complejo (tipo formulario):**
-- **Header coloreado:** Dependencia + Nombre del programa (color sólido por dependencia, SIN degradados)
+**Popup (tipo formulario):**
+- **Header coloreado:** Dependencia + Nombre del programa
 - **Body con campos estructurados:**
   - Tipo (Proyecto/Programa) y Estado (badges)
   - **Sección multi-ubicación colapsable:**
-    - 📌 Chip naranja clickeable muestra número de ubicaciones
+    - Chip naranja clickeable muestra número de ubicaciones
     - Click en el chip expande/contrae la lista de ubicaciones
     - Flecha animada indica estado (▼ contraído, ▲ expandido)
     - Ahorra espacio en el popup cuando está contraído
@@ -307,7 +306,6 @@ const CONFIG = {
 - **Leaflet 1.9.x** - Mapas ligeros para acciones climáticas
 - **Leaflet.markercluster** - Clustering de markers
 - **Chart.js 4.x** - Gráficos interactivos (barras, líneas, pie)
-- **Papa Parse 5.x** - Lectura de archivos CSV
 - **CSS Grid/Flexbox** - Layouts responsivos
 - **CSS Variables** - Paleta de colores centralizada
 
@@ -356,8 +354,8 @@ capas: [
 **Capas disponibles:**
 - `SEICCT:Limite` - Límite estatal
 - `SEICCT:municipios_ganaperd` - Municipios con datos de ganancia/pérdida
-- `SEICCT:encinos_ganancia` / `SEICCT:encinos_perdida`
-- `SEICCT:pinos_ganancia` / `SEICCT:pinos_perdida`
+- `SEICCT:abejas_ganancia` / `SEICCT:abejas_perdida`
+- `SEICCT:abejas_ganancia` / `SEICCT:abejas_perdida`
 - Etc.
 
 ### Dependencias en Acciones Climáticas
