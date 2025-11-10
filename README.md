@@ -1,4 +1,4 @@
-# Story Maps - Cambio Climático Tlaxcala
+# Story Maps - Cambio climático Tlaxcala
 
 Aplicación web geográfica interactiva para visualizar y explicar el cambio climático en el estado de Tlaxcala mediante Story Maps.
 
@@ -14,7 +14,7 @@ Plataforma web que presenta diferentes story maps interactivos sobre cambio clim
 
 Cada story map contiene capítulos navegables con mapas interactivos (OpenLayers/Leaflet), gráficos de datos (Chart.js) y narrativa explicativa.
 
-## Estructura del Proyecto
+## Estructura del proyecto
 
 ```
 proyecto_tlaxcala/
