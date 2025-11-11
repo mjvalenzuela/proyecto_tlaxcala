@@ -3,35 +3,34 @@
  */
 
 const CONFIG = {
-  // URL de la API Backend - Sin parámetros (retorna todas las actividades)
+  // URL de la API Backend - Solo proyectos Locales
   API_REAL_URL: (() => {
     const hostname = window.location.hostname;
 
     // ENTORNO LOCAL (Live Server, http-server, etc.)
     if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://localhost:3001/api/v1/surveys-geoserver/";
+      return "http://localhost:3001/api/v1/surveys-geoserver/?type=Local";
     }
 
     // ENTORNO VERCEL (Producción)
     if (hostname.includes("vercel.app")) {
-      return "/api/proxy?path=/api/v1/surveys-geoserver/";
+      return "/api/proxy?path=/api/v1/surveys-geoserver/?type=Local";
     }
 
-    // FALLBACK: Conexión directa (puede tener problemas CORS)
-    console.warn("Entorno desconocido - Usando conexión directa (puede tener problemas CORS)");
-    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/";
+    // FALLBACK: Conexión directa
+    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/?type=Local";
   })(),
 
   // Coordenadas del centro de Tlaxcala
   CENTER: {
-    lat: 19.318,
-    lng: -98.237
+    lat: 19.318154,
+    lng: -98.237232
   },
 
   // Configuración del mapa
   MAP: {
     zoom: 10,
-    minZoom: 8,
+    minZoom: 9,
     maxZoom: 18,
     scrollWheelZoom: true,
     zoomControl: true
@@ -83,8 +82,23 @@ const CONFIG = {
 
   // Tiles del mapa base
   TILES: {
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  },
+
+  // Configuración de capas WMS
+  WMS_LAYERS: {
+    municipios: {
+      nombre: "Municipios de Tlaxcala",
+      tipo: "wms",
+      url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+      layers: "SEICCT:municipios_ganaperd",
+      format: "image/png",
+      transparent: true,
+      attribution: "GeoServer - SEICCT",
+      opacity: 0.6,
+      visible: true
+    }
   },
 
   // Cache

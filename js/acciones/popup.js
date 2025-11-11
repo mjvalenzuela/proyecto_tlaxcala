@@ -86,15 +86,15 @@ class PopupGenerator {
         <!-- Ubicación actual -->
         ${this.generateUbicacionSection(ubicacion, esEstatal)}
 
-        <!-- Fecha de creación y Temporalidad -->
+        <!-- Fecha de inicio y Temporalidad -->
         <div class="popup-row">
           <div class="popup-field popup-field-half">
             <label>Fecha de inicio</label>
-            <div class="field-value">${this.formatDate(accion.created_at)}</div>
+            <div class="field-value">${this.formatDate(accion.fecha_inicio || accion.created_at)}</div>
           </div>
           <div class="popup-field popup-field-half">
             <label>Temporalidad</label>
-            <div class="field-value">${this.calcularTemporalidad(accion)}</div>
+            <div class="field-value">${accion.temporalidad || "N/A"}</div>
           </div>
         </div>
 
@@ -122,12 +122,12 @@ class PopupGenerator {
 
         <!-- Población Objetivo (campo grande) -->
         ${
-          accion.alineacion
+          accion.poblacion_objetivo
             ? `
           <div class="popup-field popup-field-full">
             <label>Población Objetivo</label>
             <div class="field-value field-value-textarea">
-              ${this.truncate(accion.alineacion, 250)}
+              ${this.truncate(accion.poblacion_objetivo, 250)}
             </div>
           </div>
         `
@@ -273,6 +273,16 @@ class PopupGenerator {
     if (!dateString) return "N/A";
 
     try {
+      // Si la fecha viene en formato YYYY-MM-DD (sin hora), parsearla manualmente
+      // para evitar problemas de zona horaria
+      if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const [year, month, day] = dateString.split('-').map(Number);
+        const date = new Date(year, month - 1, day); // mes es 0-indexed
+        const options = { year: "numeric", month: "short", day: "numeric" };
+        return date.toLocaleDateString("es-MX", options);
+      }
+
+      // Para fechas con hora (ISO completo), usar el método normal
       const date = new Date(dateString);
       const options = { year: "numeric", month: "short", day: "numeric" };
       return date.toLocaleDateString("es-MX", options);
@@ -285,10 +295,11 @@ class PopupGenerator {
    * Calcula la temporalidad del proyecto
    */
   calcularTemporalidad(accion) {
-    if (!accion.created_at) return "N/A";
+    const fechaBase = accion.fecha_inicio || accion.created_at;
+    if (!fechaBase) return "N/A";
 
     try {
-      const inicio = new Date(accion.created_at);
+      const inicio = new Date(fechaBase);
       const ahora = new Date();
       const diffTime = Math.abs(ahora - inicio);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

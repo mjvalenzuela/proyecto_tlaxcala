@@ -625,13 +625,13 @@
 .marker-cluster-small,
 .marker-cluster-medium,
 .marker-cluster-large {
-  background-color: rgba(88, 37, 116, 0.6);
+  background-color: rgba(182, 181, 121, 0.6);
 }
 
 .marker-cluster-small div,
 .marker-cluster-medium div,
 .marker-cluster-large div {
-  background-color: rgba(88, 37, 116, 0.8);
+  background-color: rgba(182, 181, 121, 0.8);
   color: white;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;

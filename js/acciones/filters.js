@@ -10,10 +10,11 @@ class FilterManager {
     this.activeFilters = {
       tipo: '',
       dependencia: '',
-      estatales: '',
       estado: ''
     };
     this.searchTerm = '';
+    this.timelineStartYear = null;
+    this.timelineEndYear = null;
     this.isInitialized = false;
   }
 
@@ -45,15 +46,6 @@ class FilterManager {
     if (dependenciaSelect) {
       dependenciaSelect.addEventListener('change', (e) => {
         this.activeFilters.dependencia = e.target.value;
-        this.applyFilters();
-      });
-    }
-
-    // Filtro Estatales
-    const estatalesSelect = document.getElementById('filterEstatales');
-    if (estatalesSelect) {
-      estatalesSelect.addEventListener('change', (e) => {
-        this.activeFilters.estatales = e.target.value;
         this.applyFilters();
       });
     }
@@ -118,12 +110,14 @@ class FilterManager {
   }
 
   /**
-   * Aplica todos los filtros activos (dropdowns + búsqueda)
+   * Aplica todos los filtros activos (dropdowns + búsqueda + timeline)
    */
   applyFilters() {
     // Filtrar markers según criterios activos
     const filteredMarkers = this.allMarkers.filter(marker => {
-      return this.passesDropdownFilters(marker) && this.passesSearchFilter(marker);
+      return this.passesDropdownFilters(marker) &&
+             this.passesSearchFilter(marker) &&
+             this.passesTimelineFilter(marker);
     });
 
     // Actualizar mapa con markers filtrados
@@ -146,18 +140,6 @@ class FilterManager {
     // Filtro de dependencia
     if (this.activeFilters.dependencia && marker.dependencia !== this.activeFilters.dependencia) {
       return false;
-    }
-
-    // Filtro de estatales
-    if (this.activeFilters.estatales) {
-      const isEstatal = marker.currentUbicacion?.es_estatal || false;
-
-      if (this.activeFilters.estatales === 'estatal' && !isEstatal) {
-        return false;
-      }
-      if (this.activeFilters.estatales === 'local' && isEstatal) {
-        return false;
-      }
     }
 
     // Filtro de estado
@@ -227,6 +209,37 @@ class FilterManager {
   }
 
   /**
+   * Verifica si un marker pasa el filtro de timeline (rango de fechas)
+   */
+  passesTimelineFilter(marker) {
+    // Si no hay rango de timeline configurado, mostrar todos
+    if (!this.timelineStartYear || !this.timelineEndYear) {
+      return true;
+    }
+
+    const fechaInicio = marker.fecha_inicio || marker.created_at;
+    if (!fechaInicio) {
+      return true; // Si no tiene fecha, mostrar por defecto
+    }
+
+    const date = new Date(fechaInicio);
+    if (isNaN(date.getTime())) {
+      return true; // Si la fecha es inválida, mostrar por defecto
+    }
+
+    const year = date.getFullYear();
+    return year >= this.timelineStartYear && year <= this.timelineEndYear;
+  }
+
+  /**
+   * Establece el rango de años del timeline
+   */
+  setTimelineRange(startYear, endYear) {
+    this.timelineStartYear = startYear;
+    this.timelineEndYear = endYear;
+  }
+
+  /**
    * Limpia todos los filtros activos
    */
   clearAllFilters() {
@@ -234,19 +247,16 @@ class FilterManager {
     this.activeFilters = {
       tipo: '',
       dependencia: '',
-      estatales: '',
       estado: ''
     };
 
     // Resetear dropdowns
     const tipoSelect = document.getElementById('filterTipo');
     const dependenciaSelect = document.getElementById('filterDependencia');
-    const estatalesSelect = document.getElementById('filterEstatales');
     const estadoSelect = document.getElementById('filterEstado');
 
     if (tipoSelect) tipoSelect.value = '';
     if (dependenciaSelect) dependenciaSelect.value = '';
-    if (estatalesSelect) estatalesSelect.value = '';
     if (estadoSelect) estadoSelect.value = '';
 
     // Limpiar búsqueda
@@ -260,6 +270,13 @@ class FilterManager {
 
     if (clearSearchBtn) {
       clearSearchBtn.style.display = 'none';
+    }
+
+    // Resetear timeline si existe
+    this.timelineStartYear = null;
+    this.timelineEndYear = null;
+    if (window.timelineManager && window.timelineManager.isInitialized) {
+      window.timelineManager.reset();
     }
 
     // Mostrar todos los markers
@@ -322,7 +339,6 @@ class FilterManager {
     this.activeFilters = {
       tipo: '',
       dependencia: '',
-      estatales: '',
       estado: ''
     };
     this.searchTerm = '';

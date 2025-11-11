@@ -34,15 +34,18 @@ class MapManager {
       }).addTo(this.map);
 
       // Agregar capa WMS de municipios de Tlaxcala
-      this.municipiosLayer = L.tileLayer
-        .wms("https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows", {
-          layers: "SEICCT:municipios_ganaperd",
-          format: "image/png",
-          transparent: true,
-          attribution: "GeoServer - SEICCT",
-          opacity: 0.6,
-        })
-        .addTo(this.map);
+      const wmsConfig = this.config.WMS_LAYERS.municipios;
+      if (wmsConfig.visible) {
+        this.municipiosLayer = L.tileLayer
+          .wms(wmsConfig.url, {
+            layers: wmsConfig.layers,
+            format: wmsConfig.format,
+            transparent: wmsConfig.transparent,
+            attribution: wmsConfig.attribution,
+            opacity: wmsConfig.opacity,
+          })
+          .addTo(this.map);
+      }
 
       // Inicializar capa de markers con clustering
       this.markersLayer = L.markerClusterGroup(this.config.CLUSTER);

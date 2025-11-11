@@ -99,15 +99,6 @@
           </select>
         </div>
 
-        <!-- Filtro Estatales -->
-        <div class="filter-dropdown-group">
-          <select id="filterEstatales" class="filter-dropdown">
-            <option value="">Todos</option>
-            <option value="estatal">Solo Estatales</option>
-            <option value="local">Solo Locales</option>
-          </select>
-        </div>
-
         <!-- Filtro Estado -->
         <div class="filter-dropdown-group">
           <select id="filterEstado" class="filter-dropdown">
@@ -176,22 +167,22 @@
       </button>
     </div>
 
-    <!-- Timeline (estructura no funcional por ahora) -->
+    <!-- Timeline -->
     <div class="timeline-container">
       <div class="timeline-header">
         <h3 class="timeline-title">Línea de Tiempo</h3>
-        <span class="timeline-range" id="timelineRange">2021 - 2024</span>
+        <span class="timeline-range" id="timelineRange">Cargando...</span>
       </div>
       <div class="timeline-content">
         <div class="timeline-track">
           <div class="timeline-bar"></div>
           <div class="timeline-slider" id="timelineSlider">
-            <input type="range" id="timelineStart" class="timeline-input" min="2021" max="2024" value="2021" disabled>
-            <input type="range" id="timelineEnd" class="timeline-input" min="2021" max="2024" value="2024" disabled>
+            <input type="range" id="timelineStart" class="timeline-input" min="2021" max="2024" value="2021">
+            <input type="range" id="timelineEnd" class="timeline-input" min="2021" max="2024" value="2024">
           </div>
         </div>
       </div>
-      <p class="timeline-note">línea de tiempo</p>
+      <p class="timeline-note">Filtra proyectos por año</p>
     </div>
   </main>
 
@@ -213,6 +204,7 @@
   <script src="js/acciones/popup.js"></script>
   <script src="js/acciones/map.js"></script>
   <script src="js/acciones/filters.js"></script>
+  <script src="js/acciones/timeline.js"></script>
   <script src="js/acciones/main.js"></script>
 
   <!-- Navbar script -->

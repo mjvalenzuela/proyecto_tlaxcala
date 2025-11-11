@@ -213,14 +213,38 @@ class DataAdapter {
           proyecto.ubicaciones.push(ubicacion);
         } else {
           // 5. Si es nuevo, crear proyecto
-          const depInfo = DataAdapter.DEPENDENCIAS[
-            actividadData.dependency
-          ] || {
-            nombre: `Dependencia ${actividadData.dependency}`,
-            color: "#582574",
-          };
 
-          // Extraer otros campos del proyecto
+          // Usar dependency_name del API directamente
+          const dependenciaNombre = actividadData.dependency_name || `Dependencia ${actividadData.dependency}`;
+
+          // Asignar color según mapeo o usar default
+          const depInfo = DataAdapter.DEPENDENCIAS[actividadData.dependency] || { color: "#582574" };
+
+          // Extraer tipo de proyecto/programa (question_id 3)
+          const tipoAnswer = actividadData.answers.find(
+            (a) => a.question_title === "Programa o proyecto"
+          );
+          const tipoProyecto = tipoAnswer ? tipoAnswer.display_value : this.determinarTipo(nombreProyecto);
+
+          // Extraer fecha de inicio (question_id 7)
+          const fechaInicioAnswer = actividadData.answers.find(
+            (a) => a.question_title === "Fecha de inicio de la actividad o proyecto"
+          );
+          const fechaInicio = fechaInicioAnswer ? fechaInicioAnswer.display_value : actividadData.created_at;
+
+          // Extraer temporalidad (question_id 8)
+          const temporalidadAnswer = actividadData.answers.find(
+            (a) => a.question_title === "Temporalidad (seleccione una opción)"
+          );
+          const temporalidad = temporalidadAnswer ? temporalidadAnswer.display_value : null;
+
+          // Extraer población objetivo (question_id 16)
+          const poblacionAnswer = actividadData.answers.find(
+            (a) => a.question_title === "Población objetivo"
+          );
+          const poblacionObjetivo = poblacionAnswer ? poblacionAnswer.display_value : "";
+
+          // Extraer alineación PACCET (question_id 31)
           const alineacionAnswer = actividadData.answers.find(
             (a) =>
               a.question_title ===
@@ -233,12 +257,15 @@ class DataAdapter {
             objetivos: objetivo.substring(0, 500),
             actividades: actividadAnswer.display_value.activity || "",
             alineacion: alineacionAnswer ? alineacionAnswer.display_value : "",
-            dependencia: depInfo.nombre,
+            poblacion_objetivo: poblacionObjetivo,
+            temporalidad: temporalidad,
+            dependencia: dependenciaNombre,
             color: depInfo.color,
             dependencia_id: actividadData.dependency,
-            tipo: this.determinarTipo(nombreProyecto),
+            tipo: tipoProyecto,
             estado: "activo",
             email: actividadData.email,
+            fecha_inicio: fechaInicio,
             ubicaciones: [ubicacion],
             total_ubicaciones: 1,
             es_multiubicacion: false,
@@ -279,8 +306,17 @@ class DataAdapter {
       if (type === "Local" && latitude !== null && longitude !== null) {
         // Validar rango de coordenadas
         if (!this.validarCoordenadasTlaxcala(latitude, longitude)) {
-          console.warn("Coordenadas fuera de rango:", latitude, longitude);
-          return null;
+          console.warn("Coordenadas fuera de rango, usando centro de Tlaxcala:", latitude, longitude);
+          // Usar coordenadas de fallback en lugar de descartar el registro
+          return {
+            activity: activity || "Actividad sin nombre",
+            lat: DataAdapter.TLAXCALA_CENTER.lat,
+            lng: DataAdapter.TLAXCALA_CENTER.lng,
+            lugar: place || "Ubicación sin especificar",
+            tipo: "Local",
+            es_estatal: false,
+            coordenadas_fallback: true,
+          };
         }
 
         return {

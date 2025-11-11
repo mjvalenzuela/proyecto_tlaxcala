@@ -7,6 +7,7 @@ class AccionesClimaticasApp {
     this.dataManager = null;
     this.mapManager = null;
     this.filterManager = null;
+    this.timelineManager = null;
     this.data = null;
     this.markersData = null;
     this.isInitialized = false;
@@ -64,10 +65,8 @@ class AccionesClimaticasApp {
       // Inicializar sistema de filtros
       this.initFilters();
 
-      // Ajustar vista para mostrar todos los markers
-      setTimeout(() => {
-        this.mapManager.fitBounds();
-      }, 300);
+      // Mantener el mapa centrado en Tlaxcala (no hacer fitBounds)
+      // El mapa ya está centrado según CONFIG.CENTER y CONFIG.MAP.zoom
 
       this.showLoading(false);
     } catch (error) {
@@ -135,6 +134,13 @@ class AccionesClimaticasApp {
       // Inicializar FilterManager
       this.filterManager = new FilterManager(this.mapManager, this.data);
       this.filterManager.init(this.markersData);
+
+      // Inicializar TimelineManager
+      this.timelineManager = new TimelineManager(this.filterManager, this.data);
+      this.timelineManager.init(this.markersData);
+
+      // Hacer disponible globalmente para que FilterManager pueda acceder
+      window.timelineManager = this.timelineManager;
 
       // Actualizar contador inicial
       this.filterManager.updateResultsCount(this.markersData.length);
@@ -274,8 +280,12 @@ class AccionesClimaticasApp {
     if (this.filterManager) {
       this.filterManager.destroy();
     }
+    if (this.timelineManager) {
+      this.timelineManager.destroy();
+    }
     this.dataManager = null;
     this.filterManager = null;
+    this.timelineManager = null;
     this.data = null;
     this.markersData = null;
     this.isInitialized = false;
