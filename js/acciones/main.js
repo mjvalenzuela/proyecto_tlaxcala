@@ -125,16 +125,12 @@ class AccionesClimaticasApp {
     try {
       // Obtener estadísticas para generar opciones de filtro
       const stats = FilterManager.getFilterStats(this.data);
-      const options = FilterManager.generateFilterOptions(stats);
+      const options = FilterManager.generateDropdownOptions(stats);
 
-      // Generar HTML de opciones de filtro
-      this.generateFilterHTML(
-        "filterDependencias",
-        options.dependencias,
-        "dependencia"
-      );
-      this.generateFilterHTML("filterTipos", options.tipos, "tipo");
-      this.generateFilterHTML("filterEstados", options.estados, "estado");
+      // Generar opciones de los dropdowns
+      this.populateDropdown('filterTipo', options.tipos);
+      this.populateDropdown('filterDependencia', options.dependencias);
+      this.populateDropdownWithLabels('filterEstado', options.estados);
 
       // Inicializar FilterManager
       this.filterManager = new FilterManager(this.mapManager, this.data);
@@ -148,37 +144,33 @@ class AccionesClimaticasApp {
   }
 
   /**
-   * Genera el HTML de las opciones de filtro
+   * Poblar dropdown con opciones simples (array de strings)
    */
-  generateFilterHTML(containerId, options, filterName) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+  populateDropdown(selectId, options) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
 
-    const html = options
-      .map(
-        (option) => `
-      <div class="filter-checkbox">
-        <input type="checkbox"
-               id="${filterName}-${this.sanitizeId(option.value)}"
-               name="${filterName}"
-               value="${option.value}">
-        <label for="${filterName}-${this.sanitizeId(option.value)}">
-          <span>${option.label}</span>
-          <span class="filter-checkbox-count">${option.count}</span>
-        </label>
-      </div>
-    `
-      )
-      .join("");
-
-    container.innerHTML = html;
+    options.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option;
+      optionElement.textContent = option;
+      select.appendChild(optionElement);
+    });
   }
 
   /**
-   * Sanitiza un ID para usarlo en HTML
+   * Poblar dropdown con opciones que tienen value y label
    */
-  sanitizeId(str) {
-    return str.replace(/[^a-zA-Z0-9-_]/g, "-").toLowerCase();
+  populateDropdownWithLabels(selectId, options) {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    options.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option.value;
+      optionElement.textContent = option.label;
+      select.appendChild(optionElement);
+    });
   }
 
   /**

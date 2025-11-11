@@ -1,17 +1,19 @@
 /**
- * Sistema de filtros para acciones climáticas
+ * Sistema de filtros compactos con dropdowns y búsqueda
  */
 
 class FilterManager {
   constructor(mapManager, allData) {
     this.mapManager = mapManager;
-    this.allData = allData; // Todos los datos sin filtrar
-    this.allMarkers = []; // Todos los markers procesados
+    this.allData = allData;
+    this.allMarkers = [];
     this.activeFilters = {
-      dependencias: new Set(),
-      tipos: new Set(),
-      estados: new Set(),
+      tipo: '',
+      dependencia: '',
+      estatales: '',
+      estado: ''
     };
+    this.searchTerm = '';
     this.isInitialized = false;
   }
 
@@ -21,110 +23,107 @@ class FilterManager {
   init(markersData) {
     this.allMarkers = markersData;
     this.setupFilterListeners();
+    this.setupSearchListeners();
     this.isInitialized = true;
   }
 
   /**
-   * Configura los listeners de los filtros
+   * Configura los listeners de los dropdowns
    */
   setupFilterListeners() {
-    // Filtros de dependencia
-    const dependenciaCheckboxes = document.querySelectorAll(
-      'input[name="dependencia"]'
-    );
-    dependenciaCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", (e) => {
-        this.handleDependenciaChange(e.target);
+    // Filtro Tipo
+    const tipoSelect = document.getElementById('filterTipo');
+    if (tipoSelect) {
+      tipoSelect.addEventListener('change', (e) => {
+        this.activeFilters.tipo = e.target.value;
+        this.applyFilters();
       });
-    });
+    }
 
-    // Filtros de tipo
-    const tipoCheckboxes = document.querySelectorAll('input[name="tipo"]');
-    tipoCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", (e) => {
-        this.handleTipoChange(e.target);
+    // Filtro Dependencia
+    const dependenciaSelect = document.getElementById('filterDependencia');
+    if (dependenciaSelect) {
+      dependenciaSelect.addEventListener('change', (e) => {
+        this.activeFilters.dependencia = e.target.value;
+        this.applyFilters();
       });
-    });
+    }
 
-    // Filtros de estado
-    const estadoCheckboxes = document.querySelectorAll('input[name="estado"]');
-    estadoCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", (e) => {
-        this.handleEstadoChange(e.target);
+    // Filtro Estatales
+    const estatalesSelect = document.getElementById('filterEstatales');
+    if (estatalesSelect) {
+      estatalesSelect.addEventListener('change', (e) => {
+        this.activeFilters.estatales = e.target.value;
+        this.applyFilters();
       });
-    });
+    }
+
+    // Filtro Estado
+    const estadoSelect = document.getElementById('filterEstado');
+    if (estadoSelect) {
+      estadoSelect.addEventListener('change', (e) => {
+        this.activeFilters.estado = e.target.value;
+        this.applyFilters();
+      });
+    }
 
     // Botón limpiar filtros
-    const clearBtn = document.getElementById("clearFiltersBtn");
+    const clearBtn = document.getElementById('clearFiltersBtn');
     if (clearBtn) {
-      clearBtn.addEventListener("click", () => {
+      clearBtn.addEventListener('click', () => {
         this.clearAllFilters();
       });
     }
+  }
 
-    // Botón toggle filtros (móvil)
-    const toggleBtn = document.getElementById("toggleFiltersBtn");
-    const filtersPanel = document.getElementById("filtersPanel");
-    if (toggleBtn && filtersPanel) {
-      toggleBtn.addEventListener("click", () => {
-        filtersPanel.classList.toggle("active");
-        toggleBtn.classList.toggle("active");
+  /**
+   * Configura los listeners del buscador
+   */
+  setupSearchListeners() {
+    const searchInput = document.getElementById('mapSearchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+    if (searchInput) {
+      // Búsqueda en tiempo real con debounce
+      let debounceTimer;
+      searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          this.searchTerm = e.target.value.trim();
+
+          // Mostrar/ocultar botón de limpiar
+          if (clearSearchBtn) {
+            clearSearchBtn.style.display = this.searchTerm ? 'flex' : 'none';
+          }
+
+          // Solo buscar si hay 3 o más caracteres, o si está vacío
+          if (this.searchTerm.length >= 3 || this.searchTerm.length === 0) {
+            this.applyFilters();
+          }
+        }, 300);
+      });
+    }
+
+    // Botón limpiar búsqueda
+    if (clearSearchBtn) {
+      clearSearchBtn.addEventListener('click', () => {
+        if (searchInput) {
+          searchInput.value = '';
+          this.searchTerm = '';
+          clearSearchBtn.style.display = 'none';
+          this.applyFilters();
+        }
       });
     }
   }
 
   /**
-   * Maneja cambios en filtro de dependencia
-   */
-  handleDependenciaChange(checkbox) {
-    const value = checkbox.value;
-
-    if (checkbox.checked) {
-      this.activeFilters.dependencias.add(value);
-    } else {
-      this.activeFilters.dependencias.delete(value);
-    }
-
-    this.applyFilters();
-  }
-
-  /**
-   * Maneja cambios en filtro de tipo
-   */
-  handleTipoChange(checkbox) {
-    const value = checkbox.value;
-
-    if (checkbox.checked) {
-      this.activeFilters.tipos.add(value);
-    } else {
-      this.activeFilters.tipos.delete(value);
-    }
-
-    this.applyFilters();
-  }
-
-  /**
-   * Maneja cambios en filtro de estado
-   */
-  handleEstadoChange(checkbox) {
-    const value = checkbox.value;
-
-    if (checkbox.checked) {
-      this.activeFilters.estados.add(value);
-    } else {
-      this.activeFilters.estados.delete(value);
-    }
-
-    this.applyFilters();
-  }
-
-  /**
-   * Aplica todos los filtros activos
+   * Aplica todos los filtros activos (dropdowns + búsqueda)
    */
   applyFilters() {
     // Filtrar markers según criterios activos
-    const filteredMarkers = this.allMarkers.filter((marker) => {
-      return this.passesAllFilters(marker);
+    const filteredMarkers = this.allMarkers.filter(marker => {
+      return this.passesDropdownFilters(marker) && this.passesSearchFilter(marker);
     });
 
     // Actualizar mapa con markers filtrados
@@ -136,49 +135,132 @@ class FilterManager {
   }
 
   /**
-   * Verifica si un marker pasa todos los filtros activos
+   * Verifica si un marker pasa los filtros de dropdown
    */
-  passesAllFilters(marker) {
-    // Filtro de dependencia
-    if (this.activeFilters.dependencias.size > 0) {
-      if (!this.activeFilters.dependencias.has(marker.dependencia)) {
-        return false;
-      }
+  passesDropdownFilters(marker) {
+    // Filtro de tipo
+    if (this.activeFilters.tipo && marker.tipo !== this.activeFilters.tipo) {
+      return false;
     }
 
-    // Filtro de tipo
-    if (this.activeFilters.tipos.size > 0) {
-      if (!this.activeFilters.tipos.has(marker.tipo)) {
+    // Filtro de dependencia
+    if (this.activeFilters.dependencia && marker.dependencia !== this.activeFilters.dependencia) {
+      return false;
+    }
+
+    // Filtro de estatales
+    if (this.activeFilters.estatales) {
+      const isEstatal = marker.currentUbicacion?.es_estatal || false;
+
+      if (this.activeFilters.estatales === 'estatal' && !isEstatal) {
+        return false;
+      }
+      if (this.activeFilters.estatales === 'local' && isEstatal) {
         return false;
       }
     }
 
     // Filtro de estado
-    if (this.activeFilters.estados.size > 0) {
-      if (!this.activeFilters.estados.has(marker.estado)) {
-        return false;
-      }
+    if (this.activeFilters.estado && marker.estado !== this.activeFilters.estado) {
+      return false;
     }
 
     return true;
   }
 
   /**
+   * Verifica si un marker pasa el filtro de búsqueda
+   */
+  passesSearchFilter(marker) {
+    // Si no hay término de búsqueda, pasa el filtro
+    if (!this.searchTerm || this.searchTerm.length < 3) {
+      return true;
+    }
+
+    const searchLower = this.searchTerm.toLowerCase();
+
+    // Buscar en nombre del proyecto
+    if (marker.nombre_proyecto && marker.nombre_proyecto.toLowerCase().includes(searchLower)) {
+      return true;
+    }
+
+    // Buscar en dependencia
+    if (marker.dependencia && marker.dependencia.toLowerCase().includes(searchLower)) {
+      return true;
+    }
+
+    // Buscar en objetivos
+    if (marker.objetivos && marker.objetivos.toLowerCase().includes(searchLower)) {
+      return true;
+    }
+
+    // Buscar en ubicaciones (lugar y actividad)
+    if (marker.ubicaciones && Array.isArray(marker.ubicaciones)) {
+      for (const ubicacion of marker.ubicaciones) {
+        // Buscar en lugar
+        if (ubicacion.lugar && ubicacion.lugar.toLowerCase().includes(searchLower)) {
+          return true;
+        }
+        // Buscar en actividad
+        if (ubicacion.activity && ubicacion.activity.toLowerCase().includes(searchLower)) {
+          return true;
+        }
+      }
+    }
+
+    // Buscar en ubicación actual
+    if (marker.currentUbicacion) {
+      if (marker.currentUbicacion.lugar && marker.currentUbicacion.lugar.toLowerCase().includes(searchLower)) {
+        return true;
+      }
+      if (marker.currentUbicacion.activity && marker.currentUbicacion.activity.toLowerCase().includes(searchLower)) {
+        return true;
+      }
+    }
+
+    // Buscar en actividades (campo alternativo)
+    if (marker.actividades && marker.actividades.toLowerCase().includes(searchLower)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * Limpia todos los filtros activos
    */
   clearAllFilters() {
-    // Limpiar sets
-    this.activeFilters.dependencias.clear();
-    this.activeFilters.tipos.clear();
-    this.activeFilters.estados.clear();
+    // Limpiar filtros de dropdown
+    this.activeFilters = {
+      tipo: '',
+      dependencia: '',
+      estatales: '',
+      estado: ''
+    };
 
-    // Desmarcar todos los checkboxes
-    const allCheckboxes = document.querySelectorAll(
-      '.filter-checkbox input[type="checkbox"]'
-    );
-    allCheckboxes.forEach((checkbox) => {
-      checkbox.checked = false;
-    });
+    // Resetear dropdowns
+    const tipoSelect = document.getElementById('filterTipo');
+    const dependenciaSelect = document.getElementById('filterDependencia');
+    const estatalesSelect = document.getElementById('filterEstatales');
+    const estadoSelect = document.getElementById('filterEstado');
+
+    if (tipoSelect) tipoSelect.value = '';
+    if (dependenciaSelect) dependenciaSelect.value = '';
+    if (estatalesSelect) estatalesSelect.value = '';
+    if (estadoSelect) estadoSelect.value = '';
+
+    // Limpiar búsqueda
+    const searchInput = document.getElementById('mapSearchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+    if (searchInput) {
+      searchInput.value = '';
+      this.searchTerm = '';
+    }
+
+    if (clearSearchBtn) {
+      clearSearchBtn.style.display = 'none';
+    }
 
     // Mostrar todos los markers
     this.mapManager.clearMarkers();
@@ -192,68 +274,44 @@ class FilterManager {
    * Actualiza el contador de resultados
    */
   updateResultsCount(count) {
-    const counter1 = document.getElementById("filterResultsCount");
-    const counter2 = document.getElementById("filterResultsCount2");
-
-    if (counter1) {
-      counter1.textContent = count;
-    }
-    if (counter2) {
-      counter2.textContent = count;
+    const counter = document.getElementById('filterResultsCount');
+    if (counter) {
+      counter.textContent = count;
     }
   }
 
   /**
-   * Obtiene estadísticas de los datos para generar filtros
+   * Obtiene estadísticas de los datos para generar opciones
    */
   static getFilterStats(data) {
     const stats = {
-      dependencias: new Map(),
-      tipos: new Map(),
-      estados: new Map(),
+      tipos: new Set(),
+      dependencias: new Set(),
+      estados: new Set()
     };
 
     if (!data || !data.acciones) return stats;
 
     data.acciones.forEach((accion) => {
-      // Contar por dependencia
-      const dep = accion.dependencia || "Sin especificar";
-      stats.dependencias.set(dep, (stats.dependencias.get(dep) || 0) + 1);
-
-      // Contar por tipo
-      const tipo = accion.tipo || "Sin especificar";
-      stats.tipos.set(tipo, (stats.tipos.get(tipo) || 0) + 1);
-
-      // Contar por estado
-      const estado = accion.estado || "activo";
-      stats.estados.set(estado, (stats.estados.get(estado) || 0) + 1);
+      if (accion.tipo) stats.tipos.add(accion.tipo);
+      if (accion.dependencia) stats.dependencias.add(accion.dependencia);
+      if (accion.estado) stats.estados.add(accion.estado);
     });
 
     return stats;
   }
 
   /**
-   * Genera HTML para opciones de filtro
+   * Genera opciones para los dropdowns
    */
-  static generateFilterOptions(stats) {
+  static generateDropdownOptions(stats) {
     return {
-      dependencias: Array.from(stats.dependencias.entries()).map(
-        ([nombre, count]) => ({
-          value: nombre,
-          label: nombre,
-          count: count,
-        })
-      ),
-      tipos: Array.from(stats.tipos.entries()).map(([nombre, count]) => ({
-        value: nombre,
-        label: nombre,
-        count: count,
-      })),
-      estados: Array.from(stats.estados.entries()).map(([nombre, count]) => ({
-        value: nombre,
-        label: nombre === "activo" ? "Activo" : "Concluido",
-        count: count,
-      })),
+      tipos: Array.from(stats.tipos).sort(),
+      dependencias: Array.from(stats.dependencias).sort(),
+      estados: Array.from(stats.estados).map(estado => ({
+        value: estado,
+        label: estado === 'activo' ? 'Activo' : 'Concluido'
+      }))
     };
   }
 
@@ -261,9 +319,13 @@ class FilterManager {
    * Destruye el FilterManager (cleanup)
    */
   destroy() {
-    this.activeFilters.dependencias.clear();
-    this.activeFilters.tipos.clear();
-    this.activeFilters.estados.clear();
+    this.activeFilters = {
+      tipo: '',
+      dependencia: '',
+      estatales: '',
+      estado: ''
+    };
+    this.searchTerm = '';
     this.allMarkers = [];
     this.allData = null;
     this.mapManager = null;
@@ -272,6 +334,6 @@ class FilterManager {
 }
 
 // Hacer FilterManager disponible globalmente
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   window.FilterManager = FilterManager;
 }

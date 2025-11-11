@@ -81,55 +81,51 @@
     </div>
   </header>
 
-  <!-- Panel de Filtros -->
-  <div class="filters-wrapper">
-    <div class="filters-container">
-      <!-- Botón toggle para móvil -->
-      <button id="toggleFiltersBtn" class="filters-toggle-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-        </svg>
-        <span>Filtros</span>
-        <span class="filter-count" id="filterResultsCount">0</span>
-      </button>
-
-      <!-- Panel de filtros -->
-      <div id="filtersPanel" class="filters-panel">
-        <div class="filters-header">
-          <h3 class="filters-title">Filtros</h3>
-          <button id="clearFiltersBtn" class="filters-clear-btn">Limpiar</button>
+  <!-- Panel de Filtros Compactos -->
+  <div class="filters-compact-wrapper">
+    <div class="filters-compact-container">
+      <div class="filters-compact-row">
+        <!-- Filtro Tipo -->
+        <div class="filter-dropdown-group">
+          <select id="filterTipo" class="filter-dropdown">
+            <option value="">Todos los tipos</option>
+          </select>
         </div>
 
-        <div class="filters-content">
-          <!-- Filtro por Dependencia -->
-          <div class="filter-group">
-            <h4 class="filter-group-title">Dependencia</h4>
-            <div class="filter-options" id="filterDependencias">
-              <!-- Se generará dinámicamente -->
-            </div>
-          </div>
-
-          <!-- Filtro por Tipo -->
-          <div class="filter-group">
-            <h4 class="filter-group-title">Tipo</h4>
-            <div class="filter-options" id="filterTipos">
-              <!-- Se generará dinámicamente -->
-            </div>
-          </div>
-
-          <!-- Filtro por Estado -->
-          <div class="filter-group">
-            <h4 class="filter-group-title">Estado</h4>
-            <div class="filter-options" id="filterEstados">
-              <!-- Se generará dinámicamente -->
-            </div>
-          </div>
+        <!-- Filtro Dependencia -->
+        <div class="filter-dropdown-group">
+          <select id="filterDependencia" class="filter-dropdown">
+            <option value="">Todas las dependencias</option>
+          </select>
         </div>
 
-        <div class="filters-footer">
-          <p class="filters-results">
-            Mostrando <strong id="filterResultsCount2">0</strong> resultados
-          </p>
+        <!-- Filtro Estatales -->
+        <div class="filter-dropdown-group">
+          <select id="filterEstatales" class="filter-dropdown">
+            <option value="">Todos</option>
+            <option value="estatal">Solo Estatales</option>
+            <option value="local">Solo Locales</option>
+          </select>
+        </div>
+
+        <!-- Filtro Estado -->
+        <div class="filter-dropdown-group">
+          <select id="filterEstado" class="filter-dropdown">
+            <option value="">Todos los estados</option>
+          </select>
+        </div>
+
+        <!-- Botón limpiar -->
+        <button id="clearFiltersBtn" class="filter-clear-btn" title="Limpiar filtros">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </button>
+
+        <!-- Contador de resultados -->
+        <div class="filter-results-badge">
+          <span id="filterResultsCount">0</span> resultados
         </div>
       </div>
     </div>
@@ -145,6 +141,27 @@
       <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
         <p class="loading-text">Cargando acciones climáticas...</p>
+      </div>
+
+      <!-- Buscador flotante -->
+      <div class="map-search-box">
+        <svg class="map-search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input
+          type="text"
+          id="mapSearchInput"
+          class="map-search-input"
+          placeholder="Buscar por palabra clave..."
+          autocomplete="off"
+        />
+        <button id="clearSearchBtn" class="map-search-clear" title="Limpiar búsqueda" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
 
       <!-- Botón de centrar mapa -->
