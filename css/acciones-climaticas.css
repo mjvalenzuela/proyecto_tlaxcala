@@ -71,7 +71,7 @@
   display: flex;
   gap: 2rem;
   background: rgba(208, 183, 135, 0.2);
-  padding: 0.5rem 0.5rem;
+  padding: 0.2rem 0.2rem;
   border-radius: 12px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(208, 183, 135, 0.3);
@@ -213,101 +213,298 @@
 .timeline-container {
   background: white;
   border-radius: 12px;
-  /*  padding: 0.5rem; */
+  padding: 0rem 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.timeline-header {
+.timeline-wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.timeline-title {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-color);
-  margin: 0;
-}
-
-.timeline-range {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--primary-color);
-}
-
-.timeline-content {
-  padding: 1rem 0;
-}
-
-.timeline-track {
-  position: relative;
+  gap: 1.5rem;
   width: 100%;
-  height: 40px;
-  background: #f0f0f0;
-  border-radius: 20px;
-  overflow: hidden;
 }
 
-.timeline-bar {
+.timeline-calendar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 2px solid #D4AF37;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.timeline-calendar-icon svg {
+  stroke: #FF9800;
+}
+
+.timeline-calendar-icon:hover {
+  background: rgba(255, 152, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.timeline-graph {
+  flex: 1;
+  position: relative;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.timeline-line {
   position: absolute;
   top: 50%;
   left: 0;
   right: 0;
-  height: 4px;
-  background: var(--border-color);
+  height: 3px;
+  background: rgba(212, 175, 55, 0.3);
   transform: translateY(-50%);
+  border-radius: 2px;
 }
 
-.timeline-slider {
+.timeline-markers {
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
 }
 
-.timeline-input {
+.timeline-year-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.timeline-year-marker:hover {
+  transform: translateY(-2px);
+}
+
+.timeline-marker-dot {
+  width: 12px;
+  height: 12px;
+  background: white;
+  border: 3px solid #D4AF37;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  margin-bottom: 4px;
+}
+
+.timeline-year-marker:hover .timeline-marker-dot {
+  background: rgba(255, 152, 0, 0.3);
+  transform: scale(1.2);
+}
+
+.timeline-year-marker.active .timeline-marker-dot {
+  background: #FF9800;
+  border-color: #FF9800;
+  transform: scale(1.3);
+  box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.2);
+}
+
+.timeline-marker-year {
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  color: #666;
+  margin-top: 4px;
+}
+
+.timeline-year-marker.active .timeline-marker-year {
+  color: #FF9800;
+  font-weight: 700;
+}
+
+.timeline-marker-count {
   position: absolute;
-  top: 50%;
+  top: -30px;
+  background: #FF9800;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  padding: 2px 8px;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.timeline-year-marker:hover .timeline-marker-count {
+  opacity: 1;
+}
+
+/* ===================================
+   MODAL DE RANGO DE FECHAS
+   =================================== */
+.date-modal-overlay {
+  position: fixed;
+  top: 0;
   left: 0;
-  width: 100%;
-  transform: translateY(-50%);
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  cursor: not-allowed;
-  opacity: 0.5;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(2px);
 }
 
-.timeline-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background: var(--primary-color);
-  border: 3px solid white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.date-modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 450px;
+  border: 2px solid #D4AF37;
+  overflow: hidden;
 }
 
-.timeline-input::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: var(--primary-color);
-  border: 3px solid white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.date-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  background: rgba(212, 175, 55, 0.1);
+  border-bottom: 2px solid #D4AF37;
 }
 
-.timeline-note {
+.date-modal-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.date-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: 2px solid #D4AF37;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.date-modal-close svg {
+  stroke: #FF9800;
+}
+
+.date-modal-close:hover {
+  background: #FF9800;
+  border-color: #FF9800;
+  transform: scale(1.05);
+}
+
+.date-modal-close:hover svg {
+  stroke: white;
+}
+
+.date-modal-body {
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.date-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.date-label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.date-input {
   font-family: "Open Sans", sans-serif;
-  font-size: 0.875rem;
-  color: #999;
-  text-align: center;
-  margin: 1rem 0 0 0;
-  font-style: italic;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.date-input:hover {
+  border-color: #D4AF37;
+}
+
+.date-modal-footer {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(212, 175, 55, 0.05);
+  border-top: 1px solid #e0e0e0;
+}
+
+.date-btn {
+  flex: 1;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.date-btn-secondary {
+  background: white;
+  border-color: #D4AF37;
+  color: #D4AF37;
+}
+
+.date-btn-secondary:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-1px);
+}
+
+.date-btn-primary {
+  background: #FF9800;
+  border-color: #FF9800;
+  color: white;
+}
+
+.date-btn-primary:hover {
+  background: #F57C00;
+  border-color: #F57C00;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.date-btn:active {
+  transform: translateY(0);
+}
+
+/* Hacer el ícono del calendario clickeable */
+.timeline-calendar-icon {
+  cursor: pointer;
 }
 
 /* ===================================

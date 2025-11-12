@@ -15,6 +15,8 @@ class FilterManager {
     this.searchTerm = '';
     this.timelineStartYear = null;
     this.timelineEndYear = null;
+    this.timelineStartDate = null; // Rango de fechas completo
+    this.timelineEndDate = null;
     this.isInitialized = false;
   }
 
@@ -212,11 +214,6 @@ class FilterManager {
    * Verifica si un marker pasa el filtro de timeline (rango de fechas)
    */
   passesTimelineFilter(marker) {
-    // Si no hay rango de timeline configurado, mostrar todos
-    if (!this.timelineStartYear || !this.timelineEndYear) {
-      return true;
-    }
-
     const fechaInicio = marker.fecha_inicio || marker.created_at;
     if (!fechaInicio) {
       return true; // Si no tiene fecha, mostrar por defecto
@@ -227,8 +224,24 @@ class FilterManager {
       return true; // Si la fecha es inválida, mostrar por defecto
     }
 
-    const year = date.getFullYear();
-    return year >= this.timelineStartYear && year <= this.timelineEndYear;
+    // Prioridad: filtro por rango de fechas completo
+    if (this.timelineStartDate && this.timelineEndDate) {
+      const startDate = new Date(this.timelineStartDate);
+      const endDate = new Date(this.timelineEndDate);
+      // Ajustar endDate al final del día
+      endDate.setHours(23, 59, 59, 999);
+
+      return date >= startDate && date <= endDate;
+    }
+
+    // Filtro por rango de años
+    if (this.timelineStartYear && this.timelineEndYear) {
+      const year = date.getFullYear();
+      return year >= this.timelineStartYear && year <= this.timelineEndYear;
+    }
+
+    // Si no hay filtro activo, mostrar todos
+    return true;
   }
 
   /**
@@ -237,6 +250,14 @@ class FilterManager {
   setTimelineRange(startYear, endYear) {
     this.timelineStartYear = startYear;
     this.timelineEndYear = endYear;
+  }
+
+  /**
+   * Establece el rango de fechas completo del timeline
+   */
+  setTimelineDateRange(startDate, endDate) {
+    this.timelineStartDate = startDate;
+    this.timelineEndDate = endDate;
   }
 
   /**
@@ -275,6 +296,8 @@ class FilterManager {
     // Resetear timeline si existe
     this.timelineStartYear = null;
     this.timelineEndYear = null;
+    this.timelineStartDate = null;
+    this.timelineEndDate = null;
     if (window.timelineManager && window.timelineManager.isInitialized) {
       window.timelineManager.reset();
     }
@@ -342,6 +365,10 @@ class FilterManager {
       estado: ''
     };
     this.searchTerm = '';
+    this.timelineStartYear = null;
+    this.timelineEndYear = null;
+    this.timelineStartDate = null;
+    this.timelineEndDate = null;
     this.allMarkers = [];
     this.allData = null;
     this.mapManager = null;

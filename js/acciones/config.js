@@ -23,8 +23,8 @@ const CONFIG = {
 
   // Coordenadas del centro de Tlaxcala
   CENTER: {
-    lat: 19.318154,
-    lng: -98.237232
+    lat: 19.42964878131165,
+    lng: -98.16560203447955
   },
 
   // Configuración del mapa

@@ -1,6 +1,6 @@
 /**
  * Sistema de línea de tiempo (Timeline)
- * Permite filtrar proyectos por rango de fechas
+ * Permite filtrar proyectos por año usando una gráfica interactiva
  */
 
 class TimelineManager {
@@ -9,8 +9,10 @@ class TimelineManager {
     this.data = data;
     this.minYear = null;
     this.maxYear = null;
-    this.selectedStartYear = null;
-    this.selectedEndYear = null;
+    this.selectedYear = null; // Año actualmente seleccionado (null = todos)
+    this.actionsByYear = {}; // { year: count }
+    this.selectedStartDate = null; // Rango de fechas personalizado
+    this.selectedEndDate = null;
     this.isInitialized = false;
   }
 
@@ -19,17 +21,17 @@ class TimelineManager {
    */
   init(markersData) {
     try {
-      // Calcular rango de años desde los datos
-      this.calculateYearRange(markersData);
+      // Calcular acciones por año
+      this.calculateActionsByYear(markersData);
 
-      // Si no hay rango válido, ocultar timeline
+      // Si no hay datos válidos, ocultar timeline
       if (!this.minYear || !this.maxYear) {
         this.hideTimeline();
         return;
       }
 
-      // Configurar los controles
-      this.setupTimelineControls();
+      // Generar los marcadores visuales
+      this.generateYearMarkers();
 
       // Configurar event listeners
       this.setupEventListeners();
@@ -42,13 +44,14 @@ class TimelineManager {
   }
 
   /**
-   * Calcula el rango de años desde los datos de los proyectos
+   * Calcula la cantidad de acciones por año
    */
-  calculateYearRange(markersData) {
+  calculateActionsByYear(markersData) {
     if (!markersData || markersData.length === 0) {
       return;
     }
 
+    const yearCounts = {};
     let minDate = null;
     let maxDate = null;
 
@@ -57,6 +60,12 @@ class TimelineManager {
       if (fechaInicio) {
         const date = new Date(fechaInicio);
         if (!isNaN(date.getTime())) {
+          const year = date.getFullYear();
+
+          // Contar acciones por año
+          yearCounts[year] = (yearCounts[year] || 0) + 1;
+
+          // Actualizar min/max
           if (!minDate || date < minDate) {
             minDate = date;
           }
@@ -70,40 +79,56 @@ class TimelineManager {
     if (minDate && maxDate) {
       this.minYear = minDate.getFullYear();
       this.maxYear = maxDate.getFullYear();
+      this.actionsByYear = yearCounts;
 
       // Si todos los proyectos son del mismo año, expandir el rango
       if (this.minYear === this.maxYear) {
         this.minYear = this.minYear - 1;
         this.maxYear = this.maxYear + 1;
       }
-
-      this.selectedStartYear = this.minYear;
-      this.selectedEndYear = this.maxYear;
     }
   }
 
   /**
-   * Configura los controles del timeline
+   * Genera los marcadores visuales para cada año
    */
-  setupTimelineControls() {
-    const startInput = document.getElementById('timelineStart');
-    const endInput = document.getElementById('timelineEnd');
-    const rangeDisplay = document.getElementById('timelineRange');
+  generateYearMarkers() {
+    const markersContainer = document.getElementById('timelineMarkers');
+    if (!markersContainer) return;
 
-    if (startInput && endInput && rangeDisplay) {
-      // Configurar atributos de los inputs
-      startInput.min = this.minYear;
-      startInput.max = this.maxYear;
-      startInput.value = this.minYear;
-      startInput.disabled = false;
+    // Limpiar marcadores existentes
+    markersContainer.innerHTML = '';
 
-      endInput.min = this.minYear;
-      endInput.max = this.maxYear;
-      endInput.value = this.maxYear;
-      endInput.disabled = false;
+    // Generar un marcador para cada año en el rango
+    for (let year = this.minYear; year <= this.maxYear; year++) {
+      const count = this.actionsByYear[year] || 0;
 
-      // Actualizar display del rango
-      rangeDisplay.textContent = `${this.minYear} - ${this.maxYear}`;
+      // Crear elemento del marcador
+      const marker = document.createElement('div');
+      marker.className = 'timeline-year-marker';
+      marker.dataset.year = year;
+
+      // Crear el punto
+      const dot = document.createElement('div');
+      dot.className = 'timeline-marker-dot';
+
+      // Crear el label del año
+      const yearLabel = document.createElement('div');
+      yearLabel.className = 'timeline-marker-year';
+      yearLabel.textContent = year;
+
+      // Crear el contador (se muestra en hover)
+      const countBadge = document.createElement('div');
+      countBadge.className = 'timeline-marker-count';
+      countBadge.textContent = `${count} ${count === 1 ? 'acción' : 'acciones'}`;
+
+      // Ensamblar el marcador
+      marker.appendChild(countBadge);
+      marker.appendChild(dot);
+      marker.appendChild(yearLabel);
+
+      // Agregar al contenedor
+      markersContainer.appendChild(marker);
     }
   }
 
@@ -111,40 +136,172 @@ class TimelineManager {
    * Configura los event listeners
    */
   setupEventListeners() {
-    const startInput = document.getElementById('timelineStart');
-    const endInput = document.getElementById('timelineEnd');
+    const markersContainer = document.getElementById('timelineMarkers');
+    if (!markersContainer) return;
 
-    if (startInput) {
-      startInput.addEventListener('input', (e) => {
-        this.handleStartChange(parseInt(e.target.value));
+    // Delegación de eventos: escuchar clicks en el contenedor
+    markersContainer.addEventListener('click', (e) => {
+      const marker = e.target.closest('.timeline-year-marker');
+      if (marker) {
+        const year = parseInt(marker.dataset.year);
+        this.handleYearClick(year);
+      }
+    });
+
+    // Configurar el modal de rango de fechas
+    this.setupDateRangeModal();
+  }
+
+  /**
+   * Configura el modal de rango de fechas
+   */
+  setupDateRangeModal() {
+    const calendarIcon = document.querySelector('.timeline-calendar-icon');
+    const modal = document.getElementById('dateRangeModal');
+    const closeBtn = document.getElementById('closeDateModal');
+    const applyBtn = document.getElementById('applyDateRange');
+    const clearBtn = document.getElementById('clearDateRange');
+
+    // Abrir modal al hacer click en el ícono del calendario
+    if (calendarIcon) {
+      calendarIcon.addEventListener('click', () => {
+        this.openDateRangeModal();
       });
     }
 
-    if (endInput) {
-      endInput.addEventListener('input', (e) => {
-        this.handleEndChange(parseInt(e.target.value));
+    // Cerrar modal con el botón X
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        this.closeDateRangeModal();
+      });
+    }
+
+    // Cerrar modal al hacer click fuera de él
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          this.closeDateRangeModal();
+        }
+      });
+    }
+
+    // Aplicar rango de fechas
+    if (applyBtn) {
+      applyBtn.addEventListener('click', () => {
+        this.applyDateRange();
+      });
+    }
+
+    // Limpiar rango de fechas
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        this.clearDateRange();
       });
     }
   }
 
   /**
-   * Maneja el cambio del slider de inicio
+   * Abre el modal de rango de fechas
    */
-  handleStartChange(newStartYear) {
-    const endInput = document.getElementById('timelineEnd');
-    const rangeDisplay = document.getElementById('timelineRange');
+  openDateRangeModal() {
+    const modal = document.getElementById('dateRangeModal');
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
 
-    // Asegurar que el inicio no sea mayor que el fin
-    if (newStartYear > this.selectedEndYear) {
-      newStartYear = this.selectedEndYear;
-      document.getElementById('timelineStart').value = newStartYear;
+    if (modal) {
+      // Si ya hay un rango seleccionado, mostrarlo en el modal
+      if (this.selectedStartDate) {
+        startDateInput.value = this.selectedStartDate;
+      }
+      if (this.selectedEndDate) {
+        endDateInput.value = this.selectedEndDate;
+      }
+
+      modal.style.display = 'flex';
+    }
+  }
+
+  /**
+   * Cierra el modal de rango de fechas
+   */
+  closeDateRangeModal() {
+    const modal = document.getElementById('dateRangeModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  /**
+   * Aplica el filtro por rango de fechas
+   */
+  applyDateRange() {
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
+
+    // Validar que ambas fechas estén seleccionadas
+    if (!startDate || !endDate) {
+      alert('Por favor selecciona ambas fechas');
+      return;
     }
 
-    this.selectedStartYear = newStartYear;
+    // Validar que la fecha de inicio sea anterior a la fecha de fin
+    if (new Date(startDate) > new Date(endDate)) {
+      alert('La fecha de inicio debe ser anterior a la fecha de fin');
+      return;
+    }
 
-    // Actualizar display
-    if (rangeDisplay) {
-      rangeDisplay.textContent = `${this.selectedStartYear} - ${this.selectedEndYear}`;
+    // Guardar las fechas
+    this.selectedStartDate = startDate;
+    this.selectedEndDate = endDate;
+
+    // Limpiar la selección de año (ya que ahora usamos rango de fechas)
+    this.selectedYear = null;
+    this.clearYearSelection();
+
+    // Cerrar modal
+    this.closeDateRangeModal();
+
+    // Aplicar filtros
+    this.applyTimelineFilter();
+  }
+
+  /**
+   * Limpia el rango de fechas seleccionado
+   */
+  clearDateRange() {
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+
+    // Limpiar inputs
+    if (startDateInput) startDateInput.value = '';
+    if (endDateInput) endDateInput.value = '';
+
+    // Limpiar fechas seleccionadas
+    this.selectedStartDate = null;
+    this.selectedEndDate = null;
+
+    // Cerrar modal
+    this.closeDateRangeModal();
+
+    // Aplicar filtros (mostrará todos)
+    this.applyTimelineFilter();
+  }
+
+  /**
+   * Maneja el click en un marcador de año
+   */
+  handleYearClick(year) {
+    // Si ya estaba seleccionado, deseleccionar (mostrar todos)
+    if (this.selectedYear === year) {
+      this.selectedYear = null;
+      this.clearYearSelection();
+    } else {
+      // Seleccionar el nuevo año
+      this.selectedYear = year;
+      this.setYearSelection(year);
     }
 
     // Aplicar filtros
@@ -152,27 +309,27 @@ class TimelineManager {
   }
 
   /**
-   * Maneja el cambio del slider de fin
+   * Marca visualmente un año como seleccionado
    */
-  handleEndChange(newEndYear) {
-    const startInput = document.getElementById('timelineStart');
-    const rangeDisplay = document.getElementById('timelineRange');
+  setYearSelection(year) {
+    const markers = document.querySelectorAll('.timeline-year-marker');
+    markers.forEach(marker => {
+      if (parseInt(marker.dataset.year) === year) {
+        marker.classList.add('active');
+      } else {
+        marker.classList.remove('active');
+      }
+    });
+  }
 
-    // Asegurar que el fin no sea menor que el inicio
-    if (newEndYear < this.selectedStartYear) {
-      newEndYear = this.selectedStartYear;
-      document.getElementById('timelineEnd').value = newEndYear;
-    }
-
-    this.selectedEndYear = newEndYear;
-
-    // Actualizar display
-    if (rangeDisplay) {
-      rangeDisplay.textContent = `${this.selectedStartYear} - ${this.selectedEndYear}`;
-    }
-
-    // Aplicar filtros
-    this.applyTimelineFilter();
+  /**
+   * Limpia la selección visual de años
+   */
+  clearYearSelection() {
+    const markers = document.querySelectorAll('.timeline-year-marker');
+    markers.forEach(marker => {
+      marker.classList.remove('active');
+    });
   }
 
   /**
@@ -183,8 +340,19 @@ class TimelineManager {
       return;
     }
 
-    // Notificar al FilterManager que aplique filtros con el rango de fechas
-    this.filterManager.setTimelineRange(this.selectedStartYear, this.selectedEndYear);
+    // Notificar al FilterManager
+    if (this.selectedStartDate && this.selectedEndDate) {
+      // Filtrar por rango de fechas personalizado
+      this.filterManager.setTimelineDateRange(this.selectedStartDate, this.selectedEndDate);
+    } else if (this.selectedYear) {
+      // Filtrar por un año específico
+      this.filterManager.setTimelineRange(this.selectedYear, this.selectedYear);
+    } else {
+      // Mostrar todos
+      this.filterManager.setTimelineRange(null, null);
+      this.filterManager.setTimelineDateRange(null, null);
+    }
+
     this.filterManager.applyFilters();
   }
 
@@ -192,20 +360,16 @@ class TimelineManager {
    * Resetea el timeline a valores por defecto
    */
   reset() {
-    const startInput = document.getElementById('timelineStart');
-    const endInput = document.getElementById('timelineEnd');
-    const rangeDisplay = document.getElementById('timelineRange');
+    this.selectedYear = null;
+    this.selectedStartDate = null;
+    this.selectedEndDate = null;
+    this.clearYearSelection();
 
-    if (startInput && endInput) {
-      startInput.value = this.minYear;
-      endInput.value = this.maxYear;
-      this.selectedStartYear = this.minYear;
-      this.selectedEndYear = this.maxYear;
-
-      if (rangeDisplay) {
-        rangeDisplay.textContent = `${this.minYear} - ${this.maxYear}`;
-      }
-    }
+    // Limpiar también los inputs del modal
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    if (startDateInput) startDateInput.value = '';
+    if (endDateInput) endDateInput.value = '';
   }
 
   /**
@@ -222,8 +386,13 @@ class TimelineManager {
    * Verifica si un marker pasa el filtro de timeline
    */
   passesTimelineFilter(marker) {
-    if (!this.isInitialized || !this.selectedStartYear || !this.selectedEndYear) {
-      return true; // Si timeline no está inicializado, mostrar todos
+    if (!this.isInitialized) {
+      return true;
+    }
+
+    // Si no hay filtro activo, mostrar todos
+    if (!this.selectedYear && !this.selectedStartDate && !this.selectedEndDate) {
+      return true;
     }
 
     const fechaInicio = marker.fecha_inicio || marker.created_at;
@@ -236,8 +405,23 @@ class TimelineManager {
       return true; // Si la fecha es inválida, mostrar por defecto
     }
 
-    const year = date.getFullYear();
-    return year >= this.selectedStartYear && year <= this.selectedEndYear;
+    // Filtro por rango de fechas completo (tiene prioridad)
+    if (this.selectedStartDate && this.selectedEndDate) {
+      const startDate = new Date(this.selectedStartDate);
+      const endDate = new Date(this.selectedEndDate);
+      // Ajustar endDate al final del día
+      endDate.setHours(23, 59, 59, 999);
+
+      return date >= startDate && date <= endDate;
+    }
+
+    // Filtro por año específico
+    if (this.selectedYear) {
+      const year = date.getFullYear();
+      return year === this.selectedYear;
+    }
+
+    return true;
   }
 
   /**
@@ -246,6 +430,7 @@ class TimelineManager {
   destroy() {
     this.filterManager = null;
     this.data = null;
+    this.actionsByYear = {};
     this.isInitialized = false;
   }
 }
