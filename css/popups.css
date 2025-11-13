@@ -124,20 +124,20 @@
 /* ============================================ */
 
 .popup-field-destacado {
-  background-color: #f3e5f5;
-  border: 2px solid #9c27b0;
+  background-color: #f5f3e5;
+  border: 2px solid #b07927;
   border-radius: 6px;
   padding: 12px;
   margin-bottom: 16px;
 }
 
 .popup-field-destacado label {
-  color: #9c27b0;
+  color: #b07927;
   font-size: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 
 .ubicaciones-mini-list {

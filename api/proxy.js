@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     const normalizedPath = pathParam.startsWith('/') ? pathParam : `/${pathParam}`;
     const targetUrl = `${geoserverBaseUrl}${normalizedPath}`;
 
-    console.log('Proxy: Fetching URL:', targetUrl);
+    //console.log('Proxy: Fetching URL:', targetUrl);
 
 
     // ==========================================

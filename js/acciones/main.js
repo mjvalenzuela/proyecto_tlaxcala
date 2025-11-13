@@ -58,6 +58,9 @@ class AccionesClimaticasApp {
       // Actualizar estadísticas en el header
       this.updateStats(this.data);
 
+      // Almacenar acciones globalmente para acceso desde popups
+      PopupGenerator.setAccionesData(this.data.acciones);
+
       // Procesar y agregar markers al mapa
       this.markersData = this.dataManager.processAccionesForMap(this.data);
       this.mapManager.addMarkers(this.markersData);

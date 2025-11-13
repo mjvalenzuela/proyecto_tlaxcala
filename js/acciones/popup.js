@@ -9,6 +9,20 @@ class PopupGenerator {
   }
 
   /**
+   * Almacena las acciones globalmente para acceso desde botones
+   */
+  static setAccionesData(acciones) {
+    window.__accionesData = acciones;
+  }
+
+  /**
+   * Obtiene una acción por ID
+   */
+  static getAccionById(accionId) {
+    return window.__accionesData?.find(a => a.id === accionId) || null;
+  }
+
+  /**
    * Genera el HTML del popup para una acción
    * Siempre usa el popup complejo
    */
@@ -17,11 +31,16 @@ class PopupGenerator {
     const esMultiUbicacion = accion.es_multiubicacion;
     const esEstatal = ubicacion?.es_estatal || false;
 
+    // Determinar el índice de la ubicación actual
+    const ubicacionIdx = accion.currentUbicacionIdx !== undefined
+      ? accion.currentUbicacionIdx
+      : 0;
+
     return `
       <div class="popup-formulario">
         ${this.generateHeader(accion)}
         ${this.generateBody(accion, ubicacion, esMultiUbicacion, esEstatal)}
-        ${this.generateFooter(accion)}
+        ${this.generateFooter(accion, ubicacionIdx, esMultiUbicacion)}
       </div>
     `;
   }
@@ -233,17 +252,24 @@ class PopupGenerator {
   // FOOTER
   // ============================================
 
-  generateFooter(accion) {
+  generateFooter(accion, ubicacionIdx = 0, esMultiUbicacion = false) {
+    // Si es multiubicación, no mostrar botones de evidencias
+    // (se mostrarán en el modal "Ver todas las ubicaciones")
+    if (esMultiUbicacion) {
+      return ''; // No generar footer con botones
+    }
+
+    // Para ubicaciones únicas, mostrar los 3 botones normalmente
     return `
       <div class="popup-footer">
-        <button class="popup-btn popup-btn-primary" onclick="verDetallePDF('${accion.id}')">
+        <button class="popup-btn popup-btn-primary" onclick="verDetallePDF('${accion.id}', ${ubicacionIdx})">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
           </svg>
           PDF
         </button>
-        <button class="popup-btn popup-btn-secondary" onclick="verFotos('${accion.id}')">
+        <button class="popup-btn popup-btn-secondary" onclick="verFotos('${accion.id}', ${ubicacionIdx})">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
             <circle cx="8.5" cy="8.5" r="1.5"></circle>
@@ -251,7 +277,7 @@ class PopupGenerator {
           </svg>
           Fotos
         </button>
-        <button class="popup-btn popup-btn-secondary" onclick="verVideos('${accion.id}')">
+        <button class="popup-btn popup-btn-secondary" onclick="verVideos('${accion.id}', ${ubicacionIdx})">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polygon points="23 7 16 12 23 17 23 7"></polygon>
             <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
@@ -328,23 +354,152 @@ class PopupGenerator {
 
 /**
  * Muestra el detalle PDF de una acción
+ * Abre el PDF en una nueva ventana
  */
-function verDetallePDF(accionId) {}
+function verDetallePDF(accionId, ubicacionIdx = 0) {
+  const accion = PopupGenerator.getAccionById(accionId);
+  if (!accion || !accion.ubicaciones[ubicacionIdx]) {
+    console.warn('Acción o ubicación no encontrada');
+    return;
+  }
+
+  const ubicacion = accion.ubicaciones[ubicacionIdx];
+  const evidencias = ubicacion.evidencias;
+
+  if (!evidencias || !evidencias.pdf) {
+    toast.warning('PDF no disponible', 'No hay documento PDF disponible para esta ubicación.');
+  } else {
+    window.open(evidencias.pdf, '_blank');
+  }
+}
 
 /**
  * Muestra fotos de una acción
+ * Abre la imagen en una nueva ventana
  */
-function verFotos(accionId) {}
+function verFotos(accionId, ubicacionIdx = 0) {
+  const accion = PopupGenerator.getAccionById(accionId);
+  if (!accion || !accion.ubicaciones[ubicacionIdx]) {
+    console.warn('Acción o ubicación no encontrada');
+    return;
+  }
+
+  const ubicacion = accion.ubicaciones[ubicacionIdx];
+  const evidencias = ubicacion.evidencias;
+
+  if (!evidencias || !evidencias.image) {
+    toast.warning('Fotos no disponibles', 'No hay evidencia fotográfica disponible para esta ubicación.');
+  } else {
+    window.open(evidencias.image, '_blank');
+  }
+}
 
 /**
  * Muestra videos de una acción
+ * Abre el video en una nueva ventana
  */
-function verVideos(accionId) {}
+function verVideos(accionId, ubicacionIdx = 0) {
+  const accion = PopupGenerator.getAccionById(accionId);
+  if (!accion || !accion.ubicaciones[ubicacionIdx]) {
+    console.warn('Acción o ubicación no encontrada');
+    return;
+  }
+
+  const ubicacion = accion.ubicaciones[ubicacionIdx];
+  const evidencias = ubicacion.evidencias;
+
+  if (!evidencias || !evidencias.video) {
+    toast.warning('Videos no disponibles', 'No hay evidencia en video disponible para esta ubicación.');
+  } else {
+    window.open(evidencias.video, '_blank');
+  }
+}
 
 /**
  * Muestra todas las ubicaciones de un proyecto multi-ubicación
  */
-function verTodasUbicaciones(accionId) {}
+function verTodasUbicaciones(accionId) {
+  const accion = PopupGenerator.getAccionById(accionId);
+  if (!accion) {
+    console.warn('Acción no encontrada');
+    return;
+  }
+
+  // Elementos del modal
+  const modal = document.getElementById('ubicacionesModal');
+  const listContainer = document.getElementById('ubicacionesList');
+  const closeBtn = document.getElementById('closeUbicacionesModal');
+
+  // Generar HTML para todas las ubicaciones
+  let html = '';
+
+  accion.ubicaciones.forEach((ubicacion, idx) => {
+    const icono = ubicacion.es_estatal ? '🏛️' : '📍';
+    const evidencias = ubicacion.evidencias || {};
+    const tienePDF = evidencias.pdf && evidencias.pdf !== null;
+    const tieneImagen = evidencias.image && evidencias.image !== null;
+    const tieneVideo = evidencias.video && evidencias.video !== null;
+
+    html += `
+      <div class="ubicacion-item">
+        <div class="ubicacion-item-header">
+          <span class="ubicacion-item-icon">${icono}</span>
+          <h4 class="ubicacion-item-lugar">${ubicacion.lugar}</h4>
+        </div>
+        <div class="ubicacion-item-actividad">
+          <strong>Actividad:</strong> ${ubicacion.activity || 'No especificada'}
+        </div>
+        ${ubicacion.es_estatal ? '<div class="ubicacion-item-actividad"><em>Alcance: Todo el Estado de Tlaxcala</em></div>' : ''}
+        <div class="ubicacion-item-evidencias">
+          ${tienePDF ? `
+            <button class="ubicacion-evidencia-btn" onclick="verDetallePDF('${accionId}', ${idx})">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              PDF
+            </button>
+          ` : ''}
+          ${tieneImagen ? `
+            <button class="ubicacion-evidencia-btn" onclick="verFotos('${accionId}', ${idx})">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              Foto
+            </button>
+          ` : ''}
+          ${tieneVideo ? `
+            <button class="ubicacion-evidencia-btn" onclick="verVideos('${accionId}', ${idx})">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+              </svg>
+              Video
+            </button>
+          ` : ''}
+          ${!tienePDF && !tieneImagen && !tieneVideo ? '<em style="color: #999; font-size: 0.85rem;">Sin evidencias</em>' : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  listContainer.innerHTML = html;
+
+  // Mostrar modal
+  modal.style.display = 'flex';
+
+  // Event listener para cerrar
+  const closeModal = () => {
+    modal.style.display = 'none';
+  };
+
+  closeBtn.onclick = closeModal;
+  modal.onclick = (e) => {
+    if (e.target === modal) closeModal();
+  };
+}
 
 /**
  * Toggle para expandir/contraer la lista de ubicaciones

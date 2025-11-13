@@ -207,6 +207,26 @@ class DataAdapter {
           return; // No es una ubicación válida
         }
 
+        // 3.5 Extraer evidencias (question_id 25: "Se cuenta con evidencias")
+        const evidenciasAnswer = actividadData.answers.find(
+          (a) => a.question_title === "Se cuenta con evidencias"
+        );
+
+        // Agregar evidencias a la ubicación
+        if (evidenciasAnswer && evidenciasAnswer.display_value) {
+          ubicacion.evidencias = {
+            pdf: evidenciasAnswer.display_value.pdf || null,
+            image: evidenciasAnswer.display_value.image || null,
+            video: evidenciasAnswer.display_value.video || null
+          };
+        } else {
+          ubicacion.evidencias = {
+            pdf: null,
+            image: null,
+            video: null
+          };
+        }
+
         // 4. Si el proyecto ya existe, agregar ubicación
         if (proyectosMap.has(claveProyecto)) {
           const proyecto = proyectosMap.get(claveProyecto);

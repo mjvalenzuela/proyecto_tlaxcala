@@ -352,6 +352,404 @@
 }
 
 /* ===================================
+   MODALES - RESPONSIVE
+   =================================== */
+@media (max-width: 767px) {
+  /* Modal de rango de fechas */
+  .date-modal {
+    width: 95%;
+    max-width: none;
+    max-height: 90vh;
+  }
+
+  .date-modal-header {
+    padding: 1rem;
+  }
+
+  .date-modal-title {
+    font-size: 1.125rem;
+  }
+
+  .date-modal-body {
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .date-input {
+    font-size: 1rem;
+    padding: 0.875rem;
+  }
+
+  .date-modal-footer {
+    padding: 1rem;
+    flex-direction: column;
+  }
+
+  .date-btn {
+    width: 100%;
+    padding: 0.875rem 1rem;
+  }
+
+  /* Modal de ubicaciones */
+  .media-modal {
+    width: 95%;
+    max-width: none;
+    max-height: 90vh;
+  }
+
+  .media-modal-large {
+    width: 95%;
+    max-width: none;
+  }
+
+  .media-modal-header {
+    padding: 1rem;
+  }
+
+  .media-modal-title {
+    font-size: 1.125rem;
+  }
+
+  .media-modal-body {
+    padding: 1rem;
+  }
+
+  .ubicacion-item {
+    padding: 0.875rem 1rem;
+  }
+
+  .ubicacion-item-lugar {
+    font-size: 1rem;
+  }
+
+  .ubicacion-item-actividad {
+    font-size: 0.875rem;
+  }
+
+  .ubicacion-item-evidencias {
+    flex-wrap: wrap;
+  }
+
+  .ubicacion-evidencia-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.813rem;
+    /* Mínimo 44px para touch */
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ===================================
+   TIMELINE GRÁFICO - RESPONSIVE
+   =================================== */
+@media (max-width: 767px) {
+  .timeline-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .timeline-wrapper {
+    gap: 1rem;
+  }
+
+  .timeline-calendar-icon {
+    width: 40px;
+    height: 40px;
+    /* Mínimo para touch */
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .timeline-calendar-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .timeline-graph {
+    height: 50px;
+  }
+
+  .timeline-markers {
+    gap: 0.25rem;
+  }
+
+  .timeline-year-marker {
+    min-width: 30px;
+  }
+
+  .timeline-marker-dot {
+    width: 10px;
+    height: 10px;
+    border-width: 2px;
+  }
+
+  .timeline-marker-year {
+    font-size: 0.688rem;
+  }
+
+  .timeline-marker-count {
+    font-size: 0.625rem;
+    padding: 2px 6px;
+    top: -26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-wrapper {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .timeline-calendar-icon {
+    align-self: flex-start;
+  }
+
+  .timeline-graph {
+    width: 100%;
+    height: 60px;
+  }
+
+  /* Ocultar algunos años si hay muchos */
+  .timeline-year-marker:nth-child(even) .timeline-marker-year {
+    display: none;
+  }
+}
+
+/* ===================================
+   FILTROS COMPACTOS - RESPONSIVE
+   =================================== */
+@media (max-width: 767px) {
+  .filters-compact-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .filters-compact-row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .filter-dropdown-group {
+    width: 100%;
+  }
+
+  .filter-dropdown {
+    width: 100%;
+    font-size: 0.938rem;
+    padding: 0.75rem 1rem;
+    /* Mínimo para touch */
+    min-height: 44px;
+  }
+
+  .filter-clear-btn {
+    width: 100%;
+    /* Mínimo para touch */
+    min-height: 44px;
+    padding: 0.75rem;
+    justify-content: center;
+  }
+
+  .filter-results-badge {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 8px;
+    font-size: 0.938rem;
+  }
+}
+
+/* ===================================
+   BUSCADOR FLOTANTE - RESPONSIVE
+   =================================== */
+@media (max-width: 767px) {
+  .map-search-box {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: none;
+  }
+
+  .map-search-input {
+    font-size: 0.938rem;
+    padding: 0.75rem 2.5rem;
+    /* Mínimo para touch */
+    min-height: 44px;
+  }
+
+  .map-search-icon {
+    width: 16px;
+    height: 16px;
+    left: 0.875rem;
+  }
+
+  .map-search-clear {
+    right: 0.75rem;
+    width: 28px;
+    height: 28px;
+  }
+
+  .map-search-clear svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* ===================================
+   BOTONES TOUCH-FRIENDLY
+   =================================== */
+@media (max-width: 767px) {
+  /* Botón centrar mapa */
+  .center-btn {
+    width: 44px;
+    height: 44px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .center-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Botones del popup */
+  .popup-btn {
+    /* Mínimo 44px para touch */
+    min-height: 44px;
+    padding: 0.75rem 0.875rem;
+    font-size: 0.813rem;
+  }
+
+  .popup-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Botones de cerrar modales */
+  .date-modal-close,
+  .media-modal-close {
+    width: 40px;
+    height: 40px;
+    /* Mínimo para touch */
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Badge clickeable de ubicaciones */
+  .badge-clickeable {
+    /* Mínimo para touch */
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* ===================================
+   POPUP LEAFLET - AJUSTES MÓVIL
+   =================================== */
+@media (max-width: 767px) {
+  .leaflet-popup-content-wrapper {
+    max-width: 280px;
+  }
+
+  .popup-formulario {
+    width: 100%;
+  }
+
+  .popup-header {
+    padding: 0.875rem;
+  }
+
+  .popup-header-field label {
+    font-size: 0.688rem;
+  }
+
+  .header-value {
+    font-size: 0.875rem;
+  }
+
+  .popup-body {
+    padding: 0.875rem;
+  }
+
+  .popup-field {
+    margin-bottom: 0.75rem;
+  }
+
+  .popup-field label {
+    font-size: 0.813rem;
+  }
+
+  .field-value {
+    font-size: 0.875rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .popup-footer {
+    padding: 0.75rem 0.875rem;
+    gap: 0.5rem;
+  }
+
+  /* Lista mini de ubicaciones */
+  .ubicaciones-mini-list {
+    max-height: 150px;
+  }
+
+  .ubicacion-mini-item {
+    font-size: 0.813rem;
+    padding: 0.5rem;
+  }
+
+  .btn-ver-ubicaciones {
+    font-size: 0.875rem;
+    padding: 0.75rem;
+    /* Mínimo para touch */
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaflet-popup-content-wrapper {
+    max-width: 260px;
+  }
+
+  .popup-header {
+    padding: 0.75rem;
+  }
+
+  .header-value {
+    font-size: 0.813rem;
+  }
+
+  .popup-body {
+    padding: 0.75rem;
+  }
+
+  .popup-row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .popup-field-half {
+    width: 100%;
+  }
+
+  .popup-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .popup-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ===================================
    LANDSCAPE MODE (móviles en horizontal)
    =================================== */
 @media (max-height: 500px) and (orientation: landscape) {
@@ -362,6 +760,30 @@
 
   .timeline-container {
     display: none;
+  }
+
+  .acciones-header {
+    padding: 0.75rem 0;
+  }
+
+  .header-content {
+    padding: 0 1rem;
+  }
+
+  .stats-container {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .stat-item {
+    flex-direction: column;
+    border-bottom: none;
+  }
+
+  /* Modales en landscape ocupan más altura */
+  .date-modal,
+  .media-modal {
+    max-height: 95vh;
   }
 }
 
