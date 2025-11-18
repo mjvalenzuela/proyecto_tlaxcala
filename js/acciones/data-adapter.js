@@ -207,7 +207,10 @@ class DataAdapter {
           return; // No es una ubicación válida
         }
 
-        // 3.5 Extraer evidencias (question_id 25: "Se cuenta con evidencias")
+        // 3.5 Guardar el survey_id original (el id de la actividad/survey del API)
+        ubicacion.survey_id = actividadData.id;
+
+        // 3.6 Extraer evidencias (question_id 25: "Se cuenta con evidencias")
         const evidenciasAnswer = actividadData.answers.find(
           (a) => a.question_title === "Se cuenta con evidencias"
         );

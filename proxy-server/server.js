@@ -101,3 +101,16 @@ app.get("/", (req, res) => {
     },
   });
 });
+
+// Iniciar el servidor
+app.listen(PORT, () => {
+  console.log(`✅ Proxy Server ejecutándose en http://localhost:${PORT}`);
+  console.log(`📍 Ambiente: ${config.actual.ambiente}`);
+  console.log(`🌐 GeoServer: ${GEOSERVER_URL}`);
+  console.log(`🔗 API Proyectos: ${API_PROJECTS_URL}`);
+  console.log(`\n📝 Endpoints disponibles:`);
+  console.log(`   - http://localhost:${PORT}/`);
+  console.log(`   - http://localhost:${PORT}/health`);
+  console.log(`   - http://localhost:${PORT}/geoserver/*`);
+  console.log(`   - http://localhost:${PORT}/api/*`);
+});

@@ -73,8 +73,8 @@
           <!-- Título del mapa -->
           <h2 class="map-title">Riesgo climático por municipio</h2>
 
-          <!-- Card de texto (izquierda, 30%) -->
-          <div class="chapter-text">
+          <!-- Card 1: Texto + Botón + Grid de botones (40%, 70%) -->
+          <div class="risk-card-1">
             <h2 class="chapter-title">&iquest;Qu&eacute; es el riesgo?</h2>
             <div class="chapter-content">
               <p>
@@ -82,14 +82,47 @@
               </p>
               <p>No depende solo de la presencia de la amenaza, sino también de qué tan vulnerables son las personas o ecosistemas expuestos y de su capacidad de respuesta.</p>
               <p>En pocas palabras: la amenaza es el evento; el riesgo es la probabilidad de que ese evento afecte de forma significativa.</p>
-              <button class="btn-atlas" id="btnAtlasRiesgo">Atlas de Riesgo</button>
+              <button class="btn-atlas" id="btnAtlasRiesgo">Ver Atlas de Riesgo Estatal</button>
+            </div>
+
+            <!-- Grid de 10 botones (2 filas x 5 columnas) -->
+            <div class="risk-buttons-grid">
+              <button class="risk-btn" data-risk="Apizaco2011">Apizaco 2011</button>
+              <button class="risk-btn" data-risk="Atlangatepec2016">Atlangatepec 2016</button>
+              <button class="risk-btn" data-risk="Huamantla2016">Huamantla 2016</button>
+              <button class="risk-btn" data-risk="Natívitas2015">Natívitas 2015</button>
+              <button class="risk-btn" data-risk="Papalotla-de-Xicohténcatl2015">Papalotla de Xicohténcatl 2015</button>
+              <button class="risk-btn" data-risk="SanPablo-del-Monte_2015">San Pablo del Monte 2015</button>
+              <button class="risk-btn" data-risk="Sanctórum-de-LázaroCárdenas2011">Sanctórum de Lázaro Cárdenas 2011</button>
+              <button class="risk-btn" data-risk="Tlaxcala2018">Tlaxcala 2018</button>
+              <button class="risk-btn" data-risk="Xicohtzinco2014">Xicohtzinco 2014</button>
+              <button class="risk-btn" data-risk="Zacatelco2018">Zacatelco 2018</button>
             </div>
           </div>
 
-          <!-- Mapa (derecha, 70%) -->
-          <div class="chapter-map">
+          <!-- Card 2: Mapa (60%, 70%) -->
+          <div class="risk-card-2">
             <div class="map-container" id="map-1"></div>
             <!-- Los controles de capas se generan dinámicamente -->
+          </div>
+
+          <!-- Card 3: Gráfica de Dona (40%, 40%) -->
+          <div class="risk-card-3">
+            <h3 class="card-subtitle">Total por Declaratoria</h3>
+            <div class="chart-legend-container">
+              <div class="chart-container-dona">
+                <canvas id="donutChart"></canvas>
+              </div>
+              <div class="chart-legend" id="donutLegend"></div>
+            </div>
+          </div>
+
+          <!-- Card 4: Gráfica de Líneas (60%, 40%) -->
+          <div class="risk-card-4">
+            <h3 class="card-subtitle">Declaratorias por Año</h3>
+            <div class="chart-container-lines">
+              <canvas id="linesChart"></canvas>
+            </div>
           </div>
         </section>
 
@@ -98,37 +131,48 @@
           <!-- Título del capítulo -->
           <h2 class="map-title">Eventos por a&ntilde;o y declaratorias</h2>
 
-          <!-- Contenedor izquierdo (50%) -->
-          <div class="chapter-left">
-            <!-- Texto superior -->
-            <div class="chapter-text">
-              <div class="chapter-content">
-                <p>
-                  En Tlaxcala, los riesgos clim&aacute;ticos se manifiestan en heladas, lluvias intensas, sequ&iacute;as, granizadas e incluso nevadas at&iacute;picas. Estos fen&oacute;menos, cada vez m&aacute;s frecuentes por el cambio clim&aacute;tico, afectan cosechas, viviendas, infraestructura y la salud de la poblaci&oacute;n. Reconocer estas amenazas es el primer paso para reducir riesgos y fortalecer la adaptaci&oacute;n de nuestras comunidades.
-                </p>
-                <ul class="events-list">
-                  <li>&#10052;&#65039; Nevadas, heladas y granizadas: 197 eventos.</li>
-                  <li>&#127783;&#65039; Lluvias intensas: 121 eventos.</li>
-                  <li>&#127797; Sequ&iacute;as: 88 eventos.</li>
-                  <li>&#10052;&#65039; Heladas reportadas aparte: 61 eventos.</li>
-                  <li>&#127755; Actividad volc&aacute;nica (Popocat&eacute;petl): 60 eventos.</li>
-                  <li>&#127758; Sismos: 40 eventos.</li>
-                  <li>&#129398; Bajas temperaturas: 17 eventos.</li>
-                  <li>&#127744; Ciclones tropicales: 5 eventos.</li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- Imagen de tortas (abajo) -->
-            <div class="chapter-chart-image">
-              <img src="images/declaratoriaxaño_tortas.png" alt="Gr&aacute;fico de declaratorias por tipo">
+          <!-- Card 1: Texto con lista de eventos (40%, 60%) -->
+          <div class="risk-card-1">
+            <h2 class="chapter-title">Eventos Clim&aacute;ticos en Tlaxcala</h2>
+            <div class="chapter-content">
+              <p>
+                En Tlaxcala, los riesgos clim&aacute;ticos se manifiestan en heladas, lluvias intensas, sequ&iacute;as, granizadas e incluso nevadas at&iacute;picas. Estos fen&oacute;menos, cada vez m&aacute;s frecuentes por el cambio clim&aacute;tico, afectan cosechas, viviendas, infraestructura y la salud de la poblaci&oacute;n.
+              </p>
+              <ul class="events-list">
+                <li>&#10052;&#65039; Nevadas, heladas y granizadas: 197 eventos.</li>
+                <li>&#127783;&#65039; Lluvias intensas: 121 eventos.</li>
+                <li>&#127797; Sequ&iacute;as: 88 eventos.</li>
+                <li>&#10052;&#65039; Heladas reportadas aparte: 61 eventos.</li>
+                <li>&#127755; Actividad volc&aacute;nica (Popocat&eacute;petl): 60 eventos.</li>
+                <li>&#127758; Sismos: 40 eventos.</li>
+                <li>&#129398; Bajas temperaturas: 17 eventos.</li>
+                <li>&#127744; Ciclones tropicales: 5 eventos.</li>
+              </ul>
             </div>
           </div>
 
-          <!-- Contenedor derecho (50%) - Imagen de líneas -->
-          <div class="chapter-right">
-            <div class="chapter-image-full">
-              <img src="images/declaratoriaxaño_lineas.png" alt="Gr&aacute;fico de declaratorias por a&ntilde;o">
+          <!-- Card 2: Mapa (60%, 60%) -->
+          <div class="risk-card-2">
+            <div class="map-container" id="map-2"></div>
+            <!-- Los controles de capas se generan dinámicamente -->
+          </div>
+
+          <!-- Card 3: Gráfica de Dona (40%, 40%) -->
+          <div class="risk-card-3">
+            <h3 class="card-subtitle">Clasificación de Eventos</h3>
+            <div class="chart-legend-container">
+              <div class="chart-container-dona">
+                <canvas id="donutChart2"></canvas>
+              </div>
+              <div class="chart-legend" id="donutLegend2"></div>
+            </div>
+          </div>
+
+          <!-- Card 4: Gráfica de Líneas (60%, 40%) -->
+          <div class="risk-card-4">
+            <h3 class="card-subtitle">Eventos por Año y Clasificación</h3>
+            <div class="chart-container-lines">
+              <canvas id="linesChart2"></canvas>
             </div>
           </div>
         </section>
@@ -198,5 +242,6 @@
     <!-- JavaScript -->
     <script src="js/config/riesgo-config.js"></script>
     <script src="js/config/riesgo-main.js"></script>
+    <script src="js/config/riesgo-charts.js"></script>
   </body>
 </html>

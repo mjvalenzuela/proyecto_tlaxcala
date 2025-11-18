@@ -192,12 +192,66 @@ class RiesgoApp {
    * Configurar botón de Atlas de Riesgo
    */
   setupAtlasButton() {
+    // Botón de Atlas Estatal
     const btnAtlasRiesgo = document.getElementById("btnAtlasRiesgo");
     if (btnAtlasRiesgo) {
       btnAtlasRiesgo.addEventListener("click", () => {
         window.open(this.config.links.atlasEstatal, "_blank");
       });
     }
+
+    // Configurar botones de Atlas Municipales
+    this.setupAtlasMunicipalesButtons();
+  }
+
+  /**
+   * Configurar botones de Atlas Municipales (grid de 10 botones)
+   */
+  setupAtlasMunicipalesButtons() {
+    // Mapa de enlaces de Atlas Municipales (las claves deben coincidir con data-risk del HTML)
+    const atlasMunicipales = {
+      "Apizaco2011": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2011/29005_APIZACO_2011.PDF",
+      "Atlangatepec2016": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2016/29003_ATLANGATEPEC_2016.PDF",
+      "Huamantla2016": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2016/29013_HUAMANTLA_TLAX_2016.PDF",
+      "Natívitas2015": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2015/29023_NATIVITAS_2015.PDF",
+      "Papalotla-de-Xicohténcatl2015": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2015/29041_PAPALOTLA_XICOHTENCATL_2015.PDF",
+      "SanPablo-del-Monte_2015": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2015/29025_SAN_PABLO_2015.PDF",
+      "Sanctórum-de-LázaroCárdenas2011": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2011/29020_SANCTORUM_2011.PDF",
+      "Tlaxcala2018": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2018/29033_TLAXCALA_2018.PDF",
+      "Xicohtzinco2014": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2014/29042_XICOHTZINCO_2014.PDF",
+      "Zacatelco2018": "http://rmgir.proyectomesoamerica.org/AtlasMunPDF/2018/29044_ZACATELCO_2018.PDF"
+    };
+
+    // Seleccionar todos los botones del grid
+    const riskButtons = document.querySelectorAll(".risk-btn");
+
+    console.log(`Botones encontrados: ${riskButtons.length}`);
+
+    if (riskButtons.length === 0) {
+      console.warn("No se encontraron botones .risk-btn");
+      return;
+    }
+
+    riskButtons.forEach((button, index) => {
+      const riskType = button.getAttribute("data-risk");
+      const pdfUrl = atlasMunicipales[riskType];
+
+      console.log(`Botón ${index}: data-risk="${riskType}", URL="${pdfUrl}"`);
+
+      if (pdfUrl) {
+        button.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log(`Click en botón: ${riskType} -> ${pdfUrl}`);
+          window.open(pdfUrl, "_blank");
+        });
+
+        // Agregar efecto visual de que es clickeable
+        button.style.cursor = "pointer";
+      } else {
+        console.warn(`No se encontró URL para el botón con data-risk="${riskType}"`);
+      }
+    });
   }
 
   /**
@@ -218,6 +272,20 @@ class RiesgoApp {
     const chapter1 = document.getElementById("risk-chapter-1");
     if (chapter1) {
       observerCap1.observe(chapter1);
+    }
+
+    // Observer para capítulo 2
+    const observerCap2 = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.target.id === "risk-chapter-2") {
+          this.initMap(2);
+        }
+      });
+    }, observerOptions);
+
+    const chapter2 = document.getElementById("risk-chapter-2");
+    if (chapter2) {
+      observerCap2.observe(chapter2);
     }
 
     // Observer para capítulo 3

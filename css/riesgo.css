@@ -165,6 +165,276 @@
 }
 
 /* ===================================
+   CAPÍTULO 1 - GRID 2x2 (40%-60% / 60%-40%)
+   =================================== */
+#risk-chapter-1 {
+  display: grid !important;
+  grid-template-columns: 40% 60% !important;
+  grid-template-rows: auto 3fr 2fr !important;
+  gap: 0.5rem !important;
+  height: calc(100vh - 65px) !important;
+}
+
+#risk-chapter-1 .map-title {
+  grid-column: 1 / 3 !important;
+  grid-row: 1 !important;
+}
+
+/* Card 1: Superior izquierda (40%, 70%) */
+.risk-card-1 {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(88, 37, 116, 0.1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Card 2: Superior derecha (60%, 70%) */
+.risk-card-2 {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(88, 37, 116, 0.1);
+  position: relative;
+}
+
+/* Card 3: Inferior izquierda (40%, 40%) - Layout horizontal: gráfica izquierda, leyenda derecha */
+.risk-card-3 {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+  background: white;
+  border-radius: 12px;
+  padding: 0.75rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(88, 37, 116, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+/* Contenedor horizontal: gráfica + leyenda */
+.risk-card-3 .chart-legend-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  flex: 1;
+  min-height: 0;
+  max-height: calc(100% - 2rem);
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Card 4: Inferior derecha (60%, 40%) - Gráfica al 90% de ancho */
+.risk-card-4 {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(88, 37, 116, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+  align-items: center;
+}
+
+/* Subtítulos de las cards */
+.card-subtitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #582574;
+  margin: 0;
+  padding: 0.25rem 0;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Grid de 10 botones (2 filas x 5 columnas) */
+.risk-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.risk-btn {
+  padding: 0.6rem 0.4rem;
+  background: linear-gradient(135deg, rgba(88, 37, 116, 0.05) 0%, rgba(162, 26, 92, 0.05) 100%);
+  border: 2px solid rgba(88, 37, 116, 0.2);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #582574;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  line-height: 1.2;
+  user-select: none;
+}
+
+.risk-btn:hover {
+  background: linear-gradient(135deg, rgba(88, 37, 116, 0.15) 0%, rgba(162, 26, 92, 0.15) 100%);
+  border-color: #582574;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(88, 37, 116, 0.3);
+}
+
+.risk-btn:active {
+  background: #582574;
+  color: white;
+  border-color: #582574;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(88, 37, 116, 0.2);
+}
+
+/* Contenedores de gráficas */
+/* Card 3: Contenedor de gráfica de dona (lado izquierdo) */
+.chart-container-dona {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  max-height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-container-dona canvas {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain;
+}
+
+/* Card 3: Leyenda de la gráfica de dona (lado derecho) */
+.chart-legend {
+  flex: 0 0 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  justify-content: center;
+  font-size: 0.75rem;
+  padding-right: 0.5rem;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0;
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  color: #333;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.legend-value {
+  color: #666;
+  font-size: 0.7rem;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Card 4: Contenedor de gráfica de líneas (90% de ancho) */
+.chart-container-lines {
+  width: 95%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  position: relative;
+  padding: 0.25rem;
+}
+
+.chart-container-lines canvas {
+  width: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  height: auto !important;
+}
+
+/* ===================================
+   CAPÍTULO 2 - GRID 2x2 (40%-60% / 60%-40%) - IGUAL QUE CAPÍTULO 1
+   =================================== */
+#risk-chapter-2 {
+  display: grid !important;
+  grid-template-columns: 40% 60% !important;
+  grid-template-rows: auto 3fr 2fr !important;
+  gap: 0.5rem !important;
+  height: calc(100vh - 65px) !important;
+}
+
+#risk-chapter-2 .map-title {
+  grid-column: 1 / 3 !important;
+  grid-row: 1 !important;
+}
+
+/* Reutilizar las mismas clases del Capítulo 1 */
+#risk-chapter-2 .risk-card-1 {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+#risk-chapter-2 .risk-card-2 {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+#risk-chapter-2 .risk-card-3 {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+}
+
+#risk-chapter-2 .risk-card-4 {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+}
+
+/* Ajustes específicos para imágenes en Card 2 y Card 3 del Capítulo 2 */
+#risk-chapter-2 .chapter-image-full {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#risk-chapter-2 .chapter-image-full img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ===================================
    CAPÍTULO 3 - ANCHOS PERSONALIZADOS (20% texto / 80% mapa)
    =================================== */
 #risk-chapter-3 {
@@ -250,6 +520,64 @@
     font-size: 0.875rem;
   }
 
+  /* Capítulo 1 en tablet - ajustar tamaños */
+  .risk-card-1 {
+    padding: 1rem;
+  }
+
+  .risk-card-1 .chapter-title {
+    font-size: 1.1rem;
+  }
+
+  .risk-card-1 .chapter-content p {
+    font-size: 0.9rem;
+  }
+
+  .risk-buttons-grid {
+    gap: 0.4rem;
+  }
+
+  .risk-btn {
+    font-size: 0.7rem;
+    padding: 0.5rem 0.3rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.9rem;
+  }
+
+  /* Ajustar card 3 en tablet */
+  .risk-card-3 {
+    padding: 0.75rem;
+  }
+
+  .chart-container-dona {
+    flex: 0 0 45%;
+  }
+
+  .chart-legend {
+    flex: 0 0 50%;
+    font-size: 0.7rem;
+  }
+
+  .legend-label {
+    font-size: 0.7rem;
+  }
+
+  .legend-value {
+    font-size: 0.65rem;
+  }
+
+  /* Ajustar gráfica de líneas en tablet */
+  .chart-container-lines {
+    width: 92%;
+  }
+
+  /* Capítulo 2 en tablet - mantiene estructura */
+  #risk-chapter-2 .risk-card-1 {
+    padding: 1rem;
+  }
+
   /* Capítulo 3 en tablet - 25% texto / 75% mapa */
   #risk-chapter-3 {
     grid-template-columns: 25% 75% !important;
@@ -294,6 +622,129 @@
   .chapter-chart-image img,
   .chapter-image-full img {
     padding: 0.5rem;
+  }
+
+  /* Capítulo 1 en móvil - layout vertical */
+  #risk-chapter-1 {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto auto auto auto !important;
+    gap: 1rem !important;
+  }
+
+  #risk-chapter-1 .map-title {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  .risk-card-1 {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    min-height: 400px;
+  }
+
+  .risk-card-2 {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    min-height: 400px;
+  }
+
+  .risk-card-3 {
+    grid-column: 1 !important;
+    grid-row: 4 !important;
+    min-height: 300px;
+  }
+
+  .risk-card-4 {
+    grid-column: 1 !important;
+    grid-row: 5 !important;
+    min-height: 300px;
+  }
+
+  /* Ajustar grid de botones en móvil */
+  .risk-buttons-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 0.4rem;
+  }
+
+  .risk-btn {
+    font-size: 0.7rem;
+    padding: 0.5rem 0.3rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.85rem;
+  }
+
+  /* Ajustar layout de card 3 en móvil - vertical */
+  .risk-card-3 {
+    padding: 0.75rem;
+  }
+
+  .risk-card-3 .chart-legend-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 100%;
+  }
+
+  .chart-container-dona {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 200px;
+    max-height: 200px;
+    margin: 0 auto;
+  }
+
+  .chart-legend {
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: 150px;
+  }
+
+  /* Ajustar layout de card 4 en móvil */
+  .chart-container-lines {
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .chart-container-lines canvas {
+    width: 100% !important;
+  }
+
+  /* Capítulo 2 en móvil - layout vertical (igual que Capítulo 1) */
+  #risk-chapter-2 {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto auto auto auto !important;
+    gap: 1rem !important;
+  }
+
+  #risk-chapter-2 .map-title {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  #risk-chapter-2 .risk-card-1 {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    min-height: 400px;
+  }
+
+  #risk-chapter-2 .risk-card-2 {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    min-height: 400px;
+  }
+
+  #risk-chapter-2 .risk-card-3 {
+    grid-column: 1 !important;
+    grid-row: 4 !important;
+    min-height: 300px;
+  }
+
+  #risk-chapter-2 .risk-card-4 {
+    grid-column: 1 !important;
+    grid-row: 5 !important;
+    min-height: 300px;
   }
 
   /* Capítulo 3 en móvil - layout vertical */

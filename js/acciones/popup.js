@@ -354,7 +354,7 @@ class PopupGenerator {
 
 /**
  * Muestra el detalle PDF de una acción
- * Abre el PDF en una nueva ventana
+ * Abre el Drive con los PDFs correspondientes al survey_id
  */
 function verDetallePDF(accionId, ubicacionIdx = 0) {
   const accion = PopupGenerator.getAccionById(accionId);
@@ -364,13 +364,18 @@ function verDetallePDF(accionId, ubicacionIdx = 0) {
   }
 
   const ubicacion = accion.ubicaciones[ubicacionIdx];
-  const evidencias = ubicacion.evidencias;
 
-  if (!evidencias || !evidencias.pdf) {
-    toast.warning('PDF no disponible', 'No hay documento PDF disponible para esta ubicación.');
-  } else {
-    window.open(evidencias.pdf, '_blank');
+  // Verificar que existe el survey_id
+  if (!ubicacion.survey_id) {
+    toast.warning('PDF no disponible', 'No se encontró el ID del survey para esta ubicación.');
+    return;
   }
+
+  // Construir URL dinámica con el survey_id
+  const pdfUrl = `https://api.cambioclimaticotlaxcala.mx/api/v1/surveys/${ubicacion.survey_id}/pdf/`;
+
+  // Abrir la URL en una nueva pestaña
+  window.open(pdfUrl, '_blank');
 }
 
 /**
@@ -436,7 +441,7 @@ function verTodasUbicaciones(accionId) {
   accion.ubicaciones.forEach((ubicacion, idx) => {
     const icono = ubicacion.es_estatal ? '🏛️' : '📍';
     const evidencias = ubicacion.evidencias || {};
-    const tienePDF = evidencias.pdf && evidencias.pdf !== null;
+    const tienePDF = ubicacion.survey_id !== null && ubicacion.survey_id !== undefined;
     const tieneImagen = evidencias.image && evidencias.image !== null;
     const tieneVideo = evidencias.video && evidencias.video !== null;
 

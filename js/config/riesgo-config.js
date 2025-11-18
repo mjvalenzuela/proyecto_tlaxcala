@@ -56,7 +56,23 @@ const RiesgoConfig = {
       id: 2,
       titulo: "Eventos por año y declaratorias",
       label: "Eventos y Declaratorias",
-      mapId: null,
+      mapId: "map-2",
+      capas: [
+        {
+          nombre: "Limite",
+          tipo: "wms",
+          layer: "SEICCT:Limite",
+          opacity: 1,
+          zIndex: 1,
+        },
+        {
+          nombre: "Municipios",
+          tipo: "wms",
+          layer: "SEICCT:municipios_ganaperd",
+          opacity: 1,
+          zIndex: 2,
+        },
+      ],
     },
     {
       id: 3,
