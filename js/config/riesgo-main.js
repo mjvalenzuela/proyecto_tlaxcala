@@ -225,7 +225,6 @@ class RiesgoApp {
     // Seleccionar todos los botones del grid
     const riskButtons = document.querySelectorAll(".risk-btn");
 
-    console.log(`Botones encontrados: ${riskButtons.length}`);
 
     if (riskButtons.length === 0) {
       console.warn("No se encontraron botones .risk-btn");
@@ -236,13 +235,11 @@ class RiesgoApp {
       const riskType = button.getAttribute("data-risk");
       const pdfUrl = atlasMunicipales[riskType];
 
-      console.log(`Botón ${index}: data-risk="${riskType}", URL="${pdfUrl}"`);
 
       if (pdfUrl) {
         button.addEventListener("click", (e) => {
           e.preventDefault();
           e.stopPropagation();
-          console.log(`Click en botón: ${riskType} -> ${pdfUrl}`);
           window.open(pdfUrl, "_blank");
         });
 
@@ -368,6 +365,9 @@ class RiesgoApp {
     } else if (chapterNumber === 1 || chapterNumber === 2) {
       // Para capítulos 1 y 2, agregar capa WFS solo para hover (sin popup)
       this.addHoverOnlyLayer(map, capitulo.mapId);
+
+      // Generar controles de capas para capítulos 1 y 2
+      this.generarControlesCapas(capitulo.mapId, capitulo.capas, chapterNumber);
     }
   }
 
@@ -947,6 +947,80 @@ class RiesgoApp {
       });
 
       buttonsContainer.appendChild(button);
+    });
+  }
+
+  /**
+   * Generar controles de capas (checkboxes para mostrar/ocultar capas)
+   */
+  generarControlesCapas(mapId, capasConfig, chapterNumber) {
+    // Buscar el contenedor del mapa
+    const mapContainer = document.getElementById(mapId);
+    if (!mapContainer || !mapContainer.parentElement) {
+      console.warn(`No se encontró el contenedor para generar controles: ${mapId}`);
+      return;
+    }
+
+    // Buscar o crear el contenedor de controles de capas
+    let controlsContainer = mapContainer.parentElement.querySelector('.map-controls');
+
+    if (!controlsContainer) {
+      // Crear contenedor de controles si no existe
+      controlsContainer = document.createElement('div');
+      controlsContainer.className = 'map-controls';
+      mapContainer.parentElement.appendChild(controlsContainer);
+    }
+
+    // Limpiar contenido anterior
+    controlsContainer.innerHTML = '<div class="map-controls-title">Capas</div>';
+
+    // Obtener las capas del mapa
+    const mapData = this.maps[mapId];
+    if (!mapData || !mapData.map) {
+      console.warn(`No se encontró el mapa: ${mapId}`);
+      return;
+    }
+
+    const map = mapData.map;
+    const layers = map.getLayers().getArray();
+
+    // Generar controles para cada capa que tenga leyenda: true (o sin definir para backward compatibility)
+    capasConfig.forEach((capaConfig, index) => {
+      const nombreCapa = capaConfig.nombre;
+
+      // No mostrar capas de interacción en el control
+      if (nombreCapa.includes('(Interacción)') || nombreCapa.includes('Interacción')) {
+        return; // Saltar esta capa
+      }
+
+      // Solo mostrar capas con leyenda: true (o undefined para backward compatibility)
+      if (capaConfig.leyenda === false) {
+        return; // Saltar capas con leyenda: false
+      }
+
+      const visible = capaConfig.opacity > 0;
+      const checkboxId = `layer-${index}-${chapterNumber}`;
+
+      const layerControl = document.createElement('div');
+      layerControl.className = 'layer-control';
+      layerControl.innerHTML = `
+        <input type="checkbox" id="${checkboxId}" ${visible ? 'checked' : ''} />
+        <label for="${checkboxId}">${nombreCapa}</label>
+      `;
+
+      controlsContainer.appendChild(layerControl);
+
+      // Configurar evento de checkbox
+      const checkbox = layerControl.querySelector(`#${checkboxId}`);
+      if (checkbox) {
+        checkbox.addEventListener('change', (e) => {
+          // Buscar la capa correspondiente en el mapa
+          const targetLayer = layers.find(layer => layer.get('name') === nombreCapa);
+          if (targetLayer) {
+            targetLayer.setVisible(e.target.checked);
+          }
+        });
+      }
     });
   }
 }

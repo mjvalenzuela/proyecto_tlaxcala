@@ -48,7 +48,6 @@ class RiesgoCharts {
         dynamicTyping: true,
         skipEmptyLines: true,
         complete: (results) => {
-          console.log('CSV Capítulo 1 cargado:', results.data);
           this.data = results.data;
           resolve();
         },
@@ -71,7 +70,6 @@ class RiesgoCharts {
         dynamicTyping: true,
         skipEmptyLines: true,
         complete: (results) => {
-          console.log('CSV Capítulo 2 cargado:', results.data);
           this.data2 = results.data;
           resolve();
         },

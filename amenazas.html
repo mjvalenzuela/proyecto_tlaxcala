@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Story Map sobre las Amenazas Clim·ticas en Tlaxcala"
+    />
+    <title>Amenazas Clim·ticas - Tlaxcala</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/story-map.css" />
+
+    <!-- OpenLayers CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
+    <!-- Chart.js Datalabels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <!-- OpenLayers JS -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+
+    <!-- Papa Parse para CSVs -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <!--         <span class="navbar-brand-icon"><</span> -->
+          <span>Tlaxcala</span>
+        </a>
+
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir men˙">
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <a href="index.html" class="navbar-link">Inicio</a>
+          <a href="vulnerabilidad.html" class="navbar-link">Vulnerabilidad</a>
+          <a href="riesgo.html" class="navbar-link">Riesgo</a>
+          <a href="amenazas.html" class="navbar-link active">Amenazas</a>
+          <a href="impactos.html" class="navbar-link">Impactos</a>
+          <a href="acciones-climaticas.html" class="navbar-link">Acciones Clim·ticas</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Indicador para mostrar el navbar -->
+    <div class="navbar-indicator" id="navbarIndicator"></div>
+
+    <!-- Contenedor principal del Story Map -->
+    <div class="story-map-container">
+      <!-- Contenedor de capÌtulos con scroll-snap -->
+      <div class="chapters-container" id="chaptersContainer">
+        <!-- CAPÕTULO 1 -->
+        <section class="chapter" id="chapter-1" data-chapter="1">
+          <!-- TÌtulo del mapa -->
+          <h2 class="map-title">Amenazas clim·ticas por municipio</h2>
+
+          <!-- Mapa -->
+          <div class="chapter-map">
+            <div class="map-container" id="map-1"></div>
+            <!-- Los controles de capas se generan din·micamente -->
+          </div>
+
+          <!-- Card de texto -->
+          <div class="chapter-text">
+            <!-- <span class="chapter-number">CapÌtulo 1</span> -->
+            <h2 class="chapter-title">
+              Amenazas clim·ticas
+            </h2>
+            <div class="chapter-content">
+              <p>
+                Las amenazas clim·ticas son eventos o fenÛmenos relacionados con el clima que pueden causar daÒos o pÈrdidas:
+              </p>
+              <p>
+                <ul>
+                  <li>* Temperaturas extremas.</li>
+                  <li>* Lluvias intensas.</li>
+                  <li>* SequÌas prolongadas.</li>
+                  <li>* FenÛmenos meteorolÛgicos extremos.</li>
+                </ul>
+              </p>
+              <p>
+                Estas amenazas representan peligros potenciales para las comunidades, los ecosistemas y la infraestructura del estado.
+              </p>
+            </div>
+          </div>
+
+<!-- Card combinada de gr·fico e info (sin borde entre ellas) -->
+<div class="chapter-chart-info">
+  <!-- TÌtulo ˙nico para toda la card -->
+  <h2 class="chart-info-title">PoblaciÛn expuesta a amenazas clim·ticas</h2>
+
+  <div class="chart-info-content">
+    <!-- SecciÛn del gr·fico -->
+    <div class="chart-section">
+      <div class="chart-container">
+        <canvas id="chart-1"></canvas>
+      </div>
+    </div>
+
+    <!-- SecciÛn de texto explicativo -->
+    <div class="info-section">
+      <div class="info-content">
+        <p>
+          Las amenazas clim·ticas son eventos hidrometeorolÛgicos extremos que pueden impactar negativamente a la poblaciÛn y al territorio. La identificaciÛn y el an·lisis de estas amenazas son fundamentales para la planificaciÛn territorial y la gestiÛn del riesgo. Para conocer a detalle las variables y su an·lisis, te invitamos a consultar el PACCET 2023-2030.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+        </section>
+      </div>
+
+      <!-- Timeline inferior -->
+      <div class="timeline" id="timeline">
+        <div class="timeline-item" data-chapter="1">
+          <div class="timeline-circle">1</div>
+          <div class="timeline-label">Amenazas clim·ticas</div>
+        </div>
+      </div>
+
+      <!-- Botones de navegaciÛn -->
+      <div class="nav-buttons left" id="navButtonsLeft">
+        <button class="nav-btn" id="btnPrev" aria-label="CapÌtulo anterior">
+          ê
+        </button>
+      </div>
+      <div class="nav-buttons right" id="navButtonsRight">
+        <button class="nav-btn" id="btnNext" aria-label="Siguiente capÌtulo">
+          í
+        </button>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/config/amenazas-config.js"></script>
+    <script>
+      // ===== NAVBAR =====
+      const navbarToggle = document.getElementById("navbarToggle");
+      const navbarMenu = document.getElementById("navbarMenu");
+
+      // Toggle men˙ mÛvil
+      navbarToggle.addEventListener("click", () => {
+        navbarToggle.classList.toggle("active");
+        navbarMenu.classList.toggle("active");
+      });
+
+      // Cerrar men˙ al hacer click en un link
+      const navbarLinks = document.querySelectorAll(".navbar-link");
+      navbarLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navbarToggle.classList.remove("active");
+          navbarMenu.classList.remove("active");
+        });
+      });
+
+      // Navbar y navbar indicator
+      const navbar = document.querySelector(".navbar");
+      const navbarIndicator = document.getElementById("navbarIndicator");
+
+      // Efecto scroll en navbar
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Mostrar/ocultar navbar con el indicador
+
+      // Mostrar navbar al hacer hover sobre el indicador
+      navbarIndicator.addEventListener("mouseenter", () => {
+        navbar.classList.add("visible");
+      });
+
+      // Mantener navbar visible mientras el mouse est· sobre Èl
+      navbar.addEventListener("mouseenter", () => {
+        navbar.classList.add("visible");
+      });
+
+      // Ocultar navbar cuando el mouse sale
+      navbar.addEventListener("mouseleave", () => {
+        navbar.classList.remove("visible");
+      });
+
+      // Click en indicador para toggle del navbar
+      navbarIndicator.addEventListener("click", () => {
+        navbar.classList.toggle("visible");
+      });
+    </script>
+  </body>
+</html>
