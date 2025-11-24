@@ -82,7 +82,7 @@
   scroll-snap-align: start;
   scroll-snap-stop: always;
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 70% 30%;
   grid-template-rows: auto 1fr 1fr;
   gap: 0.5rem;
   padding: 1rem;
@@ -91,7 +91,7 @@
 
 /* ===== CAPÍTULO 2 - BIODIVERSIDAD (Layout especial con título completo) ===== */
 .chapter-biodiversity {
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 70% 30%;
   grid-template-rows: auto 1fr 1fr;
   grid-template-areas:
     "map-title map-title"
@@ -150,7 +150,7 @@
 /* ===== CONTROLES DE CAPAS (Panel derecho superior) ===== */
 .map-controls {
   position: absolute;
-  top: 5rem;
+  top: 1rem;
   right: 1rem;
   background: white;
   border-radius: var(--radius-md);
@@ -159,20 +159,65 @@
   z-index: 100; /* ← Debajo de la toolbar de herramientas (z-index: 500) */
   max-width: 250px;
   transition: all 0.3s ease;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Estado colapsado del control de capas */
+.map-controls.collapsed {
+  padding: 0.5rem 1rem;
+  max-height: none;
+  overflow: visible;
+}
+
+.map-controls.collapsed .map-controls-content {
+  display: none;
 }
 
 /* Controles de mapa específicos para Capítulo 3 (Ganancia/Pérdida) */
 [id^="chapter-3-"] .map-controls {
-  top: 5rem;
+  top: 1rem;
   max-width: 300px;
   padding: 0.5rem;
+}
+
+/* Header del control de capas (título + botón toggle) */
+.map-controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.map-controls.collapsed .map-controls-header {
+  margin-bottom: 0;
 }
 
 .map-controls-title {
   font-size: 0.9rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0;
   color: var(--color-text-dark);
+}
+
+/* Botón para colapsar/expandir */
+.map-controls-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1rem;
+  color: var(--color-text-gray);
+  transition: transform 0.3s ease;
+  line-height: 1;
+}
+
+.map-controls-toggle:hover {
+  color: var(--color-primary);
+}
+
+.map-controls.collapsed .map-controls-toggle {
+  transform: rotate(180deg);
 }
 
 .layer-control {
@@ -198,6 +243,206 @@
   margin-bottom: 0;
 }
 
+/* Subtítulo de grupo de capas */
+.layer-group-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--color-border);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.layer-group-title:first-of-type {
+  margin-top: 0;
+}
+
+/* ===== TOOLTIP DE HOVER EN MUNICIPIOS ===== */
+.municipio-hover-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 1000;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== PANEL DE LEYENDAS (inferior izquierda) ===== */
+.map-legends {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: 0 2px 10px var(--color-shadow-md);
+  z-index: 100;
+  max-width: 300px;
+  max-height: 50vh;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+/* Estado colapsado del panel de leyendas */
+.map-legends.collapsed {
+  padding: 0.5rem 1rem;
+  max-height: none;
+  overflow: visible;
+}
+
+.map-legends.collapsed .map-legends-content {
+  display: none;
+}
+
+/* Header del panel de leyendas (título + botón toggle) */
+.map-legends-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.map-legends.collapsed .map-legends-header {
+  margin-bottom: 0;
+}
+
+.map-legends-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  color: var(--color-text-dark);
+}
+
+/* Botón para colapsar/expandir leyendas */
+.map-legends-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1rem;
+  color: var(--color-text-gray);
+  transition: transform 0.3s ease;
+  line-height: 1;
+}
+
+.map-legends-toggle:hover {
+  color: var(--color-primary);
+}
+
+.map-legends.collapsed .map-legends-toggle {
+  transform: rotate(180deg);
+}
+
+/* Contenedor de las leyendas individuales */
+.map-legends-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Item individual de leyenda */
+.legend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.legend-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.legend-item-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+}
+
+.legend-item-image {
+  max-width: 100%;
+  max-height: 200px; /* Altura máxima para leyendas grandes */
+  height: auto;
+  object-fit: contain; /* Mantener proporciones sin distorsionar */
+  border-radius: 4px;
+  background: white;
+}
+
+/* Mensaje cuando no hay leyendas */
+.map-legends-empty {
+  font-size: 0.85rem;
+  color: var(--color-text-gray);
+  font-style: italic;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+/* ===== CAPÍTULO 2 - LAYOUT ANALYTICS (30% texto, 70% gráficas) ===== */
+.chapter-analytics {
+  grid-template-columns: 30% 70%;
+  grid-template-rows: auto 1fr 1fr;
+  grid-template-areas:
+    "map-title map-title"
+    "analytics-text analytics-chart-1"
+    "analytics-text analytics-chart-2";
+}
+
+.analytics-text {
+  grid-area: analytics-text;
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  overflow-y: auto;
+}
+
+.analytics-chart-1 {
+  grid-area: analytics-chart-1;
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  display: flex;
+  flex-direction: column;
+}
+
+.analytics-chart-2 {
+  grid-area: analytics-chart-2;
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  box-shadow: 0 4px 15px var(--color-shadow-md);
+  border: 1px solid var(--color-beige-light);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.analytics-chart-1 .chart-container,
+.analytics-chart-2 .chart-container {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
 /* ===== CARD DE TEXTO (Arriba derecha) ===== */
 .chapter-text {
   grid-column: 2;
@@ -209,6 +454,11 @@
   border: 1px solid var(--color-beige-light);
   overflow-y: auto;
   transition: all var(--transition-normal);
+}
+
+/* ===== CAPÍTULO CON TEXTO COMPLETO (sin card inferior) ===== */
+.chapter-full-text .chapter-text {
+  grid-row: 2 / 4;
 }
 
 /* ===== CAPÍTULO 1 - LAYOUT ESPECIAL ===== */
@@ -1273,8 +1523,8 @@
 
 /* Mantener controles de capas siempre en top-right */
 .chapter-map .map-controls {
-  top: 5rem;
-  right: 1rem;
+  top: 0rem;
+  right: 0rem;
   left: auto;
 }
 
@@ -1682,4 +1932,13 @@
     padding: 0.4rem 0.6rem;
     max-width: 150px;
   }
+}
+
+/* ========================================== */
+/* ===== AMENAZAS - ESTILOS ESPECÍFICOS ===== */
+/* ========================================== */
+
+/* Capítulo 3 de Amenazas - Card de texto ocupa toda la altura */
+#chapter-3.amenazas-chapter-3 .chapter-text.amenazas-chapter-text {
+  grid-row: 2 / 4 !important;
 }
