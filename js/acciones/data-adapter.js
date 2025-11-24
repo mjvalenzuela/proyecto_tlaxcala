@@ -1,24 +1,22 @@
+/**
+ * Adaptador de datos para acciones climáticas
+ * Transforma datos del API y gestiona caché
+ */
 class DataAdapter {
   constructor() {
     this.config = window.AccionesConfig;
   }
 
-  // ============================================
-  // CONFIGURACIÓN
-  // ============================================
-
   static CACHE_KEY = "acciones_climaticas_cache";
-  static CACHE_TTL = 5 * 60 * 1000; // 5 minutos
-  static API_TIMEOUT = 15000; // 15 segundos
-  static MAX_RETRIES = 3; // Número máximo de reintentos
+  static CACHE_TTL = 5 * 60 * 1000;
+  static API_TIMEOUT = 15000;
+  static MAX_RETRIES = 3;
 
-  // Coordenadas del centro de Tlaxcala (para proyectos estatales)
   static TLAXCALA_CENTER = {
     lat: 19.318154,
     lng: -98.237232,
   };
 
-  // Mapeo de IDs de dependencias
   static DEPENDENCIAS = {
     1: { nombre: "Comisión Estatal del Agua y Saneamiento", color: "#4A90E2" },
     2: {
@@ -33,23 +31,17 @@ class DataAdapter {
     5: { nombre: "Secretaría de Desarrollo Económico", color: "#A21A5C" },
   };
 
-  // ============================================
-  // FUNCIÓN PRINCIPAL
-  // ============================================
-
   /**
    * Obtiene todas las acciones climáticas desde la API
-   * @returns {Promise<Object>} Objeto con acciones agrupadas y metadata
+   * @returns {Promise<Object>} Acciones agrupadas con metadata
    */
   async obtenerDatosAPI() {
     try {
-      // 1. Verificar caché válido
       const cached = this.getCache();
       if (cached) {
         return cached;
       }
 
-      // 2. Intentar fetch con retry logic
       let lastError = null;
       for (let attempt = 1; attempt <= DataAdapter.MAX_RETRIES; attempt++) {
         try {
@@ -58,13 +50,10 @@ class DataAdapter {
             DataAdapter.API_TIMEOUT
           );
 
-          // 3. Filtrar solo aprobadas
           const aprobadas = actividades.filter((a) => a.status === "approved");
 
-          // 4. Agrupar actividades por proyecto
           const proyectos = this.agruparActividadesPorProyecto(aprobadas);
 
-          // 5. Calcular metadata
           const metadata = this.calcularMetadata(proyectos);
 
           const resultado = {
@@ -73,7 +62,6 @@ class DataAdapter {
             metadata: metadata,
           };
 
-          // 6. Guardar en caché
           this.setCache(resultado);
 
           return resultado;
@@ -81,7 +69,6 @@ class DataAdapter {
         } catch (error) {
           lastError = error;
 
-          // Esperar antes de reintentar (exponential backoff)
           if (attempt < DataAdapter.MAX_RETRIES) {
             const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
             await this.sleep(delay);
@@ -89,14 +76,12 @@ class DataAdapter {
         }
       }
 
-      // 7. Si todos los intentos fallaron, intentar usar caché expirado como fallback
       const expiredCache = this.getCacheIgnoreExpiry();
       if (expiredCache) {
         console.warn('Usando cache expirado como fallback');
         return expiredCache;
       }
 
-      // 8. Si no hay caché, lanzar el último error
       throw new Error(
         `No se pudo conectar con el servidor después de ${DataAdapter.MAX_RETRIES} intentos. ${
           lastError?.message || 'Error desconocido'
@@ -110,7 +95,10 @@ class DataAdapter {
   }
 
   /**
-   * Fetch con timeout
+   * Fetch con timeout y control de aborto
+   * @param {string} url - URL del API
+   * @param {number} timeout - Tiempo límite en ms
+   * @returns {Promise<Object>} Respuesta JSON
    */
   async fetchConTimeout(url, timeout) {
     const controller = new AbortController();
@@ -146,28 +134,20 @@ class DataAdapter {
     }
   }
 
-  /**
-   * Sleep utility
-   */
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // ============================================
-  // AGRUPACIÓN DE ACTIVIDADES
-  // ============================================
-
   /**
-   * Agrupa actividades por proyecto usando email + nombre + objetivo
-   * @param {Array} actividades - Array de actividades de la API
-   * @returns {Array} Array de proyectos con sus ubicaciones
+   * Agrupa actividades por proyecto
+   * @param {Array} actividades - Actividades del API
+   * @returns {Array} Proyectos agrupados
    */
   agruparActividadesPorProyecto(actividades) {
     const proyectosMap = new Map();
 
     actividades.forEach((actividadData) => {
       try {
-        // 1. Extraer datos básicos del proyecto
         const nombreAnswer = actividadData.answers.find(
           (a) => a.question_title === "Nombre del programa o proyecto"
         );
@@ -184,11 +164,8 @@ class DataAdapter {
         const nombreProyecto = nombreAnswer.display_value;
         const objetivo = objetivoAnswer ? objetivoAnswer.display_value : "";
 
-        // 2. Crear clave única para agrupar
-        // Usamos email + nombre + objetivo (NO created_at)
         const claveProyecto = `${actividadData.email}|${nombreProyecto}|${objetivo}`;
 
-        // 3. Extraer ubicación de esta actividad
         const actividadAnswer = actividadData.answers.find(
           (a) => a.question_title === "Actividades principales"
         );
@@ -204,18 +181,15 @@ class DataAdapter {
         const ubicacion = this.procesarUbicacion(actividadAnswer.display_value);
 
         if (!ubicacion) {
-          return; // No es una ubicación válida
+          return;
         }
 
-        // 3.5 Guardar el survey_id original (el id de la actividad/survey del API)
         ubicacion.survey_id = actividadData.id;
 
-        // 3.6 Extraer evidencias (question_id 25: "Se cuenta con evidencias")
         const evidenciasAnswer = actividadData.answers.find(
           (a) => a.question_title === "Se cuenta con evidencias"
         );
 
-        // Agregar evidencias a la ubicación
         if (evidenciasAnswer && evidenciasAnswer.display_value) {
           ubicacion.evidencias = {
             pdf: evidenciasAnswer.display_value.pdf || null,
@@ -230,44 +204,34 @@ class DataAdapter {
           };
         }
 
-        // 4. Si el proyecto ya existe, agregar ubicación
         if (proyectosMap.has(claveProyecto)) {
           const proyecto = proyectosMap.get(claveProyecto);
           proyecto.ubicaciones.push(ubicacion);
         } else {
-          // 5. Si es nuevo, crear proyecto
-
-          // Usar dependency_name del API directamente
           const dependenciaNombre = actividadData.dependency_name || `Dependencia ${actividadData.dependency}`;
 
-          // Asignar color según mapeo o usar default
           const depInfo = DataAdapter.DEPENDENCIAS[actividadData.dependency] || { color: "#582574" };
 
-          // Extraer tipo de proyecto/programa (question_id 3)
           const tipoAnswer = actividadData.answers.find(
             (a) => a.question_title === "Programa o proyecto"
           );
           const tipoProyecto = tipoAnswer ? tipoAnswer.display_value : this.determinarTipo(nombreProyecto);
 
-          // Extraer fecha de inicio (question_id 7)
           const fechaInicioAnswer = actividadData.answers.find(
             (a) => a.question_title === "Fecha de inicio de la actividad o proyecto"
           );
           const fechaInicio = fechaInicioAnswer ? fechaInicioAnswer.display_value : actividadData.created_at;
 
-          // Extraer temporalidad (question_id 8)
           const temporalidadAnswer = actividadData.answers.find(
             (a) => a.question_title === "Temporalidad (seleccione una opción)"
           );
           const temporalidad = temporalidadAnswer ? temporalidadAnswer.display_value : null;
 
-          // Extraer población objetivo (question_id 16)
           const poblacionAnswer = actividadData.answers.find(
             (a) => a.question_title === "Población objetivo"
           );
           const poblacionObjetivo = poblacionAnswer ? poblacionAnswer.display_value : "";
 
-          // Extraer alineación PACCET (question_id 31)
           const alineacionAnswer = actividadData.answers.find(
             (a) =>
               a.question_title ===
@@ -301,7 +265,6 @@ class DataAdapter {
       }
     });
 
-    // 6. Convertir Map a Array y actualizar flags
     const proyectosArray = Array.from(proyectosMap.values());
 
     proyectosArray.forEach((proyecto) => {
@@ -312,25 +275,18 @@ class DataAdapter {
     return proyectosArray;
   }
 
-  // ============================================
-  // PROCESAMIENTO DE UBICACIONES
-  // ============================================
-
   /**
    * Procesa una ubicación individual
-   * @param {Object} actividadData - Objeto de actividad del API
-   * @returns {Object|null} Ubicación procesada o null
+   * @param {Object} actividadData - Datos de actividad
+   * @returns {Object|null} Ubicación procesada
    */
   procesarUbicacion(actividadData) {
     try {
       const { activity, type, latitude, longitude, place } = actividadData;
 
-      // Caso 1: Tipo Local con coordenadas
       if (type === "Local" && latitude !== null && longitude !== null) {
-        // Validar rango de coordenadas
         if (!this.validarCoordenadasTlaxcala(latitude, longitude)) {
           console.warn("Coordenadas fuera de rango, usando centro de Tlaxcala:", latitude, longitude);
-          // Usar coordenadas de fallback en lugar de descartar el registro
           return {
             activity: activity || "Actividad sin nombre",
             lat: DataAdapter.TLAXCALA_CENTER.lat,
@@ -352,7 +308,6 @@ class DataAdapter {
         };
       }
 
-      // Caso 2: Tipo Estatal (sin coordenadas)
       if (type === "Estatal") {
         return {
           activity: activity || "Actividad sin nombre",
@@ -364,7 +319,6 @@ class DataAdapter {
         };
       }
 
-      // Caso 3: Tipo Local sin coordenadas (error de datos)
       if (type === "Local" && (latitude === null || longitude === null)) {
         console.warn(
           "Actividad Local sin coordenadas, usando centro de Tlaxcala"
@@ -388,7 +342,7 @@ class DataAdapter {
   }
 
   /**
-   * Valida que las coordenadas estén dentro del rango de Tlaxcala
+   * Valida coordenadas dentro del rango de Tlaxcala
    * @param {number} lat - Latitud
    * @param {number} lng - Longitud
    * @returns {boolean} true si son válidas
@@ -409,9 +363,6 @@ class DataAdapter {
     );
   }
 
-  /**
-   * Determina el tipo (proyecto o programa) basado en el nombre
-   */
   determinarTipo(nombre) {
     if (!nombre) return "Proyecto";
 
@@ -420,12 +371,10 @@ class DataAdapter {
     return "Proyecto";
   }
 
-  // ============================================
-  // METADATA
-  // ============================================
-
   /**
-   * Calcula metadata a partir de las acciones transformadas
+   * Calcula metadata de las acciones
+   * @param {Array} acciones - Array de acciones
+   * @returns {Object} Metadata calculada
    */
   calcularMetadata(acciones) {
     const dependenciasSet = new Set();
@@ -460,10 +409,6 @@ class DataAdapter {
       estados: estadosCount,
     };
   }
-
-  // ============================================
-  // SISTEMA DE CACHÉ
-  // ============================================
 
   getCache() {
     try {
@@ -510,7 +455,6 @@ class DataAdapter {
   }
 }
 
-// Hacer DataAdapter disponible globalmente
 if (typeof window !== "undefined") {
   window.DataAdapter = DataAdapter;
 }

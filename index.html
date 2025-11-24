@@ -109,7 +109,7 @@
 
   <!-- JavaScript -->
   <script>
-    // Toggle del menú móvil
+
     const navbarToggle = document.getElementById('navbarToggle');
     const navbarMenu = document.getElementById('navbarMenu');
 
@@ -118,7 +118,7 @@
       navbarMenu.classList.toggle('active');
     });
 
-    // Cerrar menú al hacer click en un link
+
     const navbarLinks = document.querySelectorAll('.navbar-link');
     navbarLinks.forEach(link => {
       link.addEventListener('click', () => {
@@ -127,7 +127,7 @@
       });
     });
 
-    // Efecto scroll en navbar
+
     window.addEventListener('scroll', () => {
       const navbar = document.querySelector('.navbar');
       if (window.scrollY > 50) {

@@ -1,28 +1,24 @@
 /**
- * Manejo de datos del API - Fetch, caché y procesamiento
+ * Gestor de datos del API
+ * Maneja fetch, caché y procesamiento de datos
  */
-
 class DataManager {
   constructor() {
     this.data = null;
     this.config = window.AccionesConfig;
-    this.dataSource = this.getDataSource(); // Detecta fuente de datos desde URL
+    this.dataSource = this.getDataSource();
   }
 
-  /**
-   * Detecta la fuente de datos
-   * SIEMPRE usa la API nativa (Google Sheets eliminado)
-   */
   getDataSource() {
     return "api";
   }
 
   /**
-   * Obtiene los datos del API o del caché
+   * Obtiene datos del API o caché
+   * @returns {Promise<Object>} Datos de acciones climáticas
    */
   async fetchData() {
     try {
-      // Verificar caché primero
       if (this.config.CACHE.enabled) {
         const cachedData = this.getCachedData();
         if (cachedData) {
@@ -31,10 +27,8 @@ class DataManager {
         }
       }
 
-      // Obtener datos de la API nativa (con agrupación)
       const data = await this.fetchFromAPIReal();
 
-      // Guardar en caché
       if (this.config.CACHE.enabled) {
         this.setCachedData(data);
       }
@@ -48,12 +42,10 @@ class DataManager {
   }
 
   /**
-   * Obtiene datos de la API Nativa
-   * Usa DataAdapter para transformar y agrupar las actividades por proyecto
-   * Retorna formato: { acciones: [], total: number, metadata: {} }
+   * Obtiene datos de la API usando DataAdapter
+   * @returns {Promise<Object>} Datos transformados y agrupados
    */
   async fetchFromAPIReal() {
-    // Verificar que DataAdapter esté disponible
     if (!window.DataAdapter) {
       throw new Error(
         "DataAdapter no está cargado. Verifica que data-adapter.js esté incluido."
@@ -66,9 +58,6 @@ class DataManager {
     return data;
   }
 
-  /**
-   * Fetch con timeout
-   */
   async fetchWithTimeout(url, timeout) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -92,9 +81,6 @@ class DataManager {
     }
   }
 
-  /**
-   * Obtiene datos del caché
-   */
   getCachedData() {
     try {
       const cached = localStorage.getItem(this.config.CACHE.key);
@@ -103,7 +89,6 @@ class DataManager {
       const { data, timestamp } = JSON.parse(cached);
       const now = Date.now();
 
-      // Verificar si el caché ha expirado
       if (now - timestamp > this.config.CACHE.ttl) {
         localStorage.removeItem(this.config.CACHE.key);
         return null;
@@ -116,9 +101,6 @@ class DataManager {
     }
   }
 
-  /**
-   * Guarda datos en caché
-   */
   setCachedData(data) {
     try {
       const cacheObject = {
@@ -131,9 +113,6 @@ class DataManager {
     }
   }
 
-  /**
-   * Limpia el caché
-   */
   clearCache() {
     try {
       localStorage.removeItem(this.config.CACHE.key);
@@ -143,7 +122,9 @@ class DataManager {
   }
 
   /**
-   * Obtiene estadísticas de los datos
+   * Calcula estadísticas de los datos
+   * @param {Object} data - Datos de acciones
+   * @returns {Object|null} Estadísticas calculadas
    */
   getStats(data) {
     if (!data || !data.acciones) return null;
@@ -161,8 +142,10 @@ class DataManager {
   }
 
   /**
-   * Procesa las acciones para el mapa
+   * Procesa acciones para el mapa
    * Convierte acciones multi-ubicación en markers individuales
+   * @param {Object} data - Datos de acciones
+   * @returns {Array} Array de markers para el mapa
    */
   processAccionesForMap(data) {
     if (!data || !data.acciones) return [];
@@ -170,14 +153,11 @@ class DataManager {
     const markers = [];
 
     data.acciones.forEach((accion) => {
-      // Verificar que la acción tenga ubicaciones válidas
       if (!accion.ubicaciones || !Array.isArray(accion.ubicaciones)) {
         return;
       }
 
-      // Crear un marker por cada ubicación
       accion.ubicaciones.forEach((ubicacion) => {
-        // Validar coordenadas
         if (!this.isValidCoordinate(ubicacion.lat, ubicacion.lng)) {
           console.warn(`Coordenadas inválidas para: ${accion.nombre_proyecto}`);
           return;
@@ -196,7 +176,10 @@ class DataManager {
   }
 
   /**
-   * Valida si una coordenada es válida
+   * Valida coordenadas geográficas
+   * @param {number} lat - Latitud
+   * @param {number} lng - Longitud
+   * @returns {boolean} true si son válidas
    */
   isValidCoordinate(lat, lng) {
     return (
@@ -211,15 +194,11 @@ class DataManager {
     );
   }
 
-  /**
-   * Obtiene el color para una dependencia
-   */
   getColorForDependencia(dependencia) {
     return this.config.COLORS[dependencia] || this.config.COLORS.default;
   }
 }
 
-// Hacer DataManager disponible globalmente
 if (typeof window !== "undefined") {
   window.DataManager = DataManager;
 }

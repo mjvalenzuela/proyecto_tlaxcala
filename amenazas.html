@@ -226,19 +226,22 @@
     <script type="module">
       import { storyMapConfig } from './js/config/amenazas-config.js';
 
-      // Esperar a que el DOM esté listo
+      // ============================================================
+      // INICIALIZACIÓN PRINCIPAL
+      // ============================================================
       window.addEventListener('DOMContentLoaded', () => {
-        // ===== INICIALIZACIÓN DEL MAPA =====
-        const capituloActual = storyMapConfig.capitulos[0]; // Capítulo 1
+        const capituloActual = storyMapConfig.capitulos[0];
         const proxyUrl = storyMapConfig.proxyUrl;
 
-        // Crear el mapa
+        // ============================================================
+        // CAPÍTULO 1 - MAPA DE AMENAZAS CLIMÁTICAS
+        // ============================================================
         const map = new ol.Map({
           target: 'map-1',
           layers: [
             new ol.layer.Tile({
               source: new ol.source.OSM(),
-              zIndex: 0, // Mapa base siempre debajo
+              zIndex: 0, 
             }),
           ],
           view: new ol.View({
@@ -251,14 +254,14 @@
           }),
         });
 
-        // Array para guardar referencias a las capas
+
         const capasWMS = [];
 
         // Agregar capas WMS
         capituloActual.mapa.capas.forEach((capaConfig, index) => {
-          // Saltar subtítulos
+
           if (capaConfig.tipo === 'subtitulo') {
-            capasWMS.push(null); // Mantener índice sincronizado
+            capasWMS.push(null); 
             return;
           }
 
@@ -272,7 +275,7 @@
                 },
                 serverType: 'geoserver',
               }),
-              visible: capaConfig.visible || false, // Usar visible de config o false
+              visible: capaConfig.visible || false, 
               opacity: capaConfig.opacity || 1,
               zIndex: capaConfig.zIndex || index,
             });
@@ -281,7 +284,7 @@
             capasWMS.push(wmsLayer);
           }
 
-          // Cargar capa WFS para interacción (hover)
+          
           if (capaConfig.tipo === 'wfs') {
             const typeName = capaConfig.layers;
             const layerParts = typeName.split(':');
@@ -304,7 +307,7 @@
               strategy: ol.loadingstrategy.bbox
             });
 
-            // Estilo transparente para la capa de interacción
+            
             const transparentStyle = new ol.style.Style({
               stroke: new ol.style.Stroke({
                 color: 'rgba(0, 0, 0, 0)',
@@ -325,32 +328,34 @@
             wfsLayer.set('tipo', 'wfs');
             map.addLayer(wfsLayer);
 
-            // Configurar hover después de agregar la capa WFS
+            
             configurarHoverMunicipios(map);
 
             capasWMS.push(null); // Mantener índice
           }
         });
 
-        // ===== GENERAR CONTROLES DE CAPAS =====
         generarControlesCapas(capituloActual.mapa.capas, capasWMS);
 
-        // ===== CONFIGURAR HOVER DE MUNICIPIOS =====
+        /**
+         * Configura el hover sobre municipios para mostrar tooltip
+         * @param {ol.Map} mapa - Instancia del mapa de OpenLayers
+         */
         function configurarHoverMunicipios(mapa) {
           const mapElement = document.getElementById('map-1');
           if (!mapElement) return;
 
-          // Crear tooltip
+          
           const tooltip = document.createElement('div');
           tooltip.className = 'municipio-hover-tooltip';
           tooltip.style.display = 'none';
           mapElement.appendChild(tooltip);
 
-          // Variable para almacenar el feature actualmente resaltado
+          
           let currentFeature = null;
           let defaultStyle = null;
 
-          // Estilo de hover
+          
           const hoverStyle = new ol.style.Style({
             stroke: new ol.style.Stroke({
               color: '#A21A5C',
@@ -361,27 +366,27 @@
             })
           });
 
-          // Listener de movimiento del mouse
+          
           mapa.on('pointermove', (evt) => {
             const pixel = mapa.getEventPixel(evt.originalEvent);
 
-            // Restaurar estilo del feature anterior
+            
             if (currentFeature) {
               currentFeature.setStyle(defaultStyle);
               currentFeature = null;
               tooltip.style.display = 'none';
             }
 
-            // Buscar feature bajo el cursor (solo capas WFS)
+            
             mapa.forEachFeatureAtPixel(pixel, (feature, layer) => {
               if (layer && layer.get('tipo') === 'wfs') {
                 currentFeature = feature;
                 defaultStyle = feature.getStyle() || layer.getStyle();
 
-                // Aplicar estilo de hover
+                
                 feature.setStyle(hoverStyle);
 
-                // Obtener nombre del municipio
+                
                 const properties = feature.getProperties();
                 const nombreMunicipio =
                   properties.Municipio ||
@@ -395,23 +400,28 @@
                   properties.nomgeo ||
                   'Municipio';
 
-                // Actualizar tooltip
+                
                 tooltip.textContent = nombreMunicipio;
                 tooltip.style.display = 'block';
                 tooltip.style.left = `${evt.originalEvent.offsetX + 15}px`;
                 tooltip.style.top = `${evt.originalEvent.offsetY + 15}px`;
 
-                return true; // Detener búsqueda
+                return true; 
               }
             });
           });
         }
 
+        /**
+         * Genera el panel de control de capas con checkboxes
+         * @param {Array} capasConfig - Configuración de capas desde amenazas-config.js
+         * @param {Array} capasWMS - Array de capas WMS de OpenLayers
+         */
         function generarControlesCapas(capasConfig, capasWMS) {
           const mapContainer = document.getElementById('map-1');
           if (!mapContainer || !mapContainer.parentElement) return;
 
-          // Buscar o crear el contenedor de controles
+          
           let controlsContainer = mapContainer.parentElement.querySelector('.map-controls');
           if (!controlsContainer) {
             controlsContainer = document.createElement('div');
@@ -419,7 +429,7 @@
             mapContainer.parentElement.appendChild(controlsContainer);
           }
 
-          // Header con título y botón toggle
+          
           controlsContainer.innerHTML = `
             <div class="map-controls-header">
               <div class="map-controls-title">Capas</div>
@@ -428,19 +438,19 @@
             <div class="map-controls-content"></div>
           `;
 
-          // Contenedor para las capas
+          
           const contentContainer = controlsContainer.querySelector('.map-controls-content');
 
-          // Evento del botón toggle
+          
           const toggleBtn = controlsContainer.querySelector('.map-controls-toggle');
           toggleBtn.addEventListener('click', () => {
             controlsContainer.classList.toggle('collapsed');
             toggleBtn.textContent = controlsContainer.classList.contains('collapsed') ? '▼' : '▲';
           });
 
-          // Generar controles para cada capa
+          
           capasConfig.forEach((capaConfig, index) => {
-            // Si es un subtítulo, crear un encabezado de grupo
+            
             if (capaConfig.tipo === 'subtitulo') {
               const subtitulo = document.createElement('div');
               subtitulo.className = 'layer-group-title';
@@ -449,12 +459,12 @@
               return;
             }
 
-            // No mostrar capas de interacción
+            
             if (capaConfig.nombre && capaConfig.nombre.includes('Interacción')) {
               return;
             }
 
-            // Solo mostrar capas con leyenda: true
+            
             if (capaConfig.leyenda === false) {
               return;
             }
@@ -469,24 +479,27 @@
             `;
             contentContainer.appendChild(layerControl);
 
-            // Evento del checkbox
+            
             const checkbox = layerControl.querySelector(`#${checkboxId}`);
             if (checkbox && capasWMS[index]) {
               checkbox.addEventListener('change', (e) => {
                 capasWMS[index].setVisible(e.target.checked);
-                // Actualizar panel de leyendas
+                
                 actualizarPanelLeyendas(capasConfig, capasWMS);
               });
             }
           });
 
-          // Crear panel de leyendas
+          
           crearPanelLeyendas(mapContainer.parentElement);
-          // Actualizar panel de leyendas inicialmente
+          
           actualizarPanelLeyendas(capasConfig, capasWMS);
         }
 
-        // ===== CREAR PANEL DE LEYENDAS =====
+        /**
+         * Crea el panel de leyendas en el mapa
+         * @param {HTMLElement} mapParent - Elemento padre donde se agregará el panel
+         */
         function crearPanelLeyendas(mapParent) {
           let legendsContainer = mapParent.querySelector('.map-legends');
           if (!legendsContainer) {
@@ -501,7 +514,7 @@
             `;
             mapParent.appendChild(legendsContainer);
 
-            // Evento del botón toggle
+            
             const toggleBtn = legendsContainer.querySelector('.map-legends-toggle');
             toggleBtn.addEventListener('click', () => {
               legendsContainer.classList.toggle('collapsed');
@@ -510,29 +523,33 @@
           }
         }
 
-        // ===== ACTUALIZAR PANEL DE LEYENDAS =====
+        /**
+         * Actualiza el panel de leyendas mostrando solo las capas activas
+         * @param {Array} capasConfig - Configuración de capas
+         * @param {Array} capasWMS - Array de capas WMS
+         */
         function actualizarPanelLeyendas(capasConfig, capasWMS) {
           const legendsContent = document.querySelector('.map-legends-content');
           if (!legendsContent) return;
 
-          // Limpiar contenido actual
+          
           legendsContent.innerHTML = '';
 
-          // Contar capas activas
+          
           let capasActivas = 0;
 
-          // Agregar leyendas de capas activas
+          
           capasConfig.forEach((capaConfig, index) => {
-            // Solo procesar capas WMS con leyenda
+            
             if (capaConfig.tipo !== 'wms' || capaConfig.leyenda === false) return;
             if (capaConfig.nombre && capaConfig.nombre.includes('Interacción')) return;
 
-            // Verificar si la capa está visible
+            
             const capa = capasWMS[index];
             if (capa && capa.getVisible()) {
               capasActivas++;
 
-              // Crear item de leyenda
+              
               const legendItem = document.createElement('div');
               legendItem.className = 'legend-item';
 
@@ -543,7 +560,7 @@
               const legendImage = document.createElement('img');
               legendImage.className = 'legend-item-image';
 
-              // URL de GetLegendGraphic de GeoServer
+              
               const legendUrl = `${proxyUrl}/SEICCT/wms?` +
                 `REQUEST=GetLegendGraphic&` +
                 `VERSION=1.0.0&` +
@@ -562,7 +579,7 @@
             }
           });
 
-          // Mostrar mensaje si no hay capas activas
+          
           if (capasActivas === 0) {
             const emptyMessage = document.createElement('div');
             emptyMessage.className = 'map-legends-empty';
@@ -571,19 +588,21 @@
           }
         }
 
-        // ===== INICIALIZACIÓN DEL MAPA CAPÍTULO 3 =====
-        const capitulo3 = storyMapConfig.capitulos[2]; // Capítulo 3
+        // ============================================================
+        // CAPÍTULO 3 - DISTRIBUCIÓN ESPACIAL DE AMENAZAS
+        // ============================================================
+        const capitulo3 = storyMapConfig.capitulos[2]; 
         
         if (!capitulo3 || !capitulo3.mapa) {
           console.error('Capítulo 3 no encontrado o no tiene mapa');
         } else {
-          // Crear el mapa para capítulo 3
+          
           const map3 = new ol.Map({
         target: 'map-3',
         layers: [
           new ol.layer.Tile({
             source: new ol.source.OSM(),
-            zIndex: 0, // Mapa base siempre debajo
+            zIndex: 0, 
           }),
         ],
         view: new ol.View({
@@ -596,14 +615,14 @@
         }),
         });
 
-        // Array para guardar referencias a las capas del capítulo 3
+        
         const capasWMS3 = [];
 
-        // Agregar capas WMS al mapa 3
+        
         capitulo3.mapa.capas.forEach((capaConfig, index) => {
-        // Saltar subtítulos
+        
         if (capaConfig.tipo === 'subtitulo') {
-          capasWMS3.push(null); // Mantener índice sincronizado
+          capasWMS3.push(null); 
           return;
         }
 
@@ -626,7 +645,7 @@
           capasWMS3.push(wmsLayer);
         }
 
-        // Cargar capa WFS para interacción (hover) en mapa 3
+        
         if (capaConfig.tipo === 'wfs') {
           const typeName = capaConfig.layers;
           const layerParts = typeName.split(':');
@@ -649,7 +668,7 @@
             strategy: ol.loadingstrategy.bbox
           });
 
-          // Estilo transparente para la capa de interacción
+          
           const transparentStyle = new ol.style.Style({
             stroke: new ol.style.Stroke({
               color: 'rgba(0, 0, 0, 0)',
@@ -670,28 +689,31 @@
           wfsLayer.set('tipo', 'wfs');
           map3.addLayer(wfsLayer);
 
-          // Configurar hover para mapa 3
+          
           configurarHoverMunicipios3(map3);
 
           capasWMS3.push(null); // Mantener índice
         }
         });
 
-        // ===== GENERAR CONTROLES DE CAPAS PARA MAPA 3 =====
+        
         generarControlesCapas3(capitulo3.mapa.capas, capasWMS3);
 
-        // ===== CONFIGURAR HOVER DE MUNICIPIOS PARA MAPA 3 =====
+        /**
+         * Configura hover para municipios en el mapa del capítulo 3
+         * @param {ol.Map} mapa - Instancia del mapa de OpenLayers
+         */
         function configurarHoverMunicipios3(mapa) {
         const mapElement = document.getElementById('map-3');
         if (!mapElement) return;
 
-        // Crear tooltip
+       
         const tooltip = document.createElement('div');
         tooltip.className = 'municipio-hover-tooltip';
         tooltip.style.display = 'none';
         mapElement.appendChild(tooltip);
 
-        // Hover sobre features
+        
         mapa.on('pointermove', (event) => {
           const pixel = mapa.getEventPixel(event.originalEvent);
           let featureDetected = false;
@@ -717,12 +739,16 @@
         });
         }
 
-        // ===== FUNCIÓN PARA GENERAR CONTROLES DE CAPAS MAPA 3 =====
+        /**
+         * Genera controles de capas para el mapa del capítulo 3
+         * @param {Array} capasConfig - Configuración de capas
+         * @param {Array} capasWMS - Array de capas WMS
+         */
         function generarControlesCapas3(capasConfig, capasWMS) {
           const mapContainer = document.getElementById('map-3');
           if (!mapContainer || !mapContainer.parentElement) return;
 
-          // Buscar o crear el contenedor de controles
+         
           let controlsContainer = mapContainer.parentElement.querySelector('.map-controls');
           if (!controlsContainer) {
             controlsContainer = document.createElement('div');
@@ -730,7 +756,7 @@
             mapContainer.parentElement.appendChild(controlsContainer);
           }
 
-          // Header con título y botón toggle
+          
           controlsContainer.innerHTML = `
             <div class="map-controls-header">
               <div class="map-controls-title">Capas</div>
@@ -739,19 +765,19 @@
             <div class="map-controls-content"></div>
           `;
 
-          // Contenedor para las capas
+        
           const contentContainer = controlsContainer.querySelector('.map-controls-content');
 
-          // Evento del botón toggle
+          
           const toggleBtn = controlsContainer.querySelector('.map-controls-toggle');
           toggleBtn.addEventListener('click', () => {
             controlsContainer.classList.toggle('collapsed');
             toggleBtn.textContent = controlsContainer.classList.contains('collapsed') ? '▼' : '▲';
           });
 
-          // Generar controles para cada capa
+         
           capasConfig.forEach((capaConfig, index) => {
-            // Si es un subtítulo, crear un encabezado de grupo
+           
             if (capaConfig.tipo === 'subtitulo') {
               const subtitulo = document.createElement('div');
               subtitulo.className = 'layer-group-title';
@@ -760,12 +786,12 @@
               return;
             }
 
-            // No mostrar capas de interacción
+           
             if (capaConfig.nombre && capaConfig.nombre.includes('Interacción')) {
               return;
             }
 
-            // Solo mostrar capas con leyenda: true
+           
             if (capaConfig.leyenda === false) {
               return;
             }
@@ -780,27 +806,30 @@
             `;
             contentContainer.appendChild(layerControl);
 
-            // Evento del checkbox
+          
             const checkbox = layerControl.querySelector(`#${checkboxId}`);
             if (checkbox && capasWMS[index]) {
               checkbox.addEventListener('change', (e) => {
                 capasWMS[index].setVisible(e.target.checked);
-                // Actualizar panel de leyendas
+                
                 actualizarPanelLeyendas3(capasConfig, capasWMS);
               });
             }
           });
 
-          // Crear panel de leyendas
+          
           crearPanelLeyendas3(mapContainer.parentElement);
-          // Actualizar panel de leyendas inicialmente
+         
           actualizarPanelLeyendas3(capasConfig, capasWMS);
         }
 
-        // ===== FUNCIÓN PARA CREAR PANEL DE LEYENDAS MAPA 3 =====
+        /**
+         * Crea panel de leyendas para el mapa del capítulo 3
+         * @param {HTMLElement} mapParent - Elemento padre
+         */
         function crearPanelLeyendas3(mapParent) {
         let legendsContainer = mapParent.querySelector('.map-legends');
-        if (legendsContainer) return; // Ya existe
+        if (legendsContainer) return; 
 
         legendsContainer = document.createElement('div');
         legendsContainer.className = 'map-legends';
@@ -821,7 +850,11 @@
         });
         }
 
-        // ===== FUNCIÓN PARA ACTUALIZAR PANEL DE LEYENDAS MAPA 3 =====
+        /**
+         * Actualiza panel de leyendas del capítulo 3
+         * @param {Array} capasConfig - Configuración de capas
+         * @param {Array} capasWMS - Array de capas WMS
+         */
         function actualizarPanelLeyendas3(capasConfig, capasWMS) {
         const mapParent = document.getElementById('map-3');
         if (!mapParent) return;
@@ -830,7 +863,7 @@
         if (!legendsContainer) return;
 
         const legendsContent = legendsContainer.querySelector('.map-legends-content');
-        legendsContent.innerHTML = ''; // Limpiar contenido
+        legendsContent.innerHTML = ''; 
 
         let capasActivas = 0;
 
@@ -851,7 +884,7 @@
             const legendImage = document.createElement('img');
             legendImage.className = 'legend-item-image';
 
-            // URL de GetLegendGraphic de GeoServer
+          
             const legendUrl = `${proxyUrl}/SEICCT/wms?` +
               `REQUEST=GetLegendGraphic&` +
               `VERSION=1.0.0&` +
@@ -869,7 +902,7 @@
           }
         });
 
-        // Mostrar mensaje si no hay capas activas
+       
         if (capasActivas === 0) {
           const emptyMessage = document.createElement('div');
           emptyMessage.className = 'map-legends-empty';
@@ -877,19 +910,21 @@
           legendsContent.appendChild(emptyMessage);
         }
         }
-        } // Fin del if de verificación de capitulo3
+        }
 
-        // ===== NAVBAR =====
+        // ============================================================
+        // NAVEGACIÓN Y CONTROLES
+        // ============================================================
         const navbarToggle = document.getElementById("navbarToggle");
         const navbarMenu = document.getElementById("navbarMenu");
 
-        // Toggle menú móvil
+        
         navbarToggle.addEventListener("click", () => {
           navbarToggle.classList.toggle("active");
           navbarMenu.classList.toggle("active");
         });
 
-        // Cerrar menú al hacer click en un link
+        
         const navbarLinks = document.querySelectorAll(".navbar-link");
         navbarLinks.forEach((link) => {
           link.addEventListener("click", () => {
@@ -898,11 +933,11 @@
           });
         });
 
-        // Navbar y navbar indicator
+        
         const navbar = document.querySelector(".navbar");
         const navbarIndicator = document.getElementById("navbarIndicator");
 
-        // Efecto scroll en navbar
+        
         window.addEventListener("scroll", () => {
           if (window.scrollY > 50) {
             navbar.classList.add("scrolled");
@@ -911,29 +946,29 @@
           }
         });
 
-        // Mostrar/ocultar navbar con el indicador
-
-        // Mostrar navbar al hacer hover sobre el indicador
+  
         navbarIndicator.addEventListener("mouseenter", () => {
           navbar.classList.add("visible");
         });
 
-        // Mantener navbar visible mientras el mouse está sobre él
+        
         navbar.addEventListener("mouseenter", () => {
           navbar.classList.add("visible");
         });
 
-        // Ocultar navbar cuando el mouse sale
+       
         navbar.addEventListener("mouseleave", () => {
           navbar.classList.remove("visible");
         });
 
-        // Click en indicador para toggle del navbar
+        
         navbarIndicator.addEventListener("click", () => {
           navbar.classList.toggle("visible");
         });
 
-        // ===== NAVEGACIÓN DE CAPÍTULOS =====
+        // ============================================================
+        // NAVEGACIÓN ENTRE CAPÍTULOS
+        // ============================================================
         const chaptersContainer = document.getElementById("chaptersContainer");
         const timelineItems = document.querySelectorAll(".timeline-item");
         const btnPrev = document.getElementById("btnPrev");
@@ -942,7 +977,10 @@
         let currentChapter = 1;
         const totalChapters = 3;
 
-        // Función para navegar a un capítulo
+        /**
+         * Navega a un capítulo específico con scroll suave
+         * @param {number} chapterNum - Número del capítulo (1-3)
+         */
         function goToChapter(chapterNum) {
 
           if (chapterNum < 1 || chapterNum > totalChapters) {
@@ -952,7 +990,7 @@
 
           currentChapter = chapterNum;
 
-          // Actualizar timeline activo
+          
           timelineItems.forEach(item => {
             const itemChapter = parseInt(item.dataset.chapter);
             if (itemChapter === currentChapter) {
@@ -962,7 +1000,7 @@
             }
           });
 
-          // Scroll al capítulo
+         
           const targetChapter = document.getElementById(`chapter-${chapterNum}`);
   
           if (targetChapter) {
@@ -972,7 +1010,7 @@
           }
         }
 
-        // Clicks en timeline
+        
         timelineItems.forEach(item => {
           item.addEventListener("click", () => {
             const chapterNum = parseInt(item.dataset.chapter);
@@ -983,7 +1021,7 @@
 
 
 
-        // Botones de navegación
+       
         btnPrev.addEventListener("click", () => {
 
           goToChapter(currentChapter - 1);
@@ -994,9 +1032,9 @@
           goToChapter(currentChapter + 1);
         });
 
-        // Marcar el capítulo 1 como activo al cargar
+        
         goToChapter(1);
-      }); // Fin DOMContentLoaded
+      }); 
     </script>
   </body>
 </html>

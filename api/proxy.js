@@ -6,21 +6,17 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, HEAD');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   
-  // Manejar preflight OPTIONS
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
 
   try {
-    // Obtener la URL completa de la petición
     const fullUrl = new URL(req.url, `https://${req.headers.host}`);
     
-    // Extraer el parámetro 'path' usando URLSearchParams
     const searchParams = fullUrl.searchParams;
     const pathParam = searchParams.get('path');
     
-    // Validar que existe el parámetro path
     if (!pathParam) {
       return res.status(400).json({ 
         error: 'Falta el parámetro "path"',
@@ -35,7 +31,6 @@ export default async function handler(req, res) {
     // ==========================================
     const geoserverBaseUrl = 'https://api.cambioclimaticotlaxcala.mx';
 
-    // Asegurar que pathParam empiece con /
     const normalizedPath = pathParam.startsWith('/') ? pathParam : `/${pathParam}`;
     const targetUrl = `${geoserverBaseUrl}${normalizedPath}`;
 
