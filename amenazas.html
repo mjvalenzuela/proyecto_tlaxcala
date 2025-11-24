@@ -572,11 +572,8 @@
         }
 
         // ===== INICIALIZACIÓN DEL MAPA CAPÍTULO 3 =====
-        console.log('Total de capítulos en config:', storyMapConfig.capitulos.length);
-        console.log('Capítulos:', storyMapConfig.capitulos);
         const capitulo3 = storyMapConfig.capitulos[2]; // Capítulo 3
-        console.log('Capitulo 3:', capitulo3);
-
+        
         if (!capitulo3 || !capitulo3.mapa) {
           console.error('Capítulo 3 no encontrado o no tiene mapa');
         } else {
@@ -942,17 +939,14 @@
         const btnPrev = document.getElementById("btnPrev");
         const btnNext = document.getElementById("btnNext");
 
-        console.log('Timeline items encontrados:', timelineItems.length);
-        console.log('Chapters container:', chaptersContainer);
-
         let currentChapter = 1;
         const totalChapters = 3;
 
         // Función para navegar a un capítulo
         function goToChapter(chapterNum) {
-          console.log('goToChapter llamado con:', chapterNum);
+
           if (chapterNum < 1 || chapterNum > totalChapters) {
-            console.log('Número de capítulo fuera de rango');
+
             return;
           }
 
@@ -970,7 +964,7 @@
 
           // Scroll al capítulo
           const targetChapter = document.getElementById(`chapter-${chapterNum}`);
-          console.log('Target chapter encontrado:', targetChapter);
+  
           if (targetChapter) {
             targetChapter.scrollIntoView({ behavior: "smooth", block: "start" });
           } else {
@@ -982,21 +976,21 @@
         timelineItems.forEach(item => {
           item.addEventListener("click", () => {
             const chapterNum = parseInt(item.dataset.chapter);
-            console.log('Click en timeline item, capítulo:', chapterNum);
+
             goToChapter(chapterNum);
           });
         });
 
-        console.log('Event listeners de timeline agregados');
+
 
         // Botones de navegación
         btnPrev.addEventListener("click", () => {
-          console.log('Click en botón anterior');
+
           goToChapter(currentChapter - 1);
         });
 
         btnNext.addEventListener("click", () => {
-          console.log('Click en botón siguiente');
+
           goToChapter(currentChapter + 1);
         });
 
