@@ -399,10 +399,11 @@ class RiesgoApp {
         source: wmsSource,
         opacity: config.opacity || 1,
         zIndex: config.zIndex || 0,
-        visible: true,
+        visible: config.visible !== undefined ? config.visible : true,
       });
 
       layer.set("name", config.nombre);
+      layer.set("layerName", config.layer);
 
       return layer;
     }
@@ -874,7 +875,21 @@ class RiesgoApp {
       mapContainer.parentElement.appendChild(controlsContainer);
     }
 
-    controlsContainer.innerHTML = '<div class="map-controls-title">Capas</div>';
+    controlsContainer.innerHTML = `
+      <div class="map-controls-header">
+        <div class="map-controls-title">Capas</div>
+        <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
+      </div>
+      <div class="map-controls-content"></div>
+    `;
+
+    const contentContainer = controlsContainer.querySelector('.map-controls-content');
+
+    const toggleBtn = controlsContainer.querySelector('.map-controls-toggle');
+    toggleBtn.addEventListener('click', () => {
+      controlsContainer.classList.toggle('collapsed');
+      toggleBtn.textContent = controlsContainer.classList.contains('collapsed') ? '▼' : '▲';
+    });
 
     const mapData = this.maps[mapId];
     if (!mapData || !mapData.map) {
@@ -886,7 +901,18 @@ class RiesgoApp {
     const layers = map.getLayers().getArray();
 
     capasConfig.forEach((capaConfig, index) => {
+      // Manejar subtítulos
+      if (capaConfig.tipo === 'subtitulo') {
+        const subtitulo = document.createElement('div');
+        subtitulo.className = 'layer-control-subtitle';
+        subtitulo.textContent = capaConfig.titulo;
+        contentContainer.appendChild(subtitulo);
+        return;
+      }
+
       const nombreCapa = capaConfig.nombre;
+
+      if (!nombreCapa) return;
 
       if (nombreCapa.includes('(Interacción)') || nombreCapa.includes('Interacción')) {
         return;
@@ -896,17 +922,17 @@ class RiesgoApp {
         return;
       }
 
-      const visible = capaConfig.opacity > 0;
+      const isVisible = capaConfig.visible !== undefined ? capaConfig.visible : true;
       const checkboxId = `layer-${index}-${chapterNumber}`;
 
       const layerControl = document.createElement('div');
       layerControl.className = 'layer-control';
       layerControl.innerHTML = `
-        <input type="checkbox" id="${checkboxId}" ${visible ? 'checked' : ''} />
+        <input type="checkbox" id="${checkboxId}" ${isVisible ? 'checked' : ''} />
         <label for="${checkboxId}">${nombreCapa}</label>
       `;
 
-      controlsContainer.appendChild(layerControl);
+      contentContainer.appendChild(layerControl);
 
       const checkbox = layerControl.querySelector(`#${checkboxId}`);
       if (checkbox) {
@@ -915,9 +941,142 @@ class RiesgoApp {
           if (targetLayer) {
             targetLayer.setVisible(e.target.checked);
           }
+          this.actualizarPanelLeyendas(mapId, capasConfig);
         });
       }
     });
+
+    // Crear panel de leyendas
+    this.crearPanelLeyendas(mapContainer.parentElement, mapId);
+    this.actualizarPanelLeyendas(mapId, capasConfig);
+  }
+
+  /**
+   * Crea el panel de leyendas en el mapa
+   * @param {HTMLElement} mapParent - Elemento padre donde se agregará el panel
+   * @param {string} mapId - ID del mapa
+   */
+  crearPanelLeyendas(mapParent, mapId) {
+    let legendsContainer = mapParent.querySelector('.map-legends');
+    if (!legendsContainer) {
+      legendsContainer = document.createElement('div');
+      legendsContainer.className = 'map-legends';
+      legendsContainer.id = `legends-${mapId}`;
+      legendsContainer.innerHTML = `
+        <div class="map-legends-header">
+          <div class="map-legends-title">Simbología</div>
+          <button class="map-legends-toggle" title="Ocultar/Mostrar leyendas">▲</button>
+        </div>
+        <div class="map-legends-content"></div>
+      `;
+      mapParent.appendChild(legendsContainer);
+
+      const toggleBtn = legendsContainer.querySelector('.map-legends-toggle');
+      toggleBtn.addEventListener('click', () => {
+        legendsContainer.classList.toggle('collapsed');
+        toggleBtn.textContent = legendsContainer.classList.contains('collapsed') ? '▼' : '▲';
+      });
+    }
+  }
+
+  /**
+   * Genera HTML de simbología manual desde configuración
+   * @param {Object} simbologia - Configuración de simbología
+   * @returns {string} HTML de la simbología
+   */
+  generarSimbologiaHTML(simbologia) {
+    let html = '<div class="legend-simbologia">';
+    simbologia.categorias.forEach(cat => {
+      html += `
+        <div class="legend-categoria">
+          <span class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke || '#333'};"></span>
+          <span class="legend-label">${cat.label}</span>
+        </div>
+      `;
+    });
+    html += '</div>';
+    return html;
+  }
+
+  /**
+   * Actualiza el panel de leyendas mostrando solo las capas activas
+   * @param {string} mapId - ID del mapa
+   * @param {Array} capasConfig - Configuración de capas
+   */
+  actualizarPanelLeyendas(mapId, capasConfig) {
+    const mapParent = document.getElementById(mapId)?.parentElement;
+    if (!mapParent) return;
+
+    const legendsContent = mapParent.querySelector('.map-legends-content');
+    if (!legendsContent) return;
+
+    legendsContent.innerHTML = '';
+
+    const mapData = this.maps[mapId];
+    if (!mapData || !mapData.map) return;
+
+    const map = mapData.map;
+    const layers = map.getLayers().getArray();
+    let capasActivas = 0;
+
+    const proxyBase = this.config.proxy.url;
+    const isVercelProxy = proxyBase.includes("proxy?path=");
+    const simbologias = this.config.simbologias || {};
+
+    capasConfig.forEach((capaConfig) => {
+      if (capaConfig.tipo !== 'wms' || capaConfig.leyenda === false) return;
+      if (capaConfig.nombre && capaConfig.nombre.includes('Interacción')) return;
+
+      const capa = layers.find(layer => layer.get('name') === capaConfig.nombre);
+      if (capa && capa.getVisible()) {
+        capasActivas++;
+
+        const legendItem = document.createElement('div');
+        legendItem.className = 'legend-item';
+
+        const legendTitle = document.createElement('div');
+        legendTitle.className = 'legend-item-title';
+        legendTitle.textContent = capaConfig.nombre;
+        legendItem.appendChild(legendTitle);
+
+        // Verificar si hay simbología manual definida
+        const simbologia = simbologias[capaConfig.layer];
+        if (simbologia) {
+          // Usar simbología manual
+          const simbologiaContainer = document.createElement('div');
+          simbologiaContainer.innerHTML = this.generarSimbologiaHTML(simbologia);
+          legendItem.appendChild(simbologiaContainer.firstElementChild);
+        } else {
+          // Usar imagen de GeoServer como fallback
+          const legendImage = document.createElement('img');
+          legendImage.className = 'legend-item-image';
+
+          let legendUrl;
+          const legendParams = `REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=${capaConfig.layer}&WIDTH=15&HEIGHT=15&LEGEND_OPTIONS=fontAntiAliasing:true;fontSize:11;dpi:96;forceLabels:on;fontName:Sans-Serif`;
+
+          if (isVercelProxy) {
+            const legendPath = `/geoserver/SEICCT/wms?${legendParams}`;
+            const encodedLegendPath = encodeURIComponent(legendPath);
+            legendUrl = `${proxyBase.replace('?path=', '')}?path=${encodedLegendPath}`;
+          } else {
+            legendUrl = `${proxyBase}/SEICCT/wms?${legendParams}`;
+          }
+
+          legendImage.src = legendUrl;
+          legendImage.alt = `Leyenda de ${capaConfig.nombre}`;
+          legendItem.appendChild(legendImage);
+        }
+
+        legendsContent.appendChild(legendItem);
+      }
+    });
+
+    if (capasActivas === 0) {
+      const emptyMessage = document.createElement('div');
+      emptyMessage.className = 'map-legends-empty';
+      emptyMessage.textContent = 'No hay capas activas';
+      legendsContent.appendChild(emptyMessage);
+    }
   }
 }
 
