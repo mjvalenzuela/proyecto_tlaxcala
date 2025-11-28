@@ -257,25 +257,59 @@
 
         const capasWMS = [];
 
+        // Detectar si estamos usando proxy de Vercel
+        const isVercelProxy = proxyUrl.includes('proxy?path=');
+
         // Agregar capas WMS
         capituloActual.mapa.capas.forEach((capaConfig, index) => {
 
           if (capaConfig.tipo === 'subtitulo') {
-            capasWMS.push(null); 
+            capasWMS.push(null);
             return;
           }
 
           if (capaConfig.tipo === 'wms') {
-            const wmsLayer = new ol.layer.Tile({
-              source: new ol.source.TileWMS({
-                url: proxyUrl + '/SEICCT/ows',
+            const workspace = 'SEICCT';
+            let wmsSource;
+
+            if (isVercelProxy) {
+              // Para Vercel: usar tileLoadFunction personalizado
+              const basePath = `/geoserver/${workspace}/wms`;
+              wmsSource = new ol.source.TileWMS({
+                url: proxyUrl.replace('?path=', ''),
+                params: {
+                  'LAYERS': capaConfig.layer,
+                  'TILED': true,
+                  'VERSION': '1.1.0',
+                  'FORMAT': 'image/png',
+                  'TRANSPARENT': true,
+                },
+                serverType: 'geoserver',
+                crossOrigin: 'anonymous',
+                tileLoadFunction: function(imageTile, src) {
+                  const url = new URL(src, window.location.origin);
+                  const params = url.searchParams.toString();
+                  const fullPath = `${basePath}?${params}`;
+                  const encodedPath = encodeURIComponent(fullPath);
+                  const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+                  imageTile.getImage().src = finalUrl;
+                },
+              });
+            } else {
+              // Para local: URL directa
+              wmsSource = new ol.source.TileWMS({
+                url: proxyUrl + '/SEICCT/wms',
                 params: {
                   'LAYERS': capaConfig.layer,
                   'TILED': true,
                 },
                 serverType: 'geoserver',
-              }),
-              visible: capaConfig.visible || false, 
+              });
+            }
+
+            const wmsLayer = new ol.layer.Tile({
+              source: wmsSource,
+              visible: capaConfig.visible || false,
               opacity: capaConfig.opacity || 1,
               zIndex: capaConfig.zIndex || index,
             });
@@ -284,7 +318,7 @@
             capasWMS.push(wmsLayer);
           }
 
-          
+
           if (capaConfig.tipo === 'wfs') {
             const typeName = capaConfig.layers;
             const layerParts = typeName.split(':');
@@ -302,7 +336,16 @@
                   srsname: 'EPSG:3857',
                   bbox: `${extent.join(',')},EPSG:3857`
                 });
-                return `${proxyUrl}/${workspace}/ows?${params.toString()}`;
+
+                if (isVercelProxy) {
+                  // Para Vercel: URL-encode el path completo
+                  const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
+                  const encodedPath = encodeURIComponent(wfsPath);
+                  return `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+                } else {
+                  // Para local
+                  return `${proxyUrl}/${workspace}/ows?${params.toString()}`;
+                }
               },
               strategy: ol.loadingstrategy.bbox
             });
@@ -560,15 +603,18 @@
               const legendImage = document.createElement('img');
               legendImage.className = 'legend-item-image';
 
-              
-              const legendUrl = `${proxyUrl}/SEICCT/wms?` +
-                `REQUEST=GetLegendGraphic&` +
-                `VERSION=1.0.0&` +
-                `FORMAT=image/png&` +
-                `LAYER=${capaConfig.layer}&` +
-                `WIDTH=20&` +
-                `HEIGHT=20&` +
-                `LEGEND_OPTIONS=fontAntiAliasing:true;fontSize:10;dpi:72;forceLabels:on`;
+
+              // Construir URL de leyenda según el tipo de proxy
+              let legendUrl;
+              const legendParams = `REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=${capaConfig.layer}&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=fontAntiAliasing:true;fontSize:10;dpi:72;forceLabels:on`;
+
+              if (isVercelProxy) {
+                const legendPath = `/geoserver/SEICCT/wms?${legendParams}`;
+                const encodedLegendPath = encodeURIComponent(legendPath);
+                legendUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedLegendPath}`;
+              } else {
+                legendUrl = `${proxyUrl}/SEICCT/wms?${legendParams}`;
+              }
 
               legendImage.src = legendUrl;
               legendImage.alt = `Leyenda de ${capaConfig.nombre}`;
@@ -615,27 +661,58 @@
         }),
         });
 
-        
+
         const capasWMS3 = [];
 
-        
+
         capitulo3.mapa.capas.forEach((capaConfig, index) => {
-        
+
         if (capaConfig.tipo === 'subtitulo') {
-          capasWMS3.push(null); 
+          capasWMS3.push(null);
           return;
         }
 
         if (capaConfig.tipo === 'wms') {
-          const wmsLayer = new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-              url: proxyUrl + '/SEICCT/ows',
+          const workspace = 'SEICCT';
+          let wmsSource3;
+
+          if (isVercelProxy) {
+            // Para Vercel: usar tileLoadFunction personalizado
+            const basePath3 = `/geoserver/${workspace}/wms`;
+            wmsSource3 = new ol.source.TileWMS({
+              url: proxyUrl.replace('?path=', ''),
+              params: {
+                'LAYERS': capaConfig.layer,
+                'TILED': true,
+                'VERSION': '1.1.0',
+                'FORMAT': 'image/png',
+                'TRANSPARENT': true,
+              },
+              serverType: 'geoserver',
+              crossOrigin: 'anonymous',
+              tileLoadFunction: function(imageTile, src) {
+                const url = new URL(src, window.location.origin);
+                const params = url.searchParams.toString();
+                const fullPath = `${basePath3}?${params}`;
+                const encodedPath = encodeURIComponent(fullPath);
+                const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+                imageTile.getImage().src = finalUrl;
+              },
+            });
+          } else {
+            // Para local: URL directa
+            wmsSource3 = new ol.source.TileWMS({
+              url: proxyUrl + '/SEICCT/wms',
               params: {
                 'LAYERS': capaConfig.layer,
                 'TILED': true,
               },
               serverType: 'geoserver',
-            }),
+            });
+          }
+
+          const wmsLayer = new ol.layer.Tile({
+            source: wmsSource3,
             visible: capaConfig.visible || false,
             opacity: capaConfig.opacity || 1,
             zIndex: capaConfig.zIndex || index,
@@ -645,7 +722,7 @@
           capasWMS3.push(wmsLayer);
         }
 
-        
+
         if (capaConfig.tipo === 'wfs') {
           const typeName = capaConfig.layers;
           const layerParts = typeName.split(':');
@@ -663,7 +740,16 @@
                 srsname: 'EPSG:3857',
                 bbox: `${extent.join(',')},EPSG:3857`
               });
-              return `${proxyUrl}/${workspace}/ows?${params.toString()}`;
+
+              if (isVercelProxy) {
+                // Para Vercel: URL-encode el path completo
+                const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
+                const encodedPath = encodeURIComponent(wfsPath);
+                return `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+              } else {
+                // Para local
+                return `${proxyUrl}/${workspace}/ows?${params.toString()}`;
+              }
             },
             strategy: ol.loadingstrategy.bbox
           });
@@ -884,16 +970,20 @@
             const legendImage = document.createElement('img');
             legendImage.className = 'legend-item-image';
 
-          
-            const legendUrl = `${proxyUrl}/SEICCT/wms?` +
-              `REQUEST=GetLegendGraphic&` +
-              `VERSION=1.0.0&` +
-              `FORMAT=image/png&` +
-              `LAYER=${capaConfig.layer}&` +
-              `WIDTH=20&HEIGHT=20&` +
-              `LEGEND_OPTIONS=fontAntiAliasing:true;fontSize:10;dpi:72;forceLabels:on`;
 
-            legendImage.src = legendUrl;
+            // Construir URL de leyenda según el tipo de proxy
+            let legendUrl3;
+            const legendParams3 = `REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=${capaConfig.layer}&WIDTH=20&HEIGHT=20&LEGEND_OPTIONS=fontAntiAliasing:true;fontSize:10;dpi:72;forceLabels:on`;
+
+            if (isVercelProxy) {
+              const legendPath3 = `/geoserver/SEICCT/wms?${legendParams3}`;
+              const encodedLegendPath3 = encodeURIComponent(legendPath3);
+              legendUrl3 = `${proxyUrl.replace('?path=', '')}?path=${encodedLegendPath3}`;
+            } else {
+              legendUrl3 = `${proxyUrl}/SEICCT/wms?${legendParams3}`;
+            }
+
+            legendImage.src = legendUrl3;
             legendImage.alt = `Leyenda de ${capaConfig.nombre}`;
 
             legendItem.appendChild(legendTitle);

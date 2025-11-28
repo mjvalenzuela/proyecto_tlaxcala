@@ -1,7 +1,7 @@
 /**
- * Archivo principal - Inicialización y orquestación
+ * Aplicación principal de Acciones Climáticas
+ * Orquesta inicialización y coordinación de módulos
  */
-
 class AccionesClimaticasApp {
   constructor() {
     this.dataManager = null;
@@ -18,20 +18,16 @@ class AccionesClimaticasApp {
    */
   async init() {
     try {
-      // Inicializar managers
       this.dataManager = new DataManager();
       this.mapManager = new MapManager("map");
 
-      // Inicializar el mapa
       const mapInitialized = this.mapManager.initMap();
       if (!mapInitialized) {
         throw new Error("Error al inicializar el mapa");
       }
 
-      // Cargar datos
       await this.loadData();
 
-      // Configurar event listeners
       this.setupEventListeners();
 
       this.isInitialized = true;
@@ -42,34 +38,26 @@ class AccionesClimaticasApp {
   }
 
   /**
-   * Carga los datos del API
+   * Carga datos del API y configura el mapa
    */
   async loadData() {
     try {
       this.showLoading(true);
 
-      // Fetch datos
       this.data = await this.dataManager.fetchData();
 
       if (!this.data || !this.data.acciones) {
         throw new Error("No se pudieron cargar los datos");
       }
 
-      // Actualizar estadísticas en el header
       this.updateStats(this.data);
 
-      // Almacenar acciones globalmente para acceso desde popups
       PopupGenerator.setAccionesData(this.data.acciones);
 
-      // Procesar y agregar markers al mapa
       this.markersData = this.dataManager.processAccionesForMap(this.data);
       this.mapManager.addMarkers(this.markersData);
 
-      // Inicializar sistema de filtros
       this.initFilters();
-
-      // Mantener el mapa centrado en Tlaxcala (no hacer fitBounds)
-      // El mapa ya está centrado según CONFIG.CENTER y CONFIG.MAP.zoom
 
       this.showLoading(false);
     } catch (error) {
@@ -79,7 +67,8 @@ class AccionesClimaticasApp {
   }
 
   /**
-   * Actualiza las estadísticas en el header
+   * Actualiza estadísticas en el header
+   * @param {Object} data - Datos de acciones
    */
   updateStats(data) {
     const stats = this.dataManager.getStats(data);
@@ -91,23 +80,16 @@ class AccionesClimaticasApp {
     }
   }
 
-  /**
-   * Actualiza un elemento de estadística
-   */
   updateStatElement(id, value) {
     const element = document.getElementById(id);
     if (element) {
-      // Animación de conteo
       this.animateValue(element, 0, value, 1000);
     }
   }
 
-  /**
-   * Anima el valor de un contador
-   */
   animateValue(element, start, end, duration) {
     const range = end - start;
-    const increment = range / (duration / 16); // 60 FPS
+    const increment = range / (duration / 16);
     let current = start;
 
     const timer = setInterval(() => {
@@ -121,40 +103,31 @@ class AccionesClimaticasApp {
   }
 
   /**
-   * Inicializa el sistema de filtros
+   * Inicializa sistema de filtros y timeline
    */
   initFilters() {
     try {
-      // Obtener estadísticas para generar opciones de filtro
       const stats = FilterManager.getFilterStats(this.data);
       const options = FilterManager.generateDropdownOptions(stats);
 
-      // Generar opciones de los dropdowns
       this.populateDropdown('filterTipo', options.tipos);
       this.populateDropdown('filterDependencia', options.dependencias);
       this.populateDropdownWithLabels('filterEstado', options.estados);
 
-      // Inicializar FilterManager
       this.filterManager = new FilterManager(this.mapManager, this.data);
       this.filterManager.init(this.markersData);
 
-      // Inicializar TimelineManager
       this.timelineManager = new TimelineManager(this.filterManager, this.data);
       this.timelineManager.init(this.markersData);
 
-      // Hacer disponible globalmente para que FilterManager pueda acceder
       window.timelineManager = this.timelineManager;
 
-      // Actualizar contador inicial
       this.filterManager.updateResultsCount(this.markersData.length);
     } catch (error) {
       console.error("Error al inicializar filtros:", error);
     }
   }
 
-  /**
-   * Poblar dropdown con opciones simples (array de strings)
-   */
   populateDropdown(selectId, options) {
     const select = document.getElementById(selectId);
     if (!select) return;
@@ -167,9 +140,6 @@ class AccionesClimaticasApp {
     });
   }
 
-  /**
-   * Poblar dropdown con opciones que tienen value y label
-   */
   populateDropdownWithLabels(selectId, options) {
     const select = document.getElementById(selectId);
     if (!select) return;
@@ -183,10 +153,9 @@ class AccionesClimaticasApp {
   }
 
   /**
-   * Configura event listeners
+   * Configura event listeners globales
    */
   setupEventListeners() {
-    // Botón de centrar mapa
     const centerBtn = document.getElementById("centerMapBtn");
     if (centerBtn) {
       centerBtn.addEventListener("click", () => {
@@ -194,7 +163,6 @@ class AccionesClimaticasApp {
       });
     }
 
-    // Detectar cambios en el tamaño de la ventana
     let resizeTimeout;
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimeout);
@@ -206,9 +174,6 @@ class AccionesClimaticasApp {
     });
   }
 
-  /**
-   * Muestra u oculta el loading overlay
-   */
   showLoading(show) {
     const overlay = document.getElementById("loadingOverlay");
     if (overlay) {
@@ -221,12 +186,12 @@ class AccionesClimaticasApp {
   }
 
   /**
-   * Muestra un mensaje de error
+   * Muestra mensaje de error personalizado
+   * @param {string} message - Mensaje de error
    */
   showError(message) {
     const overlay = document.getElementById("loadingOverlay");
     if (overlay) {
-      // Determinar tipo de error y mensaje personalizado
       let errorTitle = "Error al cargar datos";
       let errorMessage = message;
       let errorDetails = "";
@@ -273,9 +238,6 @@ class AccionesClimaticasApp {
     }
   }
 
-  /**
-   * Limpia recursos (cleanup)
-   */
   destroy() {
     if (this.mapManager) {
       this.mapManager.destroy();
@@ -295,7 +257,6 @@ class AccionesClimaticasApp {
   }
 }
 
-// Inicializar la aplicación cuando el DOM esté listo
 let app;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -303,14 +264,12 @@ document.addEventListener("DOMContentLoaded", () => {
   app.init();
 });
 
-// Cleanup al salir de la página
 window.addEventListener("beforeunload", () => {
   if (app) {
     app.destroy();
   }
 });
 
-// Hacer la app disponible globalmente para debugging
 if (typeof window !== "undefined") {
   window.AccionesApp = app;
 }

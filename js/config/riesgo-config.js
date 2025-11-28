@@ -1,22 +1,20 @@
-// Configuración de capítulos para riesgo.html
-
+/**
+ * Configuración de capítulos para riesgo.html
+ * Define mapas, capas WMS y timeline de riesgo climático
+ */
 const RiesgoConfig = {
-  // Configuración del proxy (igual que en vulnerabilidad-config.js)
   proxy: {
     url: (() => {
       const hostname = window.location.hostname;
 
-      // ENTORNO LOCAL (Live Server, http-server, etc.)
       if (hostname === "localhost" || hostname === "127.0.0.1") {
         return "http://localhost:3001/geoserver";
       }
 
-      // ENTORNO VERCEL (Producción)
       if (hostname.includes("vercel.app")) {
         return "/api/proxy?path=";
       }
 
-      // Conexión directa
       console.warn(
         "Entorno desconocido - Usando conexión directa (puede tener problemas CORS)"
       );
@@ -24,11 +22,9 @@ const RiesgoConfig = {
     })(),
   },
 
-  // Centro y zoom por defecto para Tlaxcala
   defaultCenter: [-98.16560203447955, 19.42964878131165],
   defaultZoom: 9.5,
 
-  // Configuración de capítulos
   capitulos: [
     {
       id: 1,
@@ -151,19 +147,16 @@ const RiesgoConfig = {
     },
   ],
 
-  // Configuración del timeline
   timeline: {
     totalChapters: 3,
   },
 
-  // Enlaces externos
   links: {
     atlasEstatal:
       "http://rmgir.proyectomesoamerica.org/PDFAtlasEstatales/TLAXCALA_2006.pdf",
   },
 };
 
-// Hacer disponible globalmente
 if (typeof window !== "undefined") {
   window.RiesgoConfig = RiesgoConfig;
 }

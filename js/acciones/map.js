@@ -1,7 +1,7 @@
 /**
- * Manejo del mapa Leaflet y markers
+ * Gestor del mapa Leaflet
+ * Maneja inicialización, markers y clustering
  */
-
 class MapManager {
   constructor(containerId) {
     this.containerId = containerId;
@@ -13,11 +13,11 @@ class MapManager {
   }
 
   /**
-   * Inicializa el mapa
+   * Inicializa el mapa con capas base
+   * @returns {boolean} true si se inicializa correctamente
    */
   initMap() {
     try {
-      // Crear el mapa centrado en Tlaxcala
       this.map = L.map(this.containerId, {
         center: [this.config.CENTER.lat, this.config.CENTER.lng],
         zoom: this.config.MAP.zoom,
@@ -27,13 +27,11 @@ class MapManager {
         zoomControl: this.config.MAP.zoomControl,
       });
 
-      // Agregar capa de tiles
       L.tileLayer(this.config.TILES.url, {
         attribution: this.config.TILES.attribution,
         maxZoom: this.config.MAP.maxZoom,
       }).addTo(this.map);
 
-      // Agregar capa WMS de municipios de Tlaxcala
       const wmsConfig = this.config.WMS_LAYERS.municipios;
       if (wmsConfig.visible) {
         this.municipiosLayer = L.tileLayer
@@ -47,11 +45,9 @@ class MapManager {
           .addTo(this.map);
       }
 
-      // Inicializar capa de markers con clustering
       this.markersLayer = L.markerClusterGroup(this.config.CLUSTER);
       this.map.addLayer(this.markersLayer);
 
-      // Agregar control de escala
       L.control
         .scale({ position: "bottomleft", imperial: false })
         .addTo(this.map);
@@ -65,6 +61,7 @@ class MapManager {
 
   /**
    * Agrega markers al mapa
+   * @param {Array} markersData - Array de datos de markers
    */
   addMarkers(markersData) {
     if (!this.map || !this.markersLayer) {
@@ -77,10 +74,8 @@ class MapManager {
       return;
     }
 
-    // Limpiar markers existentes
     this.clearMarkers();
 
-    // Crear markers
     markersData.forEach((data) => {
       try {
         const marker = this.createMarker(data);
@@ -96,29 +91,26 @@ class MapManager {
 
   /**
    * Crea un marker individual
+   * @param {Object} data - Datos del marker
+   * @returns {L.Marker|null} Marker de Leaflet
    */
   createMarker(data) {
     try {
-      // Validar coordenadas
       if (!data.lat || !data.lng) {
         console.warn("Marker sin coordenadas:", data.nombre_proyecto);
         return null;
       }
 
-      // Obtener color según dependencia
       const color =
         this.config.COLORS[data.dependencia] || this.config.COLORS.default;
 
-      // Crear ícono personalizado
       const icon = this.createCustomIcon(data, color);
 
-      // Crear marker
       const marker = L.marker([data.lat, data.lng], {
         icon: icon,
         title: data.nombre_proyecto,
       });
 
-      // Agregar popup
       const popupContent = this.popupGenerator.generatePopup(data);
       marker.bindPopup(popupContent, {
         maxWidth: 520,
@@ -126,13 +118,11 @@ class MapManager {
         className: "custom-popup",
       });
 
-      // Agregar tooltip (hover)
       marker.bindTooltip(data.nombre_proyecto, {
         direction: "top",
         offset: [0, -20],
       });
 
-      // Guardar referencia a los datos
       marker.accionData = data;
 
       return marker;
@@ -143,14 +133,15 @@ class MapManager {
   }
 
   /**
-   * Crea un ícono personalizado para el marker
+   * Crea ícono personalizado para marker
+   * @param {Object} data - Datos del marker
+   * @param {string} color - Color del ícono
+   * @returns {L.DivIcon} Ícono de Leaflet
    */
   createCustomIcon(data, color) {
-    // Determinar forma según tipo
     const isProyecto = data.tipo === "Proyecto";
     const shape = isProyecto ? "shield" : "circle";
 
-    // SVG del ícono (con badge de multi-ubicación si aplica)
     const svgIcon = this.generateSVGIcon(
       shape,
       color,
@@ -169,15 +160,15 @@ class MapManager {
   }
 
   /**
-   * Genera el SVG para el ícono del marker
-   * @param {string} shape - Forma del marker ('shield' o 'circle')
+   * Genera SVG del ícono del marker
+   * @param {string} shape - Forma del marker (shield o circle)
    * @param {string} color - Color del marker
    * @param {boolean} isMulti - Si es multi-ubicación
-   * @param {number} totalUbicaciones - Total de ubicaciones (para badge)
+   * @param {number} totalUbicaciones - Total de ubicaciones
    * @param {boolean} isEstatal - Si es de nivel estatal
+   * @returns {string} SVG como string
    */
   generateSVGIcon(shape, color, isMulti, totalUbicaciones, isEstatal) {
-    // Badge para multi-ubicación con número
     const badge =
       isMulti && totalUbicaciones > 1
         ? `
@@ -186,7 +177,6 @@ class MapManager {
     `
         : "";
 
-    // Indicador estatal (pequeño ícono de edificio gubernamental)
     const estatalIcon = isEstatal
       ? `
       <circle cx="6" cy="8" r="6" fill="#5e3b8c" stroke="white" stroke-width="2"/>
@@ -194,7 +184,6 @@ class MapManager {
     `
       : "";
 
-    // Anillo exterior para multi-ubicación (hace más visible el marker)
     const ringMulti = isMulti
       ? `
       <circle cx="18" cy="18" r="16" fill="none" stroke="#FF9800" stroke-width="2" opacity="0.6"/>
@@ -224,9 +213,6 @@ class MapManager {
     }
   }
 
-  /**
-   * Limpia todos los markers del mapa
-   */
   clearMarkers() {
     if (this.markersLayer) {
       this.markersLayer.clearLayers();
@@ -234,9 +220,6 @@ class MapManager {
     }
   }
 
-  /**
-   * Centra el mapa en Tlaxcala
-   */
   centerMap() {
     if (this.map) {
       this.map.setView(
@@ -247,9 +230,6 @@ class MapManager {
     }
   }
 
-  /**
-   * Ajusta el zoom para mostrar todos los markers
-   */
   fitBounds() {
     if (this.markersLayer && this.markers.length > 0) {
       const bounds = this.markersLayer.getBounds();
@@ -259,23 +239,14 @@ class MapManager {
     }
   }
 
-  /**
-   * Obtiene el mapa
-   */
   getMap() {
     return this.map;
   }
 
-  /**
-   * Obtiene los markers
-   */
   getMarkers() {
     return this.markers;
   }
 
-  /**
-   * Destruye el mapa (cleanup)
-   */
   destroy() {
     if (this.map) {
       this.map.remove();
@@ -286,7 +257,6 @@ class MapManager {
   }
 }
 
-// Hacer MapManager disponible globalmente
 if (typeof window !== "undefined") {
   window.MapManager = MapManager;
 }

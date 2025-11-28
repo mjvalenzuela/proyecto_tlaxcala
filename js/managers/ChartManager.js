@@ -1,54 +1,51 @@
+/**
+ * Gestor de gráficas con Chart.js
+ * Crea y gestiona gráficas de barras, líneas y tortas desde archivos CSV
+ */
 export class ChartManager {
   constructor() {
-    this.graficos = {}; // Almacena las instancias de Chart.js
-    this.datos = {}; // Cache de datos CSV cargados
+    this.graficos = {};
+    this.datos = {};
   }
 
+  /**
+   * Carga y parsea un archivo CSV
+   * @param {string} ruta - Ruta al archivo CSV
+   * @returns {Promise<Array>} Datos parseados del CSV
+   */
   async cargarCSV(ruta) {
-    // Si ya está en cache, retornarlo
     if (this.datos[ruta]) {
       return this.datos[ruta];
     }
 
     try {
-      // ==========================================
-      // 1. DESCARGAR EL ARCHIVO CON FETCH
-      // ==========================================
       const response = await fetch(ruta);
 
-      // Verificar que la petición fue exitosa
       if (!response.ok) {
         throw new Error(
           `Error HTTP ${response.status}: ${response.statusText} al cargar ${ruta}`
         );
       }
 
-      // Obtener el texto del CSV
       const csvText = await response.text();
 
-      // Validar que no está vacío
       if (!csvText || csvText.trim().length === 0) {
         throw new Error(`El archivo CSV está vacío: ${ruta}`);
       }
 
-      // ==========================================
-      // 2. PARSEAR EL CSV CON PAPA PARSE
-      // ==========================================
       return new Promise((resolve, reject) => {
         Papa.parse(csvText, {
           header: true,
           dynamicTyping: true,
           skipEmptyLines: true,
-          delimiter: "", // Auto-detectar delimitador
-          newline: "", // Auto-detectar saltos de línea
+          delimiter: "",
+          newline: "",
           complete: (results) => {
-            // Validar que hay datos
             if (!results.data || results.data.length === 0) {
               reject(new Error(`No se encontraron datos en: ${ruta}`));
               return;
             }
 
-            // Validar que hay campos (headers)
             if (
               !results.meta ||
               !results.meta.fields ||
@@ -58,27 +55,21 @@ export class ChartManager {
               return;
             }
 
-            // ==========================================
-            // 3. LIMPIAR HEADERS (remover espacios)
-            // ==========================================
             const datosLimpios = results.data.map((row) => {
               const nuevaFila = {};
               for (const [key, value] of Object.entries(row)) {
-                // Limpiar espacios del nombre de la columna
                 const keyLimpio = key.trim();
                 nuevaFila[keyLimpio] = value;
               }
               return nuevaFila;
             });
 
-            // Filtrar filas completamente vacías
             const datosFiltrados = datosLimpios.filter((row) => {
               return Object.values(row).some(
                 (val) => val !== null && val !== undefined && val !== ""
               );
             });
 
-            // Guardar en cache
             this.datos[ruta] = datosFiltrados;
             resolve(datosFiltrados);
           },
@@ -91,7 +82,6 @@ export class ChartManager {
     } catch (error) {
       console.error(`Error al cargar CSV ${ruta}:`, error);
 
-      // Mensajes de error más descriptivos
       if (error.message.includes("Failed to fetch")) {
         throw new Error(
           `No se pudo cargar el archivo: ${ruta}. Verifica que el archivo existe y la ruta es correcta.`
@@ -102,8 +92,14 @@ export class ChartManager {
     }
   }
 
-  // CREA UN GRÁFICO SEGÚN LA CONFIGURACIÓN
-
+  /**
+   * Crea un gráfico según la configuración
+   * @param {string} canvasId - ID del elemento canvas
+   * @param {Object} graficoConfig - Configuración del gráfico
+   * @param {number} numeroCapitulo - Número del capítulo
+   * @param {Function} onClickCallback - Callback opcional para clicks
+   * @returns {Promise<Chart>} Instancia del gráfico Chart.js
+   */
   async crearGrafico(
     canvasId,
     graficoConfig,
@@ -111,19 +107,15 @@ export class ChartManager {
     onClickCallback = null
   ) {
     try {
-      // Validar que el canvas existe
       const canvas = document.getElementById(canvasId);
       if (!canvas) {
         throw new Error(`No se encontró el canvas con id: ${canvasId}`);
       }
 
-      // Cargar datos del CSV
       const datos = await this.cargarCSV(graficoConfig.datos);
 
-      // Validar configuración según tipo de gráfico
       this.validarConfiguracion(graficoConfig, datos);
 
-      // Crear gráfico según tipo
       let grafico;
       switch (graficoConfig.tipo) {
         case "bar":
@@ -154,7 +146,6 @@ export class ChartManager {
           );
       }
 
-      // Almacenar referencia
       const graficoId = `cap-${numeroCapitulo}`;
       this.graficos[graficoId] = grafico;
 
@@ -162,13 +153,10 @@ export class ChartManager {
     } catch (error) {
       console.error(`Error al crear gráfico:`, error);
 
-      // Mostrar error en el canvas
       this.mostrarErrorEnCanvas(canvasId, error.message);
       throw error;
     }
   }
-
-  // VALIDA LA CONFIGURACIÓN DEL GRÁFICO
 
   validarConfiguracion(graficoConfig, datos) {
     const config = graficoConfig.config;
@@ -216,8 +204,6 @@ export class ChartManager {
     }
   }
 
-  // MUESTRA ERROR EN EL CANVAS
-
   mostrarErrorEnCanvas(canvasId, mensaje) {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
@@ -226,10 +212,8 @@ export class ChartManager {
     const width = canvas.width;
     const height = canvas.height;
 
-    // Limpiar canvas
     ctx.clearRect(0, 0, width, height);
 
-    // Configurar estilo
     ctx.fillStyle = "#fee";
     ctx.fillRect(0, 0, width, height);
 
@@ -238,7 +222,6 @@ export class ChartManager {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    // Dividir mensaje en líneas
     const palabras = mensaje.split(" ");
     const lineas = [];
     let lineaActual = "";
@@ -254,7 +237,6 @@ export class ChartManager {
     });
     lineas.push(lineaActual);
 
-    // Dibujar líneas
     const lineHeight = 20;
     const startY = (height - lineas.length * lineHeight) / 2;
 
@@ -263,8 +245,13 @@ export class ChartManager {
     });
   }
 
-  // CREA UN GRÁFICO DE BARRAS
-
+  /**
+   * Crea un gráfico de barras
+   * @param {string} canvasId - ID del canvas
+   * @param {Array} datos - Datos del CSV
+   * @param {Object} config - Configuración del gráfico
+   * @returns {Chart} Instancia del gráfico
+   */
   crearGraficoBarras(canvasId, datos, config) {
     const ctx = document.getElementById(canvasId).getContext("2d");
 
@@ -347,8 +334,13 @@ export class ChartManager {
     });
   }
 
-  // CREA UN GRÁFICO DE LÍNEAS
-
+  /**
+   * Crea un gráfico de líneas
+   * @param {string} canvasId - ID del canvas
+   * @param {Array} datos - Datos del CSV
+   * @param {Object} config - Configuración del gráfico
+   * @returns {Chart} Instancia del gráfico
+   */
   crearGraficoLineas(canvasId, datos, config) {
     const ctx = document.getElementById(canvasId).getContext("2d");
 
@@ -426,15 +418,20 @@ export class ChartManager {
     });
   }
 
-  // CREA UN GRÁFICO DE TORTA
-
+  /**
+   * Crea un gráfico de torta
+   * @param {string} canvasId - ID del canvas
+   * @param {Array} datos - Datos del CSV
+   * @param {Object} config - Configuración del gráfico
+   * @param {Function} onClickCallback - Callback para clicks
+   * @returns {Chart} Instancia del gráfico
+   */
   crearGraficoTorta(canvasId, datos, config, onClickCallback = null) {
     const ctx = document.getElementById(canvasId).getContext("2d");
 
     const labels = datos.map((row) => row[config.etiqueta]);
     const values = datos.map((row) => row[config.valor]);
 
-    // Desregistrar el plugin datalabels globalmente si existe
     if (window.ChartDataLabels) {
       Chart.unregister(ChartDataLabels);
     }
@@ -455,7 +452,6 @@ export class ChartManager {
             borderColor: "#ffffff",
             borderWidth: 3,
             hoverOffset: 15,
-            // Configurar datalabels a nivel de dataset
             datalabels: config.mostrarValoresEnTorta
               ? {
                   color: "#ffffff",
@@ -464,7 +460,6 @@ export class ChartManager {
                     size: 14,
                   },
                   formatter: (value, context) => {
-                    // Formatear el valor con separador de miles
                     return value.toLocaleString("es-MX");
                   },
                 }
@@ -501,7 +496,6 @@ export class ChartManager {
                 const data = chart.data;
                 if (data.labels.length && data.datasets.length) {
                   return data.labels.map((label, i) => {
-                    // Solo mostrar la categoría, sin valores
                     return {
                       text: label,
                       fillStyle: data.datasets[0].backgroundColor[i],
@@ -514,7 +508,6 @@ export class ChartManager {
               },
               onClick: onClickCallback
                 ? (event, legendItem, legend) => {
-                    // También permitir click en la leyenda
                     const categoria = legendItem.text;
                     onClickCallback(categoria);
                   }
@@ -533,11 +526,9 @@ export class ChartManager {
             titleFont: { size: 14 },
             bodyFont: { size: 13 },
             callbacks: {
-              // Eliminar el título del tooltip
               title: function () {
                 return "";
               },
-              // Mostrar el valor de población formateado
               label: function (context) {
                 const value = context.parsed || 0;
                 const valorFormateado = value.toLocaleString("es-MX");
@@ -549,7 +540,6 @@ export class ChartManager {
       },
     };
 
-    // Si se debe mostrar valores en la torta, registrar el plugin solo para este gráfico
     if (config.mostrarValoresEnTorta && window.ChartDataLabels) {
       chartConfig.plugins = [ChartDataLabels];
     }
@@ -557,19 +547,21 @@ export class ChartManager {
     return new Chart(ctx, chartConfig);
   }
 
-  // ACTUALIZA LOS DATOS DE UN GRÁFICO
-
+  /**
+   * Actualiza los datos de un gráfico existente
+   * @param {string} graficoId - ID del gráfico
+   * @param {string} nuevaRutaCSV - Nueva ruta del CSV
+   * @param {Object} config - Configuración
+   */
   async actualizarGrafico(graficoId, nuevaRutaCSV, config) {
     const grafico = this.graficos[graficoId];
     if (!grafico) {
-      // console.warn(`Gráfico ${graficoId} no encontrado`);
       return;
     }
 
     try {
       const datos = await this.cargarCSV(nuevaRutaCSV);
 
-      // Actualizar según el tipo
       if (grafico.config.type === "bar") {
         grafico.data.labels = datos.map((row) => row[config.ejeX]);
         grafico.data.datasets[0].data = datos.map((row) => row[config.ejeY]);
@@ -591,8 +583,6 @@ export class ChartManager {
     }
   }
 
-  // DESTRUYE UN GRÁFICO ESPECÍFICO
-
   destruirGrafico(graficoId) {
     const grafico = this.graficos[graficoId];
     if (grafico) {
@@ -601,21 +591,15 @@ export class ChartManager {
     }
   }
 
-  // DESTRUYE TODOS LOS GRÁFICOS
-
   destruirTodos() {
     Object.keys(this.graficos).forEach((id) => {
       this.destruirGrafico(id);
     });
   }
 
-  // OBTIENE UN GRÁFICO POR SU ID
-
   obtenerGrafico(graficoId) {
     return this.graficos[graficoId];
   }
-
-  //LIMPIA EL CACHE DE DATOS CSV
 
   limpiarCache() {
     this.datos = {};

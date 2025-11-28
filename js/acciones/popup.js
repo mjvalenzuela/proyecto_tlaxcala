@@ -1,37 +1,30 @@
 /**
- * Generación de popups para los markers
- * Popup complejo con estructura de formulario
+ * Generador de popups para markers del mapa
+ * Crea HTML estructurado con información de acciones climáticas
  */
-
 class PopupGenerator {
   constructor() {
     this.config = window.AccionesConfig;
   }
 
-  /**
-   * Almacena las acciones globalmente para acceso desde botones
-   */
   static setAccionesData(acciones) {
     window.__accionesData = acciones;
   }
 
-  /**
-   * Obtiene una acción por ID
-   */
   static getAccionById(accionId) {
     return window.__accionesData?.find(a => a.id === accionId) || null;
   }
 
   /**
-   * Genera el HTML del popup para una acción
-   * Siempre usa el popup complejo
+   * Genera HTML del popup para una acción
+   * @param {Object} accion - Datos de la acción climática
+   * @returns {string} HTML del popup
    */
   generatePopup(accion) {
     const ubicacion = accion.currentUbicacion || accion.ubicaciones[0];
     const esMultiUbicacion = accion.es_multiubicacion;
     const esEstatal = ubicacion?.es_estatal || false;
 
-    // Determinar el índice de la ubicación actual
     const ubicacionIdx = accion.currentUbicacionIdx !== undefined
       ? accion.currentUbicacionIdx
       : 0;
@@ -44,10 +37,6 @@ class PopupGenerator {
       </div>
     `;
   }
-
-  // ============================================
-  // HEADER
-  // ============================================
 
   generateHeader(accion) {
     return `
@@ -70,16 +59,11 @@ class PopupGenerator {
     `;
   }
 
-  // ============================================
-  // BODY
-  // ============================================
-
   generateBody(accion, ubicacion, esMultiUbicacion, esEstatal) {
     return `
       <div class="popup-body">
-        <!-- Fila 1: Tipo y Estado -->
         <div class="popup-row">
-          <div class="popup-field popup-field-half">           
+          <div class="popup-field popup-field-half">
             <div class="field-value">
               <span class="badge badge-tipo ${
                 accion.tipo === "Proyecto" ? "badge-proyecto" : "badge-programa"
@@ -88,7 +72,7 @@ class PopupGenerator {
               </span>
             </div>
           </div>
-          <div class="popup-field popup-field-half">     
+          <div class="popup-field popup-field-half">
             <div class="field-value">
               <span class="badge badge-estado ${
                 accion.estado === "activo" ? "badge-activo" : "badge-concluido"
@@ -99,13 +83,10 @@ class PopupGenerator {
           </div>
         </div>
 
-        <!-- Multi-ubicación (destacado) -->
         ${esMultiUbicacion ? this.generateMultiUbicacionSection(accion) : ""}
 
-        <!-- Ubicación actual -->
         ${this.generateUbicacionSection(ubicacion, esEstatal)}
 
-        <!-- Fecha de inicio y Temporalidad -->
         <div class="popup-row">
           <div class="popup-field popup-field-half">
             <label>Fecha de inicio</label>
@@ -117,7 +98,6 @@ class PopupGenerator {
           </div>
         </div>
 
-        <!-- Actividad (campo grande) -->
         <div class="popup-field popup-field-full">
           <label>Actividad</label>
           <div class="field-value field-value-textarea">
@@ -125,7 +105,6 @@ class PopupGenerator {
           </div>
         </div>
 
-        <!-- Objetivo (campo grande) -->
         ${
           accion.objetivos
             ? `
@@ -139,7 +118,6 @@ class PopupGenerator {
             : ""
         }
 
-        <!-- Población Objetivo (campo grande) -->
         ${
           accion.poblacion_objetivo
             ? `
@@ -156,12 +134,7 @@ class PopupGenerator {
     `;
   }
 
-  // ============================================
-  // SECCIÓN MULTI-UBICACIÓN (DESTACADA)
-  // ============================================
-
   generateMultiUbicacionSection(accion) {
-    // Generar ID único para este popup
     const uniqueId = `ubicaciones-${accion.id.replace(/[^a-zA-Z0-9]/g, "-")}`;
 
     return `
@@ -211,10 +184,6 @@ class PopupGenerator {
     `;
   }
 
-  // ============================================
-  // SECCIÓN UBICACIÓN
-  // ============================================
-
   generateUbicacionSection(ubicacion, esEstatal) {
     const icono = esEstatal ? "🏛️" : "📍";
     const tipoTexto = esEstatal ? "Nivel Estatal" : "Ubicación específica";
@@ -248,18 +217,11 @@ class PopupGenerator {
     `;
   }
 
-  // ============================================
-  // FOOTER
-  // ============================================
-
   generateFooter(accion, ubicacionIdx = 0, esMultiUbicacion = false) {
-    // Si es multiubicación, no mostrar botones de evidencias
-    // (se mostrarán en el modal "Ver todas las ubicaciones")
     if (esMultiUbicacion) {
-      return ''; // No generar footer con botones
+      return '';
     }
 
-    // Para ubicaciones únicas, mostrar los 3 botones normalmente
     return `
       <div class="popup-footer">
         <button class="popup-btn popup-btn-primary" onclick="verDetallePDF('${accion.id}', ${ubicacionIdx})">
@@ -288,27 +250,22 @@ class PopupGenerator {
     `;
   }
 
-  // ============================================
-  // UTILIDADES
-  // ============================================
-
   /**
-   * Formatea una fecha ISO a formato legible
+   * Formatea fecha ISO a formato legible
+   * @param {string} dateString - Fecha en formato ISO
+   * @returns {string} Fecha formateada
    */
   formatDate(dateString) {
     if (!dateString) return "N/A";
 
     try {
-      // Si la fecha viene en formato YYYY-MM-DD (sin hora), parsearla manualmente
-      // para evitar problemas de zona horaria
       if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
         const [year, month, day] = dateString.split('-').map(Number);
-        const date = new Date(year, month - 1, day); // mes es 0-indexed
+        const date = new Date(year, month - 1, day);
         const options = { year: "numeric", month: "short", day: "numeric" };
         return date.toLocaleDateString("es-MX", options);
       }
 
-      // Para fechas con hora (ISO completo), usar el método normal
       const date = new Date(dateString);
       const options = { year: "numeric", month: "short", day: "numeric" };
       return date.toLocaleDateString("es-MX", options);
@@ -317,9 +274,6 @@ class PopupGenerator {
     }
   }
 
-  /**
-   * Calcula la temporalidad del proyecto
-   */
   calcularTemporalidad(accion) {
     const fechaBase = accion.fecha_inicio || accion.created_at;
     if (!fechaBase) return "N/A";
@@ -338,9 +292,6 @@ class PopupGenerator {
     }
   }
 
-  /**
-   * Trunca un texto a un máximo de caracteres
-   */
   truncate(text, maxLength) {
     if (!text) return "";
     if (text.length <= maxLength) return text;
@@ -348,13 +299,10 @@ class PopupGenerator {
   }
 }
 
-// ============================================
-// FUNCIONES GLOBALES PARA BOTONES
-// ============================================
-
 /**
- * Muestra el detalle PDF de una acción
- * Abre el Drive con los PDFs correspondientes al survey_id
+ * Muestra detalle PDF de una acción
+ * @param {string} accionId - ID de la acción
+ * @param {number} ubicacionIdx - Índice de ubicación
  */
 function verDetallePDF(accionId, ubicacionIdx = 0) {
   const accion = PopupGenerator.getAccionById(accionId);
@@ -365,22 +313,20 @@ function verDetallePDF(accionId, ubicacionIdx = 0) {
 
   const ubicacion = accion.ubicaciones[ubicacionIdx];
 
-  // Verificar que existe el survey_id
   if (!ubicacion.survey_id) {
     toast.warning('PDF no disponible', 'No se encontró el ID del survey para esta ubicación.');
     return;
   }
 
-  // Construir URL dinámica con el survey_id
   const pdfUrl = `https://api.cambioclimaticotlaxcala.mx/api/v1/surveys/${ubicacion.survey_id}/pdf/`;
 
-  // Abrir la URL en una nueva pestaña
   window.open(pdfUrl, '_blank');
 }
 
 /**
  * Muestra fotos de una acción
- * Abre la imagen en una nueva ventana
+ * @param {string} accionId - ID de la acción
+ * @param {number} ubicacionIdx - Índice de ubicación
  */
 function verFotos(accionId, ubicacionIdx = 0) {
   const accion = PopupGenerator.getAccionById(accionId);
@@ -401,7 +347,8 @@ function verFotos(accionId, ubicacionIdx = 0) {
 
 /**
  * Muestra videos de una acción
- * Abre el video en una nueva ventana
+ * @param {string} accionId - ID de la acción
+ * @param {number} ubicacionIdx - Índice de ubicación
  */
 function verVideos(accionId, ubicacionIdx = 0) {
   const accion = PopupGenerator.getAccionById(accionId);
@@ -421,7 +368,8 @@ function verVideos(accionId, ubicacionIdx = 0) {
 }
 
 /**
- * Muestra todas las ubicaciones de un proyecto multi-ubicación
+ * Muestra modal con todas las ubicaciones de un proyecto
+ * @param {string} accionId - ID de la acción
  */
 function verTodasUbicaciones(accionId) {
   const accion = PopupGenerator.getAccionById(accionId);
@@ -430,12 +378,10 @@ function verTodasUbicaciones(accionId) {
     return;
   }
 
-  // Elementos del modal
   const modal = document.getElementById('ubicacionesModal');
   const listContainer = document.getElementById('ubicacionesList');
   const closeBtn = document.getElementById('closeUbicacionesModal');
 
-  // Generar HTML para todas las ubicaciones
   let html = '';
 
   accion.ubicaciones.forEach((ubicacion, idx) => {
@@ -492,10 +438,8 @@ function verTodasUbicaciones(accionId) {
 
   listContainer.innerHTML = html;
 
-  // Mostrar modal
   modal.style.display = 'flex';
 
-  // Event listener para cerrar
   const closeModal = () => {
     modal.style.display = 'none';
   };
@@ -507,7 +451,8 @@ function verTodasUbicaciones(accionId) {
 }
 
 /**
- * Toggle para expandir/contraer la lista de ubicaciones
+ * Expande/contrae lista de ubicaciones
+ * @param {string} uniqueId - ID único del elemento
  */
 function toggleUbicaciones(uniqueId) {
   const list = document.getElementById(`list-${uniqueId}`);
@@ -516,18 +461,15 @@ function toggleUbicaciones(uniqueId) {
 
   if (!list || !chip) return;
 
-  // Toggle clase collapsed
   list.classList.toggle("collapsed");
   chip.classList.toggle("expanded");
 
-  // Controlar visibilidad del botón (sincronizado con la lista)
   const isExpanded = !list.classList.contains("collapsed");
   if (btn) {
     btn.style.display = isExpanded ? "block" : "none";
   }
 }
 
-// Hacer PopupGenerator disponible globalmente
 if (typeof window !== "undefined") {
   window.PopupGenerator = PopupGenerator;
 }

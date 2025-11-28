@@ -1,18 +1,17 @@
 /**
- * ComparisonManager - Gestor de comparación de capas
+ * Gestor de comparación de capas
  * Maneja 3 modos de comparación: Split, Rayos X, y Área de Interés
  */
 
 export class ComparisonManager {
   constructor(mapa, capaA, capaB, containerId) {
     this.mapa = mapa;
-    this.capaA = capaA; // Capa 2021-2040
-    this.capaB = capaB; // Capa 2041-2060
+    this.capaA = capaA;
+    this.capaB = capaB;
     this.containerId = containerId;
     this.modoActual = null;
     this.controlElement = null;
 
-    // Referencias a los modos y sus listeners
     this.splitBar = null;
     this.splitLabels = { left: null, right: null };
     this.splitListeners = { prerender: null, postrender: null };
@@ -41,7 +40,6 @@ export class ComparisonManager {
     const mapContainer = document.getElementById(this.containerId);
     if (!mapContainer) return;
 
-    // Crear contenedor del control
     const controlDiv = document.createElement("div");
     controlDiv.className = "comparison-control";
     controlDiv.innerHTML = `
@@ -72,7 +70,6 @@ export class ComparisonManager {
     mapContainer.appendChild(controlDiv);
     this.controlElement = controlDiv;
 
-    // Event listeners
     const toggleBtn = controlDiv.querySelector(".comparison-toggle-btn");
     const menu = controlDiv.querySelector(".comparison-menu");
     const modeButtons = controlDiv.querySelectorAll(".comparison-mode-btn");
@@ -88,7 +85,6 @@ export class ComparisonManager {
         this.activarModo(mode);
         menu.style.display = "none";
 
-        // Actualizar estado visual del botón
         if (mode !== "none") {
           toggleBtn.classList.add("active");
         } else {
@@ -100,9 +96,9 @@ export class ComparisonManager {
 
   /**
    * Activa un modo de comparación
+   * @param {string} modo - Modo a activar (split, xray, area, none)
    */
   activarModo(modo) {
-    // Desactivar modo anterior
     this.desactivarModoActual();
 
     switch (modo) {
@@ -116,16 +112,12 @@ export class ComparisonManager {
         this.activarAreaMode();
         break;
       case "none":
-        // Solo desactivar, ya se hizo arriba
         break;
     }
 
     this.modoActual = modo;
   }
 
-  /**
-   * Desactiva el modo actual
-   */
   desactivarModoActual() {
     if (!this.modoActual) return;
 
@@ -141,26 +133,23 @@ export class ComparisonManager {
         break;
     }
 
-    // Restaurar visibilidad completa de ambas capas
     this.capaA.setVisible(true);
     this.capaB.setVisible(true);
   }
 
   /**
-   * MODO 1: Split Vertical
+   * Activa modo Split Vertical
    */
   activarSplitMode() {
     const mapContainer = document.getElementById(this.containerId);
     const mapElement = this.mapa.getTargetElement();
 
-    // Crear barra divisoria
     const splitBar = document.createElement("div");
     splitBar.className = "comparison-split-bar";
     splitBar.style.left = "50%";
     mapContainer.appendChild(splitBar);
     this.splitBar = splitBar;
 
-    // Crear etiquetas de capas
     const labelLeft = document.createElement("div");
     labelLeft.className = "comparison-split-label comparison-split-label-left";
     labelLeft.textContent = this.capaA.get("nombre") || "Capa A";
@@ -175,9 +164,8 @@ export class ComparisonManager {
     this.splitLabels.right = labelRight;
 
     let isDragging = false;
-    let currentPosition = 0.5; // 50%
+    let currentPosition = 0.5;
 
-    // Función de prerender para aplicar clip
     const prerenderFn = (event) => {
       const ctx = event.context;
       const width = ctx.canvas.width;
@@ -189,28 +177,24 @@ export class ComparisonManager {
       ctx.clip();
     };
 
-    // Función de postrender para restaurar contexto
     const postrenderFn = (event) => {
       event.context.restore();
     };
 
-    // Guardar referencias a las funciones
     this.splitListeners.prerender = prerenderFn;
     this.splitListeners.postrender = postrenderFn;
 
-    // Aplicar listeners
     this.capaB.on("prerender", prerenderFn);
     this.capaB.on("postrender", postrenderFn);
 
-    // Event listeners para arrastrar
     const onMouseDown = (e) => {
-      e.preventDefault(); // Prevenir selección de texto
+      e.preventDefault();
       isDragging = true;
     };
 
     const onMouseMove = (e) => {
       if (!isDragging) return;
-      e.preventDefault(); // Prevenir selección de texto
+      e.preventDefault();
 
       const rect = mapContainer.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -221,7 +205,7 @@ export class ComparisonManager {
     };
 
     const onMouseUp = (e) => {
-      e.preventDefault(); // Prevenir selección de texto
+      e.preventDefault();
       isDragging = false;
     };
 
@@ -229,27 +213,22 @@ export class ComparisonManager {
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
 
-    // Guardar referencias para limpiar después
     this.splitBar._listeners = { onMouseDown, onMouseMove, onMouseUp };
 
-    // Render inicial
     this.mapa.render();
   }
 
   desactivarSplitMode() {
     if (this.splitBar) {
-      // Remover event listeners
       const { onMouseDown, onMouseMove, onMouseUp } = this.splitBar._listeners;
       this.splitBar.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
 
-      // Remover elemento
       this.splitBar.remove();
       this.splitBar = null;
     }
 
-    // Remover etiquetas
     if (this.splitLabels.left) {
       this.splitLabels.left.remove();
       this.splitLabels.left = null;
@@ -259,7 +238,6 @@ export class ComparisonManager {
       this.splitLabels.right = null;
     }
 
-    // Limpiar listeners de OpenLayers
     if (this.splitListeners.prerender) {
       this.capaB.un("prerender", this.splitListeners.prerender);
       this.splitListeners.prerender = null;
@@ -273,23 +251,21 @@ export class ComparisonManager {
   }
 
   /**
-   * MODO 2: Rayos X (Lupa)
+   * Activa modo Rayos X (Lupa)
    */
   activarXRayMode() {
     const mapContainer = document.getElementById(this.containerId);
-    const radioLupa = 100; // píxeles
+    const radioLupa = 100;
 
-    // Crear círculo de rayos X
     const xrayCircle = document.createElement("div");
     xrayCircle.className = "comparison-xray-circle";
-    xrayCircle.style.display = "none"; // Oculto hasta que se mueva el mouse
+    xrayCircle.style.display = "none";
     mapContainer.appendChild(xrayCircle);
     this.xrayCircle = xrayCircle;
 
     let mouseX = 0;
     let mouseY = 0;
 
-    // Función de prerender para aplicar clip circular
     const prerenderFn = (event) => {
       const ctx = event.context;
       ctx.save();
@@ -298,38 +274,31 @@ export class ComparisonManager {
       ctx.clip();
     };
 
-    // Función de postrender para restaurar contexto
     const postrenderFn = (event) => {
       event.context.restore();
     };
 
-    // Guardar referencias
     this.xrayListeners.prerender = prerenderFn;
     this.xrayListeners.postrender = postrenderFn;
 
-    // Aplicar listeners a la capa B
     this.capaB.on("prerender", prerenderFn);
     this.capaB.on("postrender", postrenderFn);
 
-    // Listener de movimiento del mouse
     const onMouseMove = (e) => {
       const rect = mapContainer.getBoundingClientRect();
       mouseX = e.clientX - rect.left;
       mouseY = e.clientY - rect.top;
 
-      // Posicionar círculo visual
       xrayCircle.style.display = "block";
       xrayCircle.style.left = `${mouseX - radioLupa}px`;
       xrayCircle.style.top = `${mouseY - radioLupa}px`;
 
-      // Renderizar mapa
       this.mapa.render();
     };
 
     this.xrayListeners.mousemove = onMouseMove;
     mapContainer.addEventListener("mousemove", onMouseMove);
 
-    // Hacer solo la capa A visible inicialmente
     this.capaA.setVisible(true);
     this.capaB.setVisible(true);
   }
@@ -348,7 +317,6 @@ export class ComparisonManager {
       this.xrayCircle = null;
     }
 
-    // Limpiar listeners de OpenLayers
     if (this.xrayListeners.prerender) {
       this.capaB.un("prerender", this.xrayListeners.prerender);
       this.xrayListeners.prerender = null;
@@ -362,16 +330,14 @@ export class ComparisonManager {
   }
 
   /**
-   * MODO 3: Área de Interés
+   * Activa modo Área de Interés
    */
   activarAreaMode() {
-    // Verificar que ol esté disponible
     if (typeof ol === "undefined") {
       console.error("OpenLayers (ol) no está disponible");
       return;
     }
 
-    // Crear capa para dibujar
     const source = new ol.source.Vector();
     this.drawLayer = new ol.layer.Vector({
       source: source,
@@ -390,7 +356,6 @@ export class ComparisonManager {
 
     this.mapa.addLayer(this.drawLayer);
 
-    // Crear interacción de dibujo (círculo)
     this.areaInteraction = new ol.interaction.Draw({
       source: source,
       type: "Circle",
@@ -398,13 +363,11 @@ export class ComparisonManager {
 
     this.mapa.addInteraction(this.areaInteraction);
 
-    // Al terminar de dibujar, aplicar clip
     this.areaInteraction.on("drawend", (event) => {
       const geometry = event.feature.getGeometry();
       const center = geometry.getCenter();
       const radius = geometry.getRadius();
 
-      // Función de prerender para aplicar clip circular
       const prerenderFn = (evt) => {
         const ctx = evt.context;
         const pixel = this.mapa.getPixelFromCoordinate(center);
@@ -416,22 +379,18 @@ export class ComparisonManager {
         ctx.clip();
       };
 
-      // Función de postrender para restaurar contexto
       const postrenderFn = (evt) => {
         evt.context.restore();
       };
 
-      // Guardar referencias
       this.areaListeners.prerender = prerenderFn;
       this.areaListeners.postrender = postrenderFn;
 
-      // Aplicar listeners
       this.capaB.on("prerender", prerenderFn);
       this.capaB.on("postrender", postrenderFn);
 
       this.mapa.render();
 
-      // Remover interacción después de dibujar
       this.mapa.removeInteraction(this.areaInteraction);
       this.areaInteraction = null;
     });
@@ -448,7 +407,6 @@ export class ComparisonManager {
       this.drawLayer = null;
     }
 
-    // Limpiar listeners de OpenLayers
     if (this.areaListeners.prerender) {
       this.capaB.un("prerender", this.areaListeners.prerender);
       this.areaListeners.prerender = null;

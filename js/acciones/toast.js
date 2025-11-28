@@ -1,8 +1,7 @@
 /**
  * Sistema de notificaciones Toast
- * Muestra notificaciones elegantes en lugar de alerts
+ * Muestra notificaciones elegantes en pantalla
  */
-
 class ToastManager {
   constructor() {
     this.container = null;
@@ -10,11 +9,7 @@ class ToastManager {
     this.init();
   }
 
-  /**
-   * Inicializa el contenedor de toasts
-   */
   init() {
-    // Crear contenedor si no existe
     if (!document.querySelector('.toast-container')) {
       this.container = document.createElement('div');
       this.container.className = 'toast-container';
@@ -26,12 +21,8 @@ class ToastManager {
 
   /**
    * Muestra un toast
-   * @param {Object} options - Opciones del toast
-   * @param {string} options.title - Título del toast
-   * @param {string} options.message - Mensaje del toast
-   * @param {string} options.type - Tipo: 'info', 'success', 'warning', 'error', 'default'
-   * @param {number} options.duration - Duración en ms (0 = infinito)
-   * @param {boolean} options.closeable - Si se puede cerrar manualmente
+   * @param {Object} options - Configuración del toast
+   * @returns {string} ID del toast creado
    */
   show({
     title = '',
@@ -40,18 +31,14 @@ class ToastManager {
     duration = 4000,
     closeable = true
   }) {
-    // Crear elemento toast
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
 
-    // Generar ID único
     const toastId = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     toast.id = toastId;
 
-    // Ícono según tipo
     const icon = this.getIcon(type);
 
-    // Construir HTML
     toast.innerHTML = `
       ${icon}
       <div class="toast-content">
@@ -69,10 +56,8 @@ class ToastManager {
       ${duration > 0 ? '<div class="toast-progress"></div>' : ''}
     `;
 
-    // Agregar al contenedor
     this.container.appendChild(toast);
 
-    // Configurar botón de cerrar
     if (closeable) {
       const closeBtn = toast.querySelector('.toast-close');
       closeBtn.addEventListener('click', () => {
@@ -80,26 +65,22 @@ class ToastManager {
       });
     }
 
-    // Configurar auto-close con barra de progreso
     if (duration > 0) {
       const progressBar = toast.querySelector('.toast-progress');
       if (progressBar) {
         progressBar.style.width = '100%';
         progressBar.style.transitionDuration = `${duration}ms`;
 
-        // Animar barra de progreso
         setTimeout(() => {
           progressBar.style.width = '0%';
         }, 10);
       }
 
-      // Auto-cerrar
       setTimeout(() => {
         this.remove(toastId);
       }, duration);
     }
 
-    // Guardar referencia
     this.toasts.push({
       id: toastId,
       element: toast
@@ -110,6 +91,7 @@ class ToastManager {
 
   /**
    * Remueve un toast
+   * @param {string} toastId - ID del toast a remover
    */
   remove(toastId) {
     const toastData = this.toasts.find(t => t.id === toastId);
@@ -117,22 +99,16 @@ class ToastManager {
 
     const toast = toastData.element;
 
-    // Agregar animación de salida
     toast.classList.add('toast-exit');
 
-    // Remover del DOM después de la animación
     setTimeout(() => {
       if (toast.parentNode) {
         toast.parentNode.removeChild(toast);
       }
-      // Remover de la lista
       this.toasts = this.toasts.filter(t => t.id !== toastId);
     }, 300);
   }
 
-  /**
-   * Remueve todos los toasts
-   */
   removeAll() {
     this.toasts.forEach(toastData => {
       this.remove(toastData.id);
@@ -140,7 +116,9 @@ class ToastManager {
   }
 
   /**
-   * Obtiene el ícono según el tipo de toast
+   * Obtiene ícono SVG según tipo
+   * @param {string} type - Tipo de toast
+   * @returns {string} HTML del ícono
    */
   getIcon(type) {
     const icons = {
@@ -193,7 +171,6 @@ class ToastManager {
     return icons[type] || icons.default;
   }
 
-  // Métodos de conveniencia
   info(title, message, duration = 4000) {
     return this.show({ title, message, type: 'info', duration });
   }
@@ -211,10 +188,8 @@ class ToastManager {
   }
 }
 
-// Crear instancia global
 const toast = new ToastManager();
 
-// Hacer disponible globalmente
 if (typeof window !== 'undefined') {
   window.toast = toast;
 }

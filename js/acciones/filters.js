@@ -1,7 +1,7 @@
 /**
- * Sistema de filtros compactos con dropdowns y búsqueda
+ * Sistema de filtros para acciones climáticas
+ * Gestiona filtros por dropdown, búsqueda y timeline
  */
-
 class FilterManager {
   constructor(mapManager, allData) {
     this.mapManager = mapManager;
@@ -15,13 +15,14 @@ class FilterManager {
     this.searchTerm = '';
     this.timelineStartYear = null;
     this.timelineEndYear = null;
-    this.timelineStartDate = null; // Rango de fechas completo
+    this.timelineStartDate = null;
     this.timelineEndDate = null;
     this.isInitialized = false;
   }
 
   /**
    * Inicializa el sistema de filtros
+   * @param {Array} markersData - Array de markers
    */
   init(markersData) {
     this.allMarkers = markersData;
@@ -31,10 +32,9 @@ class FilterManager {
   }
 
   /**
-   * Configura los listeners de los dropdowns
+   * Configura listeners de los dropdowns
    */
   setupFilterListeners() {
-    // Filtro Tipo
     const tipoSelect = document.getElementById('filterTipo');
     if (tipoSelect) {
       tipoSelect.addEventListener('change', (e) => {
@@ -43,7 +43,6 @@ class FilterManager {
       });
     }
 
-    // Filtro Dependencia
     const dependenciaSelect = document.getElementById('filterDependencia');
     if (dependenciaSelect) {
       dependenciaSelect.addEventListener('change', (e) => {
@@ -52,7 +51,6 @@ class FilterManager {
       });
     }
 
-    // Filtro Estado
     const estadoSelect = document.getElementById('filterEstado');
     if (estadoSelect) {
       estadoSelect.addEventListener('change', (e) => {
@@ -61,7 +59,6 @@ class FilterManager {
       });
     }
 
-    // Botón limpiar filtros
     const clearBtn = document.getElementById('clearFiltersBtn');
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
@@ -71,26 +68,23 @@ class FilterManager {
   }
 
   /**
-   * Configura los listeners del buscador
+   * Configura listeners del buscador
    */
   setupSearchListeners() {
     const searchInput = document.getElementById('mapSearchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
 
     if (searchInput) {
-      // Búsqueda en tiempo real con debounce
       let debounceTimer;
       searchInput.addEventListener('input', (e) => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
           this.searchTerm = e.target.value.trim();
 
-          // Mostrar/ocultar botón de limpiar
           if (clearSearchBtn) {
             clearSearchBtn.style.display = this.searchTerm ? 'flex' : 'none';
           }
 
-          // Solo buscar si hay 3 o más caracteres, o si está vacío
           if (this.searchTerm.length >= 3 || this.searchTerm.length === 0) {
             this.applyFilters();
           }
@@ -98,7 +92,6 @@ class FilterManager {
       });
     }
 
-    // Botón limpiar búsqueda
     if (clearSearchBtn) {
       clearSearchBtn.addEventListener('click', () => {
         if (searchInput) {
@@ -112,39 +105,35 @@ class FilterManager {
   }
 
   /**
-   * Aplica todos los filtros activos (dropdowns + búsqueda + timeline)
+   * Aplica todos los filtros activos
    */
   applyFilters() {
-    // Filtrar markers según criterios activos
     const filteredMarkers = this.allMarkers.filter(marker => {
       return this.passesDropdownFilters(marker) &&
              this.passesSearchFilter(marker) &&
              this.passesTimelineFilter(marker);
     });
 
-    // Actualizar mapa con markers filtrados
     this.mapManager.clearMarkers();
     this.mapManager.addMarkers(filteredMarkers);
 
-    // Actualizar contador de resultados
     this.updateResultsCount(filteredMarkers.length);
   }
 
   /**
-   * Verifica si un marker pasa los filtros de dropdown
+   * Verifica si marker pasa filtros de dropdown
+   * @param {Object} marker - Marker a verificar
+   * @returns {boolean}
    */
   passesDropdownFilters(marker) {
-    // Filtro de tipo
     if (this.activeFilters.tipo && marker.tipo !== this.activeFilters.tipo) {
       return false;
     }
 
-    // Filtro de dependencia
     if (this.activeFilters.dependencia && marker.dependencia !== this.activeFilters.dependencia) {
       return false;
     }
 
-    // Filtro de estado
     if (this.activeFilters.estado && marker.estado !== this.activeFilters.estado) {
       return false;
     }
@@ -153,46 +142,40 @@ class FilterManager {
   }
 
   /**
-   * Verifica si un marker pasa el filtro de búsqueda
+   * Verifica si marker pasa filtro de búsqueda
+   * @param {Object} marker - Marker a verificar
+   * @returns {boolean}
    */
   passesSearchFilter(marker) {
-    // Si no hay término de búsqueda, pasa el filtro
     if (!this.searchTerm || this.searchTerm.length < 3) {
       return true;
     }
 
     const searchLower = this.searchTerm.toLowerCase();
 
-    // Buscar en nombre del proyecto
     if (marker.nombre_proyecto && marker.nombre_proyecto.toLowerCase().includes(searchLower)) {
       return true;
     }
 
-    // Buscar en dependencia
     if (marker.dependencia && marker.dependencia.toLowerCase().includes(searchLower)) {
       return true;
     }
 
-    // Buscar en objetivos
     if (marker.objetivos && marker.objetivos.toLowerCase().includes(searchLower)) {
       return true;
     }
 
-    // Buscar en ubicaciones (lugar y actividad)
     if (marker.ubicaciones && Array.isArray(marker.ubicaciones)) {
       for (const ubicacion of marker.ubicaciones) {
-        // Buscar en lugar
         if (ubicacion.lugar && ubicacion.lugar.toLowerCase().includes(searchLower)) {
           return true;
         }
-        // Buscar en actividad
         if (ubicacion.activity && ubicacion.activity.toLowerCase().includes(searchLower)) {
           return true;
         }
       }
     }
 
-    // Buscar en ubicación actual
     if (marker.currentUbicacion) {
       if (marker.currentUbicacion.lugar && marker.currentUbicacion.lugar.toLowerCase().includes(searchLower)) {
         return true;
@@ -202,7 +185,6 @@ class FilterManager {
       }
     }
 
-    // Buscar en actividades (campo alternativo)
     if (marker.actividades && marker.actividades.toLowerCase().includes(searchLower)) {
       return true;
     }
@@ -211,50 +193,42 @@ class FilterManager {
   }
 
   /**
-   * Verifica si un marker pasa el filtro de timeline (rango de fechas)
+   * Verifica si marker pasa filtro de timeline
+   * @param {Object} marker - Marker a verificar
+   * @returns {boolean}
    */
   passesTimelineFilter(marker) {
     const fechaInicio = marker.fecha_inicio || marker.created_at;
     if (!fechaInicio) {
-      return true; // Si no tiene fecha, mostrar por defecto
+      return true;
     }
 
     const date = new Date(fechaInicio);
     if (isNaN(date.getTime())) {
-      return true; // Si la fecha es inválida, mostrar por defecto
+      return true;
     }
 
-    // Prioridad: filtro por rango de fechas completo
     if (this.timelineStartDate && this.timelineEndDate) {
       const startDate = new Date(this.timelineStartDate);
       const endDate = new Date(this.timelineEndDate);
-      // Ajustar endDate al final del día
       endDate.setHours(23, 59, 59, 999);
 
       return date >= startDate && date <= endDate;
     }
 
-    // Filtro por rango de años
     if (this.timelineStartYear && this.timelineEndYear) {
       const year = date.getFullYear();
       return year >= this.timelineStartYear && year <= this.timelineEndYear;
     }
 
-    // Si no hay filtro activo, mostrar todos
     return true;
   }
 
-  /**
-   * Establece el rango de años del timeline
-   */
   setTimelineRange(startYear, endYear) {
     this.timelineStartYear = startYear;
     this.timelineEndYear = endYear;
   }
 
-  /**
-   * Establece el rango de fechas completo del timeline
-   */
   setTimelineDateRange(startDate, endDate) {
     this.timelineStartDate = startDate;
     this.timelineEndDate = endDate;
@@ -264,14 +238,12 @@ class FilterManager {
    * Limpia todos los filtros activos
    */
   clearAllFilters() {
-    // Limpiar filtros de dropdown
     this.activeFilters = {
       tipo: '',
       dependencia: '',
       estado: ''
     };
 
-    // Resetear dropdowns
     const tipoSelect = document.getElementById('filterTipo');
     const dependenciaSelect = document.getElementById('filterDependencia');
     const estadoSelect = document.getElementById('filterEstado');
@@ -280,7 +252,6 @@ class FilterManager {
     if (dependenciaSelect) dependenciaSelect.value = '';
     if (estadoSelect) estadoSelect.value = '';
 
-    // Limpiar búsqueda
     const searchInput = document.getElementById('mapSearchInput');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
 
@@ -293,7 +264,6 @@ class FilterManager {
       clearSearchBtn.style.display = 'none';
     }
 
-    // Resetear timeline si existe
     this.timelineStartYear = null;
     this.timelineEndYear = null;
     this.timelineStartDate = null;
@@ -302,17 +272,12 @@ class FilterManager {
       window.timelineManager.reset();
     }
 
-    // Mostrar todos los markers
     this.mapManager.clearMarkers();
     this.mapManager.addMarkers(this.allMarkers);
 
-    // Actualizar contador
     this.updateResultsCount(this.allMarkers.length);
   }
 
-  /**
-   * Actualiza el contador de resultados
-   */
   updateResultsCount(count) {
     const counter = document.getElementById('filterResultsCount');
     if (counter) {
@@ -321,7 +286,9 @@ class FilterManager {
   }
 
   /**
-   * Obtiene estadísticas de los datos para generar opciones
+   * Obtiene estadísticas para generar opciones
+   * @param {Object} data - Datos de acciones
+   * @returns {Object} Estadísticas de filtros
    */
   static getFilterStats(data) {
     const stats = {
@@ -343,6 +310,8 @@ class FilterManager {
 
   /**
    * Genera opciones para los dropdowns
+   * @param {Object} stats - Estadísticas de filtros
+   * @returns {Object} Opciones para dropdowns
    */
   static generateDropdownOptions(stats) {
     return {
@@ -355,9 +324,6 @@ class FilterManager {
     };
   }
 
-  /**
-   * Destruye el FilterManager (cleanup)
-   */
   destroy() {
     this.activeFilters = {
       tipo: '',
@@ -376,7 +342,6 @@ class FilterManager {
   }
 }
 
-// Hacer FilterManager disponible globalmente
 if (typeof window !== 'undefined') {
   window.FilterManager = FilterManager;
 }

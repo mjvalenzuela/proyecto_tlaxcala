@@ -1,18 +1,18 @@
-// Función para obtener la URL del proxy según el entorno
+/**
+ * Obtiene URL del proxy según entorno
+ * @returns {string} URL del proxy
+ */
 const getProxyUrl = () => {
   const hostname = window.location.hostname;
 
-  // ENTORNO LOCAL (Live Server, http-server, etc.)
   if (hostname === "localhost" || hostname === "127.0.0.1") {
     return "http://localhost:3001/geoserver";
   }
 
-  // ENTORNO VERCEL (Producción)
   if (hostname.includes("vercel.app")) {
     return "/api/proxy?path=";
   }
 
-  // Conexión directa
   console.warn(
     "Entorno desconocido - Usando conexión directa (puede tener problemas CORS)"
   );
@@ -25,12 +25,8 @@ export const storyMapConfig = {
   descripcion:
     "Análisis detallado de las amenazas climáticas en los municipios de Tlaxcala",
 
-  // URL del proxy
   proxyUrl: getProxyUrl(),
 
-  // ==========================================
-  // MAPA INICIAL (PORTADA)
-  // ==========================================
   mapaInicial: {
     centro: [-98.2377, 19.3138],
     zoom: 10,
@@ -46,13 +42,7 @@ export const storyMapConfig = {
     ],
   },
 
-  // ==========================================
-  // DEFINICIÓN DE LOS CAPÍTULOS
-  // ==========================================
   capitulos: [
-    // ==========================================
-    // CAPÍTULO 1: AMENAZAS CLIMÁTICAS
-    // ==========================================
     {
       id: "cap-1",
       numero: 1,
@@ -63,7 +53,6 @@ export const storyMapConfig = {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
-          // Grupo 1 de capas: Mapas
           { tipo: "subtitulo", titulo: "Mapas" },
           {
             nombre: "Municipios con Atlas de riesgo",
@@ -72,7 +61,7 @@ export const storyMapConfig = {
             opacity: 1,
             zIndex: 1,
             leyenda: true,
-            visible: true, 
+            visible: true,
           },
           {
             nombre: "Municipios (Interacción)",
@@ -82,7 +71,6 @@ export const storyMapConfig = {
             leyenda: false,
             transparente: true,
           },
-          // Grupo 2 de capas: Declaratorias
           { tipo: "subtitulo", titulo: "Declaratorias" },
           {
             nombre: "Total de Declaratorias",
@@ -116,7 +104,6 @@ export const storyMapConfig = {
             zIndex: 5,
             leyenda: true,
           },
-          // Grupo 3 de capas: Fenómenos
           { tipo: "subtitulo", titulo: "Fenómenos" },
           {
             nombre: "Total de Fenómenos",
@@ -200,33 +187,26 @@ export const storyMapConfig = {
           etiqueta: "categoria",
           valor: "poblacion",
           colores: [
-            "#78020e", // Muy Alto - Rojo oscuro
-            "#9a3c43", // Alto - Rojo medio
-            "#bc7678", // Medio - Rosa medio
-            "#ddb0ae", // Bajo - Rosa claro
-            "#ffeae3", // Muy Bajo - Rosa muy claro
+            "#78020e",
+            "#9a3c43",
+            "#bc7678",
+            "#ddb0ae",
+            "#ffeae3",
           ],
           mostrarLeyenda: true,
           mostrarPorcentaje: false,
-          mostrarValoresEnTorta: false, // No mostrar valores en la torta
+          mostrarValoresEnTorta: false,
         },
       },
     },
 
-    // ==========================================
-    // CAPÍTULO 2: ANÁLISIS Y TENDENCIAS
-    // ==========================================
     {
       id: "cap-2",
       numero: 2,
       titulo: "Análisis de Amenazas Climáticas",
       etiqueta: "Análisis y Tendencias",
-      // Este capítulo solo tiene gráficos, no tiene mapa
     },
 
-    // ==========================================
-    // CAPÍTULO 3: IMPACTO TERRITORIAL
-    // ==========================================
     {
       id: "cap-3",
       numero: 3,
@@ -237,7 +217,6 @@ export const storyMapConfig = {
         centro: [-98.16560203447955, 19.42964878131165],
         zoom: 10,
         capas: [
-          // Grupo 1 de capas: Mapas
           { tipo: "subtitulo", titulo: "Mapas" },
           {
             nombre: "Municipios con Atlas de riesgo",
@@ -256,7 +235,6 @@ export const storyMapConfig = {
             leyenda: false,
             transparente: true,
           },
-          // Grupo 2 de capas: Declaratorias
           { tipo: "subtitulo", titulo: "Declaratorias" },
           {
             nombre: "Total de Declaratorias",
@@ -290,7 +268,6 @@ export const storyMapConfig = {
             zIndex: 5,
             leyenda: true,
           },
-          // Grupo 3 de capas: Fenómenos
           { tipo: "subtitulo", titulo: "Fenómenos" },
           {
             nombre: "Total de Fenómenos",
