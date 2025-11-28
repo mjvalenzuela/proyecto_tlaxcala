@@ -9,7 +9,6 @@
     />
     <title>Acciones Climáticas</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,13 +16,11 @@
       rel="stylesheet"
     />
 
-    <!-- Leaflet CSS -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
 
-    <!-- Leaflet MarkerCluster CSS -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
@@ -33,7 +30,6 @@
       href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
     />
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/navbar.css" />
@@ -44,7 +40,6 @@
     <link rel="stylesheet" href="css/toast.css" />
   </head>
   <body>
-    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-container">
         <a href="index.html" class="navbar-brand">
@@ -70,16 +65,14 @@
       </div>
     </nav>
 
-    <!-- Indicador para mostrar el navbar -->
     <div class="navbar-indicator" id="navbarIndicator"></div>
 
-    <!-- Header con título y estadísticas -->
     <header class="acciones-header">
       <div class="header-content">
         <div class="header-left">
           <h1 class="header-title">Acciones Climáticas</h1>
           <p class="header-subtitle">
-            Proyectos y programas de cambio climático
+            Localiza los proyectos y programas de cambio climático realizados en el estado de Tlaxcala
           </p>
         </div>
         <div class="header-right">
@@ -101,32 +94,27 @@
       </div>
     </header>
 
-    <!-- Panel de Filtros Compactos -->
     <div class="filters-compact-wrapper">
       <div class="filters-compact-container">
         <div class="filters-compact-row">
-          <!-- Filtro Tipo -->
           <div class="filter-dropdown-group">
             <select id="filterTipo" class="filter-dropdown">
-              <option value="">Todos los tipos</option>
+              <option value="">Tipo de Acciones</option>
             </select>
           </div>
 
-          <!-- Filtro Dependencia -->
           <div class="filter-dropdown-group">
             <select id="filterDependencia" class="filter-dropdown">
-              <option value="">Todas las dependencias</option>
+              <option value="">Dependencias</option>
             </select>
           </div>
 
-          <!-- Filtro Estado -->
           <div class="filter-dropdown-group">
             <select id="filterEstado" class="filter-dropdown">
-              <option value="">Todos los estados</option>
+              <option value="">Estatus</option>
             </select>
           </div>
 
-          <!-- Botón limpiar -->
           <button
             id="clearFiltersBtn"
             class="filter-clear-btn"
@@ -146,7 +134,6 @@
             </svg>
           </button>
 
-          <!-- Contador de resultados -->
           <div class="filter-results-badge">
             <span id="filterResultsCount">0</span> resultados
           </div>
@@ -154,19 +141,15 @@
       </div>
     </div>
 
-    <!-- Contenedor principal -->
     <main class="main-container">
-      <!-- Mapa -->
       <div class="map-wrapper">
         <div id="map" class="map-container"></div>
 
-        <!-- Loading overlay -->
         <div id="loadingOverlay" class="loading-overlay">
           <div class="loading-spinner"></div>
           <p class="loading-text">Cargando acciones climáticas...</p>
         </div>
 
-        <!-- Buscador flotante -->
         <div class="map-search-box">
           <svg
             class="map-search-icon"
@@ -209,7 +192,6 @@
           </button>
         </div>
 
-        <!-- Botón de centrar mapa -->
         <button
           id="centerMapBtn"
           class="map-control-btn center-btn"
@@ -235,7 +217,6 @@
         </button>
       </div>
 
-      <!-- Timeline -->
       <div class="timeline-container">
         <div class="timeline-wrapper">
           <div class="timeline-calendar-icon">
@@ -258,15 +239,12 @@
           </div>
           <div class="timeline-graph" id="timelineGraph">
             <div class="timeline-line"></div>
-            <div class="timeline-markers" id="timelineMarkers">
-              <!-- Los marcadores se generarán dinámicamente por JavaScript -->
-            </div>
+            <div class="timeline-markers" id="timelineMarkers"></div>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Modal de Rango de Fechas -->
     <div id="dateRangeModal" class="date-modal-overlay" style="display: none">
       <div class="date-modal">
         <div class="date-modal-header">
@@ -314,7 +292,6 @@
       </div>
     </div>
 
-    <!-- Modal para ver todas las ubicaciones -->
     <div
       id="ubicacionesModal"
       class="media-modal-overlay"
@@ -348,20 +325,15 @@
       </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
       <p>
         &copy; 2024 Cambio Climático Tlaxcala. Todos los derechos reservados.
       </p>
     </footer>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- Leaflet MarkerCluster JS -->
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
-    <!-- JavaScript modules -->
     <script src="js/acciones/config.js"></script>
     <script src="js/acciones/data-adapter.js"></script>
     <script src="js/acciones/data.js"></script>
@@ -372,7 +344,6 @@
     <script src="js/acciones/timeline.js"></script>
     <script src="js/acciones/main.js"></script>
 
-    <!-- Navbar script -->
     <script>
       const navbar = document.querySelector(".navbar");
       const navbarIndicator = document.getElementById("navbarIndicator");

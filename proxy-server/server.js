@@ -8,7 +8,6 @@ const PORT = config.actual.puerto;
 const GEOSERVER_URL = config.actual.geoserver;
 const API_PROJECTS_URL = "https://api.cambioclimaticotlaxcala.mx";
 
-// Habilitar CORS para todas las peticiones
 app.use(
   cors({
     origin: "*",
@@ -17,17 +16,15 @@ app.use(
   })
 );
 
-// Middleware de logging para debugging
 app.use((req, res, next) => {
   next();
 });
 
-// Configuración del proxy para GeoServer
 const proxyOptions = {
   target: GEOSERVER_URL,
   changeOrigin: true,
   pathRewrite: {
-    "^/geoserver": "", // Remover /geoserver del inicio
+    "^/geoserver": "",
   },
   onProxyReq: (proxyReq, req, res) => {
     const targetUrl = `${GEOSERVER_URL}${req.url.replace(
@@ -47,14 +44,11 @@ const proxyOptions = {
   },
 };
 
-// Ruta del proxy - todas las peticiones a /geoserver/* se redirigen
 app.use("/geoserver", createProxyMiddleware(proxyOptions));
 
-// Configuración del proxy para API de Proyectos
 const apiProxyOptions = {
   target: API_PROJECTS_URL,
   changeOrigin: true,
-  // NO usar pathRewrite - la URL ya incluye /api en el destino
   onProxyReq: (proxyReq, req, res) => {
     const targetUrl = `${API_PROJECTS_URL}${req.url}`;
   },
@@ -70,10 +64,8 @@ const apiProxyOptions = {
   },
 };
 
-// Ruta del proxy para API de proyectos - todas las peticiones a /api/* se redirigen
 app.use("/api", createProxyMiddleware(apiProxyOptions));
 
-// Ruta de health check
 app.get("/health", (req, res) => {
   res.json({
     status: "ok",
@@ -84,7 +76,6 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Ruta raíz con información
 app.get("/", (req, res) => {
   res.json({
     mensaje: "Proxy Server para GeoServer y API de Proyectos",
@@ -102,7 +93,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Proxy Server ejecutándose en http://localhost:${PORT}`);
   console.log(`Ambiente: ${config.actual.ambiente}`);

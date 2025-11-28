@@ -1,8 +1,10 @@
-// Gestor de mapas con OpenLayers
-
 import { MapControlsManager } from "./MapControlsManager.js";
 import { ComparisonManager } from "./ComparisonManager.js";
 
+/**
+ * Gestor central de mapas OpenLayers.
+ * Maneja creación, capas WMS/WFS, popups, hover y comparaciones.
+ */
 export class MapManager {
   constructor(config) {
     this.config = config;
@@ -13,8 +15,6 @@ export class MapManager {
     this.comparisonManagers = {};
     this.hoverListeners = {};
   }
-
-  // Inicializa el mapa inicial (portada)
 
   inicializarMapaIntro(containerId) {
     const mapaConfig = this.config.mapaInicial;
@@ -51,21 +51,19 @@ export class MapManager {
     return mapa;
   }
 
-  // Inicializa un mapa para un capítulo específico
-
+  /**
+   * Inicializa un mapa para un capítulo con sus capas, popup y controles.
+   */
   inicializarMapaCapitulo(containerId, capituloConfig, numeroCapitulo) {
     const mapaConfig = capituloConfig.mapa;
 
     const mapaId = `cap-${numeroCapitulo.toString().replace(".", "-")}`;
 
-    // Verificar si el contenedor del mapa existe
     const container = document.getElementById(containerId);
     if (!container) {
       return null;
     }
 
-    // Verificar si hay capas para mostrar
-    // Solo retornar null si no hay capas y tampoco tiene modelos climáticos configurados
     if (
       (!mapaConfig.capas || mapaConfig.capas.length === 0) &&
       !capituloConfig.modelosClimaticos
@@ -73,7 +71,6 @@ export class MapManager {
       return null;
     }
 
-    // Limpiar mapa existente si ya existe
     if (this.mapas[mapaId]) {
       this.limpiarMapa(mapaId);
     }
@@ -123,7 +120,6 @@ export class MapManager {
       }),
     });
 
-    // MOVIDO: Asignar mapaId ANTES de guardar referencias
     this.mapas[mapaId] = mapa;
     this.capas[mapaId] = capas;
     this.overlays[mapaId] = overlay;
@@ -152,8 +148,6 @@ export class MapManager {
     return this.controlsManagers[mapaId];
   }
 
-  // Crea la capa base de ESRI
-
   crearCapaBase() {
     const url = this.config.mapaBase.url;
 
@@ -166,26 +160,24 @@ export class MapManager {
     });
   }
 
-  // Crea una capa WFS desde GeoServer
-
+  /**
+   * Crea una capa WFS vectorial desde GeoServer con soporte para proxy Vercel/local.
+   */
   crearCapaWFS(capaConfig) {
     const proxyBase = this.config.proxy.url;
     const typeName = capaConfig.layers;
 
-    // Extraer workspace
     const layerParts = typeName.split(":");
     const workspace = layerParts.length > 1 ? layerParts[0] : "SEICCT";
 
-    // Detectar si estamos usando proxy de Vercel o proxy local
     const isVercelProxy = proxyBase.includes("proxy?path=");
 
     const vectorSource = new ol.source.Vector({
       format: new ol.format.GeoJSON(),
       url: function (extent) {
-        // Construir los parámetros WFS
         const params = new URLSearchParams({
           service: "WFS",
-          version: "1.0.0", // Usar 1.0.0 como en las URLs de previsualización
+          version: "1.0.0",
           request: "GetFeature",
           typeName: typeName,
           outputFormat: "application/json",
@@ -193,14 +185,11 @@ export class MapManager {
           bbox: `${extent.join(",")},EPSG:3857`,
         });
 
-        // Construir URL según el tipo de proxy
         if (isVercelProxy) {
-          // Para Vercel: URL-encode todo el path
           const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
           const encodedPath = encodeURIComponent(wfsPath);
           return `${proxyBase.replace("?path=", "")}?path=${encodedPath}`;
         } else {
-          // Para local: NO incluir /geoserver porque proxyBase ya lo tiene
           const wfsPath = `/${workspace}/ows?${params.toString()}`;
           return `${proxyBase}${wfsPath}`;
         }
@@ -208,22 +197,20 @@ export class MapManager {
       strategy: ol.loadingstrategy.bbox,
     });
 
-    // Si la capa es transparente (para interacción solamente), usar estilo invisible
     let estilo;
     if (capaConfig.transparente) {
       estilo = new ol.style.Style({
         fill: new ol.style.Fill({
-          color: "rgba(0, 0, 0, 0)", // Completamente transparente
+          color: "rgba(0, 0, 0, 0)",
         }),
         stroke: new ol.style.Stroke({
-          color: "rgba(0, 0, 0, 0)", // Completamente transparente
+          color: "rgba(0, 0, 0, 0)",
           width: 0,
         }),
       });
     } else if (capaConfig.estilo) {
       estilo = this.crearEstiloWFS(capaConfig.estilo);
     } else {
-      // Estilo por defecto
       estilo = new ol.style.Style({
         fill: new ol.style.Fill({
           color: "rgba(162, 26, 92, 0.3)",
@@ -249,7 +236,7 @@ export class MapManager {
       source: vectorSource,
       style: estilo,
       visible: capaConfig.visible,
-      zIndex: 3, // Mayor z-index para estar encima del WMS
+      zIndex: 3,
     });
 
     capa.set("nombre", capaConfig.nombre);
@@ -259,10 +246,7 @@ export class MapManager {
     return capa;
   }
 
-  // Crea un estilo personalizado para WFS
-
   crearEstiloWFS(estiloConfig) {
-    // Si el estilo tiene una función de clasificación por atributo
     if (
       estiloConfig.tipo === "clasificado" &&
       estiloConfig.atributo &&
@@ -271,7 +255,6 @@ export class MapManager {
       return (feature) => {
         const valor = feature.get(estiloConfig.atributo);
 
-        // Buscar el rango correspondiente
         let colorFill =
           estiloConfig.colorPorDefecto || "rgba(200, 200, 200, 0.5)";
 
@@ -294,7 +277,6 @@ export class MapManager {
       };
     }
 
-    // Estilo simple (sin clasificación)
     return new ol.style.Style({
       fill: new ol.style.Fill({
         color: estiloConfig.fillColor || "rgba(162, 26, 92, 0.3)",
@@ -316,28 +298,23 @@ export class MapManager {
     });
   }
 
-  // Crea una capa WMS desde GeoServer
-
+  /**
+   * Crea una capa WMS desde GeoServer con soporte para proxy Vercel/local.
+   */
   crearCapaWMS(capaConfig) {
-    // Extraer el workspace del layers (ej: "SEICCT:Limite" -> "SEICCT")
     const layerParts = capaConfig.layers.split(":");
     const workspace = layerParts.length > 1 ? layerParts[0] : "SEICCT";
 
-    // Detectar si estamos usando proxy de Vercel o proxy local
     const proxyBase = this.config.proxy.url;
     const isVercelProxy = proxyBase.includes("proxy?path=");
 
-    // Construir URL WMS según el tipo de proxy
     let wmsUrl;
     if (isVercelProxy) {
-      // Para Vercel: necesitamos una función loader personalizada
-      // porque OpenLayers no puede URL-encode automáticamente
       const basePath = `/geoserver/${workspace}/wms`;
 
-      // WMS requiere un loader personalizado para Vercel
       const capa = new ol.layer.Tile({
         source: new ol.source.TileWMS({
-          url: `${proxyBase.replace("?path=", "")}`, // Base del proxy sin ?path=
+          url: `${proxyBase.replace("?path=", "")}`,
           params: {
             LAYERS: capaConfig.layers,
             TILED: true,
@@ -347,16 +324,12 @@ export class MapManager {
           },
           serverType: "geoserver",
           crossOrigin: "anonymous",
-          // Loader personalizado para construir URLs correctas
           tileLoadFunction: function (imageTile, src) {
-            // Extraer solo los parámetros de la URL
             const url = new URL(src, window.location.origin);
             const params = url.searchParams.toString();
 
-            // Construir path completo
             const fullPath = `${basePath}?${params}`;
 
-            // URL-encode el path para Vercel
             const encodedPath = encodeURIComponent(fullPath);
             const finalUrl = `${proxyBase.replace(
               "?path=",
@@ -378,7 +351,6 @@ export class MapManager {
 
       return capa;
     } else {
-      // Para local o directo: concatenar directamente
       wmsUrl = `${proxyBase}/${workspace}/wms`;
 
       const capa = new ol.layer.Tile({
@@ -408,8 +380,9 @@ export class MapManager {
     }
   }
 
-  // Configura el click en el mapa para mostrar popup con datos WFS
-
+  /**
+   * Configura click en capas WFS para mostrar popup con propiedades del feature.
+   */
   configurarClickPopupWFS(mapa, overlay, capas) {
     mapa.on("singleclick", (evt) => {
       const features = [];
@@ -429,7 +402,6 @@ export class MapManager {
         const layer = firstItem.layer;
         const properties = feature.getProperties();
 
-        // Limpiar el nombre de la capa (remover "(Interacción)" si existe)
         let nombreCapa = layer.get("nombre") || "Información";
         nombreCapa = nombreCapa.replace(/\s*\(Interacción\)\s*/gi, "").trim();
 
@@ -461,7 +433,6 @@ export class MapManager {
       }
     });
 
-    // Configurar el botón de cierre del popup
     const popupCloser = overlay.getElement().querySelector(".ol-popup-closer");
     if (popupCloser) {
       popupCloser.addEventListener("click", (e) => {
@@ -477,8 +448,9 @@ export class MapManager {
     });
   }
 
-  // Configura el hover de municipios para resaltar y mostrar tooltip
-
+  /**
+   * Configura hover en municipios mostrando tooltip y resaltando el feature.
+   */
   configurarHoverMunicipios(mapaId, containerId) {
     const mapa = this.mapas[mapaId];
     if (!mapa) return;
@@ -486,55 +458,44 @@ export class MapManager {
     const mapElement = document.getElementById(containerId);
     if (!mapElement) return;
 
-    //  LIMPIAR hover anterior si existe
     if (this.hoverListeners[mapaId]) {
       const prevData = this.hoverListeners[mapaId];
 
-      // Restaurar estilo del feature anterior si existe
       if (prevData.currentFeature) {
         prevData.currentFeature.setStyle(prevData.defaultStyle);
       }
 
-      // Remover tooltip anterior
       if (prevData.tooltip && prevData.tooltip.parentNode) {
         prevData.tooltip.remove();
       }
 
-      // Remover listener anterior
       if (prevData.listener) {
         mapa.un("pointermove", prevData.listener);
       }
 
-      // Limpiar referencia
       delete this.hoverListeners[mapaId];
     }
 
-    // Crear tooltip
     const tooltip = document.createElement("div");
     tooltip.className = "municipio-hover-tooltip";
     tooltip.style.display = "none";
     mapElement.appendChild(tooltip);
 
-    // Variable para almacenar el feature actualmente resaltado
     let currentFeature = null;
     let defaultStyle = null;
 
-    // Estilo de hover (borde lila grueso)
     const hoverStyle = new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: "#A21A5C", // Lila principal del proyecto
+        color: "#A21A5C",
         width: 4,
       }),
       fill: new ol.style.Fill({
-        color: "rgba(162, 26, 92, 0.2)", // Lila translúcido
+        color: "rgba(162, 26, 92, 0.2)",
       }),
     });
 
-    // Listener de movimiento del mouse
     const pointerMoveListener = (evt) => {
-      //  VERIFICAR: Si hay comparación activa, no hacer hover
       if (this.tieneComparacionActiva(mapaId)) {
-        // Restaurar estilo del feature anterior si existe
         if (currentFeature) {
           currentFeature.setStyle(defaultStyle);
           currentFeature = null;
@@ -545,26 +506,21 @@ export class MapManager {
 
       const pixel = mapa.getEventPixel(evt.originalEvent);
 
-      // Restaurar estilo del feature anterior
       if (currentFeature) {
         currentFeature.setStyle(defaultStyle);
         currentFeature = null;
         tooltip.style.display = "none";
       }
 
-      // Buscar feature bajo el cursor (solo capas WFS)
       mapa.forEachFeatureAtPixel(pixel, (feature, layer) => {
         if (layer && layer.get("tipo") === "wfs") {
           currentFeature = feature;
           defaultStyle = feature.getStyle() || layer.getStyle();
 
-          // Aplicar estilo de hover
           feature.setStyle(hoverStyle);
 
-          // Obtener nombre del municipio
           const properties = feature.getProperties();
 
-          // Buscar el nombre del municipio en diferentes variantes de propiedad
           const nombreMunicipio =
             properties.Municipio ||
             properties.MUNICIPIO ||
@@ -581,25 +537,21 @@ export class MapManager {
             properties.NOMBRE_MUNICIPIO ||
             "Municipio";
 
-          // Actualizar tooltip
           tooltip.textContent = nombreMunicipio;
           tooltip.style.display = "block";
           tooltip.style.left = `${evt.originalEvent.offsetX + 15}px`;
           tooltip.style.top = `${evt.originalEvent.offsetY + 15}px`;
 
-          return true; // Detener búsqueda
+          return true;
         }
       });
 
-      // Guardar referencias actualizadas
       this.hoverListeners[mapaId].currentFeature = currentFeature;
       this.hoverListeners[mapaId].defaultStyle = defaultStyle;
     };
 
-    // Agregar el listener al mapa
     mapa.on("pointermove", pointerMoveListener);
 
-    //  GUARDAR referencias para limpiar después
     this.hoverListeners[mapaId] = {
       listener: pointerMoveListener,
       tooltip: tooltip,
@@ -607,11 +559,8 @@ export class MapManager {
       defaultStyle: null,
     };
 
-    // Agregar estilos CSS para el tooltip
     this.agregarEstilosHoverTooltip();
   }
-
-  // Agrega estilos CSS para el tooltip de hover
 
   agregarEstilosHoverTooltip() {
     if (document.getElementById("hover-tooltip-styles")) return;
@@ -638,8 +587,9 @@ export class MapManager {
     document.head.appendChild(style);
   }
 
-  // Resalta municipios en el mapa según una categoría de vulnerabilidad
-
+  /**
+   * Resalta municipios en el mapa según categoría de vulnerabilidad.
+   */
   resaltarMunicipiosPorCategoria(mapaId, categoria) {
     const mapa = this.mapas[mapaId];
     if (!mapa) {
@@ -647,12 +597,10 @@ export class MapManager {
       return;
     }
 
-    // Guardar features resaltados para poder restaurarlos después
     if (!this.featuresResaltados) {
       this.featuresResaltados = {};
     }
 
-    // Restaurar estilos anteriores
     if (this.featuresResaltados[mapaId]) {
       this.featuresResaltados[mapaId].forEach(({ feature, style }) => {
         feature.setStyle(style);
@@ -660,12 +608,10 @@ export class MapManager {
       this.featuresResaltados[mapaId] = [];
     }
 
-    // Si categoria es null, solo limpiar resaltados
     if (!categoria) {
       return;
     }
 
-    // Buscar la capa WFS
     const capas = this.capas[mapaId];
     if (!capas) {
       console.error(`No hay capas para mapa: ${mapaId}`);
@@ -681,7 +627,6 @@ export class MapManager {
     const source = capaWFS.getSource();
     const features = source.getFeatures();
 
-    // Mapa de colores por categoría (mismo que el gráfico)
     const coloresPorCategoria = {
       "Muy Alto": "#78020e",
       Alto: "#9a3c43",
@@ -692,7 +637,6 @@ export class MapManager {
 
     const colorCategoria = coloresPorCategoria[categoria] || "#FFD700";
 
-    // Estilo de resaltado
     const resaltadoStyle = new ol.style.Style({
       stroke: new ol.style.Stroke({
         color: colorCategoria,
@@ -705,12 +649,10 @@ export class MapManager {
 
     this.featuresResaltados[mapaId] = [];
 
-    // Debug: Mostrar propiedades del primer feature
     if (features.length > 0) {
       const primerasPropiedades = features[0].getProperties();
     }
 
-    // Mapeo de categorías del gráfico a valores de la capa WFS
     const mapeoCategoria = {
       "Muy Alto": ["Muy alta", "Muy Alto", "MUY ALTA", "MUY ALTO"],
       Alto: ["Alta", "Alto", "ALTA", "ALTO"],
@@ -719,16 +661,13 @@ export class MapManager {
       "Muy Bajo": ["Muy baja", "Muy Bajo", "MUY BAJA", "MUY BAJO"],
     };
 
-    // Obtener los valores equivalentes para la categoría seleccionada
     const valoresEquivalentes = mapeoCategoria[categoria] || [categoria];
 
     let contadorCoincidencias = 0;
 
-    // Resaltar features que coincidan con la categoría
     features.forEach((feature, index) => {
       const properties = feature.getProperties();
 
-      // Buscar el campo de vulnerabilidad (puede tener diferentes nombres)
       const vulnerabilidad =
         properties.grado ||
         properties.Grado ||
@@ -759,11 +698,8 @@ export class MapManager {
       }
     });
 
-    // Renderizar el mapa
     mapa.render();
   }
-
-  // Convierte color hexadecimal a rgba
 
   hexToRgba(hex, alpha) {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -773,37 +709,30 @@ export class MapManager {
   }
 
   generarLeyendaDinamica(containerId, capas, numeroCapitulo) {
-    // Buscar el contenedor del mapa
     const mapContainer = document.getElementById(containerId);
     if (!mapContainer || !mapContainer.parentElement) {
-      // console.warn(`No se encontró el contenedor para generar leyenda: ${containerId}`);
       return;
     }
 
-    // Buscar o crear el contenedor de controles de capas
     let controlsContainer =
       mapContainer.parentElement.querySelector(".map-controls");
 
     if (!controlsContainer) {
-      // Crear contenedor de controles si no existe
       controlsContainer = document.createElement("div");
       controlsContainer.className = "map-controls";
       mapContainer.parentElement.appendChild(controlsContainer);
     }
 
-    // Limpiar contenido anterior
     controlsContainer.innerHTML = '<div class="map-controls-title">Capas</div>';
 
-    // Generar controles para cada capa (excluyendo capas de interacción transparentes)
     capas.forEach((capa, index) => {
       const nombreCapa = capa.get("nombre") || `Capa ${index + 1}`;
 
-      // No mostrar capas de interacción (transparentes) en el control
       if (
         nombreCapa.includes("(Interacción)") ||
         nombreCapa.includes("Interacción")
       ) {
-        return; // Saltar esta capa
+        return;
       }
 
       const visible = capa.getVisible();
@@ -820,12 +749,8 @@ export class MapManager {
     });
   }
 
-  // Configura los controles de visibilidad de capas
-
   configurarControlesCapas(numeroCapitulo, capas) {
-    // Validar que tenemos capas para configurar
     if (!capas || capas.length === 0) {
-      // console.warn(`No hay capas para configurar controles en capítulo ${numeroCapitulo}`);
       return;
     }
 
@@ -836,7 +761,6 @@ export class MapManager {
       const checkboxId = `layer-${i}-${numeroCapitulo}`;
       const checkbox = document.getElementById(checkboxId);
 
-      // Solo configurar si el checkbox existe en el DOM
       if (checkbox) {
         try {
           checkbox.addEventListener("change", (e) => {
@@ -868,8 +792,6 @@ export class MapManager {
     }
   }
 
-  // Cambia la visibilidad de una capa
-
   toggleCapa(mapaId, nombreCapa, visible) {
     const capas = this.capas[mapaId];
     if (!capas) return;
@@ -883,8 +805,9 @@ export class MapManager {
     }
   }
 
-  // Actualiza las capas de un mapa con nuevas configuraciones
-
+  /**
+   * Reemplaza todas las capas de un mapa con nueva configuración.
+   */
   actualizarCapasMapa(mapaId, nuevasCapasConfig) {
     const mapa = this.mapas[mapaId];
     if (!mapa) {
@@ -892,19 +815,15 @@ export class MapManager {
       return false;
     }
 
-    // Obtener las capas actuales (excluyendo la capa base)
     const layers = mapa.getLayers();
-    const capasActuales = layers.getArray().slice(); // Copiar array
+    const capasActuales = layers.getArray().slice();
 
-    // Remover todas las capas excepto la primera (capa base)
     for (let i = capasActuales.length - 1; i > 0; i--) {
       mapa.removeLayer(capasActuales[i]);
     }
 
-    // Limpiar referencia de capas antiguas
     this.capas[mapaId] = [];
 
-    // Verificar si hay capa de municipios WMS para agregar capa WFS de interacción
     const tieneMunicipiosWMS = nuevasCapasConfig.some(
       (capa) =>
         capa.layers &&
@@ -912,7 +831,6 @@ export class MapManager {
         capa.tipo === "wms"
     );
 
-    // Crear y agregar nuevas capas
     const nuevasCapas = nuevasCapasConfig.map((capaConfig) => {
       if (capaConfig.tipo === "wfs") {
         return this.crearCapaWFS(capaConfig);
@@ -921,7 +839,6 @@ export class MapManager {
       }
     });
 
-    // Si tiene capa de municipios WMS, agregar capa WFS transparente para hover
     if (tieneMunicipiosWMS) {
       const capaWFSMunicipios = this.crearCapaWFS({
         nombre: "Municipios (Interacción)",
@@ -935,15 +852,12 @@ export class MapManager {
       nuevasCapas.push(capaWFSMunicipios);
     }
 
-    // Agregar nuevas capas al mapa
     nuevasCapas.forEach((capa) => {
       mapa.addLayer(capa);
     });
 
-    // Guardar referencia de nuevas capas
     this.capas[mapaId] = nuevasCapas;
 
-    // Regenerar controles de capas
     const numeroCapitulo = parseFloat(
       mapaId.replace("cap-", "").replace("-", ".")
     );
@@ -951,15 +865,12 @@ export class MapManager {
     this.generarLeyendaDinamica(containerId, nuevasCapas, numeroCapitulo);
     this.configurarControlesCapas(numeroCapitulo, nuevasCapas);
 
-    // Actualizar tamaño del mapa
     setTimeout(() => {
       mapa.updateSize();
     }, 100);
 
     return true;
   }
-
-  // Actualiza el tamaño del mapa
 
   actualizarTamano(mapaId) {
     const mapa = this.mapas[mapaId];
@@ -986,8 +897,6 @@ export class MapManager {
     }
   }
 
-  // Agrega estilos CSS para el popup
-
   agregarEstilosPopup() {
     if (document.getElementById("popup-styles")) return;
 
@@ -1007,7 +916,7 @@ export class MapManager {
         max-width: 300px;
         z-index: 1000;
       }
-      
+
       .ol-popup:after, .ol-popup:before {
         top: 100%;
         border: solid transparent;
@@ -1017,21 +926,21 @@ export class MapManager {
         position: absolute;
         pointer-events: none;
       }
-      
+
       .ol-popup:after {
         border-top-color: white;
         border-width: 10px;
         left: 48px;
         margin-left: -10px;
       }
-      
+
       .ol-popup:before {
         border-top-color: #ccc;
         border-width: 11px;
         left: 48px;
         margin-left: -11px;
       }
-      
+
       .ol-popup-closer {
         position: absolute;
         top: 8px;
@@ -1040,23 +949,23 @@ export class MapManager {
         height: 20px;
         cursor: pointer;
       }
-      
+
       .ol-popup-closer:after {
         content: "✕";
         font-size: 16px;
         color: #666;
       }
-      
+
       .ol-popup-closer:hover:after {
         color: #333;
       }
-      
+
       .popup-info p {
         margin: 5px 0;
         font-size: 0.9rem;
         line-height: 1.4;
       }
-      
+
       .popup-layer-name {
         margin-bottom: 10px;
         padding-bottom: 8px;
@@ -1070,8 +979,6 @@ export class MapManager {
     `;
     document.head.appendChild(style);
   }
-
-  // Obtiene un mapa por su ID
 
   obtenerMapa(mapaId) {
     return this.mapas[mapaId];
@@ -1087,7 +994,6 @@ export class MapManager {
   configurarSwipe(mapaId, nombreCapaIzq, nombreCapaDer) {
     const controlsManager = this.controlsManagers[mapaId];
     if (!controlsManager) {
-      // console.warn(`No hay controles inicializados para ${mapaId}`);
       return false;
     }
 
@@ -1095,9 +1001,6 @@ export class MapManager {
     const capaDer = this.obtenerCapaPorNombre(mapaId, nombreCapaDer);
 
     if (!capaIzq || !capaDer) {
-      // console.warn(
-      //   `No se encontraron las capas: ${nombreCapaIzq}, ${nombreCapaDer}`
-      // );
       return false;
     }
 
@@ -1130,6 +1033,9 @@ export class MapManager {
     return null;
   }
 
+  /**
+   * Inicializa el ComparisonManager para comparar dos capas temporales.
+   */
   inicializarComparacion(mapaId, containerId) {
     const capasComparables = this.detectarCapasComparables(mapaId);
 
@@ -1143,12 +1049,10 @@ export class MapManager {
       return false;
     }
 
-    // Destruir comparación anterior si existe
     if (this.comparisonManagers[mapaId]) {
       this.comparisonManagers[mapaId].destruir();
     }
 
-    // Crear nuevo ComparisonManager
     const comparisonManager = new ComparisonManager(
       mapa,
       capasComparables.capaA,
@@ -1169,18 +1073,12 @@ export class MapManager {
     }
   }
 
-  /**
-   * @param {string} mapaId - ID del mapa
-   * @returns {boolean} - true si hay comparación activa, false si no
-   */
   tieneComparacionActiva(mapaId) {
     const comparisonManager = this.comparisonManagers[mapaId];
     if (!comparisonManager) {
       return false;
     }
 
-    // Verificar si hay un modo activo (split, xray, area)
-    // Si modoActual es 'none' o null, no hay comparación activa
     return (
       comparisonManager.modoActual && comparisonManager.modoActual !== "none"
     );

@@ -319,7 +319,7 @@ class FilterManager {
       dependencias: Array.from(stats.dependencias).sort(),
       estados: Array.from(stats.estados).map(estado => ({
         value: estado,
-        label: estado === 'activo' ? 'Activo' : 'Concluido'
+        label: estado === 'activo' ? 'En Proceso' : 'Concluido'
       }))
     };
   }

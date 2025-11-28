@@ -1,8 +1,3 @@
-/**
- * Gestor de controles UI para herramientas de mapa
- * Maneja medición, exportar PNG, layer swipe y animaciones
- */
-
 import {
   MeasurementTool,
   ExportTool,
@@ -10,6 +5,10 @@ import {
   AnimationTool,
 } from "../utils/MapTools.js";
 
+/**
+ * Gestor de controles UI para herramientas de mapa.
+ * Maneja medición, exportación PNG, layer swipe y animaciones.
+ */
 export class MapControlsManager {
   constructor(map, mapId) {
     this.map = map;
@@ -29,9 +28,6 @@ export class MapControlsManager {
     this.inicializar();
   }
 
-  /**
-   * Inicializa la barra de herramientas
-   */
   inicializar() {
     this.crearToolbar();
     this.configurarMapControls();
@@ -39,7 +35,7 @@ export class MapControlsManager {
   }
 
   /**
-   * Crea la barra de herramientas en el mapa
+   * Crea la barra de herramientas flotante con botones de medición, exportación y swipe.
    */
   crearToolbar() {
     const toolbarWrapper = document.createElement("div");
@@ -138,9 +134,6 @@ export class MapControlsManager {
     this.configurarToggle(toggleBtn);
   }
 
-  /**
-   * Configura el botón de toggle para mostrar/ocultar toolbar
-   */
   configurarToggle(toggleBtn) {
     let toolbarVisible = false;
     this.toolbar.classList.add("toolbar-hidden");
@@ -160,7 +153,7 @@ export class MapControlsManager {
   }
 
   /**
-   * Configura el toggle para los controles de mapa existentes (.map-controls)
+   * Agrega botón toggle a los controles de capas (.map-controls) para colapsar/expandir.
    */
   configurarMapControls() {
     const viewport = this.map.getTargetElement();
@@ -207,9 +200,6 @@ export class MapControlsManager {
     });
   }
 
-  /**
-   * Configura los eventos de los botones
-   */
   configurarEventos() {
     const btnDistance = document.getElementById(
       `btn-measure-distance-${this.mapId}`
@@ -241,9 +231,6 @@ export class MapControlsManager {
     };
   }
 
-  /**
-   * Activa medición de distancia
-   */
   activarMedicionDistancia() {
     if (this.herramientaActiva === "measure-distance") {
       this.desactivarHerramienta();
@@ -259,9 +246,6 @@ export class MapControlsManager {
     this.botones.distance.classList.add("active");
   }
 
-  /**
-   * Activa medición de área
-   */
   activarMedicionArea() {
     if (this.herramientaActiva === "measure-area") {
       this.desactivarHerramienta();
@@ -283,7 +267,7 @@ export class MapControlsManager {
   }
 
   /**
-   * Exporta el mapa como PNG
+   * Exporta el mapa actual como imagen PNG.
    */
   exportarMapa() {
     const filename = `mapa-${this.mapId}-${Date.now()}`;
@@ -302,9 +286,6 @@ export class MapControlsManager {
     }, 2000);
   }
 
-  /**
-   * Toggle del layer swipe
-   */
   toggleSwipe() {
     if (!this.layerSwipeTool) {
       console.warn(
@@ -327,9 +308,7 @@ export class MapControlsManager {
   }
 
   /**
-   * Configura el layer swipe con 2 capas
-   * @param {ol.layer.Layer} capaIzquierda - Capa izquierda
-   * @param {ol.layer.Layer} capaDerecha - Capa derecha
+   * Configura la herramienta de comparación swipe entre dos capas.
    */
   configurarSwipe(capaIzquierda, capaDerecha) {
     this.layerSwipeTool = new LayerSwipeTool(
@@ -359,11 +338,6 @@ export class MapControlsManager {
     this.modoMedicion = null;
   }
 
-  /**
-   * Muestra una notificación temporal
-   * @param {string} mensaje - Mensaje a mostrar
-   * @param {string} tipo - Tipo de notificación (info, success, error)
-   */
   mostrarNotificacion(mensaje, tipo = "info") {
     const notif = document.createElement("div");
     notif.className = `map-notification map-notification-${tipo}`;
@@ -381,17 +355,14 @@ export class MapControlsManager {
   }
 
   /**
-   * Anima el mapa hacia una ubicación
-   * @param {Array<number>} centro - Coordenadas del centro
-   * @param {number} zoom - Nivel de zoom
-   * @param {number} duracion - Duración de la animación en ms
+   * Anima la vista del mapa hacia una ubicación con zoom específico.
    */
   animarHacia(centro, zoom, duracion = 1000) {
     this.animationTool.volarHacia(centro, zoom, duracion);
   }
 
   /**
-   * Limpia todas las herramientas
+   * Destruye el manager y limpia todos los recursos.
    */
   destruir() {
     this.desactivarHerramienta();
@@ -404,9 +375,6 @@ export class MapControlsManager {
     }
   }
 
-  /**
-   * Agrega estilos CSS para la toolbar
-   */
   agregarEstilos() {
     if (document.getElementById("map-toolbar-styles")) return;
 

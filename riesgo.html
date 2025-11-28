@@ -9,38 +9,26 @@
     />
     <title>Riesgo Climático - Tlaxcala</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/navbar.css" />
     <link rel="stylesheet" href="css/story-map.css" />
     <link rel="stylesheet" href="css/riesgo.css" />
 
-    <!-- OpenLayers CSS -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
     />
 
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-
-    <!-- Chart.js Datalabels Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
-
-    <!-- OpenLayers JS -->
     <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
-
-    <!-- Papa Parse para CSVs -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   </head>
   <body>
-    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-container">
         <a href="index.html" class="navbar-brand">
-          <!--         <span class="navbar-brand-icon"><
-</span> -->
           <span>Tlaxcala</span>
         </a>
 
@@ -61,19 +49,13 @@
       </div>
     </nav>
 
-    <!-- Indicador para mostrar el navbar -->
     <div class="navbar-indicator" id="navbarIndicator"></div>
 
-    <!-- Contenedor principal del Story Map -->
     <div class="story-map-container">
-      <!-- Contenedor de capítulos con scroll-snap -->
       <div class="chapters-container" id="chaptersContainer">
-        <!-- CAPÍTULO 1 -->
         <section class="chapter" id="risk-chapter-1" data-chapter="1">
-          <!-- Título del mapa -->
           <h2 class="map-title">Riesgo climático por municipio</h2>
 
-          <!-- Card 1: Texto + Botón + Grid de botones (40%, 70%) -->
           <div class="risk-card-1">
             <h2 class="chapter-title">&iquest;Qué es el riesgo?</h2>
             <div class="chapter-content">
@@ -85,7 +67,6 @@
               <button class="btn-atlas" id="btnAtlasRiesgo">Ver Atlas de Riesgo Estatal</button>
             </div>
 
-            <!-- Grid de 10 botones (2 filas x 5 columnas) -->
             <div class="risk-buttons-grid">
               <button class="risk-btn" data-risk="Apizaco2011">Apizaco 2011</button>
               <button class="risk-btn" data-risk="Atlangatepec2016">Atlangatepec 2016</button>
@@ -100,13 +81,10 @@
             </div>
           </div>
 
-          <!-- Card 2: Mapa (60%, 70%) -->
           <div class="risk-card-2">
             <div class="map-container" id="map-1"></div>
-            <!-- Los controles de capas se generan dinámicamente -->
           </div>
 
-          <!-- Card 3: Gráfica de Dona (40%, 40%) -->
           <div class="risk-card-3">
             <h3 class="card-subtitle">Total por Declaratoria</h3>
             <div class="chart-legend-container">
@@ -117,7 +95,6 @@
             </div>
           </div>
 
-          <!-- Card 4: Gráfica de Líneas (60%, 40%) -->
           <div class="risk-card-4">
             <h3 class="card-subtitle">Declaratorias por Año</h3>
             <div class="chart-container-lines">
@@ -126,12 +103,9 @@
           </div>
         </section>
 
-        <!-- CAPÍTULO 2 -->
         <section class="chapter" id="risk-chapter-2" data-chapter="2">
-          <!-- Título del capítulo -->
           <h2 class="map-title">Eventos por a&ntilde;o y declaratorias</h2>
 
-          <!-- Card 1: Texto con lista de eventos (40%, 60%) -->
           <div class="risk-card-1">
             <h2 class="chapter-title">Eventos Climáticos en Tlaxcala</h2>
             <div class="chapter-content">
@@ -151,13 +125,10 @@
             </div>
           </div>
 
-          <!-- Card 2: Mapa (60%, 60%) -->
           <div class="risk-card-2">
             <div class="map-container" id="map-2"></div>
-            <!-- Los controles de capas se generan dinámicamente -->
           </div>
 
-          <!-- Card 3: Gráfica de Dona (40%, 40%) -->
           <div class="risk-card-3">
             <h3 class="card-subtitle">Clasificación de Eventos</h3>
             <div class="chart-legend-container">
@@ -168,7 +139,6 @@
             </div>
           </div>
 
-          <!-- Card 4: Gráfica de Líneas (60%, 40%) -->
           <div class="risk-card-4">
             <h3 class="card-subtitle">Eventos por Año y Clasificación</h3>
             <div class="chart-container-lines">
@@ -178,7 +148,6 @@
         </section>
       </div>
 
-      <!-- Timeline inferior -->
       <div class="timeline" id="timeline">
         <div class="timeline-item" data-chapter="1">
           <div class="timeline-circle">1</div>
@@ -190,7 +159,6 @@
         </div>
       </div>
 
-      <!-- Botones de navegación -->
       <div class="nav-buttons left" id="navButtonsLeft">
         <button class="nav-btn" id="btnPrev" aria-label="Capítulo anterior">
           ←
@@ -203,7 +171,6 @@
       </div>
     </div>
 
-    <!-- JavaScript -->
     <script src="js/config/riesgo-config.js"></script>
     <script src="js/config/riesgo-main.js"></script>
     <script src="js/config/riesgo-charts.js"></script>

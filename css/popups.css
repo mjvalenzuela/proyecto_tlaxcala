@@ -29,7 +29,10 @@
 /* ============================================ */
 
 .popup-header {
-  padding: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
   color: white;
 }
 
@@ -67,7 +70,7 @@
 /* ============================================ */
 
 .popup-body {
-  padding: 16px;
+  padding: 12px;
   background-color: #ffffff;
 }
 
@@ -75,7 +78,7 @@
 .popup-row {
   display: flex;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 /* Campos individuales */
@@ -100,7 +103,7 @@
   font-size: 11px;
   font-weight: 600;
   color: #555;
-  margin-bottom: 6px;
+  margin-bottom: 1px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
@@ -294,7 +297,7 @@
 /* ============================================ */
 
 .popup-footer {
-  padding: 12px 16px;
+  padding: 8px 8px;
   background-color: #f5f5f5;
   border-top: 1px solid #e0e0e0;
   display: flex;

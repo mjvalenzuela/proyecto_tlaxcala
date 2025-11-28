@@ -9,36 +9,28 @@
     />
     <title>Vulnerabilidad Climática - Tlaxcala</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/navbar.css" />
     <link rel="stylesheet" href="css/story-map.css" />
 
-    <!-- OpenLayers CSS -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
     />
 
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 
-    <!-- Chart.js Datalabels Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
-    <!-- OpenLayers JS -->
     <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
 
-    <!-- Papa Parse para CSVs -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   </head>
   <body>
-    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-container">
         <a href="index.html" class="navbar-brand">
-          <!--         <span class="navbar-brand-icon">🌍</span> -->
           <span>Tlaxcala</span>
         </a>
 
@@ -61,28 +53,19 @@
       </div>
     </nav>
 
-    <!-- Indicador para mostrar el navbar -->
     <div class="navbar-indicator" id="navbarIndicator"></div>
 
-    <!-- Contenedor principal del Story Map -->
     <div class="story-map-container">
-      <!-- Contenedor de capítulos con scroll-snap -->
       <div class="chapters-container" id="chaptersContainer">
-        <!-- CAPÍTULO 1 -->
-        <section class="chapter" id="chapter-1" data-chapter="1">
-          <!-- Título del mapa -->
-          <h2 class="map-title">Índice de vulnerabilidad al Cambio Climático por municipio</h2>
+                <section class="chapter" id="chapter-1" data-chapter="1">
+                    <h2 class="map-title">Índice de vulnerabilidad al Cambio Climático por municipio</h2>
 
-          <!-- Mapa -->
-          <div class="chapter-map">
+                    <div class="chapter-map">
             <div class="map-container" id="map-1"></div>
-            <!-- Los controles de capas se generan dinámicamente -->
-          </div>
+                      </div>
 
-          <!-- Card de texto -->
-          <div class="chapter-text">
-            <!-- <span class="chapter-number">Capítulo 1</span> -->
-            <h2 class="chapter-title">
+                    <div class="chapter-text">
+                        <h2 class="chapter-title">
               Vulnerabilidad al cambio climático
             </h2>
             <div class="chapter-content">
@@ -106,21 +89,17 @@
             </div>
           </div>
 
-<!-- Card combinada de gráfico e info (sin borde entre ellas) -->
 <div class="chapter-chart-info">
-  <!-- Título único para toda la card -->
-  <h2 class="chart-info-title">Población vulnerable al cambio climático</h2>
+    <h2 class="chart-info-title">Población vulnerable al cambio climático</h2>
   
   <div class="chart-info-content">
-    <!-- Sección del gráfico -->
-    <div class="chart-section">
+        <div class="chart-section">
       <div class="chart-container">
         <canvas id="chart-1"></canvas>
       </div>
     </div>
 
-    <!-- Sección de texto explicativo -->
-    <div class="info-section">
+        <div class="info-section">
       <div class="info-content">
         <p>
           La vulnerabilidad al cambio climático se refiere a: La exposición, la sensibilidad y la capacidad adaptativa son los tres componentes que determinan cómo un territorio enfrenta el cambio climático. Cada uno considera factores como eventos extremos, salud, producción o recursos disponibles. Para conocer a detalle las variables y su análisis, te invitamos a consultar el PACCET 2023-2030, P.300.
@@ -132,19 +111,14 @@
 </div>
         </section>
 
-        <!-- CAPÍTULO 2 -->
-        <section class="chapter chapter-biodiversity" id="chapter-2" data-chapter="2">
-          <!-- Título del mapa -->
-          <h2 class="map-title">Vulnerabilidad de la biodiversidad - Riqueza de especies</h2>
+                <section class="chapter chapter-biodiversity" id="chapter-2" data-chapter="2">
+                    <h2 class="map-title">Vulnerabilidad de la biodiversidad - Riqueza de especies</h2>
 
-          <!-- Mapa -->
-          <div class="chapter-map">
+                    <div class="chapter-map">
             <div class="map-container" id="map-2"></div>
-            <!-- Los controles de capas se generan dinámicamente -->
-          </div>
+                      </div>
 
-          <!-- Card de texto superior -->
-          <div class="chapter-text">
+                    <div class="chapter-text">
             <h2 class="chapter-title">Riqueza Biológica en Tlaxcala</h2>
             <div class="chapter-content">
               <p>
@@ -166,8 +140,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación a sub-capítulos -->
-          <div class="biodiversity-menu">
+                    <div class="biodiversity-menu">
             <h3 class="menu-title">Explora por Grupo Taxonómico</h3>
             <div class="menu-grid">
               <button class="menu-card" data-subcapitulo="2.1">
@@ -210,16 +183,12 @@
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.1: ABEJAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-1" data-chapter="2.1" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-1" data-chapter="2.1" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🐝 Abejas</h2>
           </div>
 
-          <!-- Card de texto -->
-          <div class="subchapter-text">
-<!--             <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3> -->
+                    <div class="subchapter-text">
             <div class="text-content">
                 <p>
                   Los polinizadores, especialmente las abejas, son fundamentales para los ecosistemas y la agricultura: 87 de los principales cultivos alimentarios dependen de ellos. Además de producir miel, capturan carbono, purifican agua y mantienen la biodiversidad.
@@ -236,8 +205,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -255,22 +223,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-2-1"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.2: AGAVES -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-2" data-chapter="2.2" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-2" data-chapter="2.2" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🌵 Agaves</h2>
           </div>
 
-          <!-- Card de texto -->
-          <div class="subchapter-text">
-<!--             <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3> -->
+                    <div class="subchapter-text">
             <div class="text-content">
                 <p>
                   Los agaves son plantas de gran importancia ecológica y cultural en Mesoamérica, usadas desde hace milenios. Producen aguamiel, jarabe, pulque y destilados como mezcal, tequila, bacanora y raicilla. También se emplean en construcción, vestimenta y alimentación.
@@ -287,8 +250,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -306,23 +268,18 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-2-2"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.3: HONGOS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-3" data-chapter="2.3" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-3" data-chapter="2.3" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🍄 Hongos</h2>
           </div>
 
-          <!-- Card de texto -->
-          <div class="subchapter-text">
-            <!-- <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3> -->
-            <div class="text-content">
+                    <div class="subchapter-text">
+                        <div class="text-content">
                 <p>
                   Los hongos comestibles son fundamentales para los ecosistemas terrestres. Los hongos micorrícicos estructuran los bosques y mitigan el cambio climático mediante el almacenamiento de carbono en árboles y suelo. Representan una fuente alimentaria saludable: existen más de 200 géneros con especies útiles que pueden contribuir sustancialmente a la dieta y generar ingresos en países en desarrollo.
                 </p>
@@ -338,8 +295,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -357,21 +313,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-2-3"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.4: POLILLAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-4" data-chapter="2.4" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-4" data-chapter="2.4" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🦋 Polillas</h2>
           </div>
 
-          <!-- Card de texto -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
             <div class="text-content">
               <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
@@ -388,8 +340,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -407,21 +358,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-2-4"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.5: MURCIÉLAGOS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-5" data-chapter="2.5" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-5" data-chapter="2.5" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🦇 Murciélagos</h2>
           </div>
 
-          <!-- Card de texto -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
            <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
             <div class="text-content">
               <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
@@ -438,8 +385,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -457,21 +403,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-2-5"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.6: ESPECIES DE INTERÉS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-6" data-chapter="2.6" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-6" data-chapter="2.6" style="display: none;">
+                    <div class="subchapter-title">
             <h2>⭐ Especies de Interés</h2>
           </div>
 
-          <!-- Card de texto -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
            <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
             <div class="text-content">
               <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
@@ -488,8 +430,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -507,21 +448,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-2-6"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.7: ESPECIES EN RIESGO/PRIORITARIAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-7" data-chapter="2.7" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-7" data-chapter="2.7" style="display: none;">
+                    <div class="subchapter-title">
             <h2>Especies en Riesgo/Prioritarias</h2>
           </div>
 
-          <!-- Card de texto -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
             <div class="text-content">
               <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
@@ -538,8 +475,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -557,21 +493,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-2-7"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.8: SUBESPECIES -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-8" data-chapter="2.8" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-8" data-chapter="2.8" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🧬 Subespecies</h2>
           </div>
 
-          <!-- Card de texto -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
            <h3 class="text-title">Vulnerabilidad de la biodiversidad</h3>
             <div class="text-content">
               <p>La biodiversidad de Tlaxcala es única y valiosa, pero enfrenta riesgos crecientes por el cambio climático.</p>
@@ -588,8 +520,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -607,21 +538,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-2-8"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 2.9: COMPARATIVA GENERAL -->
-        <section class="chapter subchapter-biodiversity" id="chapter-2-9" data-chapter="2.9" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-2-9" data-chapter="2.9" style="display: none;">
+                    <div class="subchapter-title">
             <h2>📊 Comparativa General de Especies</h2>
           </div>
 
-          <!-- Card de texto a la izquierda -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <h3 class="text-title">Resumen de la Vulnerabilidad de la Biodiversidad</h3>
             <div class="text-content">
               <p>Esta sección presenta una comparativa general de todos los grupos taxonómicos analizados en los subcapítulos anteriores.</p>
@@ -642,8 +569,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity">
               ← Volver a Riqueza
             </button>
@@ -661,28 +587,23 @@
             </div>
           </div>
 
-          <!-- Card de imagen debajo del submenú -->
-          <div class="chapter-chart">
+                    <div class="chapter-chart">
             <div class="chart-container">
               <img src="images/figura25.png" alt="Comparativa General de Especies">
             </div>
           </div>
         </section>
 
-        <!-- CAPÍTULO 3 -->
-        <section class="chapter chapter-biodiversity" id="chapter-3" data-chapter="3">
-          <!-- Título del mapa -->
-          <h2 class="map-title">Vulnerabilidad de la biodiversidad - Ganancia de Idoneidad</h2>
+                <section class="chapter chapter-biodiversity" id="chapter-3" data-chapter="3">
+                    <h2 class="map-title">Vulnerabilidad de la biodiversidad - Ganancia de Idoneidad</h2>
 
-          <!-- Card de imagen (reemplaza al mapa) -->
-          <div class="chapter-map">
+                    <div class="chapter-map">
             <div class="map-image-container">
               <img src="images/mapa53.png" alt="Mapa de Ganancia de Idoneidad" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
           </div>
 
-          <!-- Card de texto superior -->
-          <div class="chapter-text">
+                    <div class="chapter-text">
             <h2 class="chapter-title">Ganancia de Idoneidad</h2>
             <div class="chapter-content">
               <p>
@@ -694,8 +615,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación a sub-capítulos -->
-          <div class="biodiversity-menu">
+                    <div class="biodiversity-menu">
             <h3 class="menu-title">Explora por Grupo Taxonómico</h3>
             <div class="menu-grid">
               <button class="menu-card" data-subcapitulo="3.1">
@@ -734,15 +654,12 @@
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 3.1: ABEJAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-3-1" data-chapter="3.1" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-3-1" data-chapter="3.1" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🐝 Abejas</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -774,8 +691,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="3">
               ← Volver a Ganancia
             </button>
@@ -792,21 +708,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-3-1"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 3.2: AGAVES -->
-        <section class="chapter subchapter-biodiversity" id="chapter-3-2" data-chapter="3.2" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-3-2" data-chapter="3.2" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🌵 Agaves</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -838,8 +750,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="3">
               ← Volver a Ganancia
             </button>
@@ -856,21 +767,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-3-2"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 3.3: HONGOS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-3-3" data-chapter="3.3" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-3-3" data-chapter="3.3" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🍄 Hongos</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -902,8 +809,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="3">
               ← Volver a Ganancia
             </button>
@@ -920,21 +826,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-3-3"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 3.4: POLILLAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-3-4" data-chapter="3.4" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-3-4" data-chapter="3.4" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🦋 Polillas</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -966,8 +868,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="3">
               ← Volver a Ganancia
             </button>
@@ -984,21 +885,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-3-4"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 3.5: MURCIÉLAGOS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-3-5" data-chapter="3.5" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-3-5" data-chapter="3.5" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🦇 Murciélagos</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1030,8 +927,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="3">
               ← Volver a Ganancia
             </button>
@@ -1048,21 +944,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-3-5"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 3.6: ESPECIES DE INTERÉS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-3-6" data-chapter="3.6" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-3-6" data-chapter="3.6" style="display: none;">
+                    <div class="subchapter-title">
             <h2>⭐ Especies de Interés</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1094,8 +986,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="3">
               ← Volver a Ganancia
             </button>
@@ -1112,21 +1003,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-3-6"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 3.7: ESPECIES EN RIESGO/PRIORITARIAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-3-7" data-chapter="3.7" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-3-7" data-chapter="3.7" style="display: none;">
+                    <div class="subchapter-title">
             <h2>Especies en Riesgo/Prioritarias</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1158,8 +1045,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="3">
               ← Volver a Ganancia
             </button>
@@ -1176,21 +1062,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-3-7"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 3.8: SUBESPECIES -->
-        <section class="chapter subchapter-biodiversity" id="chapter-3-8" data-chapter="3.8" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-3-8" data-chapter="3.8" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🧬 Subespecies</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1222,8 +1104,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="3">
               ← Volver a Ganancia
             </button>
@@ -1240,26 +1121,21 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-3-8"></div>
           </div>
         </section>
 
-        <!-- CAPÍTULO 4 -->
-        <section class="chapter chapter-biodiversity" id="chapter-4" data-chapter="4">
-          <!-- Título del mapa -->
-          <h2 class="map-title">Vulnerabilidad de la biodiversidad - Pérdida de Idoneidad</h2>
+                <section class="chapter chapter-biodiversity" id="chapter-4" data-chapter="4">
+                    <h2 class="map-title">Vulnerabilidad de la biodiversidad - Pérdida de Idoneidad</h2>
 
-          <!-- Card de imagen (reemplaza al mapa) -->
-          <div class="chapter-map">
+                    <div class="chapter-map">
             <div class="map-image-container">
               <img src="images/mapa54.png" alt="Mapa de Pérdida de Idoneidad" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
           </div>
 
-          <!-- Card de texto superior -->
-          <div class="chapter-text">
+                    <div class="chapter-text">
             <h2 class="chapter-title">Pérdida de Idoneidad</h2>
             <div class="chapter-content">
               <p>
@@ -1271,8 +1147,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación a sub-capítulos -->
-          <div class="biodiversity-menu">
+                    <div class="biodiversity-menu">
             <h3 class="menu-title">Explora por Grupo Taxonómico</h3>
             <div class="menu-grid">
               <button class="menu-card" data-subcapitulo="4.1">
@@ -1311,15 +1186,12 @@
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 4.1: ABEJAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-4-1" data-chapter="4.1" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-4-1" data-chapter="4.1" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🐝 Abejas</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1351,8 +1223,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="4">
               ← Volver a Pérdida
             </button>
@@ -1369,21 +1240,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-4-1"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 4.2: AGAVES -->
-        <section class="chapter subchapter-biodiversity" id="chapter-4-2" data-chapter="4.2" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-4-2" data-chapter="4.2" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🌵 Agaves</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1415,8 +1282,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="4">
               ← Volver a Pérdida
             </button>
@@ -1433,21 +1299,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-4-2"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 4.3: HONGOS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-4-3" data-chapter="4.3" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-4-3" data-chapter="4.3" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🍄 Hongos</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1479,8 +1341,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="4">
               ← Volver a Pérdida
             </button>
@@ -1497,21 +1358,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-4-3"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 4.4: POLILLAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-4-4" data-chapter="4.4" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-4-4" data-chapter="4.4" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🦋 Polillas</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1543,8 +1400,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="4">
               ← Volver a Pérdida
             </button>
@@ -1561,21 +1417,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-4-4"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 4.5: MURCIÉLAGOS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-4-5" data-chapter="4.5" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-4-5" data-chapter="4.5" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🦇 Murciélagos</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1607,8 +1459,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="4">
               ← Volver a Pérdida
             </button>
@@ -1625,21 +1476,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-4-5"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 4.6: ESPECIES DE INTERÉS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-4-6" data-chapter="4.6" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-4-6" data-chapter="4.6" style="display: none;">
+                    <div class="subchapter-title">
             <h2>⭐ Especies de Interés</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1671,8 +1518,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="4">
               ← Volver a Pérdida
             </button>
@@ -1689,21 +1535,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-4-6"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 4.7: ESPECIES EN RIESGO/PRIORITARIAS -->
-        <section class="chapter subchapter-biodiversity" id="chapter-4-7" data-chapter="4.7" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-4-7" data-chapter="4.7" style="display: none;">
+                    <div class="subchapter-title">
             <h2>Especies en Riesgo/Prioritarias</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1735,8 +1577,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="4">
               ← Volver a Pérdida
             </button>
@@ -1753,21 +1594,17 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-4-7"></div>
           </div>
         </section>
 
-        <!-- SUB-CAPÍTULO 4.8: SUBESPECIES -->
-        <section class="chapter subchapter-biodiversity" id="chapter-4-8" data-chapter="4.8" style="display: none;">
-          <!-- Título del sub-capítulo -->
-          <div class="subchapter-title">
+                <section class="chapter subchapter-biodiversity" id="chapter-4-8" data-chapter="4.8" style="display: none;">
+                    <div class="subchapter-title">
             <h2>🧬 Subespecies</h2>
           </div>
 
-          <!-- Submenú de Modelos Climáticos -->
-          <div class="subchapter-text">
+                    <div class="subchapter-text">
             <div class="models-menu">
               <h3 class="models-menu-title">Modelos Climáticos</h3>
               <div class="models-list">
@@ -1799,8 +1636,7 @@
             </div>
           </div>
 
-          <!-- Menú de navegación superior -->
-          <div class="subchapter-menu">
+                    <div class="subchapter-menu">
             <button class="back-button" data-action="back-to-biodiversity" data-parent-chapter="4">
               ← Volver a Pérdida
             </button>
@@ -1817,16 +1653,14 @@
             </div>
           </div>
 
-          <!-- Mapa -->
-          <div class="subchapter-map">
+                    <div class="subchapter-map">
             <div class="map-container" id="map-4-8"></div>
           </div>
         </section>
 
       </div>
 
-      <!-- Timeline inferior -->
-      <div class="timeline" id="timeline">
+            <div class="timeline" id="timeline">
         <div class="timeline-item" data-chapter="1">
           <div class="timeline-circle">1</div>
           <div class="timeline-label">Índice cambio climático</div>
@@ -1845,8 +1679,7 @@
         </div>
       </div>
 
-      <!-- Botones de navegación -->
-      <div class="nav-buttons left" id="navButtonsLeft">
+            <div class="nav-buttons left" id="navButtonsLeft">
         <button class="nav-btn" id="btnPrev" aria-label="Capítulo anterior">
           ←
         </button>
@@ -1858,8 +1691,7 @@
       </div>
     </div>
 
-    <!-- JavaScript -->
-    <script type="module" src="js/main.js"></script>
+        <script type="module" src="js/main.js"></script>
 
     <script>
 

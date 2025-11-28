@@ -77,7 +77,7 @@ class PopupGenerator {
               <span class="badge badge-estado ${
                 accion.estado === "activo" ? "badge-activo" : "badge-concluido"
               }">
-                ${accion.estado === "activo" ? "Activo" : "Concluido"}
+                ${accion.estado === "activo" ? "En Proceso" : "Concluido"}
               </span>
             </div>
           </div>
@@ -186,30 +186,15 @@ class PopupGenerator {
 
   generateUbicacionSection(ubicacion, esEstatal) {
     const icono = esEstatal ? "🏛️" : "📍";
-    const tipoTexto = esEstatal ? "Nivel Estatal" : "Ubicación específica";
 
     return `
       <div class="popup-field popup-field-full">
-        <label>
-          ${icono} Ubicación
-          ${esEstatal ? '<span class="badge badge-estatal">Estatal</span>' : ""}
-        </label>
         <div class="field-value">
-          <strong>${ubicacion?.lugar || "Sin especificar"}</strong>
+          ${icono} <strong>${ubicacion?.lugar || "Sin especificar"}</strong>
+          ${esEstatal ? '<span class="badge badge-estatal">Estatal</span>' : ""}
           ${
             esEstatal
               ? '<div class="ubicacion-alcance">Alcance: Todo el Estado de Tlaxcala</div>'
-              : ""
-          }
-          ${
-            ubicacion?.lat && ubicacion?.lng && !esEstatal
-              ? `
-            <div class="ubicacion-coords">
-              Coordenadas: ${ubicacion.lat.toFixed(5)}, ${ubicacion.lng.toFixed(
-                  5
-                )}
-            </div>
-          `
               : ""
           }
         </div>

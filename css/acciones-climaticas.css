@@ -924,7 +924,7 @@
 
 /* Footer con botones */
 .popup-footer {
-  margin-top: 0.625rem;
+  margin-top: 0rem;
   padding-top: 0.625rem;
   border-top: 1px solid #f0f0f0;
   display: flex;
