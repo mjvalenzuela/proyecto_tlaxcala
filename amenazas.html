@@ -191,6 +191,75 @@
             </div>
           </div>
         </section>
+
+        <!-- CAPÍTULO 4 -->
+        <section class="chapter chapter-analytics" id="chapter-4" data-chapter="4">
+          <!-- Título del capítulo -->
+          <h2 class="map-title">Amenazas al sector agrícola: Sequía</h2>
+
+          <!-- Card de texto (izquierda, 30%) -->
+          <div class="analytics-text">
+            <h2 class="chapter-title">Sequía</h2>
+            <br>
+            <div class="chapter-content">
+              <p>
+                La sequía, exacerbada por el cambio climático, ha llevado a que en Tlaxcala prevalezcan condiciones anormalmente secas (D0).
+              </p>
+              <p>
+                Esto afecta la producción de alimentos y la disponibilidad de agua para riego, y puede requerir restricciones en el uso del agua, tal como se ha visto en municipios como Calpulalpan y Nanacamilpa.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card gráfica superior (derecha arriba, 70%) -->
+          <div class="analytics-chart-1">
+            <h3 class="chart-title">Evolución y el porcentaje de área del Estado afectado con una o varias categorías de sequía</h3>
+            <div class="chart-container">
+              <canvas id="chart-4-1"></canvas>
+            </div>
+          </div>
+
+          <!-- Card gráfica inferior (derecha abajo, 70%) -->
+          <div class="analytics-chart-2">
+            <h3 class="chart-title">Gráfica 2</h3>
+            <div class="chart-container">
+              <canvas id="chart-4-2"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- CAPÍTULO 5 -->
+        <section class="chapter chapter-analytics" id="chapter-5" data-chapter="5">
+          <!-- Título del capítulo -->
+          <h2 class="map-title">Amenazas al sector agrícola: Helada</h2>
+
+          <!-- Card de texto (izquierda, 30%) -->
+          <div class="analytics-text">
+            <h2 class="chapter-title">Heladas</h2>
+            <br>
+            <div class="chapter-content">
+              <p>
+                Las heladas representan un riesgo para cultivos sensibles al frío.
+              </p>
+              <p>
+                Tlaxcala experimenta un número variable de días con heladas (FD0) cada año, lo que exige medidas de protección para evitar daños significativos a las cosechas.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card gráfica superior (derecha arriba, 70%) -->
+          <div class="analytics-chart-1">
+            <h3 class="chart-title">Número de días de heladas (FD0)</h3>
+            <div class="chart-container">
+              <canvas id="chart-5-1"></canvas>
+            </div>
+          </div>
+
+          <!-- Card mapa inferior (derecha abajo, 70%) -->
+          <div class="analytics-chart-2 analytics-map">
+            <div class="map-container" id="map-5"></div>
+          </div>
+        </section>
       </div>
 
       <!-- Timeline inferior -->
@@ -206,6 +275,14 @@
         <div class="timeline-item" data-chapter="3">
           <div class="timeline-circle">3</div>
           <div class="timeline-label">Impacto Territorial</div>
+        </div>
+        <div class="timeline-item" data-chapter="4">
+          <div class="timeline-circle">4</div>
+          <div class="timeline-label">Amenazas: Sequía</div>
+        </div>
+        <div class="timeline-item" data-chapter="5">
+          <div class="timeline-circle">5</div>
+          <div class="timeline-label">Amenazas: Heladas</div>
         </div>
       </div>
 
@@ -1032,6 +1109,105 @@
         }
 
         // ============================================================
+        // CAPÍTULO 5 - MAPA DE HELADAS
+        // ============================================================
+        const map5 = new ol.Map({
+          target: 'map-5',
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM(),
+              zIndex: 0,
+            }),
+          ],
+          view: new ol.View({
+            center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
+            zoom: 9.5,
+          }),
+          controls: ol.control.defaults.defaults({
+            zoom: true,
+            attribution: false,
+            rotate: false,
+          }),
+        });
+
+        // Determinar URL del proxy
+        const isVercelProxy5 = proxyUrl.includes("proxy?path=");
+
+        // Agregar capa WMS de Heladas
+        const heladasSource = new ol.source.TileWMS({
+          url: isVercelProxy5
+            ? `${proxyUrl}${encodeURIComponent('/geoserver/SEICCT/wms')}`
+            : `${proxyUrl}/SEICCT/wms`,
+          params: {
+            'LAYERS': 'SEICCT:heladas',
+            'TILED': true,
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          serverType: 'geoserver',
+        });
+
+        const heladasLayer = new ol.layer.Tile({
+          source: heladasSource,
+          opacity: 1,
+          zIndex: 1,
+          visible: true,
+        });
+        heladasLayer.set('name', 'Heladas');
+
+        map5.addLayer(heladasLayer);
+
+        // Configuración de capas para el mapa 5
+        const capasConfigMap5 = [
+          {
+            nombre: "Heladas",
+            tipo: "wms",
+            layer: "SEICCT:heladas",
+            visible: true,
+            leyenda: true,
+          }
+        ];
+
+        // Crear control de capas para map-5
+        const mapContainer5 = document.getElementById('map-5');
+        if (mapContainer5) {
+          let controlsContainer5 = document.createElement('div');
+          controlsContainer5.className = 'map-controls';
+          controlsContainer5.id = 'map-controls-5';
+          mapContainer5.appendChild(controlsContainer5);
+
+          controlsContainer5.innerHTML = `
+            <div class="map-controls-header">
+              <div class="map-controls-title">Capas</div>
+              <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
+            </div>
+            <div class="map-controls-content"></div>
+          `;
+
+          const contentContainer5 = controlsContainer5.querySelector('.map-controls-content');
+          const toggleBtn5 = controlsContainer5.querySelector('.map-controls-toggle');
+
+          toggleBtn5.addEventListener('click', () => {
+            controlsContainer5.classList.toggle('collapsed');
+            toggleBtn5.textContent = controlsContainer5.classList.contains('collapsed') ? '▼' : '▲';
+          });
+
+          // Agregar checkbox para la capa de Heladas
+          const layerControl5 = document.createElement('div');
+          layerControl5.className = 'layer-control';
+          layerControl5.innerHTML = `
+            <input type="checkbox" id="layer-heladas-5" checked />
+            <label for="layer-heladas-5">Heladas</label>
+          `;
+          contentContainer5.appendChild(layerControl5);
+
+          const checkbox5 = layerControl5.querySelector('#layer-heladas-5');
+          checkbox5.addEventListener('change', (e) => {
+            heladasLayer.setVisible(e.target.checked);
+          });
+        }
+
+        // ============================================================
         // NAVEGACIÓN Y CONTROLES
         // ============================================================
         const navbarToggle = document.getElementById("navbarToggle");
@@ -1094,7 +1270,7 @@
         const btnNext = document.getElementById("btnNext");
 
         let currentChapter = 1;
-        const totalChapters = 3;
+        const totalChapters = 5;
 
         /**
          * Navega a un capítulo específico con scroll suave

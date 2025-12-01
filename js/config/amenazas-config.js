@@ -501,5 +501,19 @@ export const storyMapConfig = {
         ],
       },
     },
+
+    {
+      id: "cap-4",
+      numero: 4,
+      titulo: "Análisis de Amenazas Climáticas",
+      etiqueta: "Amenazas: Sequía",
+    },
+
+    {
+      id: "cap-5",
+      numero: 5,
+      titulo: "Análisis de Amenazas Climáticas",
+      etiqueta: "Capítulo 5",
+    },
   ],
 };
