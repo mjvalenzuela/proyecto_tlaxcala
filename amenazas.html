@@ -887,39 +887,79 @@
          * @param {ol.Map} mapa - Instancia del mapa de OpenLayers
          */
         function configurarHoverMunicipios3(mapa) {
-        const mapElement = document.getElementById('map-3');
-        if (!mapElement) return;
+          const mapElement = document.getElementById('map-3');
+          if (!mapElement) return;
 
-       
-        const tooltip = document.createElement('div');
-        tooltip.className = 'municipio-hover-tooltip';
-        tooltip.style.display = 'none';
-        mapElement.appendChild(tooltip);
-
-        
-        mapa.on('pointermove', (event) => {
-          const pixel = mapa.getEventPixel(event.originalEvent);
-          let featureDetected = false;
-
-          mapa.forEachFeatureAtPixel(pixel, (feature, layer) => {
-            if (layer && layer.get('tipo') === 'wfs') {
-              const municipio = feature.get('municipio') || feature.get('MUNICIPIO') || feature.get('Municipio');
-              if (municipio) {
-                tooltip.textContent = municipio;
-                tooltip.style.display = 'block';
-                tooltip.style.left = event.pixel[0] + 15 + 'px';
-                tooltip.style.top = event.pixel[1] + 15 + 'px';
-                featureDetected = true;
-              }
-            }
-          });
-
-          if (!featureDetected) {
+          // Crear tooltip si no existe
+          let tooltip = mapElement.querySelector('.municipio-hover-tooltip');
+          if (!tooltip) {
+            tooltip = document.createElement('div');
+            tooltip.className = 'municipio-hover-tooltip';
             tooltip.style.display = 'none';
+            mapElement.appendChild(tooltip);
           }
 
-          mapa.getTargetElement().style.cursor = featureDetected ? 'pointer' : '';
-        });
+          // Variable para rastrear feature actual
+          let currentFeature3 = null;
+          let defaultStyle3 = null;
+
+          // Estilo de hover
+          const hoverStyle3 = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: '#A21A5C',
+              width: 3
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(162, 26, 92, 0.2)'
+            })
+          });
+
+          mapa.on('pointermove', (evt) => {
+            const pixel = mapa.getEventPixel(evt.originalEvent);
+
+            // Restaurar estilo del feature anterior
+            if (currentFeature3) {
+              currentFeature3.setStyle(defaultStyle3);
+              currentFeature3 = null;
+              tooltip.style.display = 'none';
+            }
+
+            // Buscar feature bajo el cursor
+            mapa.forEachFeatureAtPixel(pixel, (feature, layer) => {
+              if (layer && layer.get('tipo') === 'wfs') {
+                currentFeature3 = feature;
+                defaultStyle3 = feature.getStyle() || layer.getStyle();
+
+                // Aplicar estilo de hover
+                feature.setStyle(hoverStyle3);
+
+                // Obtener nombre del municipio
+                const properties = feature.getProperties();
+                const nombreMunicipio =
+                  properties.Municipio ||
+                  properties.MUNICIPIO ||
+                  properties.municipio ||
+                  properties.nombre ||
+                  properties.NOMBRE ||
+                  properties.NOM_MUN ||
+                  properties.nom_mun ||
+                  properties.NOMGEO ||
+                  properties.nomgeo ||
+                  'Municipio';
+
+                // Mostrar tooltip
+                tooltip.textContent = nombreMunicipio;
+                tooltip.style.display = 'block';
+                tooltip.style.left = `${evt.originalEvent.offsetX + 15}px`;
+                tooltip.style.top = `${evt.originalEvent.offsetY + 15}px`;
+
+                return true; // Detener búsqueda
+              }
+            });
+
+            // Cambiar cursor
+            mapa.getTargetElement().style.cursor = currentFeature3 ? 'pointer' : '';
+          });
         }
 
         /**
@@ -1130,22 +1170,46 @@
           }),
         });
 
-        // Determinar URL del proxy
-        const isVercelProxy5 = proxyUrl.includes("proxy?path=");
-
         // Agregar capa WMS de Heladas
-        const heladasSource = new ol.source.TileWMS({
-          url: isVercelProxy5
-            ? `${proxyUrl}${encodeURIComponent('/geoserver/SEICCT/wms')}`
-            : `${proxyUrl}/SEICCT/wms`,
-          params: {
-            'LAYERS': 'SEICCT:heladas',
-            'TILED': true,
-            'FORMAT': 'image/png',
-            'TRANSPARENT': true,
-          },
-          serverType: 'geoserver',
-        });
+        let heladasSource;
+        const workspace5 = 'SEICCT';
+
+        if (isVercelProxy) {
+          // Para Vercel: usar tileLoadFunction personalizado
+          const basePath5 = `/geoserver/${workspace5}/wms`;
+          heladasSource = new ol.source.TileWMS({
+            url: proxyUrl.replace('?path=', ''),
+            params: {
+              'LAYERS': 'SEICCT:heladas',
+              'TILED': true,
+              'VERSION': '1.1.0',
+              'FORMAT': 'image/png',
+              'TRANSPARENT': true,
+            },
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',
+            tileLoadFunction: function(imageTile, src) {
+              const url = new URL(src, window.location.origin);
+              const params = url.searchParams.toString();
+              const fullPath = `${basePath5}?${params}`;
+              const encodedPath = encodeURIComponent(fullPath);
+              const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+              imageTile.getImage().src = finalUrl;
+            },
+          });
+        } else {
+          // Para local: URL directa
+          heladasSource = new ol.source.TileWMS({
+            url: proxyUrl + '/SEICCT/wms',
+            params: {
+              'LAYERS': 'SEICCT:heladas',
+              'TILED': true,
+              'FORMAT': 'image/png',
+              'TRANSPARENT': true,
+            },
+            serverType: 'geoserver',
+          });
+        }
 
         const heladasLayer = new ol.layer.Tile({
           source: heladasSource,
