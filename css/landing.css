@@ -132,6 +132,15 @@
   color: var(--color-theme-impactos);
 }
 
+/* Clima - Azul cielo */
+.card-clima {
+  border-top: 4px solid #4a90d9;
+}
+
+.card-clima .story-map-icon {
+  color: #4a90d9;
+}
+
 /* Acciones Climáticas - Verde (éxito) */
 .card-acciones {
   border-top: 4px solid var(--color-success);
