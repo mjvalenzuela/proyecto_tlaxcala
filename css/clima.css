@@ -1,0 +1,573 @@
+/**
+ * Estilos especificos para clima.html
+ * Layout de grid con 4 mapas y panel de texto
+ */
+
+/* ============================================================
+   CAPITULO CLIMA - LAYOUT PRINCIPAL
+   ============================================================ */
+
+.chapter-clima {
+  display: grid;
+  grid-template-columns: 20% 40% 40%;
+  grid-template-rows: 1fr;
+  gap: 0.3rem;
+  height: calc(100vh - 60px); /* Restar altura del timeline */
+  padding: 0.5rem;
+  padding-top: 0.3rem;
+  box-sizing: border-box;
+}
+
+/* Titulo del capitulo - OCULTO (cada mapa tiene su header) */
+.chapter-clima .map-title {
+  display: none;
+}
+
+/* ============================================================
+   CONTENEDOR DE CONTENIDO (debajo del titulo)
+   ============================================================ */
+
+.clima-content {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 20% 40% 40%;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.3rem;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* ============================================================
+   CARD 1 - TEXTO EXPLICATIVO (columna izquierda completa)
+   ============================================================ */
+
+.clima-text-card {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 0.8rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.clima-text-card .card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid var(--color-primary, #A21A5C);
+}
+
+.clima-text-card .card-content {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-text-dark, #333);
+  flex: 1;
+}
+
+.clima-text-card .card-content p {
+  margin-bottom: 0.5rem;
+}
+
+.clima-text-card .card-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.clima-text-card .card-content li {
+  padding: 0.3rem 0;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.clima-text-card .card-content li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary, #A21A5C);
+  border-radius: 50%;
+}
+
+/* Seccion de conceptos Q05/Q95 */
+.clima-concepts {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #eee;
+}
+
+.clima-concepts .concept-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-secondary, #4a90d9);
+  margin-bottom: 0.3rem;
+}
+
+.clima-concepts .concept-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.3rem;
+  margin-bottom: 0.3rem;
+  padding: 0.3rem;
+  background: rgba(74, 144, 217, 0.05);
+  border-radius: 4px;
+}
+
+.clima-concepts .concept-label {
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--color-primary, #A21A5C);
+  min-width: 30px;
+}
+
+.clima-concepts .concept-desc {
+  font-size: 0.7rem;
+  color: #555;
+  line-height: 1.3;
+}
+
+/* ============================================================
+   CARDS DE MAPAS (2, 3, 4, 5)
+   ============================================================ */
+
+.clima-map-card {
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Posicionamiento de cada card de mapa */
+.clima-map-card.map-primavera {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.clima-map-card.map-primavera-q {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.clima-map-card.map-verano {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.clima-map-card.map-invierno {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+/* Header de cada card de mapa - OCULTO */
+.clima-map-card .map-card-header {
+  display: none;
+}
+
+.clima-map-card .map-card-title {
+  display: none;
+}
+
+.clima-map-card .map-card-subtitle {
+  display: none;
+}
+
+/* Contenedor del mapa */
+.clima-map-card .map-container {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+/* ============================================================
+   CONTROLES DE CAPAS DENTRO DE CADA MAPA
+   ============================================================ */
+
+.clima-map-card .map-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 180px;
+  font-size: 0.8rem;
+}
+
+.clima-map-card .map-controls-header {
+  padding: 0.4rem 0.6rem;
+  background: var(--color-primary, #A21A5C);
+  color: white;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clima-map-card .map-controls-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.clima-map-card .map-controls-toggle {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.clima-map-card .map-controls-content {
+  padding: 0.4rem;
+}
+
+.clima-map-card .map-controls.collapsed .map-controls-content {
+  display: none;
+}
+
+.clima-map-card .layer-control {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0;
+}
+
+.clima-map-card .layer-control input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+}
+
+.clima-map-card .layer-control label {
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+/* ============================================================
+   LEYENDA COMPACTA
+   ============================================================ */
+
+.clima-map-card .map-legends {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  background: rgba(255, 255, 255, 0.521);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 250px;
+  font-size: 0.75rem;
+}
+
+.clima-map-card .map-legends-header {
+  padding: 0.3rem 0.5rem;
+  background: #f5f5f5;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clima-map-card .map-legends-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.clima-map-card .map-legends-content {
+  padding: 0.3rem;
+}
+
+.clima-map-card .legend-categoria {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0;
+}
+
+.clima-map-card .legend-simbolo {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.clima-map-card .legend-label {
+  font-size: 0.7rem;
+  color: #333;
+}
+
+/* ============================================================
+   CONTROLES CLIMA - Posicionados en el mapa
+   ============================================================ */
+
+.clima-map-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 160px;
+  font-size: 0.75rem;
+}
+
+.clima-map-controls .map-controls-header {
+  padding: 0.35rem 0.5rem;
+  background: #ffffff;
+  color: #333;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clima-map-controls .map-controls-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.clima-map-controls .map-controls-toggle {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.clima-map-controls .map-controls-content {
+  padding: 0.4rem;
+}
+
+.clima-map-controls.collapsed .map-controls-content {
+  display: none;
+}
+
+.clima-map-controls .layer-control {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0;
+}
+
+.clima-map-controls .layer-control input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+}
+
+.clima-map-controls .layer-control label {
+  font-size: 0.7rem;
+  cursor: pointer;
+  color: #333;
+}
+
+/* ============================================================
+   LEYENDA CLIMA - Rampa horizontal
+   ============================================================ */
+
+.clima-map-legends {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  width: calc(100% - 1rem);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  font-size: 0.7rem;
+  box-sizing: border-box;
+  padding: 0.3rem 0.5rem;
+}
+
+/* Ocultar header de leyenda para mantener altura baja */
+.clima-map-legends .map-legends-header {
+  display: none;
+}
+
+.clima-map-legends .map-legends-content {
+  padding: 0.25rem 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.clima-map-legends.collapsed .map-legends-content {
+  display: none;
+}
+
+.clima-map-legends .legend-item {
+  margin: 0;
+  width: 100%;
+}
+
+.clima-map-legends .legend-item-title {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+/* Rampa de colores horizontal - extendida al 100% */
+.clima-map-legends .legend-ramp-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.clima-map-legends .legend-ramp-bar {
+  height: 16px;
+  width: 100%;
+  min-width: 100%;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.clima-map-legends .legend-ramp-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.55rem;
+  color: #555;
+  padding: 0;
+  width: 100%;
+}
+
+.clima-map-legends .legend-ramp-label {
+  text-align: center;
+}
+
+.map-legends-empty {
+  font-size: 0.65rem;
+  color: #888;
+  text-align: center;
+  padding: 0.3rem;
+}
+
+/* ============================================================
+   SELECTOR DE ESCENARIO/MODELO (para Card 3 y 5)
+   ============================================================ */
+
+.scenario-selector {
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  background: #f5f5f5;
+  border-top: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.scenario-btn {
+  flex: 1;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.65rem;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scenario-btn:hover {
+  background: #f0f0f0;
+}
+
+.scenario-btn.active {
+  background: var(--color-primary, #A21A5C);
+  color: white;
+  border-color: var(--color-primary, #A21A5C);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1200px) {
+  .clima-content {
+    grid-template-columns: 25% 37.5% 37.5%;
+  }
+}
+
+@media (max-width: 992px) {
+  .clima-content {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto repeat(2, 1fr);
+  }
+
+  .clima-text-card {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    max-height: 200px;
+  }
+
+  .clima-map-card.map-primavera {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .clima-map-card.map-primavera-q {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .clima-map-card.map-verano {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .clima-map-card.map-invierno {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .chapter-clima {
+    padding: 0.5rem;
+  }
+
+  .clima-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  .clima-text-card {
+    grid-column: 1;
+    grid-row: 1;
+    max-height: 150px;
+  }
+
+  .clima-map-card.map-primavera,
+  .clima-map-card.map-primavera-q,
+  .clima-map-card.map-verano,
+  .clima-map-card.map-invierno {
+    grid-column: 1;
+  }
+
+  .clima-map-card.map-primavera { grid-row: 2; }
+  .clima-map-card.map-primavera-q { grid-row: 3; }
+  .clima-map-card.map-verano { grid-row: 4; }
+  .clima-map-card.map-invierno { grid-row: 5; }
+}

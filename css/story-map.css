@@ -174,9 +174,11 @@
   display: none;
 }
 
-/* Controles de mapa específicos para Capítulo 3 (Ganancia/Pérdida) */
-[id^="chapter-3-"] .map-controls {
-  top: 1rem;
+/* Controles de mapa específicos para subcapítulos de Capítulos 3 y 4 (Ganancia/Pérdida) - Vulnerabilidad */
+[id^="chapter-3-"] .map-controls,
+[id^="chapter-4-"] .map-controls {
+  top: 4rem;
+  right: 1rem;
   max-width: 300px;
   padding: 0.5rem;
 }
@@ -278,8 +280,8 @@
 /* ===== PANEL DE LEYENDAS (inferior izquierda) ===== */
 .map-legends {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  bottom: 0rem;
+  left: 0rem;
   background: white;
   border-radius: var(--radius-md);
   padding: 1rem;
@@ -789,6 +791,27 @@
 
 .model-item.active .model-icon {
   filter: brightness(0) invert(1);
+}
+
+/* Texto animado de instrucción para seleccionar modelo */
+.models-hint {
+  font-size: 0.9rem;
+  color: var(--color-accent-magenta);
+  text-align: center;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
+  animation: pulse-hint 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
 }
 
 .model-icon {
