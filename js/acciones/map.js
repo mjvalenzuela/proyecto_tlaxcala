@@ -341,7 +341,10 @@ class MapManager {
    */
   onEachMunicipio(feature, layer) {
     const munId = feature.properties[this.config.MUNICIPIOS_WFS.campoId];
-    const munNombre = feature.properties[this.config.MUNICIPIOS_WFS.campoNombre] || 'Sin nombre';
+    // Usar mapeo de nombres para evitar problemas de encoding
+    const munNombre = this.config.MUNICIPIOS_WFS.nombresMunicipios[munId] ||
+                      feature.properties[this.config.MUNICIPIOS_WFS.campoNombre] ||
+                      'Sin nombre';
     const cantidad = this.conteoMunicipios[munId] || 0;
 
     // Tooltip con información del municipio

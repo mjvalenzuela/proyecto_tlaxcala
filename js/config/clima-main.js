@@ -23,6 +23,69 @@ window.addEventListener('DOMContentLoaded', () => {
   // Almacenar referencias a las capas para el control
   const capasControladas = {};
 
+  // ============================================================
+  // SINCRONIZACION DE MAPAS DEL CAPITULO 1
+  // ============================================================
+  const mapasCapitulo1Ids = ['map-1-primavera', 'map-1-primavera-q', 'map-1-verano', 'map-1-invierno'];
+  let sincronizandoVista = false;
+  let sincronizandoCapas = false;
+
+  /**
+   * Sincroniza la vista (zoom/pan) de todos los mapas del capítulo 1
+   * @param {ol.Map} mapaOrigen - Mapa que originó el cambio
+   */
+  function sincronizarVista(mapaOrigen) {
+    if (sincronizandoVista) return;
+    sincronizandoVista = true;
+
+    const vista = mapaOrigen.getView();
+    const center = vista.getCenter();
+    const zoom = vista.getZoom();
+
+    mapasCapitulo1Ids.forEach(mapId => {
+      const mapa = mapas[mapId];
+      if (mapa && mapa !== mapaOrigen) {
+        mapa.getView().setCenter(center);
+        mapa.getView().setZoom(zoom);
+      }
+    });
+
+    sincronizandoVista = false;
+  }
+
+  /**
+   * Sincroniza el estado de las capas por índice en todos los mapas
+   * @param {number} indice - Índice de la capa (0=Clim, 1=Q05, 2=Q95)
+   * @param {boolean} visible - Estado de visibilidad
+   * @param {string} mapaOrigenId - ID del mapa que originó el cambio
+   */
+  function sincronizarCapas(indice, visible, mapaOrigenId) {
+    if (sincronizandoCapas) return;
+    sincronizandoCapas = true;
+
+    mapasCapitulo1Ids.forEach(mapId => {
+      if (mapId === mapaOrigenId) return;
+
+      const capas = capasControladas[mapId];
+      if (!capas || !capas[indice]) return;
+
+      // Actualizar la capa
+      capas[indice].layer.setVisible(visible);
+      capas[indice].visible = visible;
+
+      // Actualizar el checkbox
+      const checkbox = document.getElementById(`layer-${mapId}-${indice}`);
+      if (checkbox) {
+        checkbox.checked = visible;
+      }
+
+      // Actualizar leyenda
+      actualizarLeyendas(mapId);
+    });
+
+    sincronizandoCapas = false;
+  }
+
   // Simbologia de precipitacion basada en SLD - Anual
   const simbologiaPrecipitacion = {
     titulo: 'Precipitación Anual (mm)',
@@ -436,6 +499,10 @@ window.addEventListener('DOMContentLoaded', () => {
     if (mapaConfig.id === 'map-1-primavera' || mapaConfig.id === 'map-1-primavera-q' || mapaConfig.id === 'map-1-verano' || mapaConfig.id === 'map-1-invierno') {
       crearControlCapas(mapaConfig.id, mapContainer);
       crearPanelLeyendas(mapaConfig.id, mapContainer);
+
+      // Agregar eventos de sincronización de vista (zoom/pan)
+      map.getView().on('change:center', () => sincronizarVista(map));
+      map.getView().on('change:resolution', () => sincronizarVista(map));
     }
   });
 
@@ -696,6 +763,11 @@ window.addEventListener('DOMContentLoaded', () => {
         capaInfo.layer.setVisible(e.target.checked);
         capaInfo.visible = e.target.checked;
         actualizarLeyendas(mapId);
+
+        // Sincronizar capas en los otros mapas del capítulo 1
+        if (mapasCapitulo1Ids.includes(mapId)) {
+          sincronizarCapas(index, e.target.checked, mapId);
+        }
       });
     });
 

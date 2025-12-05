@@ -57,7 +57,7 @@
 }
 
 .clima-text-card .card-title {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--color-primary, #A21A5C);
   margin-bottom: 0.5rem;
@@ -74,7 +74,7 @@
 
 .clima-text-card .card-content p {
   margin-bottom: 0.5rem;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .clima-text-card .card-content ul {
@@ -108,7 +108,7 @@
 }
 
 .clima-concepts .concept-title {
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--color-secondary, #4a90d9);
   margin-bottom: 0.3rem;
@@ -132,7 +132,7 @@
 }
 
 .clima-concepts .concept-desc {
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: #555;
   line-height: 1.3;
 }
