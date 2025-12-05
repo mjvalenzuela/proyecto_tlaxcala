@@ -238,15 +238,82 @@ window.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
+  // Simbologia Otoño Climatología
+  const simbologiaOtoClim = {
+    titulo: 'Precipitación Otoño (mm)',
+    tipo: 'ramp',
+    categorias: [
+      { label: '80 mm', color: '#FF412F' },
+      { label: '100 mm', color: '#FF7214' },
+      { label: '120 mm', color: '#FF9537' },
+      { label: '140 mm', color: '#FAB96B' },
+      { label: '160 mm', color: '#BFED8B' },
+      { label: '180 mm', color: '#70EC85' },
+      { label: '200 mm', color: '#11CA63' },
+      { label: '220 mm', color: '#45A92A' },
+      { label: '240 mm', color: '#69A469' },
+      { label: '260 mm', color: '#66B0FF' },
+      { label: '280 mm', color: '#426DF5' },
+      { label: '300 mm', color: '#0F39E5' },
+      { label: '320 mm', color: '#0105CC' }
+    ]
+  };
+
+  // Simbologia Otoño Q05
+  const simbologiaOtoQ05 = {
+    titulo: 'Precipitación Mínima Q05 (mm)',
+    tipo: 'ramp',
+    categorias: [
+      { label: '30 mm', color: '#FF412F' },
+      { label: '45 mm', color: '#FF7214' },
+      { label: '60 mm', color: '#FF9537' },
+      { label: '75 mm', color: '#FAB96B' },
+      { label: '90 mm', color: '#BFED8B' },
+      { label: '105 mm', color: '#70EC85' },
+      { label: '120 mm', color: '#11CA63' },
+      { label: '135 mm', color: '#45A92A' },
+      { label: '150 mm', color: '#69A469' },
+      { label: '165 mm', color: '#66B0FF' },
+      { label: '180 mm', color: '#426DF5' },
+      { label: '195 mm', color: '#0F39E5' },
+      { label: '210 mm', color: '#0105CC' }
+    ]
+  };
+
+  // Simbologia Otoño Q95
+  const simbologiaOtoQ95 = {
+    titulo: 'Precipitación Máxima Q95 (mm)',
+    tipo: 'ramp',
+    categorias: [
+      { label: '150 mm', color: '#FF412F' },
+      { label: '180 mm', color: '#FF7214' },
+      { label: '210 mm', color: '#FF9537' },
+      { label: '240 mm', color: '#FAB96B' },
+      { label: '270 mm', color: '#BFED8B' },
+      { label: '300 mm', color: '#70EC85' },
+      { label: '330 mm', color: '#11CA63' },
+      { label: '360 mm', color: '#45A92A' },
+      { label: '390 mm', color: '#69A469' },
+      { label: '420 mm', color: '#66B0FF' },
+      { label: '450 mm', color: '#426DF5' },
+      { label: '480 mm', color: '#0F39E5' },
+      { label: '510 mm', color: '#0105CC' }
+    ]
+  };
+
   // ============================================================
   // CAPITULO 1 - MAPAS DE ESCENARIOS CLIMATICOS (4 mapas)
   // ============================================================
   const mapasCapitulo1 = [
     {
       id: 'map-1-primavera',
-      titulo: 'Escenario Anual 2021-2040',
-      estacion: 'anual',
-      capaEscenario: 'SEICCT:Escenario_pr_Anual_Clim_2021-2040'
+      titulo: 'Otoño 2021-2040',
+      estacion: 'otono',
+      capasMultiples: [
+        { nombre: 'Otoño', capa: 'SEICCT:Escenario_pr_Oto_Clim_2021-2040', visible: true, simbologia: 'otoClim' },
+        { nombre: 'Otoño Q05', capa: 'SEICCT:Escenario_pr_Oto_Q05_2021-2040', visible: false, simbologia: 'otoQ05' },
+        { nombre: 'Otoño Q95', capa: 'SEICCT:Escenario_pr_Oto_Q95_2021-2040', visible: false, simbologia: 'otoQ95' }
+      ]
     },
     {
       id: 'map-1-primavera-q',
@@ -330,12 +397,15 @@ window.addEventListener('DOMContentLoaded', () => {
         verQ95: simbologiaVerQ95,
         invClim: simbologiaInvClim,
         invQ05: simbologiaInvQ05,
-        invQ95: simbologiaInvQ95
+        invQ95: simbologiaInvQ95,
+        otoClim: simbologiaOtoClim,
+        otoQ05: simbologiaOtoQ05,
+        otoQ95: simbologiaOtoQ95
       };
 
       // Agregar múltiples capas con clipping
       mapaConfig.capasMultiples.forEach((capaInfo, index) => {
-        const layer = agregarCapaWMSConClipping(map, capaInfo.capa, 5 + index, 0.5);
+        const layer = agregarCapaWMSConClipping(map, capaInfo.capa, 5 + index, 0.7);
         layer.setVisible(capaInfo.visible);
 
         // Obtener simbología específica o usar la genérica

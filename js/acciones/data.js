@@ -197,6 +197,50 @@ class DataManager {
   getColorForDependencia(dependencia) {
     return this.config.COLORS[dependencia] || this.config.COLORS.default;
   }
+
+  /**
+   * Cuenta las acciones por municipio
+   * @param {Object} data - Datos de acciones
+   * @returns {Object} Objeto con mun_id como clave y cantidad de acciones como valor
+   */
+  contarAccionesPorMunicipio(data) {
+    if (!data || !data.acciones) return {};
+
+    const conteo = {};
+
+    data.acciones.forEach((accion) => {
+      if (!accion.ubicaciones || !Array.isArray(accion.ubicaciones)) {
+        return;
+      }
+
+      accion.ubicaciones.forEach((ubicacion) => {
+        // Solo contar ubicaciones locales con mun_id
+        if (ubicacion.mun_id && !ubicacion.es_estatal) {
+          const munId = ubicacion.mun_id;
+          conteo[munId] = (conteo[munId] || 0) + 1;
+        }
+      });
+    });
+
+    return conteo;
+  }
+
+  /**
+   * Obtiene el color según la cantidad de acciones
+   * @param {number} cantidad - Número de acciones
+   * @returns {string} Color hexadecimal
+   */
+  getColorPorCantidadAcciones(cantidad) {
+    if (!cantidad || cantidad === 0) {
+      return this.config.COLOR_SIN_ACCIONES;
+    }
+
+    const rango = this.config.RANGOS_ACCIONES.find(
+      (r) => cantidad >= r.min && cantidad <= r.max
+    );
+
+    return rango ? rango.color : this.config.COLOR_SIN_ACCIONES;
+  }
 }
 
 if (typeof window !== "undefined") {

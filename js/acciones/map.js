@@ -7,9 +7,11 @@ class MapManager {
     this.containerId = containerId;
     this.map = null;
     this.markersLayer = null;
+    this.municipiosLayer = null;
     this.config = window.AccionesConfig;
     this.popupGenerator = new PopupGenerator();
     this.markers = [];
+    this.conteoMunicipios = {};
   }
 
   /**
@@ -32,18 +34,7 @@ class MapManager {
         maxZoom: this.config.MAP.maxZoom,
       }).addTo(this.map);
 
-      const wmsConfig = this.config.WMS_LAYERS.municipios;
-      if (wmsConfig.visible) {
-        this.municipiosLayer = L.tileLayer
-          .wms(wmsConfig.url, {
-            layers: wmsConfig.layers,
-            format: wmsConfig.format,
-            transparent: wmsConfig.transparent,
-            attribution: wmsConfig.attribution,
-            opacity: wmsConfig.opacity,
-          })
-          .addTo(this.map);
-      }
+      // La capa de municipios se cargará después con cargarMunicipiosGeoJSON()
 
       this.markersLayer = L.markerClusterGroup(this.config.CLUSTER);
       this.map.addLayer(this.markersLayer);
@@ -51,6 +42,9 @@ class MapManager {
       L.control
         .scale({ position: "bottomleft", imperial: false })
         .addTo(this.map);
+
+      // Agregar leyenda de colores
+      this.agregarLeyenda();
 
       return true;
     } catch (error) {
@@ -252,7 +246,175 @@ class MapManager {
       this.map.remove();
       this.map = null;
       this.markersLayer = null;
+      this.municipiosLayer = null;
       this.markers = [];
+      this.conteoMunicipios = {};
+    }
+  }
+
+  /**
+   * Establece el conteo de acciones por municipio
+   * @param {Object} conteo - Objeto con mun_id como clave y cantidad como valor
+   */
+  setConteoMunicipios(conteo) {
+    this.conteoMunicipios = conteo || {};
+  }
+
+  /**
+   * Carga los municipios como GeoJSON y aplica estilos según conteo de acciones
+   * @returns {Promise<boolean>} true si se carga correctamente
+   */
+  async cargarMunicipiosGeoJSON() {
+    try {
+      const response = await fetch(this.config.MUNICIPIOS_WFS.url);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const geojsonData = await response.json();
+
+      // Remover capa anterior si existe
+      if (this.municipiosLayer) {
+        this.map.removeLayer(this.municipiosLayer);
+      }
+
+      // Crear capa GeoJSON con estilos dinámicos
+      this.municipiosLayer = L.geoJSON(geojsonData, {
+        style: (feature) => this.getEstiloMunicipio(feature),
+        onEachFeature: (feature, layer) => this.onEachMunicipio(feature, layer)
+      });
+
+      // Agregar al mapa debajo de los markers
+      this.municipiosLayer.addTo(this.map);
+      this.municipiosLayer.bringToBack();
+
+      console.log('Municipios GeoJSON cargados correctamente');
+      return true;
+
+    } catch (error) {
+      console.error('Error al cargar municipios GeoJSON:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Obtiene el estilo para un municipio según su conteo de acciones
+   * @param {Object} feature - Feature GeoJSON del municipio
+   * @returns {Object} Estilo de Leaflet
+   */
+  getEstiloMunicipio(feature) {
+    const munId = feature.properties[this.config.MUNICIPIOS_WFS.campoId];
+    const cantidad = this.conteoMunicipios[munId] || 0;
+    const color = this.getColorPorCantidad(cantidad);
+
+    return {
+      fillColor: color,
+      weight: 1,
+      opacity: 1,
+      color: '#666',
+      fillOpacity: 0.7
+    };
+  }
+
+  /**
+   * Obtiene el color según la cantidad de acciones
+   * @param {number} cantidad - Número de acciones
+   * @returns {string} Color hexadecimal
+   */
+  getColorPorCantidad(cantidad) {
+    if (!cantidad || cantidad === 0) {
+      return this.config.COLOR_SIN_ACCIONES;
+    }
+
+    const rango = this.config.RANGOS_ACCIONES.find(
+      (r) => cantidad >= r.min && cantidad <= r.max
+    );
+
+    return rango ? rango.color : this.config.COLOR_SIN_ACCIONES;
+  }
+
+  /**
+   * Configura eventos para cada municipio
+   * @param {Object} feature - Feature GeoJSON
+   * @param {L.Layer} layer - Capa de Leaflet
+   */
+  onEachMunicipio(feature, layer) {
+    const munId = feature.properties[this.config.MUNICIPIOS_WFS.campoId];
+    const munNombre = feature.properties[this.config.MUNICIPIOS_WFS.campoNombre] || 'Sin nombre';
+    const cantidad = this.conteoMunicipios[munId] || 0;
+
+    // Tooltip con información del municipio
+    const tooltipContent = `
+      <strong>${munNombre}</strong><br>
+      Acciones: ${cantidad}
+    `;
+
+    layer.bindTooltip(tooltipContent, {
+      permanent: false,
+      direction: 'center',
+      className: 'municipio-tooltip'
+    });
+
+    // Eventos de hover
+    layer.on({
+      mouseover: (e) => {
+        const layer = e.target;
+        layer.setStyle({
+          weight: 3,
+          color: '#333',
+          fillOpacity: 0.85
+        });
+        layer.bringToFront();
+      },
+      mouseout: (e) => {
+        this.municipiosLayer.resetStyle(e.target);
+      }
+    });
+  }
+
+  /**
+   * Agrega la leyenda de colores al mapa
+   */
+  agregarLeyenda() {
+    const legend = L.control({ position: 'bottomright' });
+
+    legend.onAdd = () => {
+      const div = L.DomUtil.create('div', 'info legend acciones-legend');
+
+      let html = '<h4>Acciones por Municipio</h4>';
+
+      // Color sin acciones
+      html += `<div class="legend-item">
+        <span class="legend-color" style="background:${this.config.COLOR_SIN_ACCIONES}"></span>
+        <span class="legend-label">Sin acciones</span>
+      </div>`;
+
+      // Rangos de colores
+      this.config.RANGOS_ACCIONES.forEach((rango) => {
+        html += `<div class="legend-item">
+          <span class="legend-color" style="background:${rango.color}"></span>
+          <span class="legend-label">${rango.label}</span>
+        </div>`;
+      });
+
+      div.innerHTML = html;
+      return div;
+    };
+
+    legend.addTo(this.map);
+    this.legendControl = legend;
+  }
+
+  /**
+   * Actualiza los estilos de los municipios (después de cambiar el conteo)
+   */
+  actualizarEstilosMunicipios() {
+    if (this.municipiosLayer) {
+      this.municipiosLayer.eachLayer((layer) => {
+        const feature = layer.feature;
+        layer.setStyle(this.getEstiloMunicipio(feature));
+      });
     }
   }
 }

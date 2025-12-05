@@ -95,6 +95,32 @@ const CONFIG = {
     key: 'acciones_climaticas_cache'
   },
 
+  // Configuración para capa de municipios con colores por cantidad de acciones
+  MUNICIPIOS_WFS: {
+    url: (() => {
+      const hostname = window.location.hostname;
+      if (hostname === "localhost" || hostname === "127.0.0.1") {
+        return "http://localhost:3001/geoserver/SEICCT/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=SEICCT:municipios_ganaperd&outputFormat=application/json";
+      }
+      if (hostname.includes("vercel.app")) {
+        return "/api/proxy?path=" + encodeURIComponent("/geoserver/SEICCT/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=SEICCT:municipios_ganaperd&outputFormat=application/json");
+      }
+      return "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=SEICCT:municipios_ganaperd&outputFormat=application/json";
+    })(),
+    campoId: 'CVE_MUN',
+    campoNombre: 'NOM_MUN'
+  },
+
+  RANGOS_ACCIONES: [
+    { min: 1, max: 2, color: '#FFEB3B', label: '1-2 acciones' },
+    { min: 3, max: 5, color: '#FFB74D', label: '3-5 acciones' },
+    { min: 6, max: 10, color: '#FF9800', label: '6-10 acciones' },
+    { min: 11, max: 20, color: '#EF5350', label: '11-20 acciones' },
+    { min: 21, max: Infinity, color: '#B71C1C', label: '20+ acciones' }
+  ],
+
+  COLOR_SIN_ACCIONES: '#E0E0E0',
+
   API_TIMEOUT: 10000,
 
   MESSAGES: {

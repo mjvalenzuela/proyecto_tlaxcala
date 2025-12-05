@@ -54,6 +54,11 @@ class AccionesClimaticasApp {
 
       PopupGenerator.setAccionesData(this.data.acciones);
 
+      // Contar acciones por municipio y cargar capa GeoJSON
+      const conteoMunicipios = this.dataManager.contarAccionesPorMunicipio(this.data);
+      this.mapManager.setConteoMunicipios(conteoMunicipios);
+      await this.mapManager.cargarMunicipiosGeoJSON();
+
       this.markersData = this.dataManager.processAccionesForMap(this.data);
       this.mapManager.addMarkers(this.markersData);
 
