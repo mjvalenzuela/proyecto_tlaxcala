@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Inventario de Emisiones de Gases de Efecto Invernadero en Tlaxcala - Mitigación del Cambio Climático"
+    />
+    <title>Mitigación - Tlaxcala</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/story-map.css" />
+
+    <!-- OpenLayers CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
+    />
+
+    <!-- OpenLayers JS -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+
+    <style>
+      /* Estilos específicos para la página de mitigación */
+      .mitigacion-container {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mitigacion-map {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .mitigacion-map .map-container {
+        width: 100%;
+        height: 100%;
+      }
+
+      .mitigacion-title {
+        position: absolute;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-md);
+        box-shadow: 0 2px 10px var(--color-shadow-md);
+        z-index: 100;
+        text-align: center;
+      }
+
+      .mitigacion-title h1 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--color-title-purple);
+        margin: 0;
+      }
+
+      .mitigacion-title p {
+        font-size: 0.85rem;
+        color: var(--color-text-gray);
+        margin: 0.25rem 0 0 0;
+      }
+
+      /* Ajustes para controles en esta página */
+      .mitigacion-map .map-controls {
+        top: 80px;
+        right: 1rem;
+      }
+
+      .mitigacion-map .map-legends {
+        bottom: 1rem;
+        left: 1rem;
+      }
+
+      /* Tooltip para hover sobre municipios */
+      .municipio-hover-tooltip {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--color-text-dark);
+        pointer-events: none;
+        z-index: 1000;
+        white-space: nowrap;
+        border-left: 3px solid var(--color-btn-primary);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <span>Tlaxcala</span>
+        </a>
+
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú">
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <a href="index.html" class="navbar-link">Inicio</a>
+          <a href="vulnerabilidad.html" class="navbar-link">Vulnerabilidad</a>
+          <a href="riesgo.html" class="navbar-link">Riesgo</a>
+          <a href="amenazas.html" class="navbar-link">Amenazas</a>
+          <a href="impactos.html" class="navbar-link">Impactos</a>
+          <a href="clima.html" class="navbar-link">Clima</a>
+          <a href="acciones-climaticas.html" class="navbar-link">Acciones Climáticas</a>
+          <a href="mitigacion.html" class="navbar-link active">Mitigación</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Indicador para mostrar el navbar -->
+    <div class="navbar-indicator" id="navbarIndicator"></div>
+
+    <!-- Contenedor principal -->
+    <div class="mitigacion-container">
+      <!-- Título -->
+      <div class="mitigacion-title">
+        <h1>Inventario de Emisiones de Gases de Efecto Invernadero</h1>
+        <p>Fuentes de emisión por municipio (Gg CO2eq)</p>
+      </div>
+
+      <!-- Mapa -->
+      <div class="mitigacion-map">
+        <div class="map-container" id="map-mitigacion"></div>
+        <!-- Los controles de capas y leyendas se generan dinámicamente -->
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module">
+      import { mitigacionConfig } from './js/config/mitigacion-config.js';
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const proxyUrl = mitigacionConfig.proxyUrl;
+        const isVercelProxy = proxyUrl.includes('proxy?path=');
+
+        // ============================================================
+        // MAPA BASE - CartoDB Positron (gris medio)
+        // ============================================================
+        const cartoPositron = new ol.layer.Tile({
+          source: new ol.source.XYZ({
+            url: 'https://{a-d}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+            attributions: '© <a href="https://carto.com/">CartoDB</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          }),
+          zIndex: 0,
+        });
+
+        // ============================================================
+        // INICIALIZACIÓN DEL MAPA
+        // ============================================================
+        const map = new ol.Map({
+          target: 'map-mitigacion',
+          layers: [cartoPositron],
+          view: new ol.View({
+            center: ol.proj.fromLonLat(mitigacionConfig.mapa.centro),
+            zoom: mitigacionConfig.mapa.zoom,
+          }),
+          controls: ol.control.defaults.defaults({
+            zoom: true,
+            attribution: false,
+          }),
+        });
+
+        // ============================================================
+        // CAPAS WMS
+        // ============================================================
+        const capasWMS = [];
+
+        mitigacionConfig.mapa.capas.forEach((capaConfig, index) => {
+          // Subtítulos
+          if (capaConfig.tipo === 'subtitulo') {
+            capasWMS.push(null);
+            return;
+          }
+
+          if (capaConfig.tipo === 'wms') {
+            const workspace = 'SEICCT';
+            let wmsSource;
+
+            if (isVercelProxy) {
+              const basePath = `/geoserver/${workspace}/wms`;
+              wmsSource = new ol.source.TileWMS({
+                url: proxyUrl.replace('?path=', ''),
+                params: {
+                  'LAYERS': capaConfig.layer,
+                  'TILED': true,
+                  'VERSION': '1.1.0',
+                  'FORMAT': 'image/png',
+                  'TRANSPARENT': true,
+                },
+                serverType: 'geoserver',
+                crossOrigin: 'anonymous',
+                tileLoadFunction: function(imageTile, src) {
+                  const url = new URL(src, window.location.origin);
+                  const params = url.searchParams.toString();
+                  const fullPath = `${basePath}?${params}`;
+                  const encodedPath = encodeURIComponent(fullPath);
+                  const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+                  imageTile.getImage().src = finalUrl;
+                },
+              });
+            } else {
+              wmsSource = new ol.source.TileWMS({
+                url: proxyUrl + '/SEICCT/wms',
+                params: {
+                  'LAYERS': capaConfig.layer,
+                  'TILED': true,
+                },
+                serverType: 'geoserver',
+              });
+            }
+
+            const wmsLayer = new ol.layer.Tile({
+              source: wmsSource,
+              visible: capaConfig.visible || false,
+              opacity: capaConfig.opacity || 1,
+              zIndex: capaConfig.zIndex || index,
+            });
+            wmsLayer.set('name', capaConfig.nombre);
+            map.addLayer(wmsLayer);
+            capasWMS.push(wmsLayer);
+          }
+        });
+
+        // ============================================================
+        // CAPA WFS PARA INTERACCIÓN (HOVER SOBRE MUNICIPIOS)
+        // ============================================================
+        const typeName = 'SEICCT:M82_Vulnerabilidad_CC';
+        const workspace = 'SEICCT';
+
+        const vectorSource = new ol.source.Vector({
+          format: new ol.format.GeoJSON(),
+          url: function(extent) {
+            const params = new URLSearchParams({
+              service: 'WFS',
+              version: '1.0.0',
+              request: 'GetFeature',
+              typeName: typeName,
+              outputFormat: 'application/json',
+              srsname: 'EPSG:3857',
+              bbox: `${extent.join(',')},EPSG:3857`
+            });
+
+            if (isVercelProxy) {
+              const wfsPath = `/geoserver/${workspace}/ows?${params.toString()}`;
+              const encodedPath = encodeURIComponent(wfsPath);
+              return `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+            } else {
+              return `${proxyUrl}/${workspace}/ows?${params.toString()}`;
+            }
+          },
+          strategy: ol.loadingstrategy.bbox
+        });
+
+        const transparentStyle = new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: 'rgba(0, 0, 0, 0)',
+            width: 0
+          }),
+          fill: new ol.style.Fill({
+            color: 'rgba(0, 0, 0, 0)'
+          })
+        });
+
+        const wfsLayer = new ol.layer.Vector({
+          source: vectorSource,
+          style: transparentStyle,
+          visible: true,
+          zIndex: 999
+        });
+        wfsLayer.set('name', 'Municipios (Interacción)');
+        wfsLayer.set('tipo', 'wfs');
+        map.addLayer(wfsLayer);
+
+        // Configurar hover sobre municipios
+        configurarHoverMunicipios(map);
+
+        /**
+         * Configura el hover sobre municipios para mostrar tooltip
+         * @param {ol.Map} mapa - Instancia del mapa de OpenLayers
+         */
+        function configurarHoverMunicipios(mapa) {
+          const mapElement = document.getElementById('map-mitigacion');
+          if (!mapElement) return;
+
+          // Crear tooltip
+          const tooltip = document.createElement('div');
+          tooltip.className = 'municipio-hover-tooltip';
+          tooltip.style.display = 'none';
+          mapElement.appendChild(tooltip);
+
+          // Variables para rastrear feature actual
+          let currentFeature = null;
+          let defaultStyle = null;
+
+          // Estilo de hover
+          const hoverStyle = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: '#A21A5C',
+              width: 3
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(162, 26, 92, 0.2)'
+            })
+          });
+
+          mapa.on('pointermove', (evt) => {
+            const pixel = mapa.getEventPixel(evt.originalEvent);
+
+            // Restaurar estilo del feature anterior
+            if (currentFeature) {
+              currentFeature.setStyle(defaultStyle);
+              currentFeature = null;
+              tooltip.style.display = 'none';
+            }
+
+            // Buscar feature bajo el cursor
+            mapa.forEachFeatureAtPixel(pixel, (feature, layer) => {
+              if (layer && layer.get('tipo') === 'wfs') {
+                currentFeature = feature;
+                defaultStyle = feature.getStyle() || layer.getStyle();
+
+                // Aplicar estilo de hover
+                feature.setStyle(hoverStyle);
+
+                // Obtener nombre del municipio
+                const properties = feature.getProperties();
+                const nombreMunicipio =
+                  properties.Municipio ||
+                  properties.MUNICIPIO ||
+                  properties.municipio ||
+                  properties.nombre ||
+                  properties.NOMBRE ||
+                  properties.NOM_MUN ||
+                  properties.nom_mun ||
+                  properties.NOMGEO ||
+                  properties.nomgeo ||
+                  'Municipio';
+
+                // Mostrar tooltip
+                tooltip.textContent = nombreMunicipio;
+                tooltip.style.display = 'block';
+                tooltip.style.left = `${evt.originalEvent.offsetX + 15}px`;
+                tooltip.style.top = `${evt.originalEvent.offsetY + 15}px`;
+
+                return true; // Detener búsqueda
+              }
+            });
+
+            // Cambiar cursor
+            mapa.getTargetElement().style.cursor = currentFeature ? 'pointer' : '';
+          });
+        }
+
+        // ============================================================
+        // CONTROLES DE CAPAS
+        // ============================================================
+        generarControlesCapas(mitigacionConfig.mapa.capas, capasWMS);
+
+        function generarControlesCapas(capasConfig, capasWMS) {
+          const mapContainer = document.getElementById('map-mitigacion');
+          if (!mapContainer || !mapContainer.parentElement) return;
+
+          let controlsContainer = mapContainer.parentElement.querySelector('.map-controls');
+          if (!controlsContainer) {
+            controlsContainer = document.createElement('div');
+            controlsContainer.className = 'map-controls';
+            mapContainer.parentElement.appendChild(controlsContainer);
+          }
+
+          controlsContainer.innerHTML = `
+            <div class="map-controls-header">
+              <div class="map-controls-title">Capas</div>
+              <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
+            </div>
+            <div class="map-controls-content"></div>
+          `;
+
+          const contentContainer = controlsContainer.querySelector('.map-controls-content');
+
+          const toggleBtn = controlsContainer.querySelector('.map-controls-toggle');
+          toggleBtn.addEventListener('click', () => {
+            controlsContainer.classList.toggle('collapsed');
+            toggleBtn.textContent = controlsContainer.classList.contains('collapsed') ? '▼' : '▲';
+          });
+
+          capasConfig.forEach((capaConfig, index) => {
+            if (capaConfig.tipo === 'subtitulo') {
+              const subtitulo = document.createElement('div');
+              subtitulo.className = 'layer-group-title';
+              subtitulo.textContent = capaConfig.titulo;
+              contentContainer.appendChild(subtitulo);
+              return;
+            }
+
+            if (capaConfig.leyenda === false) {
+              return;
+            }
+
+            const checkboxId = `layer-${index}`;
+            const isVisible = capaConfig.visible || false;
+            const layerControl = document.createElement('div');
+            layerControl.className = 'layer-control';
+            layerControl.innerHTML = `
+              <input type="checkbox" id="${checkboxId}" ${isVisible ? 'checked' : ''} />
+              <label for="${checkboxId}">${capaConfig.nombre}</label>
+            `;
+            contentContainer.appendChild(layerControl);
+
+            const checkbox = layerControl.querySelector(`#${checkboxId}`);
+            if (checkbox && capasWMS[index]) {
+              checkbox.addEventListener('change', (e) => {
+                capasWMS[index].setVisible(e.target.checked);
+                actualizarPanelLeyendas(capasConfig, capasWMS);
+              });
+            }
+          });
+
+          crearPanelLeyendas(mapContainer.parentElement);
+          actualizarPanelLeyendas(capasConfig, capasWMS);
+        }
+
+        // ============================================================
+        // PANEL DE LEYENDAS
+        // ============================================================
+        function crearPanelLeyendas(mapParent) {
+          let legendsContainer = mapParent.querySelector('.map-legends');
+          if (!legendsContainer) {
+            legendsContainer = document.createElement('div');
+            legendsContainer.className = 'map-legends';
+            legendsContainer.innerHTML = `
+              <div class="map-legends-header">
+                <div class="map-legends-title">Leyendas</div>
+                <button class="map-legends-toggle" title="Ocultar/Mostrar leyendas">▲</button>
+              </div>
+              <div class="map-legends-content"></div>
+            `;
+            mapParent.appendChild(legendsContainer);
+
+            const toggleBtn = legendsContainer.querySelector('.map-legends-toggle');
+            toggleBtn.addEventListener('click', () => {
+              legendsContainer.classList.toggle('collapsed');
+              toggleBtn.textContent = legendsContainer.classList.contains('collapsed') ? '▼' : '▲';
+            });
+          }
+        }
+
+        function generarSimbologiaHTML(simbologia) {
+          let html = '<div class="legend-simbologia">';
+          simbologia.categorias.forEach(cat => {
+            html += `
+              <div class="legend-categoria">
+                <span class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke || '#333'};"></span>
+                <span class="legend-label">${cat.label}</span>
+              </div>
+            `;
+          });
+          html += '</div>';
+          return html;
+        }
+
+        function actualizarPanelLeyendas(capasConfig, capasWMS) {
+          const legendsContent = document.querySelector('.map-legends-content');
+          if (!legendsContent) return;
+
+          legendsContent.innerHTML = '';
+          let capasActivas = 0;
+          const simbologias = mitigacionConfig.simbologias || {};
+
+          capasConfig.forEach((capaConfig, index) => {
+            if (capaConfig.tipo !== 'wms' || capaConfig.leyenda === false) return;
+
+            const capa = capasWMS[index];
+            if (capa && capa.getVisible()) {
+              capasActivas++;
+
+              const legendItem = document.createElement('div');
+              legendItem.className = 'legend-item';
+
+              const legendTitle = document.createElement('div');
+              legendTitle.className = 'legend-item-title';
+              legendTitle.textContent = capaConfig.nombre;
+              legendItem.appendChild(legendTitle);
+
+              const simbologia = simbologias[capaConfig.layer];
+              if (simbologia) {
+                const simbologiaContainer = document.createElement('div');
+                simbologiaContainer.innerHTML = generarSimbologiaHTML(simbologia);
+                legendItem.appendChild(simbologiaContainer.firstElementChild);
+              } else {
+                const legendImage = document.createElement('img');
+                legendImage.className = 'legend-item-image';
+
+                let legendUrl;
+                const legendParams = `REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=${capaConfig.layer}&WIDTH=15&HEIGHT=15&LEGEND_OPTIONS=fontAntiAliasing:true;fontSize:11;dpi:96;forceLabels:on;fontName:Sans-Serif`;
+
+                if (isVercelProxy) {
+                  const legendPath = `/geoserver/SEICCT/wms?${legendParams}`;
+                  const encodedLegendPath = encodeURIComponent(legendPath);
+                  legendUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedLegendPath}`;
+                } else {
+                  legendUrl = `${proxyUrl}/SEICCT/wms?${legendParams}`;
+                }
+
+                legendImage.src = legendUrl;
+                legendImage.alt = `Leyenda de ${capaConfig.nombre}`;
+                legendItem.appendChild(legendImage);
+              }
+
+              legendsContent.appendChild(legendItem);
+            }
+          });
+
+          if (capasActivas === 0) {
+            const emptyMessage = document.createElement('div');
+            emptyMessage.className = 'map-legends-empty';
+            emptyMessage.textContent = 'No hay capas activas';
+            legendsContent.appendChild(emptyMessage);
+          }
+        }
+
+        // ============================================================
+        // NAVEGACIÓN
+        // ============================================================
+        const navbarToggle = document.getElementById("navbarToggle");
+        const navbarMenu = document.getElementById("navbarMenu");
+
+        navbarToggle.addEventListener("click", () => {
+          navbarToggle.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        const navbarLinks = document.querySelectorAll(".navbar-link");
+        navbarLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            navbarToggle.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          });
+        });
+
+        const navbar = document.querySelector(".navbar");
+        const navbarIndicator = document.getElementById("navbarIndicator");
+
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+          } else {
+            navbar.classList.remove("scrolled");
+          }
+        });
+
+        navbarIndicator.addEventListener("mouseenter", () => {
+          navbar.classList.add("visible");
+        });
+
+        navbar.addEventListener("mouseenter", () => {
+          navbar.classList.add("visible");
+        });
+
+        navbar.addEventListener("mouseleave", () => {
+          navbar.classList.remove("visible");
+        });
+
+        navbarIndicator.addEventListener("click", () => {
+          navbar.classList.toggle("visible");
+        });
+      });
+    </script>
+  </body>
+</html>
