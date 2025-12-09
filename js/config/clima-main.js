@@ -365,22 +365,177 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   // ============================================================
+  // CONFIGURACION DE CAPAS POR MODELO Y PERIODO
+  // ============================================================
+
+  // Estado actual de selección
+  let modeloActual = 'SSP245';
+  let periodoActual = '2021-2040';
+
+  // Configuración de nombres de capas por modelo/periodo/estación
+  const capasConfig = {
+    SSP245: {
+      '2021-2040': {
+        otono: {
+          clim: 'SEICCT:Escenario_pr_Oto_Clim_2021-2040',
+          q05: 'SEICCT:Escenario_pr_Oto_Q05_2021-2040',
+          q95: 'SEICCT:Escenario_pr_Oto_Q95m_2021-2040'
+        },
+        primavera: {
+          clim: 'SEICCT:Escenario_pr_Pri_Clim_2021-2040',
+          q05: 'SEICCT:Escenario_pr_Pri_Q05_2021-2040',
+          q95: 'SEICCT:Escenario_pr_Pri_Q95_2021-2040'
+        },
+        verano: {
+          clim: 'SEICCT:Escenario_pr_Ver_Clim_2021-2040',
+          q05: 'SEICCT:Escenario_pr_Ver_Q05_2021-2040',
+          q95: 'SEICCT:Escenario_pr_Ver_Q95_2021-2040'
+        },
+        invierno: {
+          clim: 'SEICCT:Escenario_pr_Inv_Clim_2021-2040',
+          q05: 'SEICCT:Escenario_pr_Inv_Q05_2021-2040',
+          q95: 'SEICCT:Escenario_pr_Inv_Q95_2021-2040'
+        }
+      },
+      '2041-2060': {
+        otono: {
+          clim: 'SEICCT:Escenario_pr_Oto_Clim_2041-2060',
+          q05: 'SEICCT:Escenario_pr_Oto_Q05_2041-2060',
+          q95: 'SEICCT:Escenario_pr_Oto_Q95_2041-2060'
+        },
+        primavera: {
+          clim: 'SEICCT:Escenario_pr_Pri_Clim_2041-2060',
+          q05: 'SEICCT:Escenario_pr_Pri_Q05_2041-2060',
+          q95: 'SEICCT:Escenario_pr_Pri_Q95_2041-2060'
+        },
+        verano: {
+          clim: 'SEICCT:Escenario_pr_Ver_Clim_2041-2060',
+          q05: 'SEICCT:Escenario_pr_Ver_Q05_2041-2060',
+          q95: 'SEICCT:Escenario_pr_Ver_Q95_2041-2060'
+        },
+        invierno: {
+          clim: 'SEICCT:Escenario_pr_Inv_Clim_2041-2060',
+          q05: 'SEICCT:Escenario_pr_Inv_Q05_2041-2060',
+          q95: 'SEICCT:Escenario_pr_Inv_Q95_2041-2060'
+        }
+      }
+    },
+    SSP585: {
+      '2021-2040': {
+        otono: {
+          clim: 'SEICCT:SSP585_zzEscenario_pr_Oto_Clim_2021-2040',
+          q05: 'SEICCT:SSP585_zzEscenario_pr_Oto_Q05_2021-2040',
+          q95: 'SEICCT:SSP585_zzEscenario_pr_Oto_Q95_2021-2040'
+        },
+        primavera: {
+          clim: 'SEICCT:SSP585_zzEscenario_pr_Pri_Clim_2021-2040',
+          q05: 'SEICCT:SSP585_zzEscenario_pr_Pri_Q05_2021-2040',
+          q95: 'SEICCT:SSP585_zzEscenario_pr_Pri_Q95_2021-2040'
+        },
+        verano: {
+          clim: 'SEICCT:SSP585_zzEscenario_pr_Ver_Clim_2021-2040',
+          q05: 'SEICCT:SSP585_zzEscenario_pr_Ver_Q05_2021-2040',
+          q95: 'SEICCT:SSP585_zzEscenario_pr_Ver_Q95_2021-2040'
+        },
+        invierno: {
+          clim: 'SEICCT:SSP585_zzEscenario_pr_Inv_Clim_2021-2040',
+          q05: 'SEICCT:SSP585_zzEscenario_pr_Inv_Q05_2021-2040',
+          q95: 'SEICCT:SSP585_zzEscenario_pr_Inv_Q95_2021-2040'
+        }
+      },
+      '2041-2060': {
+        otono: {
+          clim: 'SEICCT:SSP585_zzEscenario_pr_Oto_Clim_2041-2060',
+          q05: 'SEICCT:SSP585_zzEscenario_pr_Oto_Q05_2041-2060',
+          q95: 'SEICCT:SSP585_zzEscenario_pr_Oto_Q95_2041-2060'
+        },
+        primavera: {
+          clim: 'SEICCT:SSP585_zzEscenario_pr_Pri_Clim_2041-2060',
+          q05: 'SEICCT:SSP585_zzEscenario_pr_Pri_Q05_2041-2060',
+          q95: 'SEICCT:SSP585_zzEscenario_pr_Pri_Q95_2041-2060'
+        },
+        verano: {
+          clim: 'SEICCT:SSP585_zzEscenario_pr_Ver_Clim_2041-2060',
+          q05: 'SEICCT:SSP585_zzEscenario_pr_Ver_Q05_2041-2060',
+          q95: 'SEICCT:SSP585_zzEscenario_pr_Ver_Q95_2041-2060'
+        },
+        invierno: {
+          clim: 'SEICCT:SSP585_zzEscenario_pr_Inv_Clim_2041-2060',
+          q05: 'SEICCT:SSP585_zzEscenario_pr_Inv_Q05_2041-2060',
+          q95: 'SEICCT:SSP585_zzEscenario_pr_Inv_Q95_2041-2060'
+        }
+      }
+    }
+  };
+
+  /**
+   * Obtiene el nombre de la capa según modelo, periodo, estación y tipo
+   */
+  function obtenerNombreCapa(estacion, tipo) {
+    const config = capasConfig[modeloActual]?.[periodoActual]?.[estacion];
+    if (!config) {
+      console.warn(`No hay configuración para ${modeloActual}/${periodoActual}/${estacion}`);
+      return null;
+    }
+    return config[tipo];
+  }
+
+  /**
+   * Actualiza todas las capas de los 4 mapas según el modelo y periodo seleccionado
+   */
+  function actualizarCapasSegunSeleccion() {
+    console.log(`Actualizando capas: Modelo=${modeloActual}, Periodo=${periodoActual}`);
+
+    mapasCapitulo1Ids.forEach(mapId => {
+      const capas = capasControladas[mapId];
+      if (!capas) return;
+
+      // Encontrar la estación de este mapa
+      const mapaConfig = mapasCapitulo1.find(m => m.id === mapId);
+      if (!mapaConfig) return;
+
+      const estacion = mapaConfig.estacion;
+
+      // Actualizar cada capa (Clim, Q05, Q95)
+      capas.forEach((capaInfo, index) => {
+        if (capaInfo.nombre === 'Límite Estatal') return;
+
+        // Determinar el tipo de capa según el índice
+        let tipo;
+        if (index === 0) tipo = 'clim';
+        else if (index === 1) tipo = 'q05';
+        else if (index === 2) tipo = 'q95';
+        else return;
+
+        const nuevaCapa = obtenerNombreCapa(estacion, tipo);
+        if (nuevaCapa) {
+          // Actualizar la capa WMS
+          const source = capaInfo.layer.getSource();
+          source.updateParams({ 'LAYERS': nuevaCapa });
+          capaInfo.layer.set('name', nuevaCapa);
+          console.log(`  ${mapId}: ${capaInfo.nombre} -> ${nuevaCapa}`);
+        }
+      });
+    });
+  }
+
+  // ============================================================
   // CAPITULO 1 - MAPAS DE ESCENARIOS CLIMATICOS (4 mapas)
   // ============================================================
   const mapasCapitulo1 = [
     {
       id: 'map-1-primavera',
-      titulo: 'Otoño 2021-2040',
+      titulo: 'Otoño',
       estacion: 'otono',
       capasMultiples: [
         { nombre: 'Otoño', capa: 'SEICCT:Escenario_pr_Oto_Clim_2021-2040', visible: true, simbologia: 'otoClim' },
         { nombre: 'Otoño Q05', capa: 'SEICCT:Escenario_pr_Oto_Q05_2021-2040', visible: false, simbologia: 'otoQ05' },
-        { nombre: 'Otoño Q95', capa: 'SEICCT:Escenario_pr_Oto_Q95_2021-2040', visible: false, simbologia: 'otoQ95' }
+        { nombre: 'Otoño Q95', capa: 'SEICCT:Escenario_pr_Oto_Q95m_2021-2040', visible: false, simbologia: 'otoQ95' }
       ]
     },
     {
       id: 'map-1-primavera-q',
-      titulo: 'Primavera 2021-2040',
+      titulo: 'Primavera',
       estacion: 'primavera',
       capasMultiples: [
         { nombre: 'Primavera', capa: 'SEICCT:Escenario_pr_Pri_Clim_2021-2040', visible: true, simbologia: 'priClim' },
@@ -390,7 +545,7 @@ window.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'map-1-verano',
-      titulo: 'Verano 2021-2040',
+      titulo: 'Verano',
       estacion: 'verano',
       capasMultiples: [
         { nombre: 'Verano', capa: 'SEICCT:Escenario_pr_Ver_Clim_2021-2040', visible: true, simbologia: 'verClim' },
@@ -398,9 +553,9 @@ window.addEventListener('DOMContentLoaded', () => {
         { nombre: 'Verano Q95', capa: 'SEICCT:Escenario_pr_Ver_Q95_2021-2040', visible: false, simbologia: 'verQ95' }
       ]
     },
-{
+    {
       id: 'map-1-invierno',
-      titulo: 'Invierno 2021-2040',
+      titulo: 'Invierno',
       estacion: 'invierno',
       capasMultiples: [
         { nombre: 'Invierno', capa: 'SEICCT:Escenario_pr_Inv_Clim_2021-2040', visible: true, simbologia: 'invClim' },
@@ -920,22 +1075,46 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================================
-  // SELECTOR DE PERCENTILES (Card 3 - Primavera Q)
+  // SELECTORES DE MODELO Y PERIODO
   // ============================================================
-  const percentilBtns = document.querySelectorAll('.scenario-selector .scenario-btn');
-  percentilBtns.forEach(btn => {
+
+  // Botones de modelo (SSP245, SSP585)
+  const modeloBtns = document.querySelectorAll('.selector-btn[data-model]');
+  modeloBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Actualizar estado activo
-      percentilBtns.forEach(b => b.classList.remove('active'));
+      // Actualizar estado activo solo en botones de modelo
+      modeloBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      const percentil = btn.dataset.percentil;
-      console.log(`Cambiando a percentil: ${percentil}`);
+      // Actualizar modelo actual
+      modeloActual = btn.dataset.model;
+      console.log(`Modelo seleccionado: ${modeloActual}`);
 
-      // Aqui se cambiaria la capa WMS segun el percentil seleccionado
-      // const map = mapas['map-1-primavera-q'];
-      // const escenarioLayer = map.get('escenarioLayer');
-      // escenarioLayer.getSource().updateParams({ 'LAYERS': `SEICCT:primavera_${percentil}` });
+      // Actualizar capas
+      actualizarCapasSegunSeleccion();
+    });
+  });
+
+  // Botones de periodo (2021-2041, 2041-2060)
+  const periodoBtns = document.querySelectorAll('.selector-btn[data-period]');
+  periodoBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Actualizar estado activo solo en botones de periodo
+      periodoBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Actualizar periodo actual (convertir formato del botón al formato interno)
+      const periodoBtn = btn.dataset.period;
+      // Convertir "2021-2041" a "2021-2040" (el formato interno usa 2040)
+      if (periodoBtn === '2021-2041') {
+        periodoActual = '2021-2040';
+      } else if (periodoBtn === '2041-2060') {
+        periodoActual = '2041-2060';
+      }
+      console.log(`Periodo seleccionado: ${periodoActual}`);
+
+      // Actualizar capas
+      actualizarCapasSegunSeleccion();
     });
   });
 
