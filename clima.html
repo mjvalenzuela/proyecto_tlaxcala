@@ -121,23 +121,29 @@
               </div>
             </div>
 
-            <!-- Card 2: Mapa Otoño (40% ancho, 50% alto - superior izquierda) -->
-            <div class="clima-map-card map-otono">
+            <!-- Card 2: Mapa Primavera (40% ancho, 50% alto - superior izquierda) -->
+            <div class="clima-map-card map-primavera">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Otoño</h4>
-                  <span class="map-card-subtitle">Septiembre - Noviembre</span>
+                  <h4 class="map-card-title">Primavera</h4>
+                  <span class="map-card-subtitle">Marzo - Mayo</span>
                 </div>
               </div>
-              <div class="map-container" id="map-1-primavera"></div>
+              <div class="map-container" id="map-1-primavera">
+                <!-- Selector de Variable Climática -->
+                <div class="clima-variable-selector">
+                  <label for="variable-climatica">Variable:</label>
+                  <select id="variable-climatica" class="clima-variable-select">
+                    <option value="precipitacion" selected>Precipitación</option>
+                    <option value="temp_max">Temperatura máxima</option>
+                    <option value="temp_media">Temperatura media</option>
+                    <option value="temp_min">Temperatura mínima</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
-            <!-- Card 3: Mapa 2 (40% ancho, 50% alto - superior derecha) -->
-            <div class="clima-map-card map-primavera-q">
-              <div class="map-container" id="map-1-primavera-q"></div>
-            </div>
-
-            <!-- Card 4: Mapa Verano (40% ancho, 50% alto - inferior izquierda) -->
+            <!-- Card 3: Mapa Verano (40% ancho, 50% alto - superior derecha) -->
             <div class="clima-map-card map-verano">
               <div class="map-card-header">
                 <div>
@@ -146,6 +152,17 @@
                 </div>
               </div>
               <div class="map-container" id="map-1-verano"></div>
+            </div>
+
+            <!-- Card 4: Mapa Otoño (40% ancho, 50% alto - inferior izquierda) -->
+            <div class="clima-map-card map-otono">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Otoño</h4>
+                  <span class="map-card-subtitle">Septiembre - Noviembre</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-1-otono"></div>
             </div>
 
             <!-- Card 5: Mapa Invierno (40% ancho, 50% alto - inferior derecha) -->

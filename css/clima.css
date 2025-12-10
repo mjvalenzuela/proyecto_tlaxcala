@@ -208,17 +208,19 @@
 }
 
 /* Posicionamiento de cada card de mapa */
+/* Fila superior: Primavera (izq) y Verano (der) */
 .clima-map-card.map-primavera {
   grid-column: 2;
   grid-row: 1;
 }
 
-.clima-map-card.map-primavera-q {
+.clima-map-card.map-verano {
   grid-column: 3;
   grid-row: 1;
 }
 
-.clima-map-card.map-verano {
+/* Fila inferior: Otoño (izq) e Invierno (der) */
+.clima-map-card.map-otono {
   grid-column: 2;
   grid-row: 2;
 }
@@ -262,6 +264,7 @@
   z-index: 100;
   max-width: 180px;
   font-size: 0.8rem;
+  padding:1px
 }
 
 .clima-map-card .map-controls-header {
@@ -300,7 +303,7 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.2rem 0;
+  padding: 0rem 0;
 }
 
 .clima-map-card .layer-control input[type="checkbox"] {
@@ -392,6 +395,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin:0px;
 }
 
 .clima-map-controls .map-controls-title {
@@ -422,7 +426,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.25rem 0;
+  padding: 0rem 0;
 }
 
 .clima-map-controls .layer-control input[type="checkbox"] {
@@ -578,17 +582,19 @@
     max-height: 200px;
   }
 
+  /* Fila 2: Primavera (izq) y Verano (der) */
   .clima-map-card.map-primavera {
     grid-column: 1;
     grid-row: 2;
   }
 
-  .clima-map-card.map-primavera-q {
+  .clima-map-card.map-verano {
     grid-column: 2;
     grid-row: 2;
   }
 
-  .clima-map-card.map-verano {
+  /* Fila 3: Otoño (izq) e Invierno (der) */
+  .clima-map-card.map-otono {
     grid-column: 1;
     grid-row: 3;
   }
@@ -617,14 +623,166 @@
   }
 
   .clima-map-card.map-primavera,
-  .clima-map-card.map-primavera-q,
   .clima-map-card.map-verano,
+  .clima-map-card.map-otono,
   .clima-map-card.map-invierno {
     grid-column: 1;
   }
 
   .clima-map-card.map-primavera { grid-row: 2; }
-  .clima-map-card.map-primavera-q { grid-row: 3; }
-  .clima-map-card.map-verano { grid-row: 4; }
+  .clima-map-card.map-verano { grid-row: 3; }
+  .clima-map-card.map-otono { grid-row: 4; }
   .clima-map-card.map-invierno { grid-row: 5; }
+}
+
+/* ============================================================
+   BOTON SPLIT VERTICAL PARA COMPARAR CAPAS
+   ============================================================ */
+
+.clima-split-btn {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--color-primary, #A21A5C);
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.clima-split-btn:hover {
+  background: var(--color-primary, #A21A5C);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(162, 26, 92, 0.3);
+}
+
+.clima-split-btn.active {
+  background: var(--color-primary, #A21A5C);
+  color: white;
+}
+
+.clima-split-btn .split-icon {
+  font-size: 0.85rem;
+}
+
+/* Barra de Split Vertical */
+.clima-split-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  cursor: ew-resize;
+  z-index: 150;
+  user-select: none;
+}
+
+.clima-split-bar::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.clima-split-bar::after {
+  content: "⇄";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-primary, #A21A5C);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Etiquetas de capas en modo Split */
+.clima-split-label {
+  position: absolute;
+  bottom: 2.5rem;
+  padding: 0.3rem 0.6rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 140;
+  pointer-events: none;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clima-split-label-left {
+  left: 0.5rem;
+}
+
+.clima-split-label-right {
+  right: 0.5rem;
+}
+
+/* ============================================================
+   SELECTOR DE VARIABLE CLIMATICA
+   ============================================================ */
+
+.clima-variable-selector {
+  position: absolute;
+  top: 0.5rem;
+  left: 10rem;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.clima-variable-selector label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  white-space: nowrap;
+}
+
+.clima-variable-select {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  border: 2px solid var(--color-primary, #A21A5C);
+  border-radius: 4px;
+  background: white;
+  color: var(--color-text-dark, #333);
+  cursor: pointer;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.clima-variable-select:hover {
+  border-color: var(--color-primary-dark, #8B1550);
+}
+
+.clima-variable-select:focus {
+  border-color: var(--color-primary, #A21A5C);
+  box-shadow: 0 0 0 2px rgba(162, 26, 92, 0.2);
 }

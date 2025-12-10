@@ -23,10 +23,14 @@ window.addEventListener('DOMContentLoaded', () => {
   // Almacenar referencias a las capas para el control
   const capasControladas = {};
 
+  // Almacenar estado del split por mapa
+  const splitState = {};
+  let sincronizandoSplit = false;
+
   // ============================================================
   // SINCRONIZACION DE MAPAS DEL CAPITULO 1
   // ============================================================
-  const mapasCapitulo1Ids = ['map-1-primavera', 'map-1-primavera-q', 'map-1-verano', 'map-1-invierno'];
+  const mapasCapitulo1Ids = ['map-1-primavera', 'map-1-verano', 'map-1-otono', 'map-1-invierno'];
   let sincronizandoVista = false;
   let sincronizandoCapas = false;
 
@@ -379,7 +383,7 @@ window.addEventListener('DOMContentLoaded', () => {
         otono: {
           clim: 'SEICCT:Escenario_pr_Oto_Clim_2021-2040',
           q05: 'SEICCT:Escenario_pr_Oto_Q05_2021-2040',
-          q95: 'SEICCT:Escenario_pr_Oto_Q95m_2021-2040'
+          q95: 'SEICCT:Escenario_pr_Oto_Q95_2021-2040'
         },
         primavera: {
           clim: 'SEICCT:Escenario_pr_Pri_Clim_2021-2040',
@@ -521,20 +525,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // ============================================================
   // CAPITULO 1 - MAPAS DE ESCENARIOS CLIMATICOS (4 mapas)
+  // Orden: Primavera, Verano (arriba) | Otoño, Invierno (abajo)
   // ============================================================
   const mapasCapitulo1 = [
     {
       id: 'map-1-primavera',
-      titulo: 'Otoño',
-      estacion: 'otono',
-      capasMultiples: [
-        { nombre: 'Otoño', capa: 'SEICCT:Escenario_pr_Oto_Clim_2021-2040', visible: true, simbologia: 'otoClim' },
-        { nombre: 'Otoño Q05', capa: 'SEICCT:Escenario_pr_Oto_Q05_2021-2040', visible: false, simbologia: 'otoQ05' },
-        { nombre: 'Otoño Q95', capa: 'SEICCT:Escenario_pr_Oto_Q95m_2021-2040', visible: false, simbologia: 'otoQ95' }
-      ]
-    },
-    {
-      id: 'map-1-primavera-q',
       titulo: 'Primavera',
       estacion: 'primavera',
       capasMultiples: [
@@ -551,6 +546,16 @@ window.addEventListener('DOMContentLoaded', () => {
         { nombre: 'Verano', capa: 'SEICCT:Escenario_pr_Ver_Clim_2021-2040', visible: true, simbologia: 'verClim' },
         { nombre: 'Verano Q05', capa: 'SEICCT:Escenario_pr_Ver_Q05_2021-2040', visible: false, simbologia: 'verQ05' },
         { nombre: 'Verano Q95', capa: 'SEICCT:Escenario_pr_Ver_Q95_2021-2040', visible: false, simbologia: 'verQ95' }
+      ]
+    },
+    {
+      id: 'map-1-otono',
+      titulo: 'Otoño',
+      estacion: 'otono',
+      capasMultiples: [
+        { nombre: 'Otoño', capa: 'SEICCT:Escenario_pr_Oto_Clim_2021-2040', visible: true, simbologia: 'otoClim' },
+        { nombre: 'Otoño Q05', capa: 'SEICCT:Escenario_pr_Oto_Q05_2021-2040', visible: false, simbologia: 'otoQ05' },
+        { nombre: 'Otoño Q95', capa: 'SEICCT:Escenario_pr_Oto_Q95_2021-2040', visible: false, simbologia: 'otoQ95' }
       ]
     },
     {
@@ -597,7 +602,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Agregar capa de escenario climatico (si tiene capa especifica)
     if (mapaConfig.capaEscenario) {
       // Usar clipping para recortar con el limite estatal
-      const capaEscenario = agregarCapaWMSConClipping(map, mapaConfig.capaEscenario, 5, 0.5);
+      const capaEscenario = agregarCapaWMSConClipping(map, mapaConfig.capaEscenario, 5, 0.7);
       capasControladas[mapaConfig.id].push({
         nombre: 'Precipitación Anual',
         layer: capaEscenario,
@@ -651,9 +656,10 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // Crear controles para mapas con capas
-    if (mapaConfig.id === 'map-1-primavera' || mapaConfig.id === 'map-1-primavera-q' || mapaConfig.id === 'map-1-verano' || mapaConfig.id === 'map-1-invierno') {
+    if (mapaConfig.id === 'map-1-primavera' || mapaConfig.id === 'map-1-verano' || mapaConfig.id === 'map-1-otono' || mapaConfig.id === 'map-1-invierno') {
       crearControlCapas(mapaConfig.id, mapContainer);
       crearPanelLeyendas(mapaConfig.id, mapContainer);
+      crearBotonSplit(mapaConfig.id, mapContainer);
 
       // Agregar eventos de sincronización de vista (zoom/pan)
       map.getView().on('change:center', () => sincronizarVista(map));
@@ -706,7 +712,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const layer = new ol.layer.Tile({
       source: wmsSource,
       visible: true,
-      opacity: opacity || 1,
+      opacity: opacity || 0.7,
       zIndex: zIndex || 1,
     });
     layer.set('name', layerName);
@@ -952,6 +958,297 @@ window.addEventListener('DOMContentLoaded', () => {
 
     mapContainer.appendChild(legendsContainer);
     actualizarLeyendas(mapId);
+  }
+
+  /**
+   * Crea el botón de Split Vertical para comparar capas
+   */
+  function crearBotonSplit(mapId, mapContainer) {
+    const map = mapas[mapId];
+    const capas = capasControladas[mapId];
+    if (!map || !capas || capas.length < 2) return;
+
+    // Crear botón
+    const splitBtn = document.createElement('button');
+    splitBtn.className = 'clima-split-btn';
+    splitBtn.id = `split-btn-${mapId}`;
+    splitBtn.innerHTML = `
+      <span class="split-icon">⚡</span>
+      <span>Comparar</span>
+    `;
+    splitBtn.title = 'Comparar capas con Split Vertical';
+    mapContainer.appendChild(splitBtn);
+
+    // Inicializar estado
+    splitState[mapId] = {
+      activo: false,
+      splitBar: null,
+      labelLeft: null,
+      labelRight: null,
+      listeners: { prerender: null, postrender: null },
+      position: 0.5,
+      capaA: null,
+      capaB: null
+    };
+
+    splitBtn.addEventListener('click', () => {
+      if (splitState[mapId].activo) {
+        // Desactivar split en todos los mapas
+        sincronizarSplitDesactivar();
+      } else {
+        // Activar split en todos los mapas
+        sincronizarSplitActivar(mapId);
+      }
+    });
+  }
+
+  /**
+   * Sincroniza la activación del Split en todos los mapas del capítulo 1
+   */
+  function sincronizarSplitActivar(mapIdOrigen) {
+    if (sincronizandoSplit) return;
+    sincronizandoSplit = true;
+
+    // Primero verificar que el mapa origen tenga 2 capas activas
+    const capasOrigen = capasControladas[mapIdOrigen];
+    const capasDisponibles = capasOrigen.filter(c => c.nombre !== 'Límite Estatal');
+    const capasVisibles = capasDisponibles.filter(c => c.visible);
+
+    if (capasVisibles.length < 2) {
+      alert('Activa exactamente 2 capas para comparar con Split Vertical');
+      sincronizandoSplit = false;
+      return;
+    }
+
+    if (capasVisibles.length > 2) {
+      alert('Desactiva capas hasta tener solo 2 activas para comparar');
+      sincronizandoSplit = false;
+      return;
+    }
+
+    // Activar split en todos los mapas
+    mapasCapitulo1Ids.forEach(mapId => {
+      const mapContainer = document.getElementById(mapId);
+      const splitBtn = document.getElementById(`split-btn-${mapId}`);
+      if (mapContainer && splitBtn && !splitState[mapId].activo) {
+        activarSplit(mapId, mapContainer, splitBtn);
+      }
+    });
+
+    sincronizandoSplit = false;
+  }
+
+  /**
+   * Sincroniza la desactivación del Split en todos los mapas del capítulo 1
+   */
+  function sincronizarSplitDesactivar() {
+    if (sincronizandoSplit) return;
+    sincronizandoSplit = true;
+
+    // Desactivar split en todos los mapas
+    mapasCapitulo1Ids.forEach(mapId => {
+      const mapContainer = document.getElementById(mapId);
+      const splitBtn = document.getElementById(`split-btn-${mapId}`);
+      if (mapContainer && splitBtn && splitState[mapId].activo) {
+        desactivarSplit(mapId, mapContainer, splitBtn);
+      }
+    });
+
+    sincronizandoSplit = false;
+  }
+
+  /**
+   * Sincroniza la posición del Split en todos los mapas del capítulo 1
+   */
+  function sincronizarSplitPosicion(mapIdOrigen, position) {
+    if (sincronizandoSplit) return;
+    sincronizandoSplit = true;
+
+    mapasCapitulo1Ids.forEach(mapId => {
+      if (mapId !== mapIdOrigen && splitState[mapId].activo) {
+        const state = splitState[mapId];
+        state.position = position;
+        if (state.splitBar) {
+          state.splitBar.style.left = `${position * 100}%`;
+        }
+        mapas[mapId].render();
+      }
+    });
+
+    sincronizandoSplit = false;
+  }
+
+  /**
+   * Activa el modo Split Vertical
+   */
+  function activarSplit(mapId, mapContainer, splitBtn) {
+    const map = mapas[mapId];
+    const capas = capasControladas[mapId];
+    const state = splitState[mapId];
+
+    // Obtener las capas visibles (excluyendo Límite Estatal)
+    const capasDisponibles = capas.filter(c => c.nombre !== 'Límite Estatal');
+    const capasVisibles = capasDisponibles.filter(c => c.visible);
+
+    // Si no hay exactamente 2 capas visibles, mostrar mensaje
+    if (capasVisibles.length < 2) {
+      alert('Activa exactamente 2 capas para comparar con Split Vertical');
+      return;
+    }
+
+    if (capasVisibles.length > 2) {
+      alert('Desactiva capas hasta tener solo 2 activas para comparar');
+      return;
+    }
+
+    // Usar las dos capas que están visibles
+    const capaA = capasVisibles[0];
+    const capaB = capasVisibles[1];
+
+    // Guardar referencia de las capas en el estado para poder limpiar después
+    state.capaA = capaA;
+    state.capaB = capaB;
+
+    // Crear barra de split
+    const splitBar = document.createElement('div');
+    splitBar.className = 'clima-split-bar';
+    splitBar.style.left = '50%';
+    mapContainer.appendChild(splitBar);
+    state.splitBar = splitBar;
+
+    // Crear etiquetas
+    const labelLeft = document.createElement('div');
+    labelLeft.className = 'clima-split-label clima-split-label-left';
+    labelLeft.textContent = capaA.nombre;
+    mapContainer.appendChild(labelLeft);
+    state.labelLeft = labelLeft;
+
+    const labelRight = document.createElement('div');
+    labelRight.className = 'clima-split-label clima-split-label-right';
+    labelRight.textContent = capaB.nombre;
+    mapContainer.appendChild(labelRight);
+    state.labelRight = labelRight;
+
+    // Configurar clipping
+    let currentPosition = 0.5;
+
+    const prerenderFn = (event) => {
+      const ctx = event.context;
+      const width = ctx.canvas.width;
+      const clipWidth = width * currentPosition;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(clipWidth, 0, width - clipWidth, ctx.canvas.height);
+      ctx.clip();
+    };
+
+    const postrenderFn = (event) => {
+      event.context.restore();
+    };
+
+    state.listeners.prerender = prerenderFn;
+    state.listeners.postrender = postrenderFn;
+
+    capaB.layer.on('prerender', prerenderFn);
+    capaB.layer.on('postrender', postrenderFn);
+
+    // Drag de la barra
+    let isDragging = false;
+
+    const onMouseDown = (e) => {
+      e.preventDefault();
+      isDragging = true;
+    };
+
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      const rect = mapContainer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      currentPosition = Math.max(0.1, Math.min(0.9, x / rect.width));
+
+      splitBar.style.left = `${currentPosition * 100}%`;
+      state.position = currentPosition;
+      map.render();
+
+      // Sincronizar posición en los otros mapas
+      sincronizarSplitPosicion(mapId, currentPosition);
+    };
+
+    const onMouseUp = (e) => {
+      if (isDragging) {
+        e.preventDefault();
+        isDragging = false;
+      }
+    };
+
+    splitBar.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
+    // Guardar listeners para limpieza
+    splitBar._listeners = { onMouseDown, onMouseMove, onMouseUp };
+
+    // Actualizar estado
+    state.activo = true;
+    splitBtn.classList.add('active');
+    splitBtn.innerHTML = `<span class="split-icon">✕</span><span>Cerrar</span>`;
+
+    map.render();
+  }
+
+  /**
+   * Desactiva el modo Split Vertical
+   */
+  function desactivarSplit(mapId, mapContainer, splitBtn) {
+    const map = mapas[mapId];
+    const state = splitState[mapId];
+
+    // Remover barra y etiquetas
+    if (state.splitBar) {
+      const { onMouseDown, onMouseMove, onMouseUp } = state.splitBar._listeners || {};
+      if (onMouseDown) state.splitBar.removeEventListener('mousedown', onMouseDown);
+      if (onMouseMove) document.removeEventListener('mousemove', onMouseMove);
+      if (onMouseUp) document.removeEventListener('mouseup', onMouseUp);
+      state.splitBar.remove();
+      state.splitBar = null;
+    }
+
+    if (state.labelLeft) {
+      state.labelLeft.remove();
+      state.labelLeft = null;
+    }
+
+    if (state.labelRight) {
+      state.labelRight.remove();
+      state.labelRight = null;
+    }
+
+    // Remover listeners de clipping de la capa B guardada
+    if (state.capaB) {
+      if (state.listeners.prerender) {
+        state.capaB.layer.un('prerender', state.listeners.prerender);
+        state.listeners.prerender = null;
+      }
+      if (state.listeners.postrender) {
+        state.capaB.layer.un('postrender', state.listeners.postrender);
+        state.listeners.postrender = null;
+      }
+    }
+
+    // Limpiar referencias de capas
+    state.capaA = null;
+    state.capaB = null;
+
+    // Actualizar estado
+    state.activo = false;
+    state.position = 0.5;
+    splitBtn.classList.remove('active');
+    splitBtn.innerHTML = `<span class="split-icon">⚡</span><span>Comparar</span>`;
+
+    map.render();
   }
 
   /**
