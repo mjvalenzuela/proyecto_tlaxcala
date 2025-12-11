@@ -369,126 +369,160 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   // ============================================================
-  // CONFIGURACION DE CAPAS POR MODELO Y PERIODO
+  // SIMBOLOGIAS DE TEMPERATURA
   // ============================================================
 
-  // Estado actual de selección
-  let modeloActual = 'SSP245';
-  let periodoActual = '2021-2040';
+  // Simbologia Temperatura Máxima (°C)
+  const simbologiaTempMax = {
+    titulo: 'Temperatura Máxima (°C)',
+    tipo: 'ramp',
+    categorias: [
+      { label: '15°C', color: '#0105CC' },
+      { label: '18°C', color: '#426DF5' },
+      { label: '21°C', color: '#66B0FF' },
+      { label: '24°C', color: '#70EC85' },
+      { label: '27°C', color: '#BFED8B' },
+      { label: '30°C', color: '#FAB96B' },
+      { label: '33°C', color: '#FF9537' },
+      { label: '36°C', color: '#FF7214' },
+      { label: '39°C', color: '#FF412F' }
+    ]
+  };
 
-  // Configuración de nombres de capas por modelo/periodo/estación
-  const capasConfig = {
-    SSP245: {
-      '2021-2040': {
-        otono: {
-          clim: 'SEICCT:Escenario_pr_Oto_Clim_2021-2040',
-          q05: 'SEICCT:Escenario_pr_Oto_Q05_2021-2040',
-          q95: 'SEICCT:Escenario_pr_Oto_Q95_2021-2040'
-        },
-        primavera: {
-          clim: 'SEICCT:Escenario_pr_Pri_Clim_2021-2040',
-          q05: 'SEICCT:Escenario_pr_Pri_Q05_2021-2040',
-          q95: 'SEICCT:Escenario_pr_Pri_Q95_2021-2040'
-        },
-        verano: {
-          clim: 'SEICCT:Escenario_pr_Ver_Clim_2021-2040',
-          q05: 'SEICCT:Escenario_pr_Ver_Q05_2021-2040',
-          q95: 'SEICCT:Escenario_pr_Ver_Q95_2021-2040'
-        },
-        invierno: {
-          clim: 'SEICCT:Escenario_pr_Inv_Clim_2021-2040',
-          q05: 'SEICCT:Escenario_pr_Inv_Q05_2021-2040',
-          q95: 'SEICCT:Escenario_pr_Inv_Q95_2021-2040'
-        }
-      },
-      '2041-2060': {
-        otono: {
-          clim: 'SEICCT:Escenario_pr_Oto_Clim_2041-2060',
-          q05: 'SEICCT:Escenario_pr_Oto_Q05_2041-2060',
-          q95: 'SEICCT:Escenario_pr_Oto_Q95_2041-2060'
-        },
-        primavera: {
-          clim: 'SEICCT:Escenario_pr_Pri_Clim_2041-2060',
-          q05: 'SEICCT:Escenario_pr_Pri_Q05_2041-2060',
-          q95: 'SEICCT:Escenario_pr_Pri_Q95_2041-2060'
-        },
-        verano: {
-          clim: 'SEICCT:Escenario_pr_Ver_Clim_2041-2060',
-          q05: 'SEICCT:Escenario_pr_Ver_Q05_2041-2060',
-          q95: 'SEICCT:Escenario_pr_Ver_Q95_2041-2060'
-        },
-        invierno: {
-          clim: 'SEICCT:Escenario_pr_Inv_Clim_2041-2060',
-          q05: 'SEICCT:Escenario_pr_Inv_Q05_2041-2060',
-          q95: 'SEICCT:Escenario_pr_Inv_Q95_2041-2060'
-        }
-      }
-    },
-    SSP585: {
-      '2021-2040': {
-        otono: {
-          clim: 'SEICCT:SSP585_zzEscenario_pr_Oto_Clim_2021-2040',
-          q05: 'SEICCT:SSP585_zzEscenario_pr_Oto_Q05_2021-2040',
-          q95: 'SEICCT:SSP585_zzEscenario_pr_Oto_Q95_2021-2040'
-        },
-        primavera: {
-          clim: 'SEICCT:SSP585_zzEscenario_pr_Pri_Clim_2021-2040',
-          q05: 'SEICCT:SSP585_zzEscenario_pr_Pri_Q05_2021-2040',
-          q95: 'SEICCT:SSP585_zzEscenario_pr_Pri_Q95_2021-2040'
-        },
-        verano: {
-          clim: 'SEICCT:SSP585_zzEscenario_pr_Ver_Clim_2021-2040',
-          q05: 'SEICCT:SSP585_zzEscenario_pr_Ver_Q05_2021-2040',
-          q95: 'SEICCT:SSP585_zzEscenario_pr_Ver_Q95_2021-2040'
-        },
-        invierno: {
-          clim: 'SEICCT:SSP585_zzEscenario_pr_Inv_Clim_2021-2040',
-          q05: 'SEICCT:SSP585_zzEscenario_pr_Inv_Q05_2021-2040',
-          q95: 'SEICCT:SSP585_zzEscenario_pr_Inv_Q95_2021-2040'
-        }
-      },
-      '2041-2060': {
-        otono: {
-          clim: 'SEICCT:SSP585_zzEscenario_pr_Oto_Clim_2041-2060',
-          q05: 'SEICCT:SSP585_zzEscenario_pr_Oto_Q05_2041-2060',
-          q95: 'SEICCT:SSP585_zzEscenario_pr_Oto_Q95_2041-2060'
-        },
-        primavera: {
-          clim: 'SEICCT:SSP585_zzEscenario_pr_Pri_Clim_2041-2060',
-          q05: 'SEICCT:SSP585_zzEscenario_pr_Pri_Q05_2041-2060',
-          q95: 'SEICCT:SSP585_zzEscenario_pr_Pri_Q95_2041-2060'
-        },
-        verano: {
-          clim: 'SEICCT:SSP585_zzEscenario_pr_Ver_Clim_2041-2060',
-          q05: 'SEICCT:SSP585_zzEscenario_pr_Ver_Q05_2041-2060',
-          q95: 'SEICCT:SSP585_zzEscenario_pr_Ver_Q95_2041-2060'
-        },
-        invierno: {
-          clim: 'SEICCT:SSP585_zzEscenario_pr_Inv_Clim_2041-2060',
-          q05: 'SEICCT:SSP585_zzEscenario_pr_Inv_Q05_2041-2060',
-          q95: 'SEICCT:SSP585_zzEscenario_pr_Inv_Q95_2041-2060'
-        }
-      }
-    }
+  // Simbologia Temperatura Media (°C)
+  const simbologiaTempMedia = {
+    titulo: 'Temperatura Media (°C)',
+    tipo: 'ramp',
+    categorias: [
+      { label: '8°C', color: '#0105CC' },
+      { label: '10°C', color: '#426DF5' },
+      { label: '12°C', color: '#66B0FF' },
+      { label: '14°C', color: '#70EC85' },
+      { label: '16°C', color: '#BFED8B' },
+      { label: '18°C', color: '#FAB96B' },
+      { label: '20°C', color: '#FF9537' },
+      { label: '22°C', color: '#FF7214' },
+      { label: '24°C', color: '#FF412F' }
+    ]
+  };
+
+  // Simbologia Temperatura Mínima (°C)
+  const simbologiaTempMin = {
+    titulo: 'Temperatura Mínima (°C)',
+    tipo: 'ramp',
+    categorias: [
+      { label: '-2°C', color: '#0105CC' },
+      { label: '0°C', color: '#426DF5' },
+      { label: '2°C', color: '#66B0FF' },
+      { label: '4°C', color: '#70EC85' },
+      { label: '6°C', color: '#BFED8B' },
+      { label: '8°C', color: '#FAB96B' },
+      { label: '10°C', color: '#FF9537' },
+      { label: '12°C', color: '#FF7214' },
+      { label: '14°C', color: '#FF412F' }
+    ]
   };
 
   /**
-   * Obtiene el nombre de la capa según modelo, periodo, estación y tipo
+   * Obtiene la simbología según la variable y tipo seleccionado
    */
-  function obtenerNombreCapa(estacion, tipo) {
-    const config = capasConfig[modeloActual]?.[periodoActual]?.[estacion];
-    if (!config) {
-      console.warn(`No hay configuración para ${modeloActual}/${periodoActual}/${estacion}`);
-      return null;
+  function obtenerSimbologia(estacion, tipo) {
+    // Si es temperatura, usar simbologías genéricas de temperatura
+    if (variableActual === 'temp_max') {
+      return simbologiaTempMax;
+    } else if (variableActual === 'temp_media') {
+      return simbologiaTempMedia;
+    } else if (variableActual === 'temp_min') {
+      return simbologiaTempMin;
     }
-    return config[tipo];
+
+    // Si es precipitación, usar simbologías específicas por estación y tipo
+    const simbologias = {
+      primavera: { clim: simbologiaPriClim, q05: simbologiaPriQ05, q95: simbologiaPriQ95 },
+      verano: { clim: simbologiaVerClim, q05: simbologiaVerQ05, q95: simbologiaVerQ95 },
+      otono: { clim: simbologiaOtoClim, q05: simbologiaOtoQ05, q95: simbologiaOtoQ95 },
+      invierno: { clim: simbologiaInvClim, q05: simbologiaInvQ05, q95: simbologiaInvQ95 }
+    };
+
+    return simbologias[estacion]?.[tipo] || simbologiaPrecipitacion;
+  }
+
+  // ============================================================
+  // CONFIGURACION DE CAPAS POR VARIABLE, MODELO Y PERIODO
+  // ============================================================
+
+  // Estado actual de selección
+  let variableActual = 'precipitacion';
+  let modeloActual = 'SSP245';
+  let periodoActual = '2021-2040';
+
+  // Códigos de variable para construir nombres de capas
+  const codigosVariable = {
+    precipitacion: 'pr',
+    temp_max: 'tasmax',
+    temp_media: 'tas',
+    temp_min: 'tasmin'
+  };
+
+  // Nombres para mostrar en la UI
+  const nombresVariable = {
+    precipitacion: 'Precipitación',
+    temp_max: 'Temp. Máxima',
+    temp_media: 'Temp. Media',
+    temp_min: 'Temp. Mínima'
+  };
+
+  // Códigos de estación
+  const codigosEstacion = {
+    primavera: 'Pri',
+    verano: 'Ver',
+    otono: 'Oto',
+    invierno: 'Inv'
+  };
+
+  // Nombres de estación para UI
+  const nombresEstacion = {
+    primavera: 'Primavera',
+    verano: 'Verano',
+    otono: 'Otoño',
+    invierno: 'Invierno'
+  };
+
+  /**
+   * Construye el nombre de la capa WMS según la selección actual
+   * @param {string} estacion - primavera, verano, otono, invierno
+   * @param {string} tipo - clim, q05, q95
+   * @returns {string} Nombre de la capa WMS
+   */
+  function construirNombreCapa(estacion, tipo) {
+    const codigoVar = codigosVariable[variableActual];
+    const codigoEst = codigosEstacion[estacion];
+    const tipoUpper = tipo === 'clim' ? 'Clim' : tipo.toUpperCase();
+
+    let nombreCapa;
+    if (modeloActual === 'SSP245') {
+      nombreCapa = `SEICCT:Escenario_${codigoVar}_${codigoEst}_${tipoUpper}_${periodoActual}`;
+    } else {
+      nombreCapa = `SEICCT:SSP585_zzEscenario_${codigoVar}_${codigoEst}_${tipoUpper}_${periodoActual}`;
+    }
+
+    return nombreCapa;
   }
 
   /**
-   * Actualiza todas las capas de los 4 mapas según el modelo y periodo seleccionado
+   * Obtiene el nombre para mostrar de una capa según estación y tipo
+   */
+  function obtenerNombreCapaUI(estacion, tipo) {
+    const nombreEst = nombresEstacion[estacion];
+    if (tipo === 'clim') return nombreEst;
+    return `${nombreEst} ${tipo.toUpperCase()}`;
+  }
+
+  /**
+   * Actualiza todas las capas de los 4 mapas según variable, modelo y periodo seleccionado
    */
   function actualizarCapasSegunSeleccion() {
-    console.log(`Actualizando capas: Modelo=${modeloActual}, Periodo=${periodoActual}`);
+    console.log(`Actualizando capas: Variable=${variableActual}, Modelo=${modeloActual}, Periodo=${periodoActual}`);
 
     mapasCapitulo1Ids.forEach(mapId => {
       const capas = capasControladas[mapId];
@@ -511,15 +545,23 @@ window.addEventListener('DOMContentLoaded', () => {
         else if (index === 2) tipo = 'q95';
         else return;
 
-        const nuevaCapa = obtenerNombreCapa(estacion, tipo);
+        const nuevaCapa = construirNombreCapa(estacion, tipo);
+        const nuevoNombre = obtenerNombreCapaUI(estacion, tipo);
+        const nuevaSimbologia = obtenerSimbologia(estacion, tipo);
+
         if (nuevaCapa) {
           // Actualizar la capa WMS
           const source = capaInfo.layer.getSource();
           source.updateParams({ 'LAYERS': nuevaCapa });
           capaInfo.layer.set('name', nuevaCapa);
+          capaInfo.nombre = nuevoNombre;
+          capaInfo.simbologia = nuevaSimbologia;
           console.log(`  ${mapId}: ${capaInfo.nombre} -> ${nuevaCapa}`);
         }
       });
+
+      // Actualizar leyendas para este mapa
+      actualizarLeyendas(mapId);
     });
   }
 
@@ -1392,7 +1434,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Botones de periodo (2021-2041, 2041-2060)
+  // Botones de periodo (2021-2040, 2041-2060)
   const periodoBtns = document.querySelectorAll('.selector-btn[data-period]');
   periodoBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1400,20 +1442,71 @@ window.addEventListener('DOMContentLoaded', () => {
       periodoBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      // Actualizar periodo actual (convertir formato del botón al formato interno)
-      const periodoBtn = btn.dataset.period;
-      // Convertir "2021-2041" a "2021-2040" (el formato interno usa 2040)
-      if (periodoBtn === '2021-2041') {
-        periodoActual = '2021-2040';
-      } else if (periodoBtn === '2041-2060') {
-        periodoActual = '2041-2060';
-      }
+      // Actualizar periodo actual
+      periodoActual = btn.dataset.period;
       console.log(`Periodo seleccionado: ${periodoActual}`);
 
       // Actualizar capas
       actualizarCapasSegunSeleccion();
     });
   });
+
+  // ============================================================
+  // SELECTOR DE VARIABLE CLIMATICA
+  // ============================================================
+  const variableSelect = document.getElementById('variable-climatica');
+  if (variableSelect) {
+    variableSelect.addEventListener('change', (e) => {
+      variableActual = e.target.value;
+      console.log(`Variable seleccionada: ${variableActual} (${nombresVariable[variableActual]})`);
+
+      // Actualizar capas en todos los mapas
+      actualizarCapasSegunSeleccion();
+
+      // Actualizar los labels en los controles de capas
+      actualizarLabelsControles();
+    });
+  }
+
+  /**
+   * Actualiza los labels de los controles de capas según la variable seleccionada
+   */
+  function actualizarLabelsControles() {
+    mapasCapitulo1Ids.forEach(mapId => {
+      const capas = capasControladas[mapId];
+      if (!capas) return;
+
+      // Encontrar la estación de este mapa
+      const mapaConfig = mapasCapitulo1.find(m => m.id === mapId);
+      if (!mapaConfig) return;
+
+      const estacion = mapaConfig.estacion;
+
+      capas.forEach((capaInfo, index) => {
+        if (capaInfo.nombre === 'Límite Estatal') return;
+
+        // Determinar el tipo de capa según el índice
+        let tipo;
+        if (index === 0) tipo = 'clim';
+        else if (index === 1) tipo = 'q05';
+        else if (index === 2) tipo = 'q95';
+        else return;
+
+        // Actualizar nombre en capaInfo
+        const nuevoNombre = obtenerNombreCapaUI(estacion, tipo);
+        capaInfo.nombre = nuevoNombre;
+
+        // Actualizar label en el checkbox
+        const label = document.querySelector(`label[for="layer-${mapId}-${index}"]`);
+        if (label) {
+          label.textContent = nuevoNombre;
+        }
+      });
+
+      // Actualizar leyendas
+      actualizarLeyendas(mapId);
+    });
+  }
 
   // ============================================================
   // CAPITULOS 2 y 3 - MAPAS SIMPLES

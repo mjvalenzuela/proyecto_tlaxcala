@@ -637,12 +637,14 @@
 
 /* ============================================================
    BOTON SPLIT VERTICAL PARA COMPARAR CAPAS
+   (Oculto temporalmente - descomentar display: flex para mostrar)
    ============================================================ */
 
 .clima-split-btn {
   position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
+  display: none; /* OCULTO TEMPORALMENTE */
   background: rgba(255, 255, 255, 0.95);
   border: 2px solid var(--color-primary, #A21A5C);
   border-radius: 6px;
