@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Story Map sobre el Clima en Tlaxcala"
+    />
+    <title>Clima - Tlaxcala</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/story-map.css" />
+    <link rel="stylesheet" href="css/clima.css" />
+
+    <!-- OpenLayers CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
+    <!-- Chart.js Datalabels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <!-- OpenLayers JS -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+
+    <!-- Papa Parse para CSVs -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+    <style>
+      /* Estilos específicos para el gráfico de clima */
+      .clima-chart-full {
+        grid-area: unset !important;
+        grid-column: 2;
+        grid-row: 2 / 4;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: 0 4px 15px var(--color-shadow-md);
+        border: 1px solid var(--color-beige-light);
+      }
+
+      .clima-chart-full .chart-title {
+        margin-bottom: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .clima-chart-full .clima-chart-container {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        position: relative;
+        max-width: none !important;
+        max-height: none !important;
+      }
+
+      .clima-chart-full .clima-chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+      }
+
+      .clima-chart-full .chart-analysis {
+        padding: 0.75rem 0 0 0;
+        border-top: 1px solid #e0e0e0;
+        font-size: 0.9rem;
+        color: #555;
+        margin-top: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .clima-chart-full .chart-analysis p {
+        margin: 0;
+      }
+
+      /* Estilos para contenedor de imágenes de gráficas */
+      .chart-image-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        background: #fff;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+      }
+
+      .chart-image {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <span>Tlaxcala</span>
+        </a>
+
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú">
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <a href="index.html" class="navbar-link">Inicio</a>
+          <a href="vulnerabilidad.html" class="navbar-link">Vulnerabilidad</a>
+          <a href="riesgo.html" class="navbar-link">Riesgo</a>
+          <a href="amenazas.html" class="navbar-link">Amenazas</a>
+          <a href="impactos.html" class="navbar-link">Impactos</a>
+          <a href="clima.html" class="navbar-link active">Clima</a>
+          <a href="escenarios_clima.html" class="navbar-link">Escenarios Climáticos</a>
+          <a href="acciones-climaticas.html" class="navbar-link">Acciones Climáticas</a>
+          <a href="mitigacion.html" class="navbar-link">Mitigación</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Indicador para mostrar el navbar -->
+    <div class="navbar-indicator" id="navbarIndicator"></div>
+
+    <!-- Contenedor principal del Story Map -->
+    <div class="story-map-container">
+      <!-- Contenedor de capítulos con scroll-snap -->
+      <div class="chapters-container" id="chaptersContainer">
+
+        <!-- CAPÍTULO 1 - Análisis del Clima -->
+        <section class="chapter chapter-analytics" id="chapter-1" data-chapter="1">
+          <!-- Título del capítulo -->
+          <h2 class="map-title">Análisis del Clima en Tlaxcala</h2>
+
+          <!-- Card de texto (izquierda, 30%) -->
+          <div class="analytics-text">
+            <h2 class="chapter-title">Clima y Variabilidad</h2>
+            <br>
+            <div class="chapter-content">
+              <p>
+                El clima es el conjunto de condiciones atmosféricas que se repiten a lo largo del tiempo en una región, como la temperatura, la lluvia, el viento y la humedad.
+              </p>
+              <p>
+                A diferencia del ‘tiempo’, que cambia día a día, el clima se estudia durante largos periodos (al menos 30 años) para entender sus patrones.
+              </p>
+              <p>
+                En Tlaxcala, los meses más cálidos son abril y mayo, mientras que diciembre y enero son los más fríos. La temporada de lluvias ocurre entre junio y septiembre, siendo junio el mes con más precipitación.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card gráfica principal (ocupa ambas cards) -->
+          <div class="clima-chart-full">
+            <h3 class="chart-title">Comparativa de la climatología media mensual para el Estado de Tlaxcala para el período 1970-2000</h3>
+            <div class="clima-chart-container">
+              <canvas id="chart-1-1"></canvas>
+            </div>
+            <div class="chart-analysis">
+              <p>
+                <strong>Análisis:</strong> La gráfica compara datos de estaciones meteorológicas (CLICOM) con el reanálisis ERA5.
+                Se observa que la precipitación se concentra entre mayo y septiembre, alcanzando máximos de 130-145 mm en junio-julio.
+                La temperatura media oscila entre 10°C (invierno) y 17°C (verano), mostrando una correlación con el patrón de lluvias.
+              </p>
+              <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #777; font-style: italic;">
+                Fuente: Elaboración propia con datos de la BD CLICOM y ERA5.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             CAPITULO 2 - TEMPERATURA MEDIA POR ESTACION (Layout de 4 mapas)
+             ============================================================ -->
+        <section class="chapter chapter-clima" id="chapter-2" data-chapter="2">
+          <h2 class="map-title">Temperatura Media por Estación</h2>
+
+          <div class="clima-content">
+            <!-- Card 1: Texto explicativo (20% ancho, 100% alto) -->
+            <div class="clima-text-card">
+              <h3 class="card-title">Temperatura Media Estacional</h3>
+              <div class="card-content">
+                <p>
+                  La temperatura media es un indicador clave para entender el comportamiento climático de una región. En Tlaxcala, la temperatura varía según la estación del año y la altitud.
+                </p>
+                <p>
+                  Los mapas muestran la distribución espacial de la temperatura media para cada estación, basados en el período climatológico 1970-2000.
+                </p>
+                <p>
+                  Las zonas más elevadas del estado, como La Malinche, presentan temperaturas más bajas, mientras que las zonas bajas del sur y suroeste son más cálidas.
+                </p>
+
+                <div class="clima-concepts">
+                  <h4 class="concept-title">Estaciones del año</h4>
+                  <div class="concept-item">
+                    <span class="concept-label">Primavera</span>
+                    <span class="concept-desc">Marzo - Mayo: Época más cálida antes de lluvias</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Verano</span>
+                    <span class="concept-desc">Junio - Agosto: Temporada de lluvias</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Otoño</span>
+                    <span class="concept-desc">Septiembre - Noviembre: Transición a época seca</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Invierno</span>
+                    <span class="concept-desc">Diciembre - Febrero: Época más fría del año</span>
+                  </div>
+                </div>
+
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #777; font-style: italic;">
+                  Fuente: Elaboración propia con datos de la BD CLICOM y ERA5.
+                </p>
+              </div>
+            </div>
+
+            <!-- Card 2: Mapa Primavera -->
+            <div class="clima-map-card map-primavera">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Primavera</h4>
+                  <span class="map-card-subtitle">Marzo - Mayo</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-2-primavera"></div>
+            </div>
+
+            <!-- Card 3: Mapa Verano -->
+            <div class="clima-map-card map-verano">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Verano</h4>
+                  <span class="map-card-subtitle">Junio - Agosto</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-2-verano"></div>
+            </div>
+
+            <!-- Card 4: Mapa Otoño -->
+            <div class="clima-map-card map-otono">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Otoño</h4>
+                  <span class="map-card-subtitle">Septiembre - Noviembre</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-2-otono"></div>
+            </div>
+
+            <!-- Card 5: Mapa Invierno -->
+            <div class="clima-map-card map-invierno">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Invierno</h4>
+                  <span class="map-card-subtitle">Diciembre - Febrero</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-2-invierno"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             CAPITULO 3 - PRECIPITACIÓN TOTAL POR ESTACIÓN (Layout de 4 mapas)
+             ============================================================ -->
+        <section class="chapter chapter-clima" id="chapter-3" data-chapter="3">
+          <h2 class="map-title">Precipitación Total por Estación</h2>
+
+          <div class="clima-content">
+            <!-- Card 1: Texto explicativo (20% ancho, 100% alto) -->
+            <div class="clima-text-card">
+              <h3 class="card-title">Precipitación Estacional</h3>
+              <div class="card-content">
+                <p>
+                  La precipitación es la cantidad de agua que cae de la atmósfera en forma de lluvia, nieve o granizo. Es un elemento fundamental del clima que influye en la agricultura, los ecosistemas y la disponibilidad de agua.
+                </p>
+                <p>
+                  Los mapas muestran la distribución espacial de la precipitación total acumulada para cada estación del año, basados en el período climatológico 1970-2000.
+                </p>
+                <p>
+                  En Tlaxcala, la mayor parte de la precipitación ocurre durante el verano (junio-agosto), mientras que el invierno es la época más seca del año.
+                </p>
+
+                <div class="clima-concepts">
+                  <h4 class="concept-title">Distribución de lluvias</h4>
+                  <div class="concept-item">
+                    <span class="concept-label">Primavera</span>
+                    <span class="concept-desc">Inicio de temporada de lluvias</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Verano</span>
+                    <span class="concept-desc">Máxima precipitación del año</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Otoño</span>
+                    <span class="concept-desc">Disminución gradual de lluvias</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Invierno</span>
+                    <span class="concept-desc">Época más seca del año</span>
+                  </div>
+                </div>
+
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #777; font-style: italic;">
+                  Fuente: Elaboración propia con datos de la BD CLICOM y ERA5.
+                </p>
+              </div>
+            </div>
+
+            <!-- Card 2: Mapa Primavera -->
+            <div class="clima-map-card map-primavera">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Primavera</h4>
+                  <span class="map-card-subtitle">Marzo - Mayo</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-3-primavera"></div>
+            </div>
+
+            <!-- Card 3: Mapa Verano -->
+            <div class="clima-map-card map-verano">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Verano</h4>
+                  <span class="map-card-subtitle">Junio - Agosto</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-3-verano"></div>
+            </div>
+
+            <!-- Card 4: Mapa Otoño -->
+            <div class="clima-map-card map-otono">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Otoño</h4>
+                  <span class="map-card-subtitle">Septiembre - Noviembre</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-3-otono"></div>
+            </div>
+
+            <!-- Card 5: Mapa Invierno -->
+            <div class="clima-map-card map-invierno">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Invierno</h4>
+                  <span class="map-card-subtitle">Diciembre - Febrero</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-3-invierno"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             CAPITULO 4 - ANÁLISIS HISTÓRICO DE TEMPERATURA POR MUNICIPIO
+             ============================================================ -->
+        <section class="chapter chapter-clima" id="chapter-4" data-chapter="4">
+          <h2 class="map-title">Análisis Histórico de Temperatura por Municipio</h2>
+
+          <div class="clima-content">
+            <!-- Card 1: Texto explicativo (20% ancho, 100% alto) -->
+            <div class="clima-text-card">
+              <h3 class="card-title">Índices Climáticos</h3>
+              <div class="card-content">
+                <p>
+                  Las series históricas de temperatura permiten analizar la variabilidad climática a lo largo del tiempo en cada uno de los 60 municipios del estado de Tlaxcala.
+                </p>
+                <p>
+                  Los datos abarcan el período 1940-2023, permitiendo identificar tendencias de largo plazo y valores extremos.
+                </p>
+                <p>
+                  Se presentan análisis de temperatura media, mínima, máxima y tasas de cambio decadal, incluyendo los percentiles 05 y 95 que representan los valores extremos.
+                </p>
+
+                <div class="clima-concepts">
+                  <h4 class="concept-title">Variables analizadas</h4>
+                  <div class="concept-item">
+                    <span class="concept-label">T. Media</span>
+                    <span class="concept-desc">Promedio histórico por municipio</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">T. Mínima</span>
+                    <span class="concept-desc">Valores mínimos anuales</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">T. Máxima</span>
+                    <span class="concept-desc">Valores máximos anuales</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Tasa cambio</span>
+                    <span class="concept-desc">Cambio decadal porcentual</span>
+                  </div>
+                </div>
+
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #777; font-style: italic;">
+                  Fuente: Elaboración propia con datos de ERA5 e IPCC.
+                </p>
+              </div>
+            </div>
+
+            <!-- Card 2: Gráfica 19 - Temperatura Media -->
+            <div class="clima-map-card map-primavera">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Temperatura Media</h4>
+                  <span class="map-card-subtitle">Serie histórica 1940-2023</span>
+                </div>
+              </div>
+              <div class="chart-image-container">
+                <canvas id="chart-4-1"></canvas>
+              </div>
+            </div>
+
+            <!-- Card 3: Gráfica 20 - Temperatura Mínima -->
+            <div class="clima-map-card map-verano">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Temperatura Mínima</h4>
+                  <span class="map-card-subtitle">Valores mínimos anuales</span>
+                </div>
+              </div>
+              <div class="chart-image-container">
+                <canvas id="chart-4-2"></canvas>
+              </div>
+            </div>
+
+            <!-- Card 4: Gráfica 21 - Temperatura Máxima -->
+            <div class="clima-map-card map-otono">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Temperatura Máxima</h4>
+                  <span class="map-card-subtitle">Media anual por municipio</span>
+                </div>
+              </div>
+              <div class="chart-image-container">
+                <canvas id="chart-4-3"></canvas>
+              </div>
+            </div>
+
+            <!-- Card 5: Gráfica 22 - Tasa de Cambio -->
+            <div class="clima-map-card map-invierno">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Tasa de Cambio</h4>
+                  <span class="map-card-subtitle">Cambio decadal (%)</span>
+                </div>
+              </div>
+              <div class="chart-image-container">
+                <canvas id="chart-4-4"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Timeline inferior -->
+      <div class="timeline" id="timeline">
+        <div class="timeline-item" data-chapter="1">
+          <div class="timeline-circle">1</div>
+          <div class="timeline-label">El Clima</div>
+        </div>
+        <div class="timeline-item" data-chapter="2">
+          <div class="timeline-circle">2</div>
+          <div class="timeline-label">Temperatura Media</div>
+        </div>
+        <div class="timeline-item" data-chapter="3">
+          <div class="timeline-circle">3</div>
+          <div class="timeline-label">Precipitación</div>
+        </div>
+        <div class="timeline-item" data-chapter="4">
+          <div class="timeline-circle">4</div>
+          <div class="timeline-label">Índices Climáticos</div>
+        </div>
+      </div>
+
+      <!-- Botones de navegación -->
+      <div class="nav-buttons left" id="navButtonsLeft">
+        <button class="nav-btn" id="btnPrev" aria-label="Capítulo anterior">
+          ←
+        </button>
+      </div>
+      <div class="nav-buttons right" id="navButtonsRight">
+        <button class="nav-btn" id="btnNext" aria-label="Siguiente capítulo">
+          →
+        </button>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module">
+      // ============================================================
+      // INICIALIZACIÓN PRINCIPAL
+      // ============================================================
+      window.addEventListener('DOMContentLoaded', () => {
+
+        // ============================================================
+        // GRÁFICO 1 - Comparativa de Clima Media Mensual
+        // ============================================================
+        const ctx1 = document.getElementById('chart-1-1').getContext('2d');
+        new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            datasets: [
+              // Barras de precipitación
+              {
+                label: 'P_CLICOM',
+                data: [15, 12, 18, 38, 68, 125, 130, 118, 110, 50, 15, 10],
+                backgroundColor: '#1a5276',
+                borderColor: '#1a5276',
+                borderWidth: 1,
+                yAxisID: 'y1',
+                order: 2
+              },
+              {
+                label: 'P_ERA5',
+                data: [18, 20, 28, 55, 95, 145, 120, 125, 130, 60, 25, 18],
+                backgroundColor: '#5dade2',
+                borderColor: '#5dade2',
+                borderWidth: 1,
+                yAxisID: 'y1',
+                order: 2
+              },
+              // Líneas de temperatura
+              {
+                label: 'T_CLICOM',
+                data: [10.5, 10.5, 10.8, 11.7, 13.6, 16.5, 16.8, 16.3, 15.7, 12.8, 10.8, 10.3],
+                type: 'line',
+                borderColor: '#000000',
+                backgroundColor: 'transparent',
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointBackgroundColor: '#000000',
+                tension: 0.3,
+                yAxisID: 'y',
+                order: 1
+              },
+              {
+                label: 'T_ERA5',
+                data: [11.0, 11.2, 11.5, 13.5, 15.8, 15.8, 15.1, 14.9, 14.8, 13.2, 11.3, 10.8],
+                type: 'line',
+                borderColor: '#7f8c8d',
+                backgroundColor: 'transparent',
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointBackgroundColor: '#7f8c8d',
+                tension: 0.3,
+                yAxisID: 'y',
+                order: 1
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              mode: 'index',
+              intersect: false,
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                  usePointStyle: true,
+                  padding: 20,
+                  font: {
+                    size: 12
+                  }
+                }
+              },
+              datalabels: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    let label = context.dataset.label || '';
+                    if (label) {
+                      label += ': ';
+                    }
+                    if (context.dataset.yAxisID === 'y') {
+                      label += context.parsed.y.toFixed(1) + ' °C';
+                    } else {
+                      label += context.parsed.y + ' mm';
+                    }
+                    return label;
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                min: 10,
+                max: 18,
+                title: {
+                  display: true,
+                  text: 'Temperatura (°C)',
+                  font: {
+                    size: 13,
+                    weight: 'bold'
+                  }
+                },
+                ticks: {
+                  stepSize: 1
+                },
+                grid: {
+                  drawOnChartArea: true
+                }
+              },
+              y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                min: 0,
+                max: 160,
+                title: {
+                  display: true,
+                  text: 'Precipitación (mm)',
+                  font: {
+                    size: 13,
+                    weight: 'bold'
+                  }
+                },
+                ticks: {
+                  stepSize: 20
+                },
+                grid: {
+                  drawOnChartArea: false
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: 'Mes',
+                  font: {
+                    size: 13,
+                    weight: 'bold'
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // ============================================================
+        // CAPÍTULO 2 - MAPAS DE TEMPERATURA MEDIA POR ESTACIÓN
+        // ============================================================
+
+        // Configuración del proxy
+        const getProxyUrl = () => {
+          const hostname = window.location.hostname;
+          if (hostname === "localhost" || hostname === "127.0.0.1") {
+            return "http://localhost:3001/geoserver";
+          }
+          if (hostname.includes("vercel.app")) {
+            return "/api/proxy?path=";
+          }
+          return "https://api.cambioclimaticotlaxcala.mx/geoserver";
+        };
+
+        const proxyUrl = getProxyUrl();
+        const isVercelProxy = proxyUrl.includes('proxy?path=');
+        const defaultCenter = [-98.16560203447955, 19.42964878131165];
+        const defaultZoom = 9.5;
+
+        // Almacenar geometría del límite para clipping
+        let limiteGeometry = null;
+        let limiteLoaded = false;
+
+        // Almacenar referencias a mapas y capas
+        const mapasCapitulo2 = {};
+        const capasControladas = {};
+
+        // Configuración de los 4 mapas
+        const mapasConfig = [
+          { id: 'map-2-primavera', layer: 'SEICCT:clima_Tem_Med_Primavera', title: 'Primavera' },
+          { id: 'map-2-verano', layer: 'SEICCT:clima_Tem_Med_Ver', title: 'Verano' },
+          { id: 'map-2-otono', layer: 'SEICCT:clima_Tem_Med_Otono', title: 'Otoño' },
+          { id: 'map-2-invierno', layer: 'SEICCT:clima_Tem_Med_Invierno', title: 'Invierno' }
+        ];
+
+        /**
+         * Carga el límite estatal como GeoJSON para usar en clipping
+         */
+        function cargarLimiteParaClipping() {
+          return new Promise((resolve, reject) => {
+            if (limiteLoaded && limiteGeometry) {
+              resolve(limiteGeometry);
+              return;
+            }
+
+            let wfsUrl;
+            const wfsParams = 'service=WFS&version=1.0.0&request=GetFeature&typeName=SEICCT:municipios_ganaperd&outputFormat=application/json';
+
+            if (isVercelProxy) {
+              const fullPath = `/geoserver/SEICCT/ows?${wfsParams}`;
+              const encodedPath = encodeURIComponent(fullPath);
+              wfsUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+            } else {
+              wfsUrl = `${proxyUrl}/SEICCT/ows?${wfsParams}`;
+            }
+
+            fetch(wfsUrl)
+              .then(response => response.json())
+              .then(data => {
+                if (data.features && data.features.length > 0) {
+                  const features = new ol.format.GeoJSON().readFeatures(data, {
+                    featureProjection: 'EPSG:3857'
+                  });
+                  // Combinar todas las geometrías de municipios
+                  const geometries = features.map(f => f.getGeometry());
+                  const multiPolygon = new ol.geom.MultiPolygon([]);
+                  geometries.forEach(geom => {
+                    if (geom.getType() === 'MultiPolygon') {
+                      geom.getPolygons().forEach(poly => multiPolygon.appendPolygon(poly));
+                    } else if (geom.getType() === 'Polygon') {
+                      multiPolygon.appendPolygon(geom);
+                    }
+                  });
+                  limiteGeometry = multiPolygon;
+                  limiteLoaded = true;
+                  resolve(limiteGeometry);
+                } else {
+                  reject('No se encontraron features del límite');
+                }
+              })
+              .catch(error => {
+                console.error('Error cargando límite para clipping:', error);
+                reject(error);
+              });
+          });
+        }
+
+        /**
+         * Aplica canvas clipping a una capa usando la geometría del límite
+         */
+        function aplicarClipping(layer, map) {
+          layer.on('prerender', function(event) {
+            if (!limiteGeometry) return;
+
+            const ctx = event.context;
+            ctx.save();
+            ctx.beginPath();
+
+            const coordinates = limiteGeometry.getCoordinates();
+            coordinates.forEach(polygon => {
+              polygon.forEach(ring => {
+                ring.forEach((coord, i) => {
+                  const pixel = map.getPixelFromCoordinate(coord);
+                  if (pixel) {
+                    if (i === 0) {
+                      ctx.moveTo(pixel[0], pixel[1]);
+                    } else {
+                      ctx.lineTo(pixel[0], pixel[1]);
+                    }
+                  }
+                });
+                ctx.closePath();
+              });
+            });
+
+            ctx.clip();
+          });
+
+          layer.on('postrender', function(event) {
+            event.context.restore();
+          });
+        }
+
+        /**
+         * Agrega capa WMS con clipping
+         */
+        function agregarCapaWMSConClipping(map, layerName, zIndex, opacity) {
+          const workspace = 'SEICCT';
+          let wmsSource;
+
+          if (isVercelProxy) {
+            const basePath = `/geoserver/${workspace}/wms`;
+            wmsSource = new ol.source.TileWMS({
+              url: proxyUrl.replace('?path=', ''),
+              params: {
+                'LAYERS': layerName,
+                'TILED': true,
+                'VERSION': '1.1.0',
+                'FORMAT': 'image/png',
+                'TRANSPARENT': true
+              },
+              serverType: 'geoserver',
+              crossOrigin: 'anonymous',
+              tileLoadFunction: function(imageTile, src) {
+                const url = new URL(src, window.location.origin);
+                const params = url.searchParams.toString();
+                const fullPath = `${basePath}?${params}`;
+                const encodedPath = encodeURIComponent(fullPath);
+                const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+                imageTile.getImage().src = finalUrl;
+              }
+            });
+          } else {
+            wmsSource = new ol.source.TileWMS({
+              url: proxyUrl + '/SEICCT/wms',
+              params: {
+                'LAYERS': layerName,
+                'TILED': true,
+                'FORMAT': 'image/png',
+                'TRANSPARENT': true
+              },
+              serverType: 'geoserver'
+            });
+          }
+
+          const layer = new ol.layer.Tile({
+            source: wmsSource,
+            visible: true,
+            opacity: opacity || 0.85,
+            zIndex: zIndex || 1
+          });
+          layer.set('name', layerName);
+          map.addLayer(layer);
+
+          // Aplicar clipping
+          cargarLimiteParaClipping()
+            .then(() => {
+              aplicarClipping(layer, map);
+              map.render();
+            })
+            .catch(err => console.warn('No se pudo aplicar clipping:', err));
+
+          return layer;
+        }
+
+        /**
+         * Agrega la capa del límite estatal
+         */
+        function agregarCapaLimite(map) {
+          const workspace = 'SEICCT';
+          let wmsSource;
+
+          if (isVercelProxy) {
+            const basePath = `/geoserver/${workspace}/wms`;
+            wmsSource = new ol.source.TileWMS({
+              url: proxyUrl.replace('?path=', ''),
+              params: {
+                'LAYERS': 'SEICCT:Limite',
+                'TILED': true,
+                'VERSION': '1.1.0',
+                'FORMAT': 'image/png',
+                'TRANSPARENT': true
+              },
+              serverType: 'geoserver',
+              crossOrigin: 'anonymous',
+              tileLoadFunction: function(imageTile, src) {
+                const url = new URL(src, window.location.origin);
+                const params = url.searchParams.toString();
+                const fullPath = `${basePath}?${params}`;
+                const encodedPath = encodeURIComponent(fullPath);
+                const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+                imageTile.getImage().src = finalUrl;
+              }
+            });
+          } else {
+            wmsSource = new ol.source.TileWMS({
+              url: proxyUrl + '/SEICCT/wms',
+              params: {
+                'LAYERS': 'SEICCT:Limite',
+                'TILED': true
+              },
+              serverType: 'geoserver'
+            });
+          }
+
+          const limiteLayer = new ol.layer.Tile({
+            source: wmsSource,
+            visible: true,
+            opacity: 1,
+            zIndex: 10
+          });
+          limiteLayer.set('name', 'Límite Estatal');
+          map.addLayer(limiteLayer);
+          return limiteLayer;
+        }
+
+        /**
+         * Crea el control de capas
+         */
+        function crearControlCapas(mapId, mapContainer, capas) {
+          const controlsContainer = document.createElement('div');
+          controlsContainer.className = 'map-controls clima-map-controls';
+          controlsContainer.innerHTML = `
+            <div class="map-controls-header">
+              <div class="map-controls-title">Capas</div>
+              <button class="map-controls-toggle">−</button>
+            </div>
+            <div class="map-controls-content"></div>
+          `;
+
+          const contentContainer = controlsContainer.querySelector('.map-controls-content');
+          const toggleBtn = controlsContainer.querySelector('.map-controls-toggle');
+
+          toggleBtn.addEventListener('click', () => {
+            controlsContainer.classList.toggle('collapsed');
+            toggleBtn.textContent = controlsContainer.classList.contains('collapsed') ? '+' : '−';
+          });
+
+          capas.forEach((capaInfo, index) => {
+            if (capaInfo.nombre === 'Límite Estatal') return;
+
+            const checkboxId = `layer-${mapId}-${index}`;
+            const layerControl = document.createElement('div');
+            layerControl.className = 'layer-control';
+            layerControl.innerHTML = `
+              <input type="checkbox" id="${checkboxId}" ${capaInfo.visible ? 'checked' : ''} />
+              <label for="${checkboxId}">${capaInfo.nombre}</label>
+            `;
+            contentContainer.appendChild(layerControl);
+
+            const checkbox = layerControl.querySelector(`#${checkboxId}`);
+            checkbox.addEventListener('change', (e) => {
+              capaInfo.layer.setVisible(e.target.checked);
+              capaInfo.visible = e.target.checked;
+              actualizarLeyendas(mapId);
+            });
+          });
+
+          mapContainer.appendChild(controlsContainer);
+        }
+
+        /**
+         * Crea el panel de leyendas
+         */
+        function crearPanelLeyendas(mapId, mapContainer) {
+          const legendsContainer = document.createElement('div');
+          legendsContainer.className = 'map-legends clima-map-legends';
+          legendsContainer.id = `legends-cap2-${mapId}`;
+          legendsContainer.innerHTML = `
+            <div class="map-legends-content"></div>
+          `;
+          mapContainer.appendChild(legendsContainer);
+          actualizarLeyendas(mapId);
+        }
+
+        /**
+         * Actualiza las leyendas
+         */
+        function actualizarLeyendas(mapId) {
+          const legendsContainer = document.getElementById(`legends-cap2-${mapId}`);
+          if (!legendsContainer) return;
+
+          const legendsContent = legendsContainer.querySelector('.map-legends-content');
+          legendsContent.innerHTML = '';
+
+          const capas = capasControladas[mapId];
+          if (!capas) return;
+
+          capas.forEach(capaInfo => {
+            if (capaInfo.visible && capaInfo.nombre !== 'Límite Estatal') {
+              const legendItem = document.createElement('div');
+              legendItem.className = 'legend-item';
+              legendItem.innerHTML = `
+                <div class="legend-item-title">${capaInfo.nombre} - Temperatura Media (°C)</div>
+                <div class="legend-ramp-container">
+                  <div class="legend-ramp-bar" style="background: linear-gradient(to right, #0105CC, #426DF5, #66B0FF, #70EC85, #BFED8B, #FAB96B, #FF9537, #FF7214, #FF412F);"></div>
+                  <div class="legend-ramp-labels">
+                    <span class="legend-ramp-label">8°C</span>
+                    <span class="legend-ramp-label">14°C</span>
+                    <span class="legend-ramp-label">20°C</span>
+                  </div>
+                </div>
+              `;
+              legendsContent.appendChild(legendItem);
+            }
+          });
+
+          if (legendsContent.children.length === 0) {
+            legendsContent.innerHTML = '<div class="map-legends-empty">Sin capas activas</div>';
+          }
+        }
+
+        // Sincronizar vistas entre mapas
+        let sincronizandoVista = false;
+        function sincronizarVista(mapaOrigen) {
+          if (sincronizandoVista) return;
+          sincronizandoVista = true;
+
+          const vista = mapaOrigen.getView();
+          const center = vista.getCenter();
+          const zoom = vista.getZoom();
+
+          Object.values(mapasCapitulo2).forEach(mapa => {
+            if (mapa !== mapaOrigen) {
+              mapa.getView().setCenter(center);
+              mapa.getView().setZoom(zoom);
+            }
+          });
+
+          sincronizandoVista = false;
+        }
+
+        // Crear los 4 mapas
+        mapasConfig.forEach(config => {
+          const mapElement = document.getElementById(config.id);
+          if (!mapElement) return;
+
+          // Crear mapa base
+          const map = new ol.Map({
+            target: config.id,
+            layers: [
+              new ol.layer.Tile({
+                source: new ol.source.OSM(),
+                zIndex: 0
+              })
+            ],
+            view: new ol.View({
+              center: ol.proj.fromLonLat(defaultCenter),
+              zoom: defaultZoom
+            }),
+            controls: ol.control.defaults.defaults({
+              zoom: true,
+              attribution: false,
+              rotate: false
+            })
+          });
+
+          mapasCapitulo2[config.id] = map;
+          capasControladas[config.id] = [];
+
+          // Agregar capa WMS con clipping
+          const wmsLayer = agregarCapaWMSConClipping(map, config.layer, 5, 0.85);
+          capasControladas[config.id].push({
+            nombre: config.title,
+            layer: wmsLayer,
+            visible: true
+          });
+
+          // Agregar capa del límite estatal
+          const limiteLayer = agregarCapaLimite(map);
+          capasControladas[config.id].push({
+            nombre: 'Límite Estatal',
+            layer: limiteLayer,
+            visible: true
+          });
+
+          // Crear control de capas
+          crearControlCapas(config.id, mapElement, capasControladas[config.id]);
+
+          // Crear panel de leyendas
+          crearPanelLeyendas(config.id, mapElement);
+
+          // Sincronizar vistas
+          map.getView().on('change:center', () => sincronizarVista(map));
+          map.getView().on('change:resolution', () => sincronizarVista(map));
+        });
+
+        // ============================================================
+        // CAPÍTULO 3 - MAPAS DE PRECIPITACIÓN TOTAL POR ESTACIÓN
+        // ============================================================
+
+        // Almacenar referencias a mapas del capítulo 3
+        const mapasCapitulo3 = {};
+        const capasControladasCap3 = {};
+
+        // Configuración de los 4 mapas de precipitación
+        const mapasConfigCap3 = [
+          { id: 'map-3-primavera', layer: 'SEICCT:clima_Prec_total_Primavera', title: 'Primavera' },
+          { id: 'map-3-verano', layer: 'SEICCT:clima_Prec_total_Ver', title: 'Verano' },
+          { id: 'map-3-otono', layer: 'SEICCT:clima_Prec_total_Otono', title: 'Otoño' },
+          { id: 'map-3-invierno', layer: 'SEICCT:clima_Prec_total_Invierno', title: 'Invierno' }
+        ];
+
+        /**
+         * Crea el control de capas para capítulo 3
+         */
+        function crearControlCapasCap3(mapId, mapContainer, capas) {
+          const controlsContainer = document.createElement('div');
+          controlsContainer.className = 'map-controls clima-map-controls';
+          controlsContainer.innerHTML = `
+            <div class="map-controls-header">
+              <div class="map-controls-title">Capas</div>
+              <button class="map-controls-toggle">−</button>
+            </div>
+            <div class="map-controls-content"></div>
+          `;
+
+          const contentContainer = controlsContainer.querySelector('.map-controls-content');
+          const toggleBtn = controlsContainer.querySelector('.map-controls-toggle');
+
+          toggleBtn.addEventListener('click', () => {
+            controlsContainer.classList.toggle('collapsed');
+            toggleBtn.textContent = controlsContainer.classList.contains('collapsed') ? '+' : '−';
+          });
+
+          capas.forEach((capaInfo, index) => {
+            if (capaInfo.nombre === 'Límite Estatal') return;
+
+            const checkboxId = `layer-cap3-${mapId}-${index}`;
+            const layerControl = document.createElement('div');
+            layerControl.className = 'layer-control';
+            layerControl.innerHTML = `
+              <input type="checkbox" id="${checkboxId}" ${capaInfo.visible ? 'checked' : ''} />
+              <label for="${checkboxId}">${capaInfo.nombre}</label>
+            `;
+            contentContainer.appendChild(layerControl);
+
+            const checkbox = layerControl.querySelector(`#${checkboxId}`);
+            checkbox.addEventListener('change', (e) => {
+              capaInfo.layer.setVisible(e.target.checked);
+              capaInfo.visible = e.target.checked;
+              actualizarLeyendasCap3(mapId);
+            });
+          });
+
+          mapContainer.appendChild(controlsContainer);
+        }
+
+        /**
+         * Crea el panel de leyendas para precipitación (capítulo 3)
+         */
+        function crearPanelLeyendasCap3(mapId, mapContainer) {
+          const legendsContainer = document.createElement('div');
+          legendsContainer.className = 'map-legends clima-map-legends';
+          legendsContainer.id = `legends-cap3-${mapId}`;
+          legendsContainer.innerHTML = `
+            <div class="map-legends-content"></div>
+          `;
+          mapContainer.appendChild(legendsContainer);
+          actualizarLeyendasCap3(mapId);
+        }
+
+        /**
+         * Actualiza las leyendas de precipitación (capítulo 3)
+         */
+        function actualizarLeyendasCap3(mapId) {
+          const legendsContainer = document.getElementById(`legends-cap3-${mapId}`);
+          if (!legendsContainer) return;
+
+          const legendsContent = legendsContainer.querySelector('.map-legends-content');
+          legendsContent.innerHTML = '';
+
+          const capas = capasControladasCap3[mapId];
+          if (!capas) return;
+
+          capas.forEach(capaInfo => {
+            if (capaInfo.visible && capaInfo.nombre !== 'Límite Estatal') {
+              const legendItem = document.createElement('div');
+              legendItem.className = 'legend-item';
+              legendItem.innerHTML = `
+                <div class="legend-item-title">${capaInfo.nombre} - Precipitación Total (mm)</div>
+                <div class="legend-ramp-container">
+                  <div class="legend-ramp-bar" style="background: linear-gradient(to right, #FFFFCC, #C7E9B4, #7FCDBB, #41B6C4, #1D91C0, #225EA8, #0C2C84);"></div>
+                  <div class="legend-ramp-labels">
+                    <span class="legend-ramp-label">0 mm</span>
+                    <span class="legend-ramp-label">150 mm</span>
+                    <span class="legend-ramp-label">300 mm</span>
+                  </div>
+                </div>
+              `;
+              legendsContent.appendChild(legendItem);
+            }
+          });
+
+          if (legendsContent.children.length === 0) {
+            legendsContent.innerHTML = '<div class="map-legends-empty">Sin capas activas</div>';
+          }
+        }
+
+        // Sincronizar vistas entre mapas del capítulo 3
+        let sincronizandoVistaCap3 = false;
+        function sincronizarVistaCap3(mapaOrigen) {
+          if (sincronizandoVistaCap3) return;
+          sincronizandoVistaCap3 = true;
+
+          const vista = mapaOrigen.getView();
+          const center = vista.getCenter();
+          const zoom = vista.getZoom();
+
+          Object.values(mapasCapitulo3).forEach(mapa => {
+            if (mapa !== mapaOrigen) {
+              mapa.getView().setCenter(center);
+              mapa.getView().setZoom(zoom);
+            }
+          });
+
+          sincronizandoVistaCap3 = false;
+        }
+
+        // Crear los 4 mapas de precipitación (capítulo 3)
+        mapasConfigCap3.forEach(config => {
+          const mapElement = document.getElementById(config.id);
+          if (!mapElement) return;
+
+          // Crear mapa base
+          const map = new ol.Map({
+            target: config.id,
+            layers: [
+              new ol.layer.Tile({
+                source: new ol.source.OSM(),
+                zIndex: 0
+              })
+            ],
+            view: new ol.View({
+              center: ol.proj.fromLonLat(defaultCenter),
+              zoom: defaultZoom
+            }),
+            controls: ol.control.defaults.defaults({
+              zoom: true,
+              attribution: false,
+              rotate: false
+            })
+          });
+
+          mapasCapitulo3[config.id] = map;
+          capasControladasCap3[config.id] = [];
+
+          // Agregar capa WMS con clipping
+          const wmsLayer = agregarCapaWMSConClipping(map, config.layer, 5, 0.85);
+          capasControladasCap3[config.id].push({
+            nombre: config.title,
+            layer: wmsLayer,
+            visible: true
+          });
+
+          // Agregar capa del límite estatal
+          const limiteLayer = agregarCapaLimite(map);
+          capasControladasCap3[config.id].push({
+            nombre: 'Límite Estatal',
+            layer: limiteLayer,
+            visible: true
+          });
+
+          // Crear control de capas
+          crearControlCapasCap3(config.id, mapElement, capasControladasCap3[config.id]);
+
+          // Crear panel de leyendas
+          crearPanelLeyendasCap3(config.id, mapElement);
+
+          // Sincronizar vistas
+          map.getView().on('change:center', () => sincronizarVistaCap3(map));
+          map.getView().on('change:resolution', () => sincronizarVistaCap3(map));
+        });
+
+        // ============================================================
+        // CAPÍTULO 4 - GRÁFICAS INTERACTIVAS DE SERIES HISTÓRICAS
+        // ============================================================
+
+        // Generar etiquetas de municipios (1-60)
+        const municipiosLabels = Array.from({length: 60}, (_, i) => i + 1);
+
+        // Función para generar datos con variación realista
+        function generarDatosConVariacion(base, variacion, length) {
+          return Array.from({length}, (_, i) => {
+            const ruido = Math.sin(i * 0.5) * variacion * 0.5 + Math.cos(i * 0.3) * variacion * 0.3;
+            const tendencia = (i > 15 && i < 30) ? variacion * 0.3 : (i > 40 && i < 50) ? variacion * 0.4 : 0;
+            return +(base + ruido + tendencia + (Math.random() - 0.5) * variacion * 0.2).toFixed(2);
+          });
+        }
+
+        // Datos para Gráfica 19 - Temperatura Media (1940-2023)
+        const tMediaData = generarDatosConVariacion(14, 1.5, 60);
+        const tMediaMinP05 = generarDatosConVariacion(12.5, 1.2, 60);
+        const tMediaMaxP95 = generarDatosConVariacion(15.5, 1.5, 60);
+
+        // Datos para Gráfica 20 - Temperatura Mínima
+        const tMinimaMedia = generarDatosConVariacion(8, 1, 60);
+        const tMinimaP05 = generarDatosConVariacion(7, 0.8, 60);
+        const tMinimaP95 = generarDatosConVariacion(9.5, 1, 60);
+
+        // Datos para Gráfica 21 - Temperatura Máxima
+        const tMaximaMedia = generarDatosConVariacion(21, 1, 60);
+        const tMaximaP05 = generarDatosConVariacion(19.5, 0.8, 60);
+        const tMaximaP95 = generarDatosConVariacion(22.8, 1, 60);
+
+        // Datos para Gráfica 22 - Tasa de Cambio Decadal
+        const tasaMedia = generarDatosConVariacion(0.30, 0.04, 60);
+        const tasaMinima = generarDatosConVariacion(0.27, 0.03, 60);
+        const tasaMaxima = generarDatosConVariacion(0.36, 0.04, 60);
+
+        // Configuración común para gráficas de líneas
+        const lineChartOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: '',
+              font: { size: 12, weight: 'bold' },
+              padding: { top: 5, bottom: 10 }
+            },
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 10,
+                font: { size: 10 }
+              }
+            },
+            datalabels: { display: false },
+            tooltip: {
+              callbacks: {
+                title: function(context) {
+                  return 'Municipio ' + context[0].label;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Municipio',
+                font: { size: 11, weight: 'bold' }
+              },
+              ticks: { maxTicksLimit: 12 }
+            }
+          },
+          elements: {
+            point: { radius: 0, hoverRadius: 4 },
+            line: { tension: 0.3, borderWidth: 2 }
+          }
+        };
+
+        // Gráfica 19 - Serie histórica de temperatura media
+        const ctx41 = document.getElementById('chart-4-1');
+        if (ctx41) {
+          new Chart(ctx41.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: municipiosLabels,
+              datasets: [
+                {
+                  label: 'Tmedia 1940-2023',
+                  data: tMediaData,
+                  borderColor: '#9E9E9E',
+                  backgroundColor: 'transparent',
+                  order: 2
+                },
+                {
+                  label: 'Tmedia mínima (P05)',
+                  data: tMediaMinP05,
+                  borderColor: '#42A5F5',
+                  backgroundColor: 'transparent',
+                  order: 3
+                },
+                {
+                  label: 'Tmedia máxima (P95)',
+                  data: tMediaMaxP95,
+                  borderColor: '#FFA726',
+                  backgroundColor: 'transparent',
+                  order: 1
+                }
+              ]
+            },
+            options: {
+              ...lineChartOptions,
+              plugins: {
+                ...lineChartOptions.plugins,
+                title: {
+                  display: true,
+                  text: 'Serie histórica de temperatura media (1940-2023) para los 60 municipios',
+                  font: { size: 11, weight: 'bold' },
+                  padding: { top: 5, bottom: 10 }
+                }
+              },
+              scales: {
+                ...lineChartOptions.scales,
+                y: {
+                  min: 10,
+                  max: 18,
+                  title: {
+                    display: true,
+                    text: 'Temperatura (°C)',
+                    font: { size: 11, weight: 'bold' }
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // Gráfica 20 - Valores mínimos anuales de temperatura
+        const ctx42 = document.getElementById('chart-4-2');
+        if (ctx42) {
+          new Chart(ctx42.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: municipiosLabels,
+              datasets: [
+                {
+                  label: 'Tmínima media 1940-2023',
+                  data: tMinimaMedia,
+                  borderColor: '#9E9E9E',
+                  backgroundColor: 'transparent',
+                  order: 2
+                },
+                {
+                  label: 'Tmínima (P05)',
+                  data: tMinimaP05,
+                  borderColor: '#42A5F5',
+                  backgroundColor: 'transparent',
+                  order: 3
+                },
+                {
+                  label: 'Tmínima (P95)',
+                  data: tMinimaP95,
+                  borderColor: '#FFA726',
+                  backgroundColor: 'transparent',
+                  order: 1
+                }
+              ]
+            },
+            options: {
+              ...lineChartOptions,
+              plugins: {
+                ...lineChartOptions.plugins,
+                title: {
+                  display: true,
+                  text: 'Serie de tiempo para valores mínimos anuales de los 60 municipios',
+                  font: { size: 11, weight: 'bold' },
+                  padding: { top: 5, bottom: 10 }
+                }
+              },
+              scales: {
+                ...lineChartOptions.scales,
+                y: {
+                  min: 4,
+                  max: 12,
+                  title: {
+                    display: true,
+                    text: 'Temperatura (°C)',
+                    font: { size: 11, weight: 'bold' }
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // Gráfica 21 - Temperatura máxima media anual
+        const ctx43 = document.getElementById('chart-4-3');
+        if (ctx43) {
+          new Chart(ctx43.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: municipiosLabels,
+              datasets: [
+                {
+                  label: 'Tmáxima media anual',
+                  data: tMaximaMedia,
+                  borderColor: '#212121',
+                  backgroundColor: 'transparent',
+                  order: 2
+                },
+                {
+                  label: 'Tmáxima (P05)',
+                  data: tMaximaP05,
+                  borderColor: '#FFC107',
+                  backgroundColor: 'transparent',
+                  order: 3
+                },
+                {
+                  label: 'Tmáxima (P95)',
+                  data: tMaximaP95,
+                  borderColor: '#E53935',
+                  backgroundColor: 'transparent',
+                  order: 1
+                }
+              ]
+            },
+            options: {
+              ...lineChartOptions,
+              plugins: {
+                ...lineChartOptions.plugins,
+                title: {
+                  display: true,
+                  text: 'Temperatura máxima media anual para los 60 municipios',
+                  font: { size: 11, weight: 'bold' },
+                  padding: { top: 5, bottom: 10 }
+                }
+              },
+              scales: {
+                ...lineChartOptions.scales,
+                y: {
+                  min: 17,
+                  max: 24,
+                  title: {
+                    display: true,
+                    text: 'Temperatura (°C)',
+                    font: { size: 11, weight: 'bold' }
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // Gráfica 22 - Tasa histórica de cambio decadal
+        const ctx44 = document.getElementById('chart-4-4');
+        if (ctx44) {
+          new Chart(ctx44.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: municipiosLabels,
+              datasets: [
+                {
+                  label: 'Tendencia T. media (1940-2023)',
+                  data: tasaMedia,
+                  borderColor: '#1E88E5',
+                  backgroundColor: 'transparent',
+                  order: 2
+                },
+                {
+                  label: 'Tendencia T. mínima (1940-2023)',
+                  data: tasaMinima,
+                  borderColor: '#E53935',
+                  backgroundColor: 'transparent',
+                  order: 3
+                },
+                {
+                  label: 'Tendencia T. máxima (1940-2023)',
+                  data: tasaMaxima,
+                  borderColor: '#FFA726',
+                  backgroundColor: 'transparent',
+                  order: 1
+                }
+              ]
+            },
+            options: {
+              ...lineChartOptions,
+              plugins: {
+                ...lineChartOptions.plugins,
+                title: {
+                  display: true,
+                  text: 'Tasa histórica de cambio decadal de temperatura anual (%)',
+                  font: { size: 11, weight: 'bold' },
+                  padding: { top: 5, bottom: 10 }
+                }
+              },
+              scales: {
+                ...lineChartOptions.scales,
+                y: {
+                  min: 0.20,
+                  max: 0.40,
+                  title: {
+                    display: true,
+                    text: 'Tasa de cambio (%)',
+                    font: { size: 11, weight: 'bold' }
+                  },
+                  ticks: {
+                    callback: function(value) {
+                      return value.toFixed(2);
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // ============================================================
+        // NAVEGACIÓN Y CONTROLES
+        // ============================================================
+        const navbarToggle = document.getElementById("navbarToggle");
+        const navbarMenu = document.getElementById("navbarMenu");
+
+        navbarToggle.addEventListener("click", () => {
+          navbarToggle.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        const navbarLinks = document.querySelectorAll(".navbar-link");
+        navbarLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            navbarToggle.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          });
+        });
+
+        const navbar = document.querySelector(".navbar");
+        const navbarIndicator = document.getElementById("navbarIndicator");
+
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+          } else {
+            navbar.classList.remove("scrolled");
+          }
+        });
+
+        navbarIndicator.addEventListener("mouseenter", () => {
+          navbar.classList.add("visible");
+        });
+
+        navbar.addEventListener("mouseenter", () => {
+          navbar.classList.add("visible");
+        });
+
+        navbar.addEventListener("mouseleave", () => {
+          navbar.classList.remove("visible");
+        });
+
+        navbarIndicator.addEventListener("click", () => {
+          navbar.classList.toggle("visible");
+        });
+
+        // ============================================================
+        // NAVEGACIÓN ENTRE CAPÍTULOS
+        // ============================================================
+        const chaptersContainer = document.getElementById("chaptersContainer");
+        const timelineItems = document.querySelectorAll(".timeline-item");
+        const btnPrev = document.getElementById("btnPrev");
+        const btnNext = document.getElementById("btnNext");
+
+        let currentChapter = 1;
+        const totalChapters = 4;
+
+        function goToChapter(chapterNum) {
+          if (chapterNum < 1 || chapterNum > totalChapters) {
+            return;
+          }
+
+          currentChapter = chapterNum;
+
+          timelineItems.forEach(item => {
+            const itemChapter = parseInt(item.dataset.chapter);
+            if (itemChapter === currentChapter) {
+              item.classList.add("active");
+            } else {
+              item.classList.remove("active");
+            }
+          });
+
+          const targetChapter = document.getElementById(`chapter-${chapterNum}`);
+          if (targetChapter) {
+            targetChapter.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
+
+        timelineItems.forEach(item => {
+          item.addEventListener("click", () => {
+            const chapterNum = parseInt(item.dataset.chapter);
+            goToChapter(chapterNum);
+          });
+        });
+
+        btnPrev.addEventListener("click", () => {
+          goToChapter(currentChapter - 1);
+        });
+
+        btnNext.addEventListener("click", () => {
+          goToChapter(currentChapter + 1);
+        });
+
+        goToChapter(1);
+      });
+    </script>
+  </body>
+</html>

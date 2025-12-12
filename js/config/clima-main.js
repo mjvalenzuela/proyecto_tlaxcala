@@ -28,17 +28,20 @@ window.addEventListener('DOMContentLoaded', () => {
   let sincronizandoSplit = false;
 
   // ============================================================
-  // SINCRONIZACION DE MAPAS DEL CAPITULO 1
+  // SINCRONIZACION DE MAPAS DEL CAPITULO 1 Y 2
   // ============================================================
   const mapasCapitulo1Ids = ['map-1-primavera', 'map-1-verano', 'map-1-otono', 'map-1-invierno'];
+  const mapasCapitulo2Ids = ['map-2-primavera', 'map-2-verano', 'map-2-otono', 'map-2-invierno'];
+  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids];
   let sincronizandoVista = false;
   let sincronizandoCapas = false;
 
   /**
-   * Sincroniza la vista (zoom/pan) de todos los mapas del capítulo 1
+   * Sincroniza la vista (zoom/pan) de los mapas de un capítulo específico
    * @param {ol.Map} mapaOrigen - Mapa que originó el cambio
+   * @param {Array} mapasIds - Array de IDs de mapas a sincronizar
    */
-  function sincronizarVista(mapaOrigen) {
+  function sincronizarVistaCapitulo(mapaOrigen, mapasIds) {
     if (sincronizandoVista) return;
     sincronizandoVista = true;
 
@@ -46,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const center = vista.getCenter();
     const zoom = vista.getZoom();
 
-    mapasCapitulo1Ids.forEach(mapId => {
+    mapasIds.forEach(mapId => {
       const mapa = mapas[mapId];
       if (mapa && mapa !== mapaOrigen) {
         mapa.getView().setCenter(center);
@@ -55,6 +58,14 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     sincronizandoVista = false;
+  }
+
+  /**
+   * Sincroniza la vista (zoom/pan) de todos los mapas del capítulo 1
+   * @param {ol.Map} mapaOrigen - Mapa que originó el cambio
+   */
+  function sincronizarVista(mapaOrigen) {
+    sincronizarVistaCapitulo(mapaOrigen, mapasCapitulo1Ids);
   }
 
   /**
@@ -451,17 +462,28 @@ window.addEventListener('DOMContentLoaded', () => {
   // CONFIGURACION DE CAPAS POR VARIABLE, MODELO Y PERIODO
   // ============================================================
 
-  // Estado actual de selección
+  // Estado actual de selección - Capítulo 1 (Escenarios)
   let variableActual = 'precipitacion';
   let modeloActual = 'SSP245';
   let periodoActual = '2021-2040';
 
-  // Códigos de variable para construir nombres de capas
+  // Estado actual de selección - Capítulo 2 (Clima Histórico)
+  let variableActualCap2 = 'precipitacion';
+
+  // Códigos de variable para construir nombres de capas (Capítulo 1 - Escenarios)
   const codigosVariable = {
     precipitacion: 'pr',
     temp_max: 'tasmax',
     temp_media: 'tas',
     temp_min: 'tasmin'
+  };
+
+  // Códigos de variable para Capítulo 2 (Clima Histórico)
+  const codigosVariableCap2 = {
+    precipitacion: 'Prec_total',
+    temp_max: 'Tem_Max',
+    temp_media: 'Tem_Med',
+    temp_min: 'Tem_Min'
   };
 
   // Nombres para mostrar en la UI
@@ -472,7 +494,7 @@ window.addEventListener('DOMContentLoaded', () => {
     temp_min: 'Temp. Mínima'
   };
 
-  // Códigos de estación
+  // Códigos de estación (Capítulo 1 - Escenarios)
   const codigosEstacion = {
     primavera: 'Pri',
     verano: 'Ver',
@@ -480,16 +502,26 @@ window.addEventListener('DOMContentLoaded', () => {
     invierno: 'Inv'
   };
 
+  // Códigos de estación para Capítulo 2 (Clima Histórico)
+  const codigosEstacionCap2 = {
+    primavera: 'Primavera',
+    verano: 'Ver',
+    otono: 'Otono',
+    invierno: 'Invierno',
+    anual: 'Anual'
+  };
+
   // Nombres de estación para UI
   const nombresEstacion = {
     primavera: 'Primavera',
     verano: 'Verano',
     otono: 'Otoño',
-    invierno: 'Invierno'
+    invierno: 'Invierno',
+    anual: 'Anual'
   };
 
   /**
-   * Construye el nombre de la capa WMS según la selección actual
+   * Construye el nombre de la capa WMS según la selección actual (Capítulo 1 - Escenarios)
    * @param {string} estacion - primavera, verano, otono, invierno
    * @param {string} tipo - clim, q05, q95
    * @returns {string} Nombre de la capa WMS
@@ -510,6 +542,18 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
+   * Construye el nombre de la capa WMS para Capítulo 2 (Clima Histórico)
+   * Formato: SEICCT:clima_{variable}_{estacion}
+   * @param {string} estacion - primavera, verano, otono, invierno, anual
+   * @returns {string} Nombre de la capa WMS
+   */
+  function construirNombreCapaCap2(estacion) {
+    const codigoVar = codigosVariableCap2[variableActualCap2];
+    const codigoEst = codigosEstacionCap2[estacion];
+    return `SEICCT:clima_${codigoVar}_${codigoEst}`;
+  }
+
+  /**
    * Obtiene el nombre para mostrar de una capa según estación y tipo
    */
   function obtenerNombreCapaUI(estacion, tipo) {
@@ -519,50 +563,17 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Actualiza todas las capas de los 4 mapas según variable, modelo y periodo seleccionado
+   * Obtiene el nombre para mostrar de una capa del Capítulo 2
+   */
+  function obtenerNombreCapaUICap2(estacion) {
+    return nombresEstacion[estacion];
+  }
+
+  /**
+   * Actualiza todas las capas de todos los mapas según variable, modelo y periodo seleccionado
    */
   function actualizarCapasSegunSeleccion() {
-    console.log(`Actualizando capas: Variable=${variableActual}, Modelo=${modeloActual}, Periodo=${periodoActual}`);
-
-    mapasCapitulo1Ids.forEach(mapId => {
-      const capas = capasControladas[mapId];
-      if (!capas) return;
-
-      // Encontrar la estación de este mapa
-      const mapaConfig = mapasCapitulo1.find(m => m.id === mapId);
-      if (!mapaConfig) return;
-
-      const estacion = mapaConfig.estacion;
-
-      // Actualizar cada capa (Clim, Q05, Q95)
-      capas.forEach((capaInfo, index) => {
-        if (capaInfo.nombre === 'Límite Estatal') return;
-
-        // Determinar el tipo de capa según el índice
-        let tipo;
-        if (index === 0) tipo = 'clim';
-        else if (index === 1) tipo = 'q05';
-        else if (index === 2) tipo = 'q95';
-        else return;
-
-        const nuevaCapa = construirNombreCapa(estacion, tipo);
-        const nuevoNombre = obtenerNombreCapaUI(estacion, tipo);
-        const nuevaSimbologia = obtenerSimbologia(estacion, tipo);
-
-        if (nuevaCapa) {
-          // Actualizar la capa WMS
-          const source = capaInfo.layer.getSource();
-          source.updateParams({ 'LAYERS': nuevaCapa });
-          capaInfo.layer.set('name', nuevaCapa);
-          capaInfo.nombre = nuevoNombre;
-          capaInfo.simbologia = nuevaSimbologia;
-          console.log(`  ${mapId}: ${capaInfo.nombre} -> ${nuevaCapa}`);
-        }
-      });
-
-      // Actualizar leyendas para este mapa
-      actualizarLeyendas(mapId);
-    });
+    actualizarCapasSegunSeleccionCapitulo(mapasCapitulo1Ids);
   }
 
   // ============================================================
@@ -574,6 +585,7 @@ window.addEventListener('DOMContentLoaded', () => {
       id: 'map-1-primavera',
       titulo: 'Primavera',
       estacion: 'primavera',
+      capitulo: 1,
       capasMultiples: [
         { nombre: 'Primavera', capa: 'SEICCT:Escenario_pr_Pri_Clim_2021-2040', visible: true, simbologia: 'priClim' },
         { nombre: 'Primavera Q05', capa: 'SEICCT:Escenario_pr_Pri_Q05_2021-2040', visible: false, simbologia: 'priQ05' },
@@ -584,6 +596,7 @@ window.addEventListener('DOMContentLoaded', () => {
       id: 'map-1-verano',
       titulo: 'Verano',
       estacion: 'verano',
+      capitulo: 1,
       capasMultiples: [
         { nombre: 'Verano', capa: 'SEICCT:Escenario_pr_Ver_Clim_2021-2040', visible: true, simbologia: 'verClim' },
         { nombre: 'Verano Q05', capa: 'SEICCT:Escenario_pr_Ver_Q05_2021-2040', visible: false, simbologia: 'verQ05' },
@@ -594,6 +607,7 @@ window.addEventListener('DOMContentLoaded', () => {
       id: 'map-1-otono',
       titulo: 'Otoño',
       estacion: 'otono',
+      capitulo: 1,
       capasMultiples: [
         { nombre: 'Otoño', capa: 'SEICCT:Escenario_pr_Oto_Clim_2021-2040', visible: true, simbologia: 'otoClim' },
         { nombre: 'Otoño Q05', capa: 'SEICCT:Escenario_pr_Oto_Q05_2021-2040', visible: false, simbologia: 'otoQ05' },
@@ -604,10 +618,51 @@ window.addEventListener('DOMContentLoaded', () => {
       id: 'map-1-invierno',
       titulo: 'Invierno',
       estacion: 'invierno',
+      capitulo: 1,
       capasMultiples: [
         { nombre: 'Invierno', capa: 'SEICCT:Escenario_pr_Inv_Clim_2021-2040', visible: true, simbologia: 'invClim' },
         { nombre: 'Invierno Q05', capa: 'SEICCT:Escenario_pr_Inv_Q05_2021-2040', visible: false, simbologia: 'invQ05' },
         { nombre: 'Invierno Q95', capa: 'SEICCT:Escenario_pr_Inv_Q95_2021-2040', visible: false, simbologia: 'invQ95' }
+      ]
+    },
+    // ============================================================
+    // CAPITULO 2 - CLIMA HISTORICO (4 mapas: Primavera, Verano, Otoño, Invierno)
+    // Capas: SEICCT:clima_{variable}_{estacion}
+    // ============================================================
+    {
+      id: 'map-2-primavera',
+      titulo: 'Primavera',
+      estacion: 'primavera',
+      capitulo: 2,
+      capasMultiples: [
+        { nombre: 'Primavera', capa: 'SEICCT:clima_Prec_total_Primavera', visible: true, simbologia: 'priClim' }
+      ]
+    },
+    {
+      id: 'map-2-verano',
+      titulo: 'Verano',
+      estacion: 'verano',
+      capitulo: 2,
+      capasMultiples: [
+        { nombre: 'Verano', capa: 'SEICCT:clima_Prec_total_Ver', visible: true, simbologia: 'verClim' }
+      ]
+    },
+    {
+      id: 'map-2-otono',
+      titulo: 'Otoño',
+      estacion: 'otono',
+      capitulo: 2,
+      capasMultiples: [
+        { nombre: 'Otoño', capa: 'SEICCT:clima_Prec_total_Otono', visible: true, simbologia: 'otoClim' }
+      ]
+    },
+    {
+      id: 'map-2-invierno',
+      titulo: 'Invierno',
+      estacion: 'invierno',
+      capitulo: 2,
+      capasMultiples: [
+        { nombre: 'Invierno', capa: 'SEICCT:clima_Prec_total_Invierno', visible: true, simbologia: 'invClim' }
       ]
     }
   ];
@@ -697,15 +752,16 @@ window.addEventListener('DOMContentLoaded', () => {
       simbologia: null
     });
 
-    // Crear controles para mapas con capas
-    if (mapaConfig.id === 'map-1-primavera' || mapaConfig.id === 'map-1-verano' || mapaConfig.id === 'map-1-otono' || mapaConfig.id === 'map-1-invierno') {
+    // Crear controles para mapas con capas (capítulo 1 y 2)
+    if (todosLosMapasIds.includes(mapaConfig.id)) {
       crearControlCapas(mapaConfig.id, mapContainer);
       crearPanelLeyendas(mapaConfig.id, mapContainer);
       crearBotonSplit(mapaConfig.id, mapContainer);
 
-      // Agregar eventos de sincronización de vista (zoom/pan)
-      map.getView().on('change:center', () => sincronizarVista(map));
-      map.getView().on('change:resolution', () => sincronizarVista(map));
+      // Agregar eventos de sincronización de vista (zoom/pan) - solo dentro del mismo capítulo
+      const mapasDelCapitulo = mapaConfig.capitulo === 1 ? mapasCapitulo1Ids : mapasCapitulo2Ids;
+      map.getView().on('change:center', () => sincronizarVistaCapitulo(map, mapasDelCapitulo));
+      map.getView().on('change:resolution', () => sincronizarVistaCapitulo(map, mapasDelCapitulo));
     }
   });
 
@@ -1452,27 +1508,45 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   // ============================================================
-  // SELECTOR DE VARIABLE CLIMATICA
+  // SELECTOR DE VARIABLE CLIMATICA (Capítulo 1)
   // ============================================================
   const variableSelect = document.getElementById('variable-climatica');
   if (variableSelect) {
     variableSelect.addEventListener('change', (e) => {
       variableActual = e.target.value;
-      console.log(`Variable seleccionada: ${variableActual} (${nombresVariable[variableActual]})`);
+      console.log(`Variable seleccionada (Cap 1): ${variableActual} (${nombresVariable[variableActual]})`);
 
-      // Actualizar capas en todos los mapas
-      actualizarCapasSegunSeleccion();
+      // Actualizar capas en todos los mapas del capítulo 1
+      actualizarCapasSegunSeleccionCapitulo(mapasCapitulo1Ids);
 
       // Actualizar los labels en los controles de capas
-      actualizarLabelsControles();
+      actualizarLabelsControlesCapitulo(mapasCapitulo1Ids);
+    });
+  }
+
+  // ============================================================
+  // SELECTOR DE VARIABLE CLIMATICA (Capítulo 2 - Clima Histórico)
+  // ============================================================
+  const variableSelect2 = document.getElementById('variable-climatica-2');
+  if (variableSelect2) {
+    variableSelect2.addEventListener('change', (e) => {
+      variableActualCap2 = e.target.value;
+      console.log(`Variable seleccionada (Cap 2): ${variableActualCap2} (${nombresVariable[variableActualCap2]})`);
+
+      // Actualizar capas en todos los mapas del capítulo 2
+      actualizarCapasCapitulo2();
+
+      // Actualizar los labels en los controles de capas
+      actualizarLabelsControlesCapitulo2();
     });
   }
 
   /**
-   * Actualiza los labels de los controles de capas según la variable seleccionada
+   * Actualiza los labels de los controles de capas según la variable seleccionada (Cap 1)
+   * @param {Array} mapasIds - Array de IDs de mapas a actualizar
    */
-  function actualizarLabelsControles() {
-    mapasCapitulo1Ids.forEach(mapId => {
+  function actualizarLabelsControlesCapitulo(mapasIds) {
+    mapasIds.forEach(mapId => {
       const capas = capasControladas[mapId];
       if (!capas) return;
 
@@ -1506,6 +1580,160 @@ window.addEventListener('DOMContentLoaded', () => {
       // Actualizar leyendas
       actualizarLeyendas(mapId);
     });
+  }
+
+  /**
+   * Actualiza los labels de los controles de capas del Capítulo 2 (Clima Histórico)
+   */
+  function actualizarLabelsControlesCapitulo2() {
+    mapasCapitulo2Ids.forEach(mapId => {
+      const capas = capasControladas[mapId];
+      if (!capas) return;
+
+      // Encontrar la estación de este mapa
+      const mapaConfig = mapasCapitulo1.find(m => m.id === mapId);
+      if (!mapaConfig) return;
+
+      const estacion = mapaConfig.estacion;
+
+      capas.forEach((capaInfo, index) => {
+        if (capaInfo.nombre === 'Límite Estatal') return;
+
+        // Capítulo 2 solo tiene una capa por mapa
+        const nuevoNombre = obtenerNombreCapaUICap2(estacion);
+        capaInfo.nombre = nuevoNombre;
+
+        // Actualizar label en el checkbox
+        const label = document.querySelector(`label[for="layer-${mapId}-${index}"]`);
+        if (label) {
+          label.textContent = nuevoNombre;
+        }
+      });
+
+      // Actualizar leyendas
+      actualizarLeyendas(mapId);
+    });
+  }
+
+  /**
+   * Actualiza los labels de los controles de capas (ambos capítulos)
+   */
+  function actualizarLabelsControles() {
+    actualizarLabelsControlesCapitulo(mapasCapitulo1Ids);
+    actualizarLabelsControlesCapitulo2();
+  }
+
+  /**
+   * Actualiza las capas de un capítulo específico (Capítulo 1 - Escenarios)
+   * @param {Array} mapasIds - Array de IDs de mapas a actualizar
+   */
+  function actualizarCapasSegunSeleccionCapitulo(mapasIds) {
+    console.log(`Actualizando capas Cap 1: Variable=${variableActual}, Modelo=${modeloActual}, Periodo=${periodoActual}`);
+
+    mapasIds.forEach(mapId => {
+      const capas = capasControladas[mapId];
+      if (!capas) return;
+
+      // Encontrar la estación de este mapa
+      const mapaConfig = mapasCapitulo1.find(m => m.id === mapId);
+      if (!mapaConfig) return;
+
+      const estacion = mapaConfig.estacion;
+
+      // Actualizar cada capa (Clim, Q05, Q95)
+      capas.forEach((capaInfo, index) => {
+        if (capaInfo.nombre === 'Límite Estatal') return;
+
+        // Determinar el tipo de capa según el índice
+        let tipo;
+        if (index === 0) tipo = 'clim';
+        else if (index === 1) tipo = 'q05';
+        else if (index === 2) tipo = 'q95';
+        else return;
+
+        const nuevaCapa = construirNombreCapa(estacion, tipo);
+        const nuevoNombre = obtenerNombreCapaUI(estacion, tipo);
+        const nuevaSimbologia = obtenerSimbologia(estacion, tipo);
+
+        if (nuevaCapa) {
+          // Actualizar la capa WMS
+          const source = capaInfo.layer.getSource();
+          source.updateParams({ 'LAYERS': nuevaCapa });
+          capaInfo.layer.set('name', nuevaCapa);
+          capaInfo.nombre = nuevoNombre;
+          capaInfo.simbologia = nuevaSimbologia;
+          console.log(`  ${mapId}: ${capaInfo.nombre} -> ${nuevaCapa}`);
+        }
+      });
+
+      // Actualizar leyendas para este mapa
+      actualizarLeyendas(mapId);
+    });
+  }
+
+  /**
+   * Actualiza las capas del Capítulo 2 (Clima Histórico)
+   */
+  function actualizarCapasCapitulo2() {
+    console.log(`Actualizando capas Cap 2 (Clima Histórico): Variable=${variableActualCap2}`);
+
+    mapasCapitulo2Ids.forEach(mapId => {
+      const capas = capasControladas[mapId];
+      if (!capas) return;
+
+      // Encontrar la estación de este mapa
+      const mapaConfig = mapasCapitulo1.find(m => m.id === mapId);
+      if (!mapaConfig) return;
+
+      const estacion = mapaConfig.estacion;
+
+      // Capítulo 2 solo tiene una capa por mapa (índice 0)
+      capas.forEach((capaInfo, index) => {
+        if (capaInfo.nombre === 'Límite Estatal') return;
+        if (index !== 0) return; // Solo la primera capa
+
+        const nuevaCapa = construirNombreCapaCap2(estacion);
+        const nuevoNombre = obtenerNombreCapaUICap2(estacion);
+        const nuevaSimbologia = obtenerSimbologiaCap2(estacion);
+
+        if (nuevaCapa) {
+          // Actualizar la capa WMS
+          const source = capaInfo.layer.getSource();
+          source.updateParams({ 'LAYERS': nuevaCapa });
+          capaInfo.layer.set('name', nuevaCapa);
+          capaInfo.nombre = nuevoNombre;
+          capaInfo.simbologia = nuevaSimbologia;
+          console.log(`  ${mapId}: ${capaInfo.nombre} -> ${nuevaCapa}`);
+        }
+      });
+
+      // Actualizar leyendas para este mapa
+      actualizarLeyendas(mapId);
+    });
+  }
+
+  /**
+   * Obtiene la simbología para el Capítulo 2 según la variable y estación
+   */
+  function obtenerSimbologiaCap2(estacion) {
+    // Por ahora usar simbologías genéricas según la variable
+    if (variableActualCap2 === 'temp_max') {
+      return simbologiaTempMax;
+    } else if (variableActualCap2 === 'temp_media') {
+      return simbologiaTempMedia;
+    } else if (variableActualCap2 === 'temp_min') {
+      return simbologiaTempMin;
+    }
+
+    // Precipitación - usar simbologías por estación
+    const simbologias = {
+      primavera: simbologiaPriClim,
+      verano: simbologiaVerClim,
+      otono: simbologiaOtoClim,
+      invierno: simbologiaInvClim
+    };
+
+    return simbologias[estacion] || simbologiaPrecipitacion;
   }
 
   // ============================================================
@@ -1662,13 +1890,20 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       if (chapterNum === 1) {
         // Capitulo 1 tiene 4 mapas
-        mapasCapitulo1.forEach(m => {
-          if (mapas[m.id]) {
-            mapas[m.id].updateSize();
+        mapasCapitulo1Ids.forEach(mapId => {
+          if (mapas[mapId]) {
+            mapas[mapId].updateSize();
+          }
+        });
+      } else if (chapterNum === 2) {
+        // Capitulo 2 tiene 4 mapas
+        mapasCapitulo2Ids.forEach(mapId => {
+          if (mapas[mapId]) {
+            mapas[mapId].updateSize();
           }
         });
       } else {
-        // Capitulos 2 y 3 tienen un solo mapa
+        // Capitulo 3 tiene un solo mapa
         const mapId = `map-${chapterNum}`;
         if (mapas[mapId]) {
           mapas[mapId].updateSize();
@@ -1720,8 +1955,12 @@ window.addEventListener('DOMContentLoaded', () => {
           // Actualizar mapas
           setTimeout(() => {
             if (chapterNum === 1) {
-              mapasCapitulo1.forEach(m => {
-                if (mapas[m.id]) mapas[m.id].updateSize();
+              mapasCapitulo1Ids.forEach(mapId => {
+                if (mapas[mapId]) mapas[mapId].updateSize();
+              });
+            } else if (chapterNum === 2) {
+              mapasCapitulo2Ids.forEach(mapId => {
+                if (mapas[mapId]) mapas[mapId].updateSize();
               });
             } else {
               const mapId = `map-${chapterNum}`;
@@ -1737,11 +1976,11 @@ window.addEventListener('DOMContentLoaded', () => {
     chapterObserver.observe(chapter);
   });
 
-  // Actualizar mapas del capitulo 1 despues de que el layout este listo
+  // Actualizar mapas del capitulo 1 y 2 despues de que el layout este listo
   setTimeout(() => {
-    mapasCapitulo1.forEach(m => {
-      if (mapas[m.id]) {
-        mapas[m.id].updateSize();
+    todosLosMapasIds.forEach(mapId => {
+      if (mapas[mapId]) {
+        mapas[mapId].updateSize();
       }
     });
   }, 500);

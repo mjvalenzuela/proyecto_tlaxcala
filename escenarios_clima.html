@@ -44,6 +44,7 @@
           <a href="riesgo.html" class="navbar-link">Riesgo</a>
           <a href="amenazas.html" class="navbar-link">Amenazas</a>
           <a href="impactos.html" class="navbar-link">Impactos</a>
+          <a href="clima.html" class="navbar-link">Clima</a>
           <a href="escenarios_clima.html" class="navbar-link active">Escenarios Climáticos</a>
           <a href="acciones-climaticas.html" class="navbar-link">Acciones Climaticas</a>
           <a href="mitigacion.html" class="navbar-link">Mitigacion</a>
@@ -179,52 +180,106 @@
         </section>
 
         <!-- ============================================================
-             CAPITULO 2 - PROYECCIONES CLIMATICAS
+             CAPITULO 2 - CLIMA HISTORICO (Layout de 4 mapas)
              ============================================================ -->
-        <section class="chapter" id="chapter-2" data-chapter="2">
-          <h2 class="map-title">Proyecciones Climaticas</h2>
+        <section class="chapter chapter-clima" id="chapter-2" data-chapter="2">
+          <h2 class="map-title">Clima Historico</h2>
 
-          <div class="chapter-map">
-            <div class="map-container" id="map-2"></div>
-          </div>
+          <div class="clima-content">
+            <!-- Card 1: Texto explicativo (20% ancho, 100% alto) -->
+            <div class="clima-text-card">
+              <h3 class="card-title">Clima Historico de Tlaxcala</h3>
+              <div class="card-content">
+                <p>
+                  El clima historico representa las condiciones climaticas promedio observadas durante un periodo de referencia. Estos datos son fundamentales para entender el comportamiento del clima en Tlaxcala.
+                </p>
+                <p>
+                  Los mapas muestran la distribucion espacial de las variables climaticas por estacion del anio, basados en registros historicos de estaciones meteorologicas y datos interpolados.
+                </p>
+                <p>
+                  Estos datos sirven como linea base para comparar con los escenarios de cambio climatico y evaluar los cambios proyectados.
+                </p>
 
-          <div class="chapter-text">
-            <h2 class="chapter-title">Escenarios Futuros</h2>
-            <div class="chapter-content">
-              <p>
-                Los modelos climaticos proyectan cambios significativos para Tlaxcala
-                en las proximas decadas.
-              </p>
-              <ul>
-                <li>Aumento de temperatura: 1.5-2.5 C para 2050</li>
-                <li>Mayor frecuencia de eventos extremos</li>
-                <li>Cambios en los patrones de precipitacion</li>
-                <li>Periodos de sequia mas prolongados</li>
-              </ul>
-              <p>
-                Estos cambios tendran impactos directos en la agricultura, los recursos
-                hidricos y la biodiversidad del estado.
-              </p>
+                <div class="clima-concepts">
+                  <h4 class="concept-title">Variables climaticas</h4>
+                  <div class="concept-item">
+                    <span class="concept-label">Precipitacion</span>
+                    <span class="concept-desc">Cantidad total de lluvia acumulada en el periodo (mm)</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Temp. Max</span>
+                    <span class="concept-desc">Temperatura maxima promedio del periodo (°C)</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Temp. Media</span>
+                    <span class="concept-desc">Temperatura media promedio del periodo (°C)</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Temp. Min</span>
+                    <span class="concept-desc">Temperatura minima promedio del periodo (°C)</span>
+                  </div>
+                </div>
+
+                <p>
+                  Explora los mapas para ver como varian las condiciones climaticas
+                  entre las diferentes estaciones del anio.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div class="chapter-chart-info">
-            <h2 class="chart-info-title">Precipitacion proyectada</h2>
-            <div class="chart-info-content">
-              <div class="chart-section">
-                <div class="chart-container">
-                  <canvas id="chart-2"></canvas>
+            <!-- Card 2: Mapa Primavera (40% ancho, 50% alto - superior izquierda) -->
+            <div class="clima-map-card map-primavera">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Primavera</h4>
+                  <span class="map-card-subtitle">Marzo - Mayo</span>
                 </div>
               </div>
-              <div class="info-section">
-                <div class="info-content">
-                  <p>
-                    Las proyecciones indican una reduccion en la precipitacion total anual,
-                    con una redistribucion temporal que concentrara las lluvias en periodos
-                    mas cortos pero intensos.
-                  </p>
+              <div class="map-container" id="map-2-primavera">
+                <!-- Selector de Variable Climática -->
+                <div class="clima-variable-selector">
+                  <label for="variable-climatica-2">Selecciona:</label>
+                  <select id="variable-climatica-2" class="clima-variable-select">
+                    <option value="precipitacion" selected>Precipitación</option>
+                    <option value="temp_max">Temperatura máxima</option>
+                    <option value="temp_media">Temperatura media</option>
+                    <option value="temp_min">Temperatura mínima</option>
+                  </select>
                 </div>
               </div>
+            </div>
+
+            <!-- Card 3: Mapa Verano (40% ancho, 50% alto - superior derecha) -->
+            <div class="clima-map-card map-verano">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Verano</h4>
+                  <span class="map-card-subtitle">Junio - Agosto</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-2-verano"></div>
+            </div>
+
+            <!-- Card 4: Mapa Otoño (40% ancho, 50% alto - inferior izquierda) -->
+            <div class="clima-map-card map-otono">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Otoño</h4>
+                  <span class="map-card-subtitle">Septiembre - Noviembre</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-2-otono"></div>
+            </div>
+
+            <!-- Card 5: Mapa Invierno (40% ancho, 50% alto - inferior derecha) -->
+            <div class="clima-map-card map-invierno">
+              <div class="map-card-header">
+                <div>
+                  <h4 class="map-card-title">Invierno</h4>
+                  <span class="map-card-subtitle">Diciembre - Febrero</span>
+                </div>
+              </div>
+              <div class="map-container" id="map-2-invierno"></div>
             </div>
           </div>
         </section>
@@ -288,11 +343,11 @@
           <div class="timeline-circle">1</div>
           <div class="timeline-label">Escenarios</div>
         </div>
-        <!-- Ocultos temporalmente -->
-        <div class="timeline-item" data-chapter="2" style="display: none;">
+        <div class="timeline-item" data-chapter="2">
           <div class="timeline-circle">2</div>
-          <div class="timeline-label">Proyecciones</div>
+          <div class="timeline-label">Clima Historico</div>
         </div>
+        <!-- Ocultos temporalmente -->
         <div class="timeline-item" data-chapter="3" style="display: none;">
           <div class="timeline-circle">3</div>
           <div class="timeline-label">Variabilidad</div>
