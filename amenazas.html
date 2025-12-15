@@ -15,6 +15,113 @@
     <link rel="stylesheet" href="css/navbar.css" />
     <link rel="stylesheet" href="css/story-map.css" />
 
+    <style>
+      /* Sobrescribir estilos para gráficas del capítulo 2 al 100% del ancho */
+      #chapter-2 .analytics-chart-1 .chart-container,
+      #chapter-2 .analytics-chart-2 .chart-container {
+        width: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        height: calc(100% - 2rem) !important;
+        margin: 0 !important;
+      }
+
+      #chapter-2 .analytics-chart-1 canvas,
+      #chapter-2 .analytics-chart-2 canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      #chapter-2 .analytics-chart-1,
+      #chapter-2 .analytics-chart-2 {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #chapter-2 .analytics-chart-1 .chart-title,
+      #chapter-2 .analytics-chart-2 .chart-title {
+        flex-shrink: 0;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Layout especial para capítulo 4 - Sequía (una sola card a la derecha) */
+      .chapter-sequia {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        grid-template-rows: auto 1fr;
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+
+      .chapter-sequia .map-title {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+
+      .chapter-sequia .chapter-text {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .chapter-sequia .chapter-chart-full {
+        grid-column: 2;
+        grid-row: 2;
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 1rem;
+        box-shadow: 0 4px 15px var(--color-shadow-md);
+        border: 1px solid var(--color-beige-light);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .chapter-sequia .chapter-chart-full .chart-title {
+        flex-shrink: 0;
+        margin-bottom: 0.5rem;
+      }
+
+      .chapter-sequia .chapter-chart-full .chart-container {
+        flex: 1;
+        width: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        min-height: 0;
+        position: relative;
+      }
+
+      .chapter-sequia .chapter-chart-full canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      /* Estilos para gráficas del capítulo 5 - Heladas */
+      #chapter-5 .analytics-chart-1 .chart-container {
+        width: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        height: calc(100% - 2rem) !important;
+        margin: 0 !important;
+      }
+
+      #chapter-5 .analytics-chart-1 canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      #chapter-5 .analytics-chart-1 {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #chapter-5 .analytics-chart-1 .chart-title {
+        flex-shrink: 0;
+        margin-bottom: 0.5rem;
+      }
+    </style>
+
     <!-- OpenLayers CSS -->
     <link
       rel="stylesheet"
@@ -131,17 +238,13 @@
 
           <!-- Card de texto (izquierda, 30%) -->
           <div class="analytics-text">
-            <h2 class="chapter-title">Tendencias y Patrones</h2>
-            <br>
+            <h2 class="chapter-title">Diagnóstico Participativo</h2>
             <div class="chapter-content">
               <p>
-                En los talleres de diagnóstico se identificaron las principales amenazas climáticas que enfrenta Tlaxcala. 
+                En los talleres de diagnóstico, representantes de distintos sectores (académicos, industriales, población general y autoridades) identificaron los <strong>eventos climáticos ocurridos</strong>, los <strong>riesgos más frecuentes</strong> y las <strong>estrategias de protección</strong> necesarias para Tlaxcala, tanto de manera presencial como en línea.
               </p>
               <p>
-                Estos fenómenos impactan la vida de las comunidades, la biodiversidad y la economía local.
-              </p>
-              <p>
-                Conocerlos es el primer paso para diseñar estrategias de adaptación y reducir los riesgos.
+                Los resultados muestran <strong>consistencia entre el análisis de vulnerabilidad y el conocimiento local</strong>: municipios como <strong>Altzayanca</strong> (vulnerabilidad "Muy alta") y <strong>Tlaxco</strong> (mayor cantidad de riesgos mencionados) coinciden con altos niveles de pobreza extrema. Esto confirma que <strong>la vulnerabilidad se acentúa en las localidades más pobres</strong>, donde la falta de capacidad adaptativa convierte eventos naturales en catástrofes.
               </p>
             </div>
           </div>
@@ -196,37 +299,33 @@
         </section>
 
         <!-- CAPÍTULO 4 -->
-        <section class="chapter chapter-analytics" id="chapter-4" data-chapter="4">
+        <section class="chapter chapter-sequia" id="chapter-4" data-chapter="4">
           <!-- Título del capítulo -->
           <h2 class="map-title">Amenazas al sector agrícola: Sequía</h2>
 
           <!-- Card de texto (izquierda, 30%) -->
-          <div class="analytics-text">
-            <h2 class="chapter-title">Sequía</h2>
+          <div class="chapter-text">
+            <h2 class="chapter-title">Agricultura y Sequía</h2>
             <br>
-            <div class="chapter-content">
+            <br>
+                        <div class="chapter-content">
               <p>
-                La sequía, exacerbada por el cambio climático, ha llevado a que en Tlaxcala prevalezcan condiciones anormalmente secas (D0).
+                La <strong>agricultura</strong> es fundamental para la producción de alimentos, fibras y materiales. Incluye actividades como preparación del suelo, siembra, riego, fertilización, control de plagas y cosecha. En Tlaxcala existen diversos tipos: de subsistencia, comercial, de regadío y orgánica.
               </p>
               <p>
-                Esto afecta la producción de alimentos y la disponibilidad de agua para riego, y puede requerir restricciones en el uso del agua, tal como se ha visto en municipios como Calpulalpan y Nanacamilpa.
+                La <strong>sequía</strong> es un fenómeno climático caracterizado por escasez prolongada de lluvias y humedad insuficiente. Sus efectos en la agricultura son devastadores: <strong>pérdida de cultivos, disminución de producción de alimentos</strong> y escasez de agua para riego, generando pérdida de ingresos e inseguridad alimentaria.
+              </p>
+              <p>
+                Entre <strong>2010 y 2023</strong>, según el Monitor de Sequías, en Tlaxcala ha prevalecido principalmente la condición <strong>"Anormalmente seco" (D0)</strong>, atribuida a la disminución de lluvias en la región durante dicho periodo.
               </p>
             </div>
           </div>
 
-          <!-- Card gráfica superior (derecha arriba, 70%) -->
-          <div class="analytics-chart-1">
+          <!-- Card gráfica única (derecha, 70%) -->
+          <div class="chapter-chart-full">
             <h3 class="chart-title">Evolución y el porcentaje de área del Estado afectado con una o varias categorías de sequía</h3>
             <div class="chart-container">
               <canvas id="chart-4-1"></canvas>
-            </div>
-          </div>
-
-          <!-- Card gráfica inferior (derecha abajo, 70%) -->
-          <div class="analytics-chart-2">
-            <h3 class="chart-title">Gráfica 2</h3>
-            <div class="chart-container">
-              <canvas id="chart-4-2"></canvas>
             </div>
           </div>
         </section>
@@ -735,6 +834,399 @@
         }
 
         // ============================================================
+        // CAPÍTULO 2 - GRÁFICAS DE ANÁLISIS DE AMENAZAS
+        // ============================================================
+
+        // Gráfica 2-1: Frecuencia de Eventos (Gráfica 75)
+        const ctx21 = document.getElementById('chart-2-1');
+        if (ctx21) {
+          // Datos de la gráfica 75
+          const eventosLabels = [
+            'Sequía', 'Granizada', 'Nevada', 'Incendio', 'Helada',
+            'Lluvia intensa', 'Plaga', 'Desbordamiento', 'Inundación',
+            'Desbordamiento', 'Olas de calor', 'Huracán', 'Lluvia intensa',
+            'Sismo', 'Desecación', 'Tala inmoderada', 'Tornado', 'Sequía-Helada'
+          ];
+          const eventosData = [32, 14, 7, 7, 7, 6, 6, 4, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1];
+
+          new Chart(ctx21.getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: eventosLabels,
+              datasets: [{
+                label: 'Frecuencia',
+                data: eventosData,
+                backgroundColor: '#8B1A4A',
+                borderColor: '#8B1A4A',
+                borderWidth: 1,
+                barPercentage: 0.8,
+                categoryPercentage: 0.9
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              indexAxis: 'x',
+              plugins: {
+                title: {
+                  display: false
+                },
+                legend: {
+                  display: false
+                },
+                datalabels: {
+                  display: true,
+                  anchor: 'end',
+                  align: 'top',
+                  color: '#333',
+                  font: {
+                    weight: 'bold',
+                    size: 10
+                  },
+                  formatter: function(value) {
+                    return value;
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return 'Frecuencia: ' + context.parsed.y;
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  grid: {
+                    display: false
+                  },
+                  ticks: {
+                    maxRotation: 45,
+                    minRotation: 45,
+                    font: {
+                      size: 9
+                    }
+                  }
+                },
+                y: {
+                  beginAtZero: true,
+                  max: 35,
+                  ticks: {
+                    stepSize: 5
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                }
+              }
+            },
+            plugins: [ChartDataLabels]
+          });
+        }
+
+        // Gráfica 2-2: Frecuencia de mención de riesgos por municipio (Gráfica 77)
+        const ctx22 = document.getElementById('chart-2-2');
+        if (ctx22) {
+          // Datos de la gráfica 77
+          const municipiosLabels = [
+            'Tlaxco', 'Huamantla', 'Tlaxcala', 'Tetla de la Solidaridad', 'Terrenate',
+            'Apizaco', 'Calpulalpan', 'Teolocholco', 'Ixtacuixtla', 'Nanacamilpa',
+            'San Francisco Tetlanohcan', 'Atlangatepec', 'Atlzayanca', 'Sanctórum',
+            'Emiliano Zapata', 'Cuapiaxtla', 'Tepetitla', 'San José Teacalco',
+            'Españita', 'Ixtenco', 'Acuamanala', 'Panotla', 'San Pablo del Monte',
+            'Totolac', 'El Carmen Tequexquitla', 'Chiautempan', 'Nativitas', 'Tepeyanco',
+            'Ziltlaltépec', 'Tzompantepec', 'Xicohtzinco', 'Lázaro Cárdenas',
+            'Apetatitlán', 'Xaloztoc', 'Papalotla', 'Santa Cruz Quilehtla',
+            'Muñoz de Domingo Arenas', 'Mazatecochco', 'Contla', 'Santa Cruz Tlaxcala',
+            'Santa Ana Nopalucan', 'Tenancingo', 'Tetlatlahuca', 'Yauhquemehcan',
+            'Zacatelco', 'Santa Catarina Ayometla'
+          ];
+          const municipiosData = [
+            26, 17, 10, 10, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 5, 5, 5, 5,
+            4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2,
+            1, 1, 1, 1, 1, 1, 1, 1
+          ];
+
+          new Chart(ctx22.getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: municipiosLabels,
+              datasets: [{
+                label: 'Frecuencia',
+                data: municipiosData,
+                backgroundColor: '#8B1A4A',
+                borderColor: '#8B1A4A',
+                borderWidth: 1,
+                barPercentage: 0.85,
+                categoryPercentage: 0.9
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              indexAxis: 'x',
+              plugins: {
+                title: {
+                  display: false
+                },
+                legend: {
+                  display: false
+                },
+                datalabels: {
+                  display: true,
+                  anchor: 'end',
+                  align: 'top',
+                  color: '#333',
+                  font: {
+                    weight: 'bold',
+                    size: 8
+                  },
+                  formatter: function(value) {
+                    return value;
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return 'Menciones: ' + context.parsed.y;
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  grid: {
+                    display: false
+                  },
+                  ticks: {
+                    maxRotation: 90,
+                    minRotation: 45,
+                    font: {
+                      size: 7
+                    }
+                  }
+                },
+                y: {
+                  beginAtZero: true,
+                  max: 30,
+                  ticks: {
+                    stepSize: 5
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                }
+              }
+            },
+            plugins: [ChartDataLabels]
+          });
+        }
+
+        // ============================================================
+        // CAPÍTULO 4 - GRÁFICA DE SEQUÍA (Área apilada)
+        // ============================================================
+
+        const ctx41 = document.getElementById('chart-4-1');
+        if (ctx41) {
+          // Fechas desde enero 2010 hasta enero 2023 (mensual simplificado a trimestral para mejor visualización)
+          const fechasSequia = [
+            '2010-01', '2010-04', '2010-07', '2010-10',
+            '2011-01', '2011-04', '2011-07', '2011-10',
+            '2012-01', '2012-04', '2012-07', '2012-10',
+            '2013-01', '2013-04', '2013-07', '2013-10',
+            '2014-01', '2014-04', '2014-07', '2014-10',
+            '2015-01', '2015-04', '2015-07', '2015-10',
+            '2016-01', '2016-04', '2016-07', '2016-10',
+            '2017-01', '2017-04', '2017-07', '2017-10',
+            '2018-01', '2018-04', '2018-07', '2018-10',
+            '2019-01', '2019-04', '2019-07', '2019-10',
+            '2020-01', '2020-04', '2020-07', '2020-10',
+            '2021-01', '2021-04', '2021-07', '2021-10',
+            '2022-01', '2022-04', '2022-07', '2022-10',
+            '2023-01'
+          ];
+
+          // Datos aproximados basados en la gráfica 69
+          // D0 Anormalmente seco (amarillo claro)
+          const dataD0 = [
+            18, 5, 0, 0, 60, 40, 0, 0, 0, 0, 0, 0,
+            56, 35, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
+            0, 5, 0, 0, 48, 42, 28, 15, 8, 12, 25, 30,
+            28, 35, 40, 18, 60, 45, 30, 20, 55, 40, 25, 15,
+            14, 18, 20, 15, 10
+          ];
+
+          // D1 Sequía Moderada (amarillo/naranja claro)
+          const dataD1 = [
+            0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0,
+            0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 5, 12, 8, 5, 3, 5, 8,
+            2, 5, 3, 10, 0, 10, 15, 10, 0, 8, 12, 8,
+            5, 8, 10, 8, 5
+          ];
+
+          // D2 Sequía Severa (naranja)
+          const dataD2 = [
+            0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0,
+            0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 2, 5, 3, 0, 0, 1, 2,
+            0, 1, 1, 3, 0, 3, 5, 5, 0, 2, 5, 3,
+            0, 2, 3, 2, 0
+          ];
+
+          // D3 Sequía Extrema (rojo)
+          const dataD3 = [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            0, 0, 0, 1, 0, 0, 1, 2, 0, 0, 1, 1,
+            0, 0, 0, 0, 0
+          ];
+
+          // D4 Sequía Excepcional (rojo oscuro)
+          const dataD4 = [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0
+          ];
+
+          new Chart(ctx41.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: fechasSequia,
+              datasets: [
+                {
+                  label: 'D0 Anormalmente seco',
+                  data: dataD0,
+                  backgroundColor: 'rgba(255, 255, 0, 0.7)',
+                  borderColor: 'rgba(255, 255, 0, 1)',
+                  borderWidth: 1,
+                  fill: true,
+                  tension: 0.1,
+                  pointRadius: 0
+                },
+                {
+                  label: 'D1 Sequía Moderada',
+                  data: dataD1,
+                  backgroundColor: 'rgba(255, 211, 127, 0.7)',
+                  borderColor: 'rgba(255, 211, 127, 1)',
+                  borderWidth: 1,
+                  fill: true,
+                  tension: 0.1,
+                  pointRadius: 0
+                },
+                {
+                  label: 'D2 Sequía Severa',
+                  data: dataD2,
+                  backgroundColor: 'rgba(230, 152, 0, 0.7)',
+                  borderColor: 'rgba(230, 152, 0, 1)',
+                  borderWidth: 1,
+                  fill: true,
+                  tension: 0.1,
+                  pointRadius: 0
+                },
+                {
+                  label: 'D3 Sequía Extrema',
+                  data: dataD3,
+                  backgroundColor: 'rgba(230, 0, 0, 0.7)',
+                  borderColor: 'rgba(230, 0, 0, 1)',
+                  borderWidth: 1,
+                  fill: true,
+                  tension: 0.1,
+                  pointRadius: 0
+                },
+                {
+                  label: 'D4 Sequía Excepcional',
+                  data: dataD4,
+                  backgroundColor: 'rgba(115, 0, 0, 0.7)',
+                  borderColor: 'rgba(115, 0, 0, 1)',
+                  borderWidth: 1,
+                  fill: true,
+                  tension: 0.1,
+                  pointRadius: 0
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: {
+                mode: 'index',
+                intersect: false
+              },
+              plugins: {
+                title: {
+                  display: false
+                },
+                legend: {
+                  display: true,
+                  position: 'right',
+                  labels: {
+                    usePointStyle: true,
+                    padding: 10,
+                    font: { size: 10 }
+                  }
+                },
+                datalabels: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Fecha',
+                    font: { size: 11, weight: 'bold' }
+                  },
+                  ticks: {
+                    maxRotation: 45,
+                    minRotation: 45,
+                    font: { size: 8 },
+                    callback: function(value, index) {
+                      // Mostrar solo años
+                      const label = this.getLabelForValue(value);
+                      if (label && label.endsWith('-01')) {
+                        return label.substring(0, 4);
+                      }
+                      return '';
+                    }
+                  },
+                  grid: {
+                    display: false
+                  }
+                },
+                y: {
+                  stacked: true,
+                  beginAtZero: true,
+                  max: 70,
+                  title: {
+                    display: true,
+                    text: 'Porcentaje del área (%)',
+                    font: { size: 11, weight: 'bold' }
+                  },
+                  ticks: {
+                    stepSize: 10
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // ============================================================
         // CAPÍTULO 3 - DISTRIBUCIÓN ESPACIAL DE AMENAZAS
         // ============================================================
         const capitulo3 = storyMapConfig.capitulos[2]; 
@@ -1149,6 +1641,96 @@
           legendsContent.appendChild(emptyMessage);
         }
         }
+        }
+
+        // ============================================================
+        // CAPÍTULO 5 - GRÁFICA DE HELADAS (FD0)
+        // ============================================================
+
+        const ctx51 = document.getElementById('chart-5-1');
+        if (ctx51) {
+          // Años desde 1975 hasta 2020
+          const aniosHeladas = [];
+          for (let y = 1975; y <= 2020; y++) {
+            aniosHeladas.push(y);
+          }
+
+          // Datos de número de días de heladas (FD0) - Gráfica 72
+          const diasHeladas = [
+            33, 42, 22, 17, 22, 30, 19, 23, 30, 24, 24, 40, 43, 22, 22,  // 1975-1989
+            9, 11, 22, 19, 15, 30, 18, 31, 38, 46, 37, 28, 25, 28, 26,   // 1990-2004
+            26, 28, 21, 27, 25, 36, 21, 36, 25, 13, 6, 9, 22, 17, 25, 21 // 2005-2020
+          ];
+
+          new Chart(ctx51.getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: aniosHeladas,
+              datasets: [{
+                label: 'Días de heladas',
+                data: diasHeladas,
+                backgroundColor: '#6B8E23',
+                borderColor: '#556B2F',
+                borderWidth: 1,
+                barPercentage: 0.85,
+                categoryPercentage: 0.9
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                title: {
+                  display: false
+                },
+                legend: {
+                  display: false
+                },
+                datalabels: {
+                  display: false
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return 'Días de heladas: ' + context.parsed.y;
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: false
+                  },
+                  ticks: {
+                    maxRotation: 90,
+                    minRotation: 90,
+                    autoSkip: false,
+                    font: { size: 8 }
+                  },
+                  grid: {
+                    display: false
+                  }
+                },
+                y: {
+                  beginAtZero: true,
+                  max: 50,
+                  title: {
+                    display: true,
+                    text: 'Número de días',
+                    font: { size: 11, weight: 'bold' }
+                  },
+                  ticks: {
+                    stepSize: 5
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                }
+              }
+            }
+          });
         }
 
         // ============================================================

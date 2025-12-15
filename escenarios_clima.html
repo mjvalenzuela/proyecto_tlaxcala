@@ -183,100 +183,85 @@
              CAPITULO 2 - CLIMA HISTORICO (Layout de 4 mapas)
              ============================================================ -->
         <section class="chapter chapter-clima" id="chapter-2" data-chapter="2">
-          <h2 class="map-title">Clima Historico</h2>
+          <h2 class="map-title">Variables Climáticas</h2>
 
           <div class="clima-content">
             <!-- Card 1: Texto explicativo (20% ancho, 100% alto) -->
             <div class="clima-text-card">
-              <h3 class="card-title">Clima Historico de Tlaxcala</h3>
+              <h3 class="card-title">Variables Climáticas de Tlaxcala</h3>
               <div class="card-content">
                 <p>
-                  El clima historico representa las condiciones climaticas promedio observadas durante un periodo de referencia. Estos datos son fundamentales para entender el comportamiento del clima en Tlaxcala.
+                  Esta sección presenta las principales variables climáticas del estado de Tlaxcala, incluyendo datos históricos y proyecciones a futuro.
                 </p>
                 <p>
-                  Los mapas muestran la distribucion espacial de las variables climaticas por estacion del anio, basados en registros historicos de estaciones meteorologicas y datos interpolados.
-                </p>
-                <p>
-                  Estos datos sirven como linea base para comparar con los escenarios de cambio climatico y evaluar los cambios proyectados.
+                  Los mapas permiten explorar la precipitación y temperatura en diferentes escalas temporales (anual y estacional).
                 </p>
 
                 <div class="clima-concepts">
-                  <h4 class="concept-title">Variables climaticas</h4>
+                  <h4 class="concept-title">Mapas disponibles</h4>
                   <div class="concept-item">
-                    <span class="concept-label">Precipitacion</span>
-                    <span class="concept-desc">Cantidad total de lluvia acumulada en el periodo (mm)</span>
+                    <span class="concept-label">Prec. Anual</span>
+                    <span class="concept-desc">Precipitación total anual histórica (mm)</span>
                   </div>
                   <div class="concept-item">
-                    <span class="concept-label">Temp. Max</span>
-                    <span class="concept-desc">Temperatura maxima promedio del periodo (°C)</span>
+                    <span class="concept-label">Escenarios</span>
+                    <span class="concept-desc">Proyecciones de precipitación 2021-2060</span>
                   </div>
                   <div class="concept-item">
-                    <span class="concept-label">Temp. Media</span>
-                    <span class="concept-desc">Temperatura media promedio del periodo (°C)</span>
+                    <span class="concept-label">Temp. Anual</span>
+                    <span class="concept-desc">Temperatura media, máxima y mínima anual</span>
                   </div>
                   <div class="concept-item">
-                    <span class="concept-label">Temp. Min</span>
-                    <span class="concept-desc">Temperatura minima promedio del periodo (°C)</span>
+                    <span class="concept-label">Variables</span>
+                    <span class="concept-desc">Todas las variables por estación del año</span>
                   </div>
                 </div>
 
                 <p>
-                  Explora los mapas para ver como varian las condiciones climaticas
-                  entre las diferentes estaciones del anio.
+                  Utiliza el control de capas en cada mapa para activar o desactivar las diferentes variables climáticas.
                 </p>
               </div>
             </div>
 
-            <!-- Card 2: Mapa Primavera (40% ancho, 50% alto - superior izquierda) -->
+            <!-- Card 2: Mapa Precipitación Anual -->
             <div class="clima-map-card map-primavera">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Primavera</h4>
-                  <span class="map-card-subtitle">Marzo - Mayo</span>
+                  <h4 class="map-card-title">Precipitación Anual</h4>
+                  <span class="map-card-subtitle">Clima histórico</span>
                 </div>
               </div>
-              <div class="map-container" id="map-2-primavera">
-                <!-- Selector de Variable Climática -->
-                <div class="clima-variable-selector">
-                  <label for="variable-climatica-2">Selecciona:</label>
-                  <select id="variable-climatica-2" class="clima-variable-select">
-                    <option value="precipitacion" selected>Precipitación</option>
-                    <option value="temp_max">Temperatura máxima</option>
-                    <option value="temp_media">Temperatura media</option>
-                    <option value="temp_min">Temperatura mínima</option>
-                  </select>
-                </div>
-              </div>
+              <div class="map-container" id="map-2-primavera"></div>
             </div>
 
-            <!-- Card 3: Mapa Verano (40% ancho, 50% alto - superior derecha) -->
+            <!-- Card 3: Mapa Escenarios Precipitación -->
             <div class="clima-map-card map-verano">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Verano</h4>
-                  <span class="map-card-subtitle">Junio - Agosto</span>
+                  <h4 class="map-card-title">Escenarios Precipitación</h4>
+                  <span class="map-card-subtitle">Proyecciones 2021-2060</span>
                 </div>
               </div>
               <div class="map-container" id="map-2-verano"></div>
             </div>
 
-            <!-- Card 4: Mapa Otoño (40% ancho, 50% alto - inferior izquierda) -->
+            <!-- Card 4: Mapa Temperatura Anual -->
             <div class="clima-map-card map-otono">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Otoño</h4>
-                  <span class="map-card-subtitle">Septiembre - Noviembre</span>
+                  <h4 class="map-card-title">Temperatura Anual</h4>
+                  <span class="map-card-subtitle">Media, Máxima, Mínima</span>
                 </div>
               </div>
               <div class="map-container" id="map-2-otono"></div>
             </div>
 
-            <!-- Card 5: Mapa Invierno (40% ancho, 50% alto - inferior derecha) -->
+            <!-- Card 5: Mapa Variables Climáticas -->
             <div class="clima-map-card map-invierno">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Invierno</h4>
-                  <span class="map-card-subtitle">Diciembre - Febrero</span>
+                  <h4 class="map-card-title">Variables Climáticas</h4>
+                  <span class="map-card-subtitle">Todas las variables</span>
                 </div>
               </div>
               <div class="map-container" id="map-2-invierno"></div>
@@ -345,7 +330,7 @@
         </div>
         <div class="timeline-item" data-chapter="2">
           <div class="timeline-circle">2</div>
-          <div class="timeline-label">Clima Historico</div>
+          <div class="timeline-label">Variables Climáticas</div>
         </div>
         <!-- Ocultos temporalmente -->
         <div class="timeline-item" data-chapter="3" style="display: none;">

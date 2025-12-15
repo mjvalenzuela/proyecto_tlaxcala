@@ -626,43 +626,66 @@ window.addEventListener('DOMContentLoaded', () => {
       ]
     },
     // ============================================================
-    // CAPITULO 2 - CLIMA HISTORICO (4 mapas: Primavera, Verano, Otoño, Invierno)
-    // Capas: SEICCT:clima_{variable}_{estacion}
+    // CAPITULO 2 - CLIMA HISTORICO (4 mapas con capas múltiples)
     // ============================================================
     {
       id: 'map-2-primavera',
-      titulo: 'Primavera',
-      estacion: 'primavera',
+      titulo: 'Precipitación Anual',
+      estacion: 'anual',
       capitulo: 2,
       capasMultiples: [
-        { nombre: 'Primavera', capa: 'SEICCT:clima_Prec_total_Primavera', visible: true, simbologia: 'priClim' }
+        { nombre: 'Precipitación Total Anual', capa: 'SEICCT:clima_Prec_total_Anual', visible: true, simbologia: 'priClim' }
       ]
     },
     {
       id: 'map-2-verano',
-      titulo: 'Verano',
-      estacion: 'verano',
+      titulo: 'Escenarios Precipitación',
+      estacion: 'anual',
       capitulo: 2,
       capasMultiples: [
-        { nombre: 'Verano', capa: 'SEICCT:clima_Prec_total_Ver', visible: true, simbologia: 'verClim' }
+        { nombre: 'Escenario 2021-2040', capa: 'SEICCT:Escenario_pr_Anual_Clim_2021-2040', visible: true, simbologia: 'priClim' },
+        { nombre: 'Escenario 2041-2060', capa: 'SEICCT:Escenario_pr_Anual_Clim__2041-2060', visible: false, simbologia: 'priClim' }
       ]
     },
     {
       id: 'map-2-otono',
-      titulo: 'Otoño',
-      estacion: 'otono',
+      titulo: 'Temperatura Anual',
+      estacion: 'anual',
       capitulo: 2,
       capasMultiples: [
-        { nombre: 'Otoño', capa: 'SEICCT:clima_Prec_total_Otono', visible: true, simbologia: 'otoClim' }
+        { nombre: 'Clima', capa: 'SEICCT:Clima', visible: false, simbologia: 'tempMedia' },
+        { nombre: 'Temp. Media Anual', capa: 'SEICCT:clima_Tem_Med_Anual', visible: true, simbologia: 'tempMedia' },
+        { nombre: 'Temp. Máxima Anual', capa: 'SEICCT:clima_Tem_Max_Anual', visible: false, simbologia: 'tempMax' },
+        { nombre: 'Temp. Mínima Anual', capa: 'SEICCT:clima_Tem_Min_Anual', visible: false, simbologia: 'tempMin' }
       ]
     },
     {
       id: 'map-2-invierno',
-      titulo: 'Invierno',
-      estacion: 'invierno',
+      titulo: 'Variables Climáticas',
+      estacion: 'todas',
       capitulo: 2,
       capasMultiples: [
-        { nombre: 'Invierno', capa: 'SEICCT:clima_Prec_total_Invierno', visible: true, simbologia: 'invClim' }
+        { nombre: 'Clima', capa: 'SEICCT:Clima', visible: false, simbologia: 'priClim' },
+        { nombre: 'Prec. Total Anual', capa: 'SEICCT:clima_Prec_total_Anual', visible: true, simbologia: 'priClim' },
+        { nombre: 'Prec. Invierno', capa: 'SEICCT:clima_Prec_total_Invierno', visible: false, simbologia: 'invClim' },
+        { nombre: 'Prec. Otoño', capa: 'SEICCT:clima_Prec_total_Otono', visible: false, simbologia: 'otoClim' },
+        { nombre: 'Prec. Primavera', capa: 'SEICCT:clima_Prec_total_Primavera', visible: false, simbologia: 'priClim' },
+        { nombre: 'Prec. Verano', capa: 'SEICCT:clima_Prec_total_Ver', visible: false, simbologia: 'verClim' },
+        { nombre: 'Temp. Media Anual', capa: 'SEICCT:clima_Tem_Med_Anual', visible: false, simbologia: 'tempMedia' },
+        { nombre: 'Temp. Media Invierno', capa: 'SEICCT:clima_Tem_Med_Invierno', visible: false, simbologia: 'tempMedia' },
+        { nombre: 'Temp. Media Otoño', capa: 'SEICCT:clima_Tem_Med_Otono', visible: false, simbologia: 'tempMedia' },
+        { nombre: 'Temp. Media Primavera', capa: 'SEICCT:clima_Tem_Med_Primavera', visible: false, simbologia: 'tempMedia' },
+        { nombre: 'Temp. Media Verano', capa: 'SEICCT:clima_Tem_Med_Ver', visible: false, simbologia: 'tempMedia' },
+        { nombre: 'Temp. Máxima Anual', capa: 'SEICCT:clima_Tem_Max_Anual', visible: false, simbologia: 'tempMax' },
+        { nombre: 'Temp. Máxima Invierno', capa: 'SEICCT:clima_Tem_Max_Invierno', visible: false, simbologia: 'tempMax' },
+        { nombre: 'Temp. Máxima Otoño', capa: 'SEICCT:clima_Tem_Max_Otono', visible: false, simbologia: 'tempMax' },
+        { nombre: 'Temp. Máxima Primavera', capa: 'SEICCT:clima_Tem_Max_Primavera', visible: false, simbologia: 'tempMax' },
+        { nombre: 'Temp. Máxima Verano', capa: 'SEICCT:clima_Tem_Max_Ver', visible: false, simbologia: 'tempMax' },
+        { nombre: 'Temp. Mínima Anual', capa: 'SEICCT:clima_Tem_Min_Anual', visible: false, simbologia: 'tempMin' },
+        { nombre: 'Temp. Mínima Invierno', capa: 'SEICCT:clima_Tem_Min_Invierno', visible: false, simbologia: 'tempMin' },
+        { nombre: 'Temp. Mínima Otoño', capa: 'SEICCT:clima_Tem_Min_Otono', visible: false, simbologia: 'tempMin' },
+        { nombre: 'Temp. Mínima Primavera', capa: 'SEICCT:clima_Tem_Min_Primavera', visible: false, simbologia: 'tempMin' },
+        { nombre: 'Temp. Mínima Verano', capa: 'SEICCT:clima_Tem_Min_Ver', visible: false, simbologia: 'tempMin' }
       ]
     }
   ];
@@ -720,7 +743,10 @@ window.addEventListener('DOMContentLoaded', () => {
         invQ95: simbologiaInvQ95,
         otoClim: simbologiaOtoClim,
         otoQ05: simbologiaOtoQ05,
-        otoQ95: simbologiaOtoQ95
+        otoQ95: simbologiaOtoQ95,
+        tempMax: simbologiaTempMax,
+        tempMedia: simbologiaTempMedia,
+        tempMin: simbologiaTempMin
       };
 
       // Agregar múltiples capas con clipping
@@ -1090,14 +1116,48 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     splitBtn.addEventListener('click', () => {
+      // Verificar si es mapa del capítulo 2 (split independiente)
+      const esCapitulo2 = mapasCapitulo2Ids.includes(mapId);
+
       if (splitState[mapId].activo) {
-        // Desactivar split en todos los mapas
-        sincronizarSplitDesactivar();
+        if (esCapitulo2) {
+          // Capítulo 2: desactivar solo este mapa
+          desactivarSplit(mapId, mapContainer, splitBtn);
+        } else {
+          // Capítulo 1: desactivar sincronizado
+          sincronizarSplitDesactivar();
+        }
       } else {
-        // Activar split en todos los mapas
-        sincronizarSplitActivar(mapId);
+        if (esCapitulo2) {
+          // Capítulo 2: activar solo este mapa
+          activarSplitIndependiente(mapId, mapContainer, splitBtn);
+        } else {
+          // Capítulo 1: activar sincronizado
+          sincronizarSplitActivar(mapId);
+        }
       }
     });
+  }
+
+  /**
+   * Activa el split de forma independiente (sin sincronización) para un mapa
+   */
+  function activarSplitIndependiente(mapId, mapContainer, splitBtn) {
+    const capas = capasControladas[mapId];
+    const capasDisponibles = capas.filter(c => c.nombre !== 'Límite Estatal');
+    const capasVisibles = capasDisponibles.filter(c => c.visible);
+
+    if (capasVisibles.length < 2) {
+      alert('Activa exactamente 2 capas para comparar con Split Vertical');
+      return;
+    }
+
+    if (capasVisibles.length > 2) {
+      alert('Desactiva capas hasta tener solo 2 activas para comparar');
+      return;
+    }
+
+    activarSplit(mapId, mapContainer, splitBtn);
   }
 
   /**
@@ -1271,8 +1331,10 @@ window.addEventListener('DOMContentLoaded', () => {
       state.position = currentPosition;
       map.render();
 
-      // Sincronizar posición en los otros mapas
-      sincronizarSplitPosicion(mapId, currentPosition);
+      // Sincronizar posición en los otros mapas (solo capítulo 1)
+      if (!mapasCapitulo2Ids.includes(mapId)) {
+        sincronizarSplitPosicion(mapId, currentPosition);
+      }
     };
 
     const onMouseUp = (e) => {

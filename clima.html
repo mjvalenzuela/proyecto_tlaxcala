@@ -102,6 +102,96 @@
         height: auto;
         object-fit: contain;
       }
+
+      /* Layout especial para capítulo 5 - Mapa 60% / Cards 40% */
+      .chapter-tendencias {
+        display: grid;
+        grid-template-columns: 60% 40%;
+        grid-template-rows: auto 1fr 1fr;
+        gap: 0.5rem;
+        padding: 1rem;
+        height: calc(100vh - 65px); /* Misma altura que .chapter para scroll-snap */
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+      }
+
+      .chapter-tendencias .map-title {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+
+      .chapter-tendencias .chapter-map {
+        grid-column: 1;
+        grid-row: 2 / 4;
+        height: 100%;
+      }
+
+      .chapter-tendencias .chapter-map .map-container {
+        height: 100%;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+      }
+
+      .chapter-tendencias .chapter-text {
+        grid-column: 2;
+        grid-row: 2;
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        box-shadow: var(--shadow-sm);
+        overflow-y: auto;
+      }
+
+      .chapter-tendencias .chapter-chart-info {
+        grid-column: 2;
+        grid-row: 3;
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chapter-tendencias .chapter-chart-info .chart-info-title {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .chapter-tendencias .chapter-chart-info .chart-info-content {
+        flex: 1;
+        min-height: 0;
+      }
+
+      /* Sobrescribir estilos de story-map.css para capítulo 5 */
+      .chapter-tendencias .chapter-chart-info .chart-info-content {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+
+      .chapter-tendencias .chapter-chart-info .chart-section {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+      }
+
+      .chapter-tendencias .chapter-chart-info .chart-container {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        margin: 0 !important;
+        position: relative;
+      }
+
+      .chapter-tendencias .chapter-chart-info canvas {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+      }
     </style>
   </head>
   <body>
@@ -468,6 +558,93 @@
           </div>
         </section>
 
+        <!-- ============================================================
+             CAPITULO 5 - TENDENCIAS TEMPERATURA (Layout mapa + texto + gráfica)
+             ============================================================ -->
+        <section class="chapter chapter-tendencias" id="chapter-5" data-chapter="5">
+          <h2 class="map-title">Tendencias Temperatura</h2>
+
+          <div class="chapter-map">
+            <div class="map-container" id="map-5"></div>
+          </div>
+
+          <div class="chapter-text">
+            <h2 class="chapter-title">Calentamiento en Tlaxcala</h2>
+            <div class="chapter-content">
+              <br>
+              <p>
+                La tasa de calentamiento en México es de <strong>0.29 °C por década, superior al promedio mundial </strong>(0.19 °C).
+              </p>
+              <p>
+                Tlaxcala presenta un <strong>incremento promedio de 1.1 °C</strong> desde 1970–2000.
+              </p>
+              <p>
+                <strong>Las temperaturas máximas y mínimas aumentan </strong>desde 1975 → días y noches más calurosas.
+              </p>
+              <p>
+                El <strong>centro y oeste del estado </strong>tienen un calentamiento <strong>mayor al promedio nacional.</strong>
+              </p>
+              <br>
+              <p>
+                Fuente: Elaboración propia del PACET con datos de la BD CLICOM y ERA5.
+              </p>
+            </div>
+          </div>
+
+          <div class="chapter-chart-info">
+            <h2 class="chart-info-title">Anomalía de temperatura media anual para el Estado de Tlaxcala</h2>
+            <div class="chart-info-content">
+              <div class="chart-section">
+                <div class="chart-container">
+                  <canvas id="chart-5"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             CAPITULO 6 - (Layout mapa + texto + gráfica)
+             ============================================================ -->
+        <section class="chapter chapter-tendencias" id="chapter-6" data-chapter="6">
+          <h2 class="map-title">Tendencias Precipitación</h2>
+
+          <div class="chapter-map">
+            <div class="map-container" id="map-6"></div>
+          </div>
+
+          <div class="chapter-text">
+            <!-- <h2 class="chapter-title">Subtítulo Capítulo 6</h2> -->
+            <div class="chapter-content">
+              <br>
+              <p>
+                Tendencia ligera de <strong>incremento general.</strong>
+              </p>
+              <p>
+                Más marcada en el <strong>noroeste del estado.</strong>
+              </p>
+              <p>
+                Algunas zonas del <strong>oeste</strong> registran <strong>reducción local</strong> de lluvias.
+              </p>
+              <br>
+              <p>
+                Fuente: Elaboración propia del PACET con datos de la BD CLICOM y ERA5. Los puntos indican las estaciones climáticas del CLICOM.
+              </p>
+            </div>
+          </div>
+
+          <div class="chapter-chart-info">
+            <h2 class="chart-info-title">Tendencias de la precipitación total anual en el estado</h2>
+            <div class="chart-info-content">
+              <div class="chart-section">
+                <div class="chart-container">
+                  <canvas id="chart-6"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
 
       <!-- Timeline inferior -->
@@ -487,6 +664,14 @@
         <div class="timeline-item" data-chapter="4">
           <div class="timeline-circle">4</div>
           <div class="timeline-label">Índices Climáticos</div>
+        </div>
+        <div class="timeline-item" data-chapter="5">
+          <div class="timeline-circle">5</div>
+          <div class="timeline-label">Temperatura</div>
+        </div>
+        <div class="timeline-item" data-chapter="6">
+          <div class="timeline-circle">6</div>
+          <div class="timeline-label">Precipitación</div>
         </div>
       </div>
 
@@ -1582,6 +1767,380 @@
         }
 
         // ============================================================
+        // CAPÍTULO 5 - MAPA Y GRÁFICA DE TENDENCIAS TEMPERATURA
+        // ============================================================
+
+        // Crear mapa del capítulo 5 con la capa SEICCT:clima_Tem_Med_Anual
+        const map5Container = document.getElementById('map-5');
+        if (map5Container) {
+          const map5 = new ol.Map({
+            target: 'map-5',
+            layers: [
+              new ol.layer.Tile({
+                source: new ol.source.OSM(),
+                zIndex: 0
+              })
+            ],
+            view: new ol.View({
+              center: ol.proj.fromLonLat(defaultCenter),
+              zoom: defaultZoom
+            }),
+            controls: ol.control.defaults.defaults({
+              zoom: true,
+              attribution: false,
+              rotate: false
+            })
+          });
+
+          // Agregar capa WMS con clipping
+          const capaTempMed = agregarCapaWMSConClipping(map5, 'SEICCT:clima_Tem_Med_Anual', 5, 0.85);
+
+          // Agregar capa del límite estatal
+          agregarCapaLimite(map5);
+
+          // Actualizar tamaño del mapa cuando sea visible
+          setTimeout(() => {
+            map5.updateSize();
+          }, 500);
+        }
+
+        // Gráfica 26 - Anomalía de temperatura media anual
+        const ctx5 = document.getElementById('chart-5');
+        if (ctx5) {
+          // Datos de anomalía de temperatura (1945-2015)
+          const years = [];
+          for (let y = 1945; y <= 2015; y++) {
+            years.push(y);
+          }
+
+          // Datos CLICOM (línea negra) - 1945 a 2015
+          const dataCLICOM = [
+            1.1, 0.6, -0.5, -0.6, 0.6, -0.9, -1.5, -0.6, -1.7, -0.5,  // 1945-1954
+            0.3, 0.2, -0.2, 0.3, 0.4, 0.0, -0.5, 0.2, 0.3, 0.1,       // 1955-1964
+            -0.3, 0.0, 0.2, -0.2, 0.1, 0.0, 0.2, 0.1, -0.1, -0.2,     // 1965-1974
+            0.2, -0.1, 0.0, 0.3, 0.2, 0.0, 0.1, 0.4, 0.3, 0.2,        // 1975-1984
+            0.5, 0.3, 0.4, 0.6, 0.3, 0.5, 0.6, 0.5, 0.7, 0.4,         // 1985-1994
+            0.6, 1.2, 0.5, 0.8, 0.7, 0.6, 0.7, 0.8, 0.9, 0.8,         // 1995-2004
+            1.0, 0.9, 0.8, 1.0, 1.1, 1.2, 0.9, 1.1, 1.3, 1.1,         // 2005-2014
+            1.4                                                        // 2015
+          ];
+
+          // Datos ERA5 (línea gris) - 1945 a 2015
+          const dataERA5 = [
+            1.4, 1.0, -0.3, -0.5, 0.8, -0.7, -1.2, -0.4, -1.0, -0.4,  // 1945-1954
+            0.5, 0.4, 0.0, 0.5, 0.6, 0.2, -0.3, 0.4, 0.5, 0.3,        // 1955-1964
+            -0.1, 0.2, 0.4, 0.0, 0.3, 0.2, 0.4, 0.3, 0.1, 0.0,        // 1965-1974
+            0.4, 0.1, 0.2, 0.5, 0.4, 0.2, 0.3, 0.6, 0.5, 0.4,         // 1975-1984
+            0.7, 0.5, 0.6, 0.8, 0.5, 0.7, 0.8, 0.7, 0.9, 0.6,         // 1985-1994
+            0.8, 1.4, 0.7, 1.0, 0.9, 0.8, 0.9, 1.0, 1.1, 1.0,         // 1995-2004
+            1.2, 1.1, 1.0, 1.2, 1.3, 1.4, 1.1, 1.3, 1.5, 1.4,         // 2005-2014
+            1.5                                                        // 2015
+          ];
+
+          new Chart(ctx5.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: years,
+              datasets: [
+                {
+                  label: 'CLICOM',
+                  data: dataCLICOM,
+                  borderColor: '#212121',
+                  backgroundColor: 'transparent',
+                  borderWidth: 2,
+                  tension: 0.1,
+                  pointRadius: 0,
+                  pointHoverRadius: 4
+                },
+                {
+                  label: 'ERA5',
+                  data: dataERA5,
+                  borderColor: '#9E9E9E',
+                  backgroundColor: 'transparent',
+                  borderWidth: 2,
+                  tension: 0.1,
+                  pointRadius: 0,
+                  pointHoverRadius: 4
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: {
+                mode: 'index',
+                intersect: false
+              },
+              plugins: {
+                title: {
+                  display: false
+                },
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    usePointStyle: true,
+                    padding: 15,
+                    font: { size: 11 }
+                  }
+                },
+                datalabels: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' °C';
+                    }
+                  }
+                },
+                annotation: {
+                  annotations: {
+                    line1: {
+                      type: 'line',
+                      yMin: 0,
+                      yMax: 0,
+                      borderColor: '#000',
+                      borderWidth: 1
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Año',
+                    font: { size: 12, weight: 'bold' }
+                  },
+                  ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    callback: function(value, index) {
+                      const year = this.getLabelForValue(value);
+                      // Mostrar años de 10 en 10: 1945, 1955, 1965, 1975, 1985, 1995, 2005, 2015
+                      if (year % 10 === 5) {
+                        return year;
+                      }
+                      return '';
+                    }
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                },
+                y: {
+                  min: -2,
+                  max: 2,
+                  title: {
+                    display: true,
+                    text: '°C',
+                    font: { size: 12, weight: 'bold' }
+                  },
+                  ticks: {
+                    stepSize: 0.5
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // ============================================================
+        // CAPÍTULO 6 - MAPA Y GRÁFICA
+        // ============================================================
+
+        // Crear mapa del capítulo 6
+        const map6Container = document.getElementById('map-6');
+        if (map6Container) {
+          const map6 = new ol.Map({
+            target: 'map-6',
+            layers: [
+              new ol.layer.Tile({
+                source: new ol.source.OSM(),
+                zIndex: 0
+              })
+            ],
+            view: new ol.View({
+              center: ol.proj.fromLonLat(defaultCenter),
+              zoom: defaultZoom
+            }),
+            controls: ol.control.defaults.defaults({
+              zoom: true,
+              attribution: false,
+              rotate: false
+            })
+          });
+
+          // Agregar capa WMS con clipping (cambiar la capa según necesidad)
+          const capaCap6 = agregarCapaWMSConClipping(map6, 'SEICCT:clima_Tem_Med_Anual', 5, 0.85);
+
+          // Agregar capa del límite estatal
+          agregarCapaLimite(map6);
+
+          // Actualizar tamaño del mapa cuando sea visible
+          setTimeout(() => {
+            map6.updateSize();
+          }, 500);
+        }
+
+        // Gráfica del capítulo 6 - Tendencias de precipitación (Figura 15a)
+        const ctx6 = document.getElementById('chart-6');
+        if (ctx6) {
+          // Años desde 1945 hasta 2020
+          const years6 = [];
+          for (let y = 1945; y <= 2020; y++) {
+            years6.push(y);
+          }
+
+          // Datos CLICOM (barras negras) - Anomalía de precipitación en porcentaje
+          const dataCLICOM6 = [
+            8, -20, 48, 15, -8, 25, -15, -5, 42, -25, 18, -30, 10, -18, -12, 8, -5, 15, -8, 12,
+            -15, 5, -10, 20, -8, 12, 18, -5, 25, 8, -12, 15, -20, 10, 18, -8, 25, 15, -5, 12,
+            -18, 8, 25, -10, 15, -25, 10, -8, 18, 12, -15, 5, 20, -5, 8, 15, -10, 25, 38, 18,
+            -8, 12, 25, -5, 15, 20, -12, 8, 35, 22, -5, 18, 25, 10, 15, 20
+          ];
+
+          // Datos ERA5 (barras azules) - Anomalía de precipitación en porcentaje
+          const dataERA56 = [
+            -18, -22, 25, -10, -15, 15, -20, -25, 28, -18, -8, -35, -12, -22, -18, -5, -15, 8, -20, -8,
+            -22, -10, -18, 12, -15, -5, 10, -12, 18, -8, -20, 8, -28, -5, 10, -15, 18, 8, -12, 5,
+            -25, -5, 18, -15, 8, -30, 5, -12, 12, 8, -20, -8, 15, -10, 5, 10, -15, 20, 32, 12,
+            -12, 8, 20, -8, 10, 15, -18, 5, 28, 18, -8, 12, 22, 8, 12, 18
+          ];
+
+          // Calcular línea de tendencia lineal para ERA5
+          const n = dataERA56.length;
+          let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+          for (let i = 0; i < n; i++) {
+            sumX += i;
+            sumY += dataERA56[i];
+            sumXY += i * dataERA56[i];
+            sumX2 += i * i;
+          }
+          const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+          const intercept = (sumY - slope * sumX) / n;
+          const trendLine = [];
+          for (let i = 0; i < n; i++) {
+            trendLine.push(+(slope * i + intercept).toFixed(2));
+          }
+
+          new Chart(ctx6.getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: years6,
+              datasets: [
+                {
+                  label: 'CLICOM',
+                  data: dataCLICOM6,
+                  backgroundColor: '#212121',
+                  borderColor: '#212121',
+                  borderWidth: 1,
+                  barPercentage: 0.9,
+                  categoryPercentage: 0.8,
+                  order: 2
+                },
+                {
+                  label: 'ERA5',
+                  data: dataERA56,
+                  backgroundColor: '#5DADE2',
+                  borderColor: '#5DADE2',
+                  borderWidth: 1,
+                  barPercentage: 0.9,
+                  categoryPercentage: 0.8,
+                  order: 3
+                },
+                {
+                  label: 'Lineal (ERA5)',
+                  data: trendLine,
+                  type: 'line',
+                  borderColor: '#7F8C8D',
+                  backgroundColor: 'transparent',
+                  borderWidth: 2,
+                  pointRadius: 0,
+                  pointHoverRadius: 0,
+                  tension: 0,
+                  order: 1
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: {
+                mode: 'index',
+                intersect: false
+              },
+              plugins: {
+                title: {
+                  display: false
+                },
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    usePointStyle: true,
+                    padding: 15,
+                    font: { size: 11 }
+                  }
+                },
+                datalabels: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                    }
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Año',
+                    font: { size: 12, weight: 'bold' }
+                  },
+                  ticks: {
+                    autoSkip: false,
+                    maxRotation: 0,
+                    callback: function(value, index) {
+                      const year = this.getLabelForValue(value);
+                      // Mostrar años de 10 en 10: 1945, 1955, 1965, etc.
+                      if (year % 10 === 5) {
+                        return year;
+                      }
+                      return '';
+                    }
+                  },
+                  grid: {
+                    display: false
+                  }
+                },
+                y: {
+                  min: -50,
+                  max: 50,
+                  title: {
+                    display: true,
+                    text: 'Porcentaje',
+                    font: { size: 12, weight: 'bold' }
+                  },
+                  ticks: {
+                    stepSize: 10
+                  },
+                  grid: {
+                    display: true,
+                    color: '#e0e0e0'
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // ============================================================
         // NAVEGACIÓN Y CONTROLES
         // ============================================================
         const navbarToggle = document.getElementById("navbarToggle");
@@ -1636,7 +2195,7 @@
         const btnNext = document.getElementById("btnNext");
 
         let currentChapter = 1;
-        const totalChapters = 4;
+        const totalChapters = 6;
 
         function goToChapter(chapterNum) {
           if (chapterNum < 1 || chapterNum > totalChapters) {
