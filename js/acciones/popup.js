@@ -83,9 +83,7 @@ class PopupGenerator {
           </div>
         </div>
 
-        ${esMultiUbicacion ? this.generateMultiUbicacionSection(accion) : ""}
-
-        ${this.generateUbicacionSection(ubicacion, esEstatal)}
+        ${this.generateUbicacionSection(ubicacion, esEstatal, accion)}
 
         <div class="popup-row">
           <div class="popup-field popup-field-half">
@@ -184,8 +182,35 @@ class PopupGenerator {
     `;
   }
 
-  generateUbicacionSection(ubicacion, esEstatal) {
+  generateUbicacionSection(ubicacion, esEstatal, accion = null) {
     const icono = esEstatal ? "🏛️" : "📍";
+
+    // Obtener municipios de la ubicación actual (no de todas las ubicaciones)
+    let municipiosDeUbicacion = [];
+    if (ubicacion && ubicacion.mun_name && !esEstatal) {
+      const nombres = Array.isArray(ubicacion.mun_name) ? ubicacion.mun_name : [ubicacion.mun_name];
+      municipiosDeUbicacion = nombres.filter(n => n);
+    }
+
+    // Generar HTML de municipios
+    let municipiosHtml = "";
+    if (municipiosDeUbicacion.length > 1) {
+      const municipiosList = municipiosDeUbicacion.join(", ");
+      municipiosHtml = `
+        <div class="ubicacion-municipios">
+          <span class="municipios-label">Municipios donde aplica:</span>
+          <span class="municipios-list">${municipiosList}</span>
+          <span class="badge badge-multi-mun">${municipiosDeUbicacion.length} municipios</span>
+        </div>
+      `;
+    } else if (municipiosDeUbicacion.length === 1) {
+      municipiosHtml = `
+        <div class="ubicacion-municipios">
+          <span class="municipios-label">Municipio:</span>
+          <span class="municipios-list">${municipiosDeUbicacion[0]}</span>
+        </div>
+      `;
+    }
 
     return `
       <div class="popup-field popup-field-full">
@@ -195,7 +220,7 @@ class PopupGenerator {
           ${
             esEstatal
               ? '<div class="ubicacion-alcance">Alcance: Todo el Estado de Tlaxcala</div>'
-              : ""
+              : municipiosHtml
           }
         </div>
       </div>
@@ -203,10 +228,6 @@ class PopupGenerator {
   }
 
   generateFooter(accion, ubicacionIdx = 0, esMultiUbicacion = false) {
-    if (esMultiUbicacion) {
-      return '';
-    }
-
     return `
       <div class="popup-footer">
         <button class="popup-btn popup-btn-primary" onclick="verDetallePDF('${accion.id}', ${ubicacionIdx})">

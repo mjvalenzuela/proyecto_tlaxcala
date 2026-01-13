@@ -267,9 +267,23 @@ class DataAdapter {
 
     const proyectosArray = Array.from(proyectosMap.values());
 
-    proyectosArray.forEach((proyecto) => {
+    proyectosArray.forEach((proyecto, index) => {
       proyecto.total_ubicaciones = proyecto.ubicaciones.length;
       proyecto.es_multiubicacion = proyecto.ubicaciones.length > 1;
+      // Asignar número de proyecto (1, 2, 3, ...) para identificación visual
+      proyecto.numero_proyecto = index + 1;
+
+      // Calcular total de municipios ÚNICOS del registro (sumando todas las ubicaciones)
+      const municipiosUnicos = new Set();
+      proyecto.ubicaciones.forEach(ub => {
+        if (ub.mun_id) {
+          const ids = Array.isArray(ub.mun_id) ? ub.mun_id : [ub.mun_id];
+          ids.forEach(id => {
+            if (id) municipiosUnicos.add(id);
+          });
+        }
+      });
+      proyecto.total_municipios_registro = municipiosUnicos.size;
     });
 
     return proyectosArray;
@@ -284,6 +298,21 @@ class DataAdapter {
     try {
       const { activity, type, latitude, longitude, place } = actividadData;
 
+      // Procesar mun_id y mun_name (pueden ser arrays o strings)
+      const munId = actividadData.mun_id || null;
+      const munName = actividadData.mun_name || null;
+
+      // Calcular cantidad de municipios donde aplica esta acción
+      let totalMunicipios = 0;
+      if (Array.isArray(munId)) {
+        totalMunicipios = munId.length;
+      } else if (munId) {
+        totalMunicipios = 1;
+      }
+
+      // Verificar si tiene múltiples municipios
+      const esMultiMunicipio = totalMunicipios > 1;
+
       if (type === "Local" && latitude !== null && longitude !== null) {
         if (!this.validarCoordenadasTlaxcala(latitude, longitude)) {
           console.warn("Coordenadas fuera de rango, usando centro de Tlaxcala:", latitude, longitude);
@@ -292,8 +321,10 @@ class DataAdapter {
             lat: DataAdapter.TLAXCALA_CENTER.lat,
             lng: DataAdapter.TLAXCALA_CENTER.lng,
             lugar: place || "Ubicación sin especificar",
-            mun_id: actividadData.mun_id || null,
-            mun_name: actividadData.mun_name || null,
+            mun_id: munId,
+            mun_name: munName,
+            total_municipios: totalMunicipios,
+            es_multi_municipio: esMultiMunicipio,
             tipo: "Local",
             es_estatal: false,
             coordenadas_fallback: true,
@@ -305,8 +336,10 @@ class DataAdapter {
           lat: parseFloat(latitude),
           lng: parseFloat(longitude),
           lugar: place || "Ubicación sin especificar",
-          mun_id: actividadData.mun_id || null,
-          mun_name: actividadData.mun_name || null,
+          mun_id: munId,
+          mun_name: munName,
+          total_municipios: totalMunicipios,
+          es_multi_municipio: esMultiMunicipio,
           tipo: "Local",
           es_estatal: false,
         };
@@ -320,6 +353,8 @@ class DataAdapter {
           lugar: "Todo el Estado de Tlaxcala",
           mun_id: null,
           mun_name: null,
+          total_municipios: 60, // Todos los municipios del estado
+          es_multi_municipio: true,
           tipo: "Estatal",
           es_estatal: true,
         };
@@ -334,8 +369,10 @@ class DataAdapter {
           lat: DataAdapter.TLAXCALA_CENTER.lat,
           lng: DataAdapter.TLAXCALA_CENTER.lng,
           lugar: place || "Ubicación sin especificar",
-          mun_id: actividadData.mun_id || null,
-          mun_name: actividadData.mun_name || null,
+          mun_id: munId,
+          mun_name: munName,
+          total_municipios: totalMunicipios,
+          es_multi_municipio: esMultiMunicipio,
           tipo: "Local",
           es_estatal: false,
           coordenadas_fallback: true,
@@ -387,12 +424,18 @@ class DataAdapter {
   calcularMetadata(acciones) {
     const dependenciasSet = new Set();
     let totalUbicaciones = 0;
+    let totalAccionesMunicipios = 0; // Suma de municipios de todas las acciones
     let tiposCount = { proyectos: 0, programas: 0 };
     let estadosCount = { activos: 0, concluidos: 0, planeados: 0 };
 
     acciones.forEach((accion) => {
       dependenciasSet.add(accion.dependencia);
       totalUbicaciones += accion.ubicaciones.length;
+
+      // Sumar los municipios de cada ubicación/acción
+      accion.ubicaciones.forEach((ubicacion) => {
+        totalAccionesMunicipios += ubicacion.total_municipios || 0;
+      });
 
       if (accion.tipo === "Programa") {
         tiposCount.programas++;
@@ -410,7 +453,8 @@ class DataAdapter {
     });
 
     return {
-      total_ubicaciones: totalUbicaciones,
+      total_ubicaciones: totalAccionesMunicipios, // Ahora es la suma de municipios
+      total_registros: totalUbicaciones, // Cantidad de registros/marcadores
       dependencias: Array.from(dependenciasSet),
       total_dependencias: dependenciasSet.size,
       tipos: tiposCount,

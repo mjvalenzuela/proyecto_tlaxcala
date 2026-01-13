@@ -219,6 +219,41 @@
   font-family: monospace;
 }
 
+/* Sección de municipios donde aplica la acción */
+.ubicacion-municipios {
+  margin-top: 8px;
+  padding: 8px 10px;
+  background-color: #f0f7ff;
+  border-radius: 6px;
+  border-left: 3px solid #4A90E2;
+}
+
+.ubicacion-municipios .municipios-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ubicacion-municipios .municipios-list {
+  font-size: 12px;
+  color: #333;
+  line-height: 1.5;
+  display: block;
+}
+
+/* Badge para múltiples municipios */
+.badge-multi-mun {
+  background-color: #4A90E2;
+  font-size: 10px;
+  padding: 2px 8px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
 /* ============================================ */
 /* BADGES */
 /* ============================================ */

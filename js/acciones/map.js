@@ -119,6 +119,12 @@ class MapManager {
 
       marker.accionData = data;
 
+      // Eventos para resaltar marcadores del mismo proyecto (solo si tiene 2+ municipios en total)
+      if (data.total_municipios_registro >= 2) {
+        marker.on('mouseover', () => this.highlightProyecto(data.id, true));
+        marker.on('mouseout', () => this.highlightProyecto(data.id, false));
+      }
+
       return marker;
     } catch (error) {
       console.error("Error al crear marker:", error);
@@ -136,12 +142,23 @@ class MapManager {
     const isProyecto = data.tipo === "Proyecto";
     const shape = isProyecto ? "shield" : "circle";
 
+    // Calcular total de municipios de la ubicación actual (no de todas las ubicaciones)
+    let totalMunicipios = 0;
+    const ubicacionActual = data.currentUbicacion;
+    if (ubicacionActual && ubicacionActual.mun_id) {
+      const ids = Array.isArray(ubicacionActual.mun_id) ? ubicacionActual.mun_id : [ubicacionActual.mun_id];
+      totalMunicipios = ids.filter(id => id).length;
+    }
+
+    const esMultiMunicipio = totalMunicipios > 1;
+
     const svgIcon = this.generateSVGIcon(
       shape,
       color,
-      data.es_multiubicacion,
-      data.total_ubicaciones || 0,
-      data.currentUbicacion?.es_estatal || false
+      esMultiMunicipio,
+      totalMunicipios,
+      data.currentUbicacion?.es_estatal || false,
+      data.numero_proyecto || 0
     );
 
     return L.divIcon({
@@ -157,17 +174,18 @@ class MapManager {
    * Genera SVG del ícono del marker
    * @param {string} shape - Forma del marker (shield o circle)
    * @param {string} color - Color del marker
-   * @param {boolean} isMulti - Si es multi-ubicación
-   * @param {number} totalUbicaciones - Total de ubicaciones
+   * @param {boolean} isMulti - Si es multi-municipio
+   * @param {number} totalMunicipios - Total de municipios de esta ubicación
    * @param {boolean} isEstatal - Si es de nivel estatal
+   * @param {number} numeroProyecto - Número identificador del proyecto
    * @returns {string} SVG como string
    */
-  generateSVGIcon(shape, color, isMulti, totalUbicaciones, isEstatal) {
-    const badge =
-      isMulti && totalUbicaciones > 1
+  generateSVGIcon(shape, color, isMulti, totalMunicipios, isEstatal, numeroProyecto) {
+    // Badge de municipios (arriba derecha - naranja) - SIEMPRE mostrar cuando hay municipios
+    const badgeMunicipios = totalMunicipios > 0
         ? `
       <circle cx="28" cy="8" r="8" fill="#FF9800" stroke="white" stroke-width="2.5"/>
-      <text x="28" y="11.5" font-size="9" fill="white" text-anchor="middle" font-weight="bold">${totalUbicaciones}</text>
+      <text x="28" y="11.5" font-size="9" fill="white" text-anchor="middle" font-weight="bold">${totalMunicipios}</text>
     `
         : "";
 
@@ -191,7 +209,7 @@ class MapManager {
           <path d="M18 4 L6 10 L6 20 C6 30 18 40 18 40 C18 40 30 30 30 20 L30 10 Z"
                 fill="${color}" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
           ${estatalIcon}
-          ${badge}
+          ${badgeMunicipios}
         </svg>
       `;
     } else {
@@ -201,7 +219,7 @@ class MapManager {
           <circle cx="18" cy="18" r="13" fill="${color}" stroke="white" stroke-width="2.5"/>
           <path d="M18 31 Q18 42, 18 42 Q18 42, 18 31" fill="${color}" stroke="white" stroke-width="2.5"/>
           ${estatalIcon}
-          ${badge}
+          ${badgeMunicipios}
         </svg>
       `;
     }
@@ -211,6 +229,48 @@ class MapManager {
     if (this.markersLayer) {
       this.markersLayer.clearLayers();
       this.markers = [];
+    }
+  }
+
+  /**
+   * Resalta o quita resaltado de todos los marcadores del mismo proyecto
+   * @param {string} proyectoId - ID del proyecto
+   * @param {boolean} highlight - true para resaltar, false para quitar
+   */
+  highlightProyecto(proyectoId, highlight) {
+    this.markers.forEach((marker) => {
+      if (marker.accionData && marker.accionData.id === proyectoId) {
+        const container = marker.getElement();
+        if (container) {
+          if (highlight) {
+            container.classList.add('marker-highlighted');
+          } else {
+            container.classList.remove('marker-highlighted');
+          }
+        }
+      }
+    });
+  }
+
+  /**
+   * Hace zoom para mostrar todos los marcadores del mismo proyecto
+   * @param {string} proyectoId - ID del proyecto
+   */
+  zoomToProyecto(proyectoId) {
+    const markersDelProyecto = this.markers.filter(
+      (marker) => marker.accionData && marker.accionData.id === proyectoId
+    );
+
+    if (markersDelProyecto.length > 1) {
+      const group = L.featureGroup(markersDelProyecto);
+      const bounds = group.getBounds();
+      if (bounds.isValid()) {
+        this.map.fitBounds(bounds, {
+          padding: [80, 80],
+          maxZoom: 14,
+          animate: true
+        });
+      }
     }
   }
 
@@ -289,7 +349,7 @@ class MapManager {
       this.municipiosLayer.addTo(this.map);
       this.municipiosLayer.bringToBack();
 
-      console.log('Municipios GeoJSON cargados correctamente');
+      //console.log('Municipios GeoJSON cargados correctamente');
       return true;
 
     } catch (error) {

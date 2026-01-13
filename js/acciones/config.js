@@ -14,7 +14,8 @@ const CONFIG = {
       return "/api/proxy?path=/api/v1/surveys-geoserver/?type=Local";
     }
 
-    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/?type=Local";
+    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/?tipo=Local";
+
   })(),
 
   CENTER: {

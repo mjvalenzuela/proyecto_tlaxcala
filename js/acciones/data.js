@@ -157,7 +157,7 @@ class DataManager {
         return;
       }
 
-      accion.ubicaciones.forEach((ubicacion) => {
+      accion.ubicaciones.forEach((ubicacion, idx) => {
         if (!this.isValidCoordinate(ubicacion.lat, ubicacion.lng)) {
           console.warn(`Coordenadas inválidas para: ${accion.nombre_proyecto}`);
           return;
@@ -166,6 +166,7 @@ class DataManager {
         markers.push({
           ...accion,
           currentUbicacion: ubicacion,
+          currentUbicacionIdx: idx,
           lat: ubicacion.lat,
           lng: ubicacion.lng,
         });
@@ -216,8 +217,16 @@ class DataManager {
       accion.ubicaciones.forEach((ubicacion) => {
         // Solo contar ubicaciones locales con mun_id
         if (ubicacion.mun_id && !ubicacion.es_estatal) {
-          const munId = ubicacion.mun_id;
-          conteo[munId] = (conteo[munId] || 0) + 1;
+          // Manejar mun_id como array (nuevo formato) o string (formato anterior)
+          if (Array.isArray(ubicacion.mun_id)) {
+            ubicacion.mun_id.forEach((munId) => {
+              conteo[munId] = (conteo[munId] || 0) + 1;
+            });
+          } else {
+            // Compatibilidad con formato anterior (string)
+            const munId = ubicacion.mun_id;
+            conteo[munId] = (conteo[munId] || 0) + 1;
+          }
         }
       });
     });
