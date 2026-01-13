@@ -12,6 +12,24 @@ class MapManager {
     this.popupGenerator = new PopupGenerator();
     this.markers = [];
     this.conteoMunicipios = {};
+    this.connectionLines = null;
+    this.municipioLabels = [];
+    // Umbrales de zoom para mostrar labels según tamaño del municipio
+    this.ZOOM_LABELS_LARGE = 10;    // Municipios grandes
+    this.ZOOM_LABELS_MEDIUM = 11;   // Municipios medianos
+    this.ZOOM_LABELS_SMALL = 12;    // Municipios pequeños
+  }
+
+  /**
+   * Trunca texto a una longitud máxima
+   * @param {string} text - Texto a truncar
+   * @param {number} maxLength - Longitud máxima
+   * @returns {string} Texto truncado
+   */
+  truncateText(text, maxLength) {
+    if (!text) return "";
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength - 3) + "...";
   }
 
   /**
@@ -112,7 +130,8 @@ class MapManager {
         className: "custom-popup",
       });
 
-      marker.bindTooltip(data.nombre_proyecto, {
+      const tooltipText = this.truncateText(data.nombre_proyecto, 50);
+      marker.bindTooltip(tooltipText, {
         direction: "top",
         offset: [0, -20],
       });
@@ -238,6 +257,7 @@ class MapManager {
    * @param {boolean} highlight - true para resaltar, false para quitar
    */
   highlightProyecto(proyectoId, highlight) {
+    // Resaltar marcadores
     this.markers.forEach((marker) => {
       if (marker.accionData && marker.accionData.id === proyectoId) {
         const container = marker.getElement();
@@ -250,6 +270,51 @@ class MapManager {
         }
       }
     });
+
+    // Dibujar o quitar líneas de conexión
+    if (highlight) {
+      this.drawConnectionLines(proyectoId);
+    } else {
+      this.removeConnectionLines();
+    }
+  }
+
+  /**
+   * Dibuja líneas conectando todos los marcadores del mismo proyecto
+   * @param {string} proyectoId - ID del proyecto
+   */
+  drawConnectionLines(proyectoId) {
+    // Eliminar líneas anteriores si existen
+    this.removeConnectionLines();
+
+    // Obtener coordenadas de todos los marcadores del proyecto
+    const markersDelProyecto = this.markers.filter(
+      (marker) => marker.accionData && marker.accionData.id === proyectoId
+    );
+
+    if (markersDelProyecto.length < 2) return;
+
+    // Crear array de coordenadas
+    const latlngs = markersDelProyecto.map(marker => marker.getLatLng());
+
+    // Dibujar línea conectando todos los puntos
+    this.connectionLines = L.polyline(latlngs, {
+      color: '#FF9800',
+      weight: 3,
+      opacity: 0.8,
+      dashArray: '10, 10',
+      className: 'connection-line'
+    }).addTo(this.map);
+  }
+
+  /**
+   * Elimina las líneas de conexión del mapa
+   */
+  removeConnectionLines() {
+    if (this.connectionLines) {
+      this.map.removeLayer(this.connectionLines);
+      this.connectionLines = null;
+    }
   }
 
   /**
@@ -349,6 +414,12 @@ class MapManager {
       this.municipiosLayer.addTo(this.map);
       this.municipiosLayer.bringToBack();
 
+      // Configurar listener de zoom para labels
+      this.setupZoomListener();
+
+      // Actualizar labels según zoom actual
+      this.updateMunicipioLabels();
+
       //console.log('Municipios GeoJSON cargados correctamente');
       return true;
 
@@ -407,17 +478,24 @@ class MapManager {
                       'Sin nombre';
     const cantidad = this.conteoMunicipios[munId] || 0;
 
-    // Tooltip con información del municipio
-    const tooltipContent = `
-      <strong>${munNombre}</strong><br>
-      Acciones: ${cantidad}
-    `;
+    // Calcular área aproximada del municipio para determinar cuándo mostrar label
+    const bounds = layer.getBounds();
+    const area = (bounds.getNorth() - bounds.getSouth()) * (bounds.getEast() - bounds.getWest());
 
-    layer.bindTooltip(tooltipContent, {
-      permanent: false,
-      direction: 'center',
-      className: 'municipio-tooltip'
+    // Crear label permanente en el centro del municipio
+    const center = bounds.getCenter();
+    const label = L.marker(center, {
+      icon: L.divIcon({
+        className: 'municipio-label',
+        html: `<span class="municipio-label-text">${munNombre}</span>`,
+        iconSize: [100, 20],
+        iconAnchor: [50, 10]
+      }),
+      interactive: false
     });
+    label.munId = munId;
+    label.area = area;
+    this.municipioLabels.push(label);
 
     // Eventos de hover
     layer.on({
@@ -434,6 +512,71 @@ class MapManager {
         this.municipiosLayer.resetStyle(e.target);
       }
     });
+  }
+
+  /**
+   * Configura el listener de zoom para mostrar/ocultar labels progresivamente
+   */
+  setupZoomListener() {
+    this.map.on('zoomend', () => {
+      this.updateMunicipioLabels();
+    });
+  }
+
+  /**
+   * Actualiza la visibilidad de labels según el zoom actual
+   */
+  updateMunicipioLabels() {
+    const currentZoom = this.map.getZoom();
+
+    // Calcular percentiles de área para clasificar municipios
+    if (!this.areaThresholds) {
+      this.calculateAreaThresholds();
+    }
+
+    this.municipioLabels.forEach(label => {
+      const shouldShow = this.shouldShowLabel(label.area, currentZoom);
+      const isOnMap = this.map.hasLayer(label);
+
+      if (shouldShow && !isOnMap) {
+        label.addTo(this.map);
+      } else if (!shouldShow && isOnMap) {
+        this.map.removeLayer(label);
+      }
+    });
+  }
+
+  /**
+   * Calcula los umbrales de área para clasificar municipios
+   */
+  calculateAreaThresholds() {
+    const areas = this.municipioLabels.map(l => l.area).sort((a, b) => b - a);
+    const count = areas.length;
+
+    // Dividir en tercios: grandes (top 33%), medianos (medio 33%), pequeños (bottom 33%)
+    this.areaThresholds = {
+      large: areas[Math.floor(count * 0.33)] || 0,
+      medium: areas[Math.floor(count * 0.66)] || 0
+    };
+  }
+
+  /**
+   * Determina si un label debe mostrarse según su área y el zoom actual
+   * @param {number} area - Área del municipio
+   * @param {number} zoom - Nivel de zoom actual
+   * @returns {boolean}
+   */
+  shouldShowLabel(area, zoom) {
+    // Municipios grandes: mostrar desde zoom 10
+    if (area >= this.areaThresholds.large) {
+      return zoom >= this.ZOOM_LABELS_LARGE;
+    }
+    // Municipios medianos: mostrar desde zoom 11
+    if (area >= this.areaThresholds.medium) {
+      return zoom >= this.ZOOM_LABELS_MEDIUM;
+    }
+    // Municipios pequeños: mostrar desde zoom 12
+    return zoom >= this.ZOOM_LABELS_SMALL;
   }
 
   /**
