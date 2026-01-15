@@ -14,7 +14,22 @@ const CONFIG = {
       return "/api/proxy?path=/api/v1/surveys-geoserver/?type=Local";
     }
 
-    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/?tipo=Local";
+    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/?type=Local";
+
+  })(),
+
+  API_ESTATAL_URL: (() => {
+    const hostname = window.location.hostname;
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:3001/api/v1/surveys-geoserver/?type=Estatal";
+    }
+
+    if (hostname.includes("vercel.app")) {
+      return "/api/proxy?path=/api/v1/surveys-geoserver/?type=Estatal";
+    }
+
+    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/?type=Estatal";
 
   })(),
 
@@ -40,12 +55,69 @@ const CONFIG = {
   },
 
   COLORS: {
-    'Comisión Estatal del Agua y Saneamiento': '#4A90E2',
-    'Secretaría de Medio Ambiente y Recursos Naturales': '#76BC21',
-    'Secretaría de Desarrollo Rural': '#8B6F47',
-    'Secretaría de Obras Públicas, Desarrollo Urbano y Vivienda': '#D0B787',
+    // Secretarías (13)
+    'Secretaría de Medio Ambiente': '#76BC21',
+    'Secretaría de Gobernación': '#1E3A5F',
+    'Secretaría de Finanzas': '#2E7D32',
+    'Secretaría de Salud': '#E53935',
+    'Secretaría de Impulso Agropecuario': '#8B6F47',
+    'Secretaría de Educación Pública': '#7B1FA2',
+    'Secretaría de Movilidad y Transporte': '#00ACC1',
+    'Secretaría de Turismo': '#FF6F00',
+    'Secretaría de Seguridad Ciudadana': '#37474F',
+    'Secretaría de Ordenamiento Territorial y Vivienda': '#D0B787',
+    'Secretaría de Bienestar': '#EC407A',
+    'Secretaría de Infraestructura': '#5D4037',
     'Secretaría de Desarrollo Económico': '#A21A5C',
+    // Otras dependencias (3)
+    'Comisión Estatal del Agua y Saneamiento': '#4A90E2',
+    'Coordinación General de Planeación e Inversión': '#9C27B0',
+    'Procuraduría de Protección al Ambiente': '#43A047',
+    // Regiones (8)
+    'Region Calpulalpan': '#FF7043',
+    'Region Tlaxco': '#26A69A',
+    'Region Apizaco': '#5C6BC0',
+    'Region Huamantla': '#AB47BC',
+    'Region Chiautempan': '#42A5F5',
+    'Region Tlaxcala': '#66BB6A',
+    'Region Zacatelco': '#FFA726',
+    'Region San Pablo del Monte': '#EF5350',
     'default': '#582574'
+  },
+
+  // Zonas geográficas para distribuir marcadores por dependencia
+  // Las 8 regiones están cerca de sus municipios reales
+  // Las secretarías y otras dependencias distribuidas por el estado
+  ZONAS_DEPENDENCIAS: {
+    // Regiones - cerca de sus ubicaciones reales
+    'Region Calpulalpan': { lat: 19.5883, lng: -98.5634, radio: 0.04 },
+    'Region Tlaxco': { lat: 19.6275, lng: -98.1216, radio: 0.04 },
+    'Region Apizaco': { lat: 19.4169, lng: -98.1393, radio: 0.035 },
+    'Region Huamantla': { lat: 19.3159, lng: -97.9236, radio: 0.04 },
+    'Region Chiautempan': { lat: 19.2631, lng: -98.1872, radio: 0.03 },
+    'Region Tlaxcala': { lat: 19.3181, lng: -98.2372, radio: 0.03 },
+    'Region Zacatelco': { lat: 19.2153, lng: -98.2383, radio: 0.03 },
+    'Region San Pablo del Monte': { lat: 19.1989, lng: -98.1661, radio: 0.03 },
+
+    // Secretarías - distribuidas en zonas del estado
+    'Secretaría de Medio Ambiente': { lat: 19.52, lng: -98.35, radio: 0.035 },
+    'Secretaría de Gobernación': { lat: 19.48, lng: -98.18, radio: 0.035 },
+    'Secretaría de Finanzas': { lat: 19.45, lng: -98.30, radio: 0.035 },
+    'Secretaría de Salud': { lat: 19.38, lng: -98.35, radio: 0.035 },
+    'Secretaría de Impulso Agropecuario': { lat: 19.55, lng: -98.22, radio: 0.035 },
+    'Secretaría de Educación Pública': { lat: 19.35, lng: -98.10, radio: 0.035 },
+    'Secretaría de Movilidad y Transporte': { lat: 19.42, lng: -98.08, radio: 0.035 },
+    'Secretaría de Turismo': { lat: 19.50, lng: -98.08, radio: 0.035 },
+    'Secretaría de Seguridad Ciudadana': { lat: 19.28, lng: -98.30, radio: 0.035 },
+    'Secretaría de Ordenamiento Territorial y Vivienda': { lat: 19.25, lng: -98.10, radio: 0.035 },
+    'Secretaría de Bienestar': { lat: 19.22, lng: -98.28, radio: 0.035 },
+    'Secretaría de Infraestructura': { lat: 19.38, lng: -97.98, radio: 0.035 },
+    'Secretaría de Desarrollo Económico': { lat: 19.32, lng: -98.00, radio: 0.035 },
+
+    // Otras dependencias
+    'Comisión Estatal del Agua y Saneamiento': { lat: 19.45, lng: -98.45, radio: 0.035 },
+    'Coordinación General de Planeación e Inversión': { lat: 19.35, lng: -98.28, radio: 0.035 },
+    'Procuraduría de Protección al Ambiente': { lat: 19.48, lng: -98.42, radio: 0.035 }
   },
 
   ICONS: {

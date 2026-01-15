@@ -192,6 +192,10 @@ class PopupGenerator {
       municipiosDeUbicacion = nombres.filter(n => n);
     }
 
+    // Verificar si es un marcador expandido (parte de un grupo multi-municipio)
+    const esExpandido = ubicacion && ubicacion.es_marcador_expandido;
+    const totalOriginal = ubicacion ? ubicacion.total_municipios_original : 0;
+
     // Generar HTML de municipios
     let municipiosHtml = "";
     if (municipiosDeUbicacion.length > 1) {
@@ -204,10 +208,15 @@ class PopupGenerator {
         </div>
       `;
     } else if (municipiosDeUbicacion.length === 1) {
+      // Si es expandido, mostrar indicador de que es parte de un grupo
+      const badgeExpandido = esExpandido && totalOriginal > 1
+        ? `<span class="badge badge-expandido">1 de ${totalOriginal}</span>`
+        : '';
       municipiosHtml = `
         <div class="ubicacion-municipios">
           <span class="municipios-label">Municipio:</span>
           <span class="municipios-list">${municipiosDeUbicacion[0]}</span>
+          ${badgeExpandido}
         </div>
       `;
     }

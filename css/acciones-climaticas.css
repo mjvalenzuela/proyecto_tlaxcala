@@ -1003,6 +1003,103 @@
 }
 
 /* ===================================
+   CLUSTERS POR DEPENDENCIA (Estatales)
+   =================================== */
+.marker-cluster-dependencia {
+  background: transparent !important;
+}
+
+.cluster-dependencia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 3px solid white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cluster-dependencia:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.cluster-small {
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+}
+
+.cluster-medium {
+  width: 76px;
+  height: 76px;
+  padding: 8px;
+}
+
+.cluster-large {
+  width: 90px;
+  height: 90px;
+  padding: 10px;
+}
+
+.cluster-count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.cluster-small .cluster-count {
+  font-size: 1.25rem;
+}
+
+.cluster-large .cluster-count {
+  font-size: 1.75rem;
+}
+
+.cluster-nombre {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.95;
+}
+
+.cluster-small .cluster-nombre {
+  font-size: 0.55rem;
+}
+
+.cluster-large .cluster-nombre {
+  font-size: 0.7rem;
+}
+
+/* Animación al aparecer */
+.cluster-dependencia {
+  animation: clusterAppear 0.4s ease-out;
+}
+
+@keyframes clusterAppear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===================================
    MARKERS PERSONALIZADOS
    =================================== */
 
@@ -1100,6 +1197,19 @@
     1px 1px 0 #fff,
     0 0 4px rgba(255, 255, 255, 0.9);
   pointer-events: none;
+}
+
+/* ============================================ */
+/* MARCADORES ESTATALES */
+/* ============================================ */
+
+.marker-estatal svg {
+  filter: drop-shadow(0 0 4px rgba(94, 59, 140, 0.5));
+}
+
+.marker-estatal:hover svg {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 8px rgba(94, 59, 140, 0.7));
 }
 
 /* Tooltip (hover sobre marker) */
@@ -1201,4 +1311,81 @@
 
 .municipio-tooltip strong {
   color: var(--primary-color);
+}
+
+/* ===================================
+   LEYENDA DE DEPENDENCIAS
+   =================================== */
+.legend-dependencias {
+  max-height: 400px;
+  overflow-y: auto;
+  min-width: 180px;
+}
+
+.legend-dependencias h4 {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  z-index: 1;
+}
+
+.legend-group {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.legend-group:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.legend-group-title {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.legend-dependencias .legend-item {
+  padding: 2px 0;
+}
+
+.legend-dependencias .legend-label {
+  font-size: 11px;
+}
+
+.legend-dependencias .legend-color {
+  width: 16px;
+  height: 12px;
+}
+
+/* Cuando hay dos leyendas, ajustar posición */
+.legend-acciones {
+  margin-bottom: 10px !important;
+}
+
+/* Scrollbar personalizado para la leyenda */
+.legend-dependencias::-webkit-scrollbar {
+  width: 6px;
+}
+
+.legend-dependencias::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.legend-dependencias::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.legend-dependencias::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
 }

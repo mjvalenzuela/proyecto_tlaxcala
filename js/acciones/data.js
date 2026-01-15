@@ -58,6 +58,62 @@ class DataManager {
     return data;
   }
 
+  /**
+   * Obtiene datos ESTATALES del API
+   * @returns {Promise<Object>} Datos de acciones estatales
+   */
+  async fetchDataEstatal() {
+    try {
+      if (!window.DataAdapter) {
+        throw new Error(
+          "DataAdapter no está cargado. Verifica que data-adapter.js esté incluido."
+        );
+      }
+
+      const adapter = new window.DataAdapter();
+      const data = await adapter.obtenerDatosEstatalesAPI();
+
+      return data;
+    } catch (error) {
+      console.error("Error al cargar datos estatales:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Procesa acciones estatales para el mapa
+   * @param {Object} data - Datos de acciones estatales
+   * @returns {Array} Array de markers para el mapa
+   */
+  processAccionesEstatalesForMap(data) {
+    if (!data || !data.acciones) return [];
+
+    const markers = [];
+
+    data.acciones.forEach((accion) => {
+      if (!accion.ubicaciones || !Array.isArray(accion.ubicaciones)) {
+        return;
+      }
+
+      accion.ubicaciones.forEach((ubicacion, idx) => {
+        if (!this.isValidCoordinate(ubicacion.lat, ubicacion.lng)) {
+          console.warn(`Coordenadas inválidas para: ${accion.nombre_proyecto}`);
+          return;
+        }
+
+        markers.push({
+          ...accion,
+          currentUbicacion: ubicacion,
+          currentUbicacionIdx: idx,
+          lat: ubicacion.lat,
+          lng: ubicacion.lng,
+        });
+      });
+    });
+
+    return markers;
+  }
+
   async fetchWithTimeout(url, timeout) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
@@ -144,10 +200,12 @@ class DataManager {
   /**
    * Procesa acciones para el mapa
    * Convierte acciones multi-ubicación en markers individuales
+   * Si una ubicación tiene múltiples municipios, crea un marker por cada municipio
    * @param {Object} data - Datos de acciones
+   * @param {Object} centroids - Mapeo mun_id -> {lat, lng, nombre} (opcional)
    * @returns {Array} Array de markers para el mapa
    */
-  processAccionesForMap(data) {
+  processAccionesForMap(data, centroids = {}) {
     if (!data || !data.acciones) return [];
 
     const markers = [];
@@ -158,18 +216,76 @@ class DataManager {
       }
 
       accion.ubicaciones.forEach((ubicacion, idx) => {
-        if (!this.isValidCoordinate(ubicacion.lat, ubicacion.lng)) {
-          console.warn(`Coordenadas inválidas para: ${accion.nombre_proyecto}`);
+        // Si es estatal o no tiene múltiples municipios, usar lógica original
+        if (ubicacion.es_estatal) {
+          if (!this.isValidCoordinate(ubicacion.lat, ubicacion.lng)) {
+            console.warn(`Coordenadas inválidas para: ${accion.nombre_proyecto}`);
+            return;
+          }
+          markers.push({
+            ...accion,
+            currentUbicacion: ubicacion,
+            currentUbicacionIdx: idx,
+            lat: ubicacion.lat,
+            lng: ubicacion.lng,
+          });
           return;
         }
 
-        markers.push({
-          ...accion,
-          currentUbicacion: ubicacion,
-          currentUbicacionIdx: idx,
-          lat: ubicacion.lat,
-          lng: ubicacion.lng,
-        });
+        // Verificar si tiene múltiples municipios
+        const munIds = ubicacion.mun_id;
+        const munNames = ubicacion.mun_name;
+
+        if (Array.isArray(munIds) && munIds.length > 1) {
+          // Expandir: crear un marcador por cada municipio
+          munIds.forEach((munId, munIdx) => {
+            const centroid = centroids[munId];
+            const munName = Array.isArray(munNames) ? munNames[munIdx] : munNames;
+
+            // Usar centroide del municipio si está disponible, sino usar coordenadas originales
+            const lat = centroid ? centroid.lat : ubicacion.lat;
+            const lng = centroid ? centroid.lng : ubicacion.lng;
+
+            if (!this.isValidCoordinate(lat, lng)) {
+              console.warn(`Coordenadas inválidas para municipio ${munId}: ${accion.nombre_proyecto}`);
+              return;
+            }
+
+            // Crear ubicación expandida con solo este municipio
+            const ubicacionExpandida = {
+              ...ubicacion,
+              mun_id: munId,
+              mun_name: munName || (centroid ? centroid.nombre : 'Sin nombre'),
+              total_municipios: 1,
+              es_multi_municipio: false,
+              es_marcador_expandido: true,
+              municipio_original_idx: munIdx,
+              total_municipios_original: munIds.length
+            };
+
+            markers.push({
+              ...accion,
+              currentUbicacion: ubicacionExpandida,
+              currentUbicacionIdx: idx,
+              lat: lat,
+              lng: lng,
+            });
+          });
+        } else {
+          // Un solo municipio o sin municipios, usar lógica original
+          if (!this.isValidCoordinate(ubicacion.lat, ubicacion.lng)) {
+            console.warn(`Coordenadas inválidas para: ${accion.nombre_proyecto}`);
+            return;
+          }
+
+          markers.push({
+            ...accion,
+            currentUbicacion: ubicacion,
+            currentUbicacionIdx: idx,
+            lat: ubicacion.lat,
+            lng: ubicacion.lng,
+          });
+        }
       });
     });
 
@@ -229,6 +345,39 @@ class DataManager {
           }
         }
       });
+    });
+
+    return conteo;
+  }
+
+  /**
+   * Obtiene el total de acciones para colorear todos los municipios igual
+   * Cada proyecto/programa suma +1 a todos los municipios del estado
+   * @param {Object} data - Datos de acciones
+   * @returns {number} Total de acciones
+   */
+  obtenerTotalAcciones(data) {
+    if (!data || !data.acciones) return 0;
+    return data.acciones.length;
+  }
+
+  /**
+   * Genera un conteo uniforme para todos los municipios basado en el total de acciones
+   * @param {Object} data - Datos de acciones
+   * @param {Array} municipioIds - Array con los IDs de todos los municipios (001-060)
+   * @returns {Object} Objeto con mun_id como clave y el total de acciones como valor
+   */
+  generarConteoUniforme(data, municipioIds = null) {
+    const total = this.obtenerTotalAcciones(data);
+    const conteo = {};
+
+    // Si no se proporcionan IDs, usar los 60 municipios de Tlaxcala
+    const ids = municipioIds || Array.from({ length: 60 }, (_, i) =>
+      String(i + 1).padStart(3, '0')
+    );
+
+    ids.forEach(munId => {
+      conteo[munId] = total;
     });
 
     return conteo;

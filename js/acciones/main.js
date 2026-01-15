@@ -9,8 +9,13 @@ class AccionesClimaticasApp {
     this.filterManager = null;
     this.timelineManager = null;
     this.data = null;
+    this.dataEstatal = null;
     this.markersData = null;
+    this.markersDataEstatal = null;
     this.isInitialized = false;
+    // Estado de los toggles
+    this.showLocal = true;
+    this.showEstatal = false;
   }
 
   /**
@@ -44,25 +49,54 @@ class AccionesClimaticasApp {
     try {
       this.showLoading(true);
 
-      this.data = await this.dataManager.fetchData();
+      // Cargar datos locales y estatales en paralelo
+      const [dataLocal, dataEstatal] = await Promise.all([
+        this.dataManager.fetchData(),
+        this.dataManager.fetchDataEstatal().catch(err => {
+          console.warn('No se pudieron cargar datos estatales:', err);
+          return { acciones: [], total: 0, metadata: {} };
+        })
+      ]);
+
+      this.data = dataLocal;
+      this.dataEstatal = dataEstatal;
 
       if (!this.data || !this.data.acciones) {
         throw new Error("No se pudieron cargar los datos");
       }
 
-      this.updateStats(this.data);
+      // Combinar acciones para el popup generator
+      const todasLasAcciones = [
+        ...this.data.acciones,
+        ...(this.dataEstatal?.acciones || [])
+      ];
+      PopupGenerator.setAccionesData(todasLasAcciones);
 
-      PopupGenerator.setAccionesData(this.data.acciones);
-
-      // Contar acciones por municipio y cargar capa GeoJSON
-      const conteoMunicipios = this.dataManager.contarAccionesPorMunicipio(this.data);
+      // Generar conteo uniforme: todos los municipios tienen el total de acciones
+      // Esto hace que todos se pinten del mismo color basado en el total
+      const conteoMunicipios = this.dataManager.generarConteoUniforme(this.data);
       this.mapManager.setConteoMunicipios(conteoMunicipios);
+
+      // Establecer conteo estatal
+      const conteoEstatal = this.dataEstatal?.total || 0;
+      this.mapManager.setConteoEstatal(conteoEstatal);
+
       await this.mapManager.cargarMunicipiosGeoJSON();
 
-      this.markersData = this.dataManager.processAccionesForMap(this.data);
+      // Obtener centroides de municipios para expandir marcadores multi-municipio
+      const centroids = this.mapManager.getMunicipioCentroids();
+      this.markersData = this.dataManager.processAccionesForMap(this.data, centroids);
       this.mapManager.addMarkers(this.markersData);
 
+      // Procesar marcadores estatales
+      this.markersDataEstatal = this.dataManager.processAccionesEstatalesForMap(this.dataEstatal);
+      this.mapManager.addMarkersEstatal(this.markersDataEstatal);
+
+      // Actualizar estadísticas según toggles activos
+      this.updateStatsFromToggles();
+
       this.initFilters();
+      this.setupAlcanceToggle();
 
       this.showLoading(false);
     } catch (error) {
@@ -177,6 +211,101 @@ class AccionesClimaticasApp {
         }
       }, 250);
     });
+  }
+
+  /**
+   * Configura los toggles de alcance (Local/Estatal)
+   */
+  setupAlcanceToggle() {
+    const toggleLocal = document.getElementById('toggleLocal');
+    const toggleEstatal = document.getElementById('toggleEstatal');
+
+    if (!toggleLocal || !toggleEstatal) {
+      console.warn('Toggles de alcance no encontrados');
+      return;
+    }
+
+    // Evento para toggle Local
+    toggleLocal.addEventListener('click', () => {
+      toggleLocal.classList.toggle('active');
+      this.showLocal = toggleLocal.classList.contains('active');
+      this.onAlcanceChange();
+    });
+
+    // Evento para toggle Estatal
+    toggleEstatal.addEventListener('click', () => {
+      toggleEstatal.classList.toggle('active');
+      this.showEstatal = toggleEstatal.classList.contains('active');
+      this.onAlcanceChange();
+    });
+
+    // Inicializar visualización
+    this.mapManager.actualizarVisualizacion(this.showLocal, this.showEstatal);
+  }
+
+  /**
+   * Manejador de cambio de alcance
+   */
+  onAlcanceChange() {
+    // Actualizar visualización del mapa
+    this.mapManager.actualizarVisualizacion(this.showLocal, this.showEstatal);
+
+    // Actualizar estadísticas
+    this.updateStatsFromToggles();
+
+    // Actualizar conteo de resultados en filtros
+    this.updateFilterResultsCount();
+  }
+
+  /**
+   * Actualiza las estadísticas según los toggles activos
+   */
+  updateStatsFromToggles() {
+    let totalProyectos = 0;
+    let totalAcciones = 0;
+    let dependenciasSet = new Set();
+
+    if (this.showLocal && this.data) {
+      totalProyectos += this.data.total || 0;
+      totalAcciones += this.data.metadata?.total_ubicaciones || 0;
+      (this.data.metadata?.dependencias || []).forEach(d => dependenciasSet.add(d));
+    }
+
+    if (this.showEstatal && this.dataEstatal) {
+      totalProyectos += this.dataEstatal.total || 0;
+      totalAcciones += this.dataEstatal.metadata?.total_ubicaciones || 0;
+      (this.dataEstatal.metadata?.dependencias || []).forEach(d => dependenciasSet.add(d));
+    }
+
+    // Si ninguno está activo, mostrar 0
+    if (!this.showLocal && !this.showEstatal) {
+      totalProyectos = 0;
+      totalAcciones = 0;
+    }
+
+    this.updateStatElement("statTotal", totalProyectos);
+    this.updateStatElement("statUbicaciones", totalAcciones);
+    this.updateStatElement("statDependencias", dependenciasSet.size);
+  }
+
+  /**
+   * Actualiza el conteo de resultados en filtros
+   */
+  updateFilterResultsCount() {
+    let count = 0;
+
+    if (this.showLocal) {
+      count += this.markersData?.length || 0;
+    }
+
+    if (this.showEstatal) {
+      count += this.markersDataEstatal?.length || 0;
+    }
+
+    const element = document.getElementById('filterResultsCount');
+    if (element) {
+      element.textContent = count;
+    }
   }
 
   showLoading(show) {

@@ -254,6 +254,15 @@
   vertical-align: middle;
 }
 
+/* Badge para marcador expandido (1 de N) */
+.badge-expandido {
+  background-color: #FF9800;
+  font-size: 10px;
+  padding: 2px 8px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
 /* ============================================ */
 /* BADGES */
 /* ============================================ */

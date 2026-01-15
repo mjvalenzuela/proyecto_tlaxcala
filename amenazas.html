@@ -120,6 +120,110 @@
         flex-shrink: 0;
         margin-bottom: 0.5rem;
       }
+
+      /* Layout especial para capítulo 6 - Huracanes */
+      .chapter-huracanes {
+        display: grid;
+        grid-template-columns: 35% 65%;
+        grid-template-rows: auto 1fr;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .chapter-huracanes .map-title {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+
+      .chapter-huracanes .chapter-text {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .chapter-huracanes .chapter-effects-grid {
+        grid-column: 2;
+        grid-row: 2;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .effect-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 1.25rem;
+        box-shadow: 0 4px 15px var(--color-shadow-md);
+        border: 1px solid var(--color-beige-light);
+        display: flex;
+        gap: 1rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .effect-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px var(--color-shadow-lg);
+      }
+
+      .effect-icon {
+        font-size: 2.5rem;
+        flex-shrink: 0;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+        border-radius: var(--radius-md);
+      }
+
+      .effect-content h4 {
+        margin: 0 0 0.5rem 0;
+        color: var(--color-guinda);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .effect-content p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #555;
+        line-height: 1.5;
+      }
+
+      /* Responsive para capítulo 6 */
+      @media (max-width: 1024px) {
+        .chapter-huracanes {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto;
+        }
+
+        .chapter-huracanes .chapter-text {
+          grid-column: 1;
+          grid-row: 2;
+        }
+
+        .chapter-huracanes .chapter-effects-grid {
+          grid-column: 1;
+          grid-row: 3;
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .chapter-huracanes .chapter-effects-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .effect-card {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .effect-icon {
+          margin: 0 auto;
+        }
+      }
     </style>
 
     <!-- OpenLayers CSS -->
@@ -362,6 +466,62 @@
             <div class="map-container" id="map-5"></div>
           </div>
         </section>
+
+        <!-- CAPÍTULO 6 -->
+        <section class="chapter chapter-huracanes" id="chapter-6" data-chapter="6">
+          <!-- Título del capítulo -->
+          <h2 class="map-title">Amenazas al sector agrícola: Huracanes</h2>
+
+          <!-- Card de texto (izquierda, 35%) -->
+          <div class="chapter-text">
+            <h2 class="chapter-title">Huracanes y Agricultura</h2>
+            <br>
+            <br>
+            <div class="chapter-content">
+              <p>
+                Los <strong>huracanes</strong> pueden tener un impacto significativo y negativo en la agricultura al dañar cultivos, suelos y la infraestructura agrícola, lo que puede tener consecuencias económicas y alimentarias importantes en las áreas afectadas.
+              </p>
+              <p>
+                Los agricultores a menudo se enfrentan a desafíos considerables para <strong>adaptarse y recuperarse</strong> de los efectos de los huracanes.
+              </p>
+            </div>
+          </div>
+
+          <!-- Cards de efectos (derecha, 65%) -->
+          <div class="chapter-effects-grid">
+            <div class="effect-card">
+              <div class="effect-icon">🌾</div>
+              <div class="effect-content">
+                <h4>Pérdida de cultivos</h4>
+                <p>Los vientos fuertes y las lluvias torrenciales pueden destruir o dañar gravemente los cultivos en la trayectoria del huracán, resultando en pérdidas económicas significativas para los agricultores.</p>
+              </div>
+            </div>
+
+            <div class="effect-card">
+              <div class="effect-icon">🌊</div>
+              <div class="effect-content">
+                <h4>Inundaciones</h4>
+                <p>Las lluvias intensas asociadas a los huracanes pueden provocar inundaciones en las áreas agrícolas, dañando las cosechas y erosionando el suelo.</p>
+              </div>
+            </div>
+
+            <div class="effect-card">
+              <div class="effect-icon">🏚️</div>
+              <div class="effect-content">
+                <h4>Daños a infraestructura</h4>
+                <p>Los huracanes pueden destruir instalaciones agrícolas como graneros, sistemas de riego, cercas y maquinaria, afectando la capacidad productiva.</p>
+              </div>
+            </div>
+
+            <div class="effect-card">
+              <div class="effect-icon">💰</div>
+              <div class="effect-content">
+                <h4>Impacto económico</h4>
+                <p>La pérdida de cosechas e infraestructura genera pérdida de ingresos e inseguridad alimentaria, afectando a las comunidades rurales.</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
 
       <!-- Timeline inferior -->
@@ -385,6 +545,10 @@
         <div class="timeline-item" data-chapter="5">
           <div class="timeline-circle">5</div>
           <div class="timeline-label">Amenazas: Heladas</div>
+        </div>
+        <div class="timeline-item" data-chapter="6">
+          <div class="timeline-circle">6</div>
+          <div class="timeline-label">Amenazas: Huracanes</div>
         </div>
       </div>
 
@@ -1919,7 +2083,7 @@
         const btnNext = document.getElementById("btnNext");
 
         let currentChapter = 1;
-        const totalChapters = 5;
+        const totalChapters = 6;
 
         /**
          * Navega a un capítulo específico con scroll suave

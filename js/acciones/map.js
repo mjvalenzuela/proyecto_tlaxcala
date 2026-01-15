@@ -7,17 +7,26 @@ class MapManager {
     this.containerId = containerId;
     this.map = null;
     this.markersLayer = null;
+    this.markersLayerEstatal = null; // Capa para marcadores estatales
     this.municipiosLayer = null;
+    this.estadoLayer = null; // Capa para el polígono del estado completo
     this.config = window.AccionesConfig;
     this.popupGenerator = new PopupGenerator();
     this.markers = [];
+    this.markersEstatal = []; // Marcadores estatales
     this.conteoMunicipios = {};
+    this.conteoEstatal = 0; // Cantidad de proyectos estatales
     this.connectionLines = null;
     this.municipioLabels = [];
+    this.municipioCentroids = {}; // Mapeo mun_id -> {lat, lng} para centroides
+    this.geojsonData = null; // Almacenar datos GeoJSON para reutilizar
     // Umbrales de zoom para mostrar labels según tamaño del municipio
     this.ZOOM_LABELS_LARGE = 10;    // Municipios grandes
     this.ZOOM_LABELS_MEDIUM = 11;   // Municipios medianos
     this.ZOOM_LABELS_SMALL = 12;    // Municipios pequeños
+    // Estado de visibilidad
+    this.showLocal = true;
+    this.showEstatal = false;
   }
 
   /**
@@ -56,6 +65,16 @@ class MapManager {
 
       this.markersLayer = L.markerClusterGroup(this.config.CLUSTER);
       this.map.addLayer(this.markersLayer);
+
+      // Capa para marcadores estatales con clustering por dependencia
+      this.markersLayerEstatal = L.markerClusterGroup({
+        ...this.config.CLUSTER,
+        maxClusterRadius: 80, // Radio para agrupar marcadores de la misma zona/dependencia
+        disableClusteringAtZoom: 13,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: true,
+        iconCreateFunction: (cluster) => this.createDependenciaClusterIcon(cluster)
+      });
 
       L.control
         .scale({ position: "bottomleft", imperial: false })
@@ -169,7 +188,9 @@ class MapManager {
       totalMunicipios = ids.filter(id => id).length;
     }
 
-    const esMultiMunicipio = totalMunicipios > 1;
+    // Si es un marcador expandido, mostrar 1 pero indicar que pertenece a un grupo
+    const esExpandido = ubicacionActual && ubicacionActual.es_marcador_expandido;
+    const esMultiMunicipio = esExpandido ? true : totalMunicipios > 1;
 
     const svgIcon = this.generateSVGIcon(
       shape,
@@ -366,6 +387,14 @@ class MapManager {
     return this.markers;
   }
 
+  /**
+   * Obtiene los centroides de todos los municipios
+   * @returns {Object} Mapeo mun_id -> {lat, lng, nombre}
+   */
+  getMunicipioCentroids() {
+    return this.municipioCentroids;
+  }
+
   destroy() {
     if (this.map) {
       this.map.remove();
@@ -398,6 +427,7 @@ class MapManager {
       }
 
       const geojsonData = await response.json();
+      this.geojsonData = geojsonData; // Guardar para reutilizar
 
       // Remover capa anterior si existe
       if (this.municipiosLayer) {
@@ -484,6 +514,13 @@ class MapManager {
 
     // Crear label permanente en el centro del municipio
     const center = bounds.getCenter();
+
+    // Guardar centroide del municipio para usarlo en marcadores expandidos
+    this.municipioCentroids[munId] = {
+      lat: center.lat,
+      lng: center.lng,
+      nombre: munNombre
+    };
     const label = L.marker(center, {
       icon: L.divIcon({
         className: 'municipio-label',
@@ -580,36 +617,144 @@ class MapManager {
   }
 
   /**
-   * Agrega la leyenda de colores al mapa
+   * Agrega las leyendas al mapa (acciones y dependencias)
    */
   agregarLeyenda() {
-    const legend = L.control({ position: 'bottomright' });
-
-    legend.onAdd = () => {
-      const div = L.DomUtil.create('div', 'info legend acciones-legend');
-
-      let html = '<h4>Acciones por Municipio</h4>';
-
-      // Color sin acciones
+    // Leyenda de acciones (para vista Local)
+    this.legendAcciones = L.control({ position: 'bottomright' });
+    this.legendAcciones.onAdd = () => {
+      const div = L.DomUtil.create('div', 'info legend acciones-legend legend-acciones');
+      let html = '<h4>Total de Acciones</h4>';
       html += `<div class="legend-item">
         <span class="legend-color" style="background:${this.config.COLOR_SIN_ACCIONES}"></span>
         <span class="legend-label">Sin acciones</span>
       </div>`;
-
-      // Rangos de colores
       this.config.RANGOS_ACCIONES.forEach((rango) => {
         html += `<div class="legend-item">
           <span class="legend-color" style="background:${rango.color}"></span>
           <span class="legend-label">${rango.label}</span>
         </div>`;
       });
+      div.innerHTML = html;
+      return div;
+    };
+
+    // Leyenda de dependencias (para vista Estatal)
+    this.legendDependencias = L.control({ position: 'bottomright' });
+    this.legendDependencias.onAdd = () => {
+      const div = L.DomUtil.create('div', 'info legend acciones-legend legend-dependencias');
+      let html = '<h4>Dependencias</h4>';
+
+      // Agrupar por tipo
+      const secretarias = [
+        'Secretaría de Medio Ambiente',
+        'Secretaría de Gobernación',
+        'Secretaría de Finanzas',
+        'Secretaría de Salud',
+        'Secretaría de Impulso Agropecuario',
+        'Secretaría de Educación Pública',
+        'Secretaría de Movilidad y Transporte',
+        'Secretaría de Turismo',
+        'Secretaría de Seguridad Ciudadana',
+        'Secretaría de Ordenamiento Territorial y Vivienda',
+        'Secretaría de Bienestar',
+        'Secretaría de Infraestructura',
+        'Secretaría de Desarrollo Económico'
+      ];
+
+      const otras = [
+        'Comisión Estatal del Agua y Saneamiento',
+        'Coordinación General de Planeación e Inversión',
+        'Procuraduría de Protección al Ambiente'
+      ];
+
+      const regiones = [
+        'Region Calpulalpan',
+        'Region Tlaxco',
+        'Region Apizaco',
+        'Region Huamantla',
+        'Region Chiautempan',
+        'Region Tlaxcala',
+        'Region Zacatelco',
+        'Region San Pablo del Monte'
+      ];
+
+      // Secretarías
+      html += '<div class="legend-group"><span class="legend-group-title">Secretarías</span>';
+      secretarias.forEach((dep) => {
+        const color = this.config.COLORS[dep] || this.config.COLORS.default;
+        const nombreCorto = this.abreviarDependencia(dep);
+        html += `<div class="legend-item">
+          <span class="legend-color" style="background:${color}"></span>
+          <span class="legend-label">${nombreCorto}</span>
+        </div>`;
+      });
+      html += '</div>';
+
+      // Otras dependencias
+      html += '<div class="legend-group"><span class="legend-group-title">Otras</span>';
+      otras.forEach((dep) => {
+        const color = this.config.COLORS[dep] || this.config.COLORS.default;
+        const nombreCorto = this.abreviarDependencia(dep);
+        html += `<div class="legend-item">
+          <span class="legend-color" style="background:${color}"></span>
+          <span class="legend-label">${nombreCorto}</span>
+        </div>`;
+      });
+      html += '</div>';
+
+      // Regiones
+      html += '<div class="legend-group"><span class="legend-group-title">Regiones</span>';
+      regiones.forEach((dep) => {
+        const color = this.config.COLORS[dep] || this.config.COLORS.default;
+        const nombreCorto = dep.replace('Region ', 'R. ');
+        html += `<div class="legend-item">
+          <span class="legend-color" style="background:${color}"></span>
+          <span class="legend-label">${nombreCorto}</span>
+        </div>`;
+      });
+      html += '</div>';
 
       div.innerHTML = html;
       return div;
     };
 
-    legend.addTo(this.map);
-    this.legendControl = legend;
+    // Inicialmente solo mostrar leyenda de acciones (Local está activo por defecto)
+    this.legendAcciones.addTo(this.map);
+  }
+
+  /**
+   * Actualiza las leyendas según el estado de los toggles
+   * @param {boolean} showLocal - Si está activo Local
+   * @param {boolean} showEstatal - Si está activo Estatal
+   */
+  actualizarLeyendas(showLocal, showEstatal) {
+    // Remover ambas leyendas primero (usando try-catch por si no están agregadas)
+    try {
+      if (this.legendAcciones) {
+        this.map.removeControl(this.legendAcciones);
+      }
+    } catch (e) { /* No estaba en el mapa */ }
+
+    try {
+      if (this.legendDependencias) {
+        this.map.removeControl(this.legendDependencias);
+      }
+    } catch (e) { /* No estaba en el mapa */ }
+
+    // Agregar según los toggles activos
+    if (showLocal && showEstatal) {
+      // Ambos activos: mostrar ambas leyendas
+      this.legendAcciones.addTo(this.map);
+      this.legendDependencias.addTo(this.map);
+    } else if (showLocal) {
+      // Solo Local: mostrar leyenda de acciones
+      this.legendAcciones.addTo(this.map);
+    } else if (showEstatal) {
+      // Solo Estatal: mostrar leyenda de dependencias
+      this.legendDependencias.addTo(this.map);
+    }
+    // Si ninguno está activo, no mostrar ninguna leyenda
   }
 
   /**
@@ -622,6 +767,437 @@ class MapManager {
         layer.setStyle(this.getEstiloMunicipio(feature));
       });
     }
+  }
+
+  /**
+   * Establece el conteo de proyectos estatales
+   * @param {number} conteo - Cantidad de proyectos estatales
+   */
+  setConteoEstatal(conteo) {
+    this.conteoEstatal = conteo || 0;
+  }
+
+  /**
+   * Crea la capa del estado completo para proyectos estatales
+   * Colorea todo el estado según la cantidad de proyectos
+   */
+  crearCapaEstado() {
+    if (!this.geojsonData) {
+      console.warn('GeoJSON no cargado aún');
+      return;
+    }
+
+    // Remover capa anterior si existe
+    if (this.estadoLayer) {
+      this.map.removeLayer(this.estadoLayer);
+    }
+
+    // Obtener color según cantidad de proyectos estatales
+    const color = this.getColorPorCantidad(this.conteoEstatal);
+
+    // Crear capa que une todos los municipios visualmente
+    this.estadoLayer = L.geoJSON(this.geojsonData, {
+      style: () => ({
+        fillColor: color,
+        weight: 2,
+        opacity: 1,
+        color: '#5e3b8c',
+        fillOpacity: 0.6
+      }),
+      onEachFeature: (feature, layer) => {
+        // Solo tooltip al pasar el mouse
+        layer.on({
+          mouseover: (e) => {
+            const layer = e.target;
+            layer.setStyle({
+              weight: 3,
+              color: '#333',
+              fillOpacity: 0.75
+            });
+          },
+          mouseout: (e) => {
+            this.estadoLayer.resetStyle(e.target);
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Muestra la capa del estado para proyectos estatales
+   * Solo se usa cuando ÚNICAMENTE estatal está activo
+   */
+  mostrarCapaEstado() {
+    if (!this.estadoLayer) {
+      this.crearCapaEstado();
+    }
+    if (this.estadoLayer && !this.map.hasLayer(this.estadoLayer)) {
+      this.estadoLayer.addTo(this.map);
+      this.estadoLayer.bringToBack();
+    }
+    // Ocultar capa de municipios cuando se muestra solo estatal
+    if (this.municipiosLayer && this.map.hasLayer(this.municipiosLayer)) {
+      this.map.removeLayer(this.municipiosLayer);
+    }
+    // Ocultar labels de municipios
+    this.municipioLabels.forEach(label => {
+      if (this.map.hasLayer(label)) {
+        this.map.removeLayer(label);
+      }
+    });
+  }
+
+  /**
+   * Oculta la capa del estado
+   */
+  ocultarCapaEstado() {
+    if (this.estadoLayer && this.map.hasLayer(this.estadoLayer)) {
+      this.map.removeLayer(this.estadoLayer);
+    }
+  }
+
+  /**
+   * Muestra la capa de municipios (proyectos locales)
+   */
+  mostrarCapaMunicipios() {
+    if (this.municipiosLayer && !this.map.hasLayer(this.municipiosLayer)) {
+      this.municipiosLayer.addTo(this.map);
+      this.municipiosLayer.bringToBack();
+    }
+    // Actualizar labels según zoom
+    this.updateMunicipioLabels();
+  }
+
+  /**
+   * Oculta la capa de municipios
+   */
+  ocultarCapaMunicipios() {
+    if (this.municipiosLayer && this.map.hasLayer(this.municipiosLayer)) {
+      this.map.removeLayer(this.municipiosLayer);
+    }
+    // Ocultar labels
+    this.municipioLabels.forEach(label => {
+      if (this.map.hasLayer(label)) {
+        this.map.removeLayer(label);
+      }
+    });
+  }
+
+  /**
+   * Agrega marcadores estatales al mapa
+   * @param {Array} markersData - Array de datos de markers estatales
+   */
+  addMarkersEstatal(markersData) {
+    if (!this.map || !this.markersLayerEstatal) {
+      console.error("Mapa no inicializado");
+      return;
+    }
+
+    this.clearMarkersEstatal();
+
+    if (!markersData || markersData.length === 0) {
+      console.warn("No hay markers estatales para agregar");
+      return;
+    }
+
+    markersData.forEach((data) => {
+      try {
+        const marker = this.createMarkerEstatal(data);
+        if (marker) {
+          this.markersLayerEstatal.addLayer(marker);
+          this.markersEstatal.push(marker);
+        }
+      } catch (error) {
+        console.error("Error al crear marker estatal:", error, data);
+      }
+    });
+  }
+
+  /**
+   * Crea un marker estatal individual
+   * @param {Object} data - Datos del marker
+   * @returns {L.Marker|null} Marker de Leaflet
+   */
+  createMarkerEstatal(data) {
+    try {
+      if (!data.lat || !data.lng) {
+        console.warn("Marker estatal sin coordenadas:", data.nombre_proyecto);
+        return null;
+      }
+
+      const color =
+        this.config.COLORS[data.dependencia] || this.config.COLORS.default;
+
+      const icon = this.createCustomIconEstatal(data, color);
+
+      const marker = L.marker([data.lat, data.lng], {
+        icon: icon,
+        title: data.nombre_proyecto,
+      });
+
+      const popupContent = this.popupGenerator.generatePopup(data);
+      marker.bindPopup(popupContent, {
+        maxWidth: 520,
+        minWidth: 360,
+        className: "custom-popup",
+      });
+
+      const tooltipText = this.truncateText(data.nombre_proyecto, 50);
+      marker.bindTooltip(tooltipText, {
+        direction: "top",
+        offset: [0, -20],
+      });
+
+      marker.accionData = data;
+
+      return marker;
+    } catch (error) {
+      console.error("Error al crear marker estatal:", error);
+      return null;
+    }
+  }
+
+  /**
+   * Crea ícono personalizado para marker estatal
+   * @param {Object} data - Datos del marker
+   * @param {string} color - Color del ícono
+   * @returns {L.DivIcon} Ícono de Leaflet
+   */
+  createCustomIconEstatal(data, color) {
+    const isProyecto = data.tipo === "Proyecto";
+    const shape = isProyecto ? "shield" : "circle";
+
+    const svgIcon = this.generateSVGIconEstatal(shape, color);
+
+    return L.divIcon({
+      html: svgIcon,
+      className: "custom-marker-icon marker-estatal",
+      iconSize: [36, 44],
+      iconAnchor: [18, 44],
+      popupAnchor: [0, -44],
+    });
+  }
+
+  /**
+   * Crea un ícono de cluster personalizado que muestra la dependencia
+   * @param {Object} cluster - Cluster de Leaflet
+   * @returns {L.DivIcon} Ícono del cluster
+   */
+  createDependenciaClusterIcon(cluster) {
+    const markers = cluster.getAllChildMarkers();
+    const count = markers.length;
+
+    // Contar marcadores por dependencia para determinar la predominante
+    const dependenciaCount = {};
+    markers.forEach(marker => {
+      if (marker.accionData) {
+        const dep = marker.accionData.dependencia || 'Sin dependencia';
+        dependenciaCount[dep] = (dependenciaCount[dep] || 0) + 1;
+      }
+    });
+
+    // Encontrar la dependencia predominante
+    let dependenciaPredominante = 'Sin dependencia';
+    let maxCount = 0;
+    Object.entries(dependenciaCount).forEach(([dep, cnt]) => {
+      if (cnt > maxCount) {
+        maxCount = cnt;
+        dependenciaPredominante = dep;
+      }
+    });
+
+    // Obtener color de la dependencia
+    const color = this.config.COLORS[dependenciaPredominante] || this.config.COLORS.default;
+
+    // Abreviar nombre de la dependencia para el cluster
+    const nombreCorto = this.abreviarDependencia(dependenciaPredominante);
+
+    // Determinar tamaño según cantidad de marcadores
+    let size = 'small';
+    let radius = 30;
+    if (count > 10) {
+      size = 'large';
+      radius = 45;
+    } else if (count > 5) {
+      size = 'medium';
+      radius = 38;
+    }
+
+    const html = `
+      <div class="cluster-dependencia cluster-${size}" style="background-color: ${color};">
+        <span class="cluster-count">${count}</span>
+        <span class="cluster-nombre">${nombreCorto}</span>
+      </div>
+    `;
+
+    return L.divIcon({
+      html: html,
+      className: 'marker-cluster-dependencia',
+      iconSize: [radius * 2, radius * 2 + 20],
+      iconAnchor: [radius, radius + 10]
+    });
+  }
+
+  /**
+   * Abrevia el nombre de una dependencia para mostrar en el cluster
+   * @param {string} nombre - Nombre completo de la dependencia
+   * @returns {string} Nombre abreviado
+   */
+  abreviarDependencia(nombre) {
+    const abreviaciones = {
+      'Secretaría de Medio Ambiente': 'Medio Ambiente',
+      'Secretaría de Gobernación': 'Gobernación',
+      'Secretaría de Finanzas': 'Finanzas',
+      'Secretaría de Salud': 'Salud',
+      'Secretaría de Impulso Agropecuario': 'Agropecuario',
+      'Secretaría de Educación Pública': 'Educación',
+      'Secretaría de Movilidad y Transporte': 'Movilidad',
+      'Secretaría de Turismo': 'Turismo',
+      'Secretaría de Seguridad Ciudadana': 'Seguridad',
+      'Secretaría de Ordenamiento Territorial y Vivienda': 'Ord. Territorial',
+      'Secretaría de Bienestar': 'Bienestar',
+      'Secretaría de Infraestructura': 'Infraestructura',
+      'Secretaría de Desarrollo Económico': 'Des. Económico',
+      'Comisión Estatal del Agua y Saneamiento': 'CEAS',
+      'Coordinación General de Planeación e Inversión': 'Planeación',
+      'Procuraduría de Protección al Ambiente': 'Procuraduría Amb.',
+      'Region Calpulalpan': 'R. Calpulalpan',
+      'Region Tlaxco': 'R. Tlaxco',
+      'Region Apizaco': 'R. Apizaco',
+      'Region Huamantla': 'R. Huamantla',
+      'Region Chiautempan': 'R. Chiautempan',
+      'Region Tlaxcala': 'R. Tlaxcala',
+      'Region Zacatelco': 'R. Zacatelco',
+      'Region San Pablo del Monte': 'R. San Pablo'
+    };
+
+    return abreviaciones[nombre] || nombre.substring(0, 15);
+  }
+
+  /**
+   * Genera SVG del ícono del marker estatal
+   * @param {string} shape - Forma del marker
+   * @param {string} color - Color del marker
+   * @returns {string} SVG como string
+   */
+  generateSVGIconEstatal(shape, color) {
+    // Badge de estatal (ícono de edificio)
+    const estatalBadge = `
+      <circle cx="28" cy="8" r="8" fill="#5e3b8c" stroke="white" stroke-width="2.5"/>
+      <text x="28" y="12" font-size="10" fill="white" text-anchor="middle">🏛</text>
+    `;
+
+    if (shape === "shield") {
+      return `
+        <svg width="36" height="44" viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 4 L6 10 L6 20 C6 30 18 40 18 40 C18 40 30 30 30 20 L30 10 Z"
+                fill="${color}" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+          ${estatalBadge}
+        </svg>
+      `;
+    } else {
+      return `
+        <svg width="36" height="44" viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="13" fill="${color}" stroke="white" stroke-width="2.5"/>
+          <path d="M18 31 Q18 42, 18 42 Q18 42, 18 31" fill="${color}" stroke="white" stroke-width="2.5"/>
+          ${estatalBadge}
+        </svg>
+      `;
+    }
+  }
+
+  /**
+   * Limpia los marcadores estatales
+   */
+  clearMarkersEstatal() {
+    if (this.markersLayerEstatal) {
+      this.markersLayerEstatal.clearLayers();
+      this.markersEstatal = [];
+    }
+  }
+
+  /**
+   * Muestra los marcadores estatales
+   */
+  mostrarMarkersEstatal() {
+    if (this.markersLayerEstatal && !this.map.hasLayer(this.markersLayerEstatal)) {
+      this.map.addLayer(this.markersLayerEstatal);
+    }
+  }
+
+  /**
+   * Oculta los marcadores estatales
+   */
+  ocultarMarkersEstatal() {
+    if (this.markersLayerEstatal && this.map.hasLayer(this.markersLayerEstatal)) {
+      this.map.removeLayer(this.markersLayerEstatal);
+    }
+  }
+
+  /**
+   * Muestra los marcadores locales
+   */
+  mostrarMarkersLocal() {
+    if (this.markersLayer && !this.map.hasLayer(this.markersLayer)) {
+      this.map.addLayer(this.markersLayer);
+    }
+  }
+
+  /**
+   * Oculta los marcadores locales
+   */
+  ocultarMarkersLocal() {
+    if (this.markersLayer && this.map.hasLayer(this.markersLayer)) {
+      this.map.removeLayer(this.markersLayer);
+    }
+  }
+
+  /**
+   * Actualiza la visualización según el estado de los toggles
+   * @param {boolean} showLocal - Mostrar proyectos locales
+   * @param {boolean} showEstatal - Mostrar proyectos estatales
+   */
+  actualizarVisualizacion(showLocal, showEstatal) {
+    this.showLocal = showLocal;
+    this.showEstatal = showEstatal;
+
+    // Manejar marcadores
+    if (showLocal) {
+      this.mostrarMarkersLocal();
+    } else {
+      this.ocultarMarkersLocal();
+    }
+
+    if (showEstatal) {
+      this.mostrarMarkersEstatal();
+    } else {
+      this.ocultarMarkersEstatal();
+    }
+
+    // Manejar capas de fondo
+    // Solo mostrar capa uniforme del estado cuando ÚNICAMENTE estatal está activo
+    if (showEstatal && !showLocal) {
+      this.mostrarCapaEstado();
+    } else {
+      // En cualquier otro caso, mostrar capa de municipios con colores por cantidad
+      this.ocultarCapaEstado();
+      this.mostrarCapaMunicipios();
+    }
+
+    // Actualizar leyendas según los toggles activos
+    this.actualizarLeyendas(showLocal, showEstatal);
+  }
+
+  /**
+   * Obtiene todos los marcadores (locales + estatales)
+   * @returns {Array} Array de marcadores
+   */
+  getAllMarkers() {
+    return [...this.markers, ...this.markersEstatal];
+  }
+
+  getMarkersEstatal() {
+    return this.markersEstatal;
   }
 }
 

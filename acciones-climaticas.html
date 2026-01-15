@@ -100,6 +100,30 @@
     <div class="filters-compact-wrapper">
       <div class="filters-compact-container">
         <div class="filters-compact-row">
+          <!-- Toggle para tipo de alcance (Local/Estatal) -->
+          <div class="alcance-toggle-group">
+            <span class="alcance-toggle-label">Alcance:</span>
+            <div class="alcance-toggle-buttons">
+              <button type="button" id="toggleLocal" class="alcance-btn active" data-alcance="local">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Local
+              </button>
+              <button type="button" id="toggleEstatal" class="alcance-btn" data-alcance="estatal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 21h18"></path>
+                  <path d="M5 21V7l8-4v18"></path>
+                  <path d="M19 21V11l-6-4"></path>
+                </svg>
+                Estatal
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-separator"></div>
+
           <div class="filter-dropdown-group">
             <select id="filterTipo" class="filter-dropdown">
               <option value="">Tipo de Acciones</option>
