@@ -6,7 +6,8 @@ class FilterManager {
   constructor(mapManager, allData) {
     this.mapManager = mapManager;
     this.allData = allData;
-    this.allMarkers = [];
+    this.allMarkers = [];        // Marcadores locales
+    this.allMarkersEstatal = []; // Marcadores estatales
     this.activeFilters = {
       tipo: '',
       dependencia: '',
@@ -18,17 +19,32 @@ class FilterManager {
     this.timelineStartDate = null;
     this.timelineEndDate = null;
     this.isInitialized = false;
+    // Referencias al estado de los toggles (se actualizará desde main.js)
+    this.showLocal = true;
+    this.showEstatal = false;
   }
 
   /**
    * Inicializa el sistema de filtros
-   * @param {Array} markersData - Array de markers
+   * @param {Array} markersData - Array de markers locales
+   * @param {Array} markersDataEstatal - Array de markers estatales (opcional)
    */
-  init(markersData) {
+  init(markersData, markersDataEstatal = []) {
     this.allMarkers = markersData;
+    this.allMarkersEstatal = markersDataEstatal;
     this.setupFilterListeners();
     this.setupSearchListeners();
     this.isInitialized = true;
+  }
+
+  /**
+   * Actualiza el estado de los toggles
+   * @param {boolean} showLocal - Si está activo Local
+   * @param {boolean} showEstatal - Si está activo Estatal
+   */
+  setToggleState(showLocal, showEstatal) {
+    this.showLocal = showLocal;
+    this.showEstatal = showEstatal;
   }
 
   /**
@@ -105,19 +121,41 @@ class FilterManager {
   }
 
   /**
-   * Aplica todos los filtros activos
+   * Aplica todos los filtros activos a marcadores locales y estatales
    */
   applyFilters() {
-    const filteredMarkers = this.allMarkers.filter(marker => {
+    // Filtrar marcadores locales
+    const filteredMarkersLocal = this.allMarkers.filter(marker => {
       return this.passesDropdownFilters(marker) &&
              this.passesSearchFilter(marker) &&
              this.passesTimelineFilter(marker);
     });
 
-    this.mapManager.clearMarkers();
-    this.mapManager.addMarkers(filteredMarkers);
+    // Filtrar marcadores estatales
+    const filteredMarkersEstatal = this.allMarkersEstatal.filter(marker => {
+      return this.passesDropdownFilters(marker) &&
+             this.passesSearchFilter(marker) &&
+             this.passesTimelineFilter(marker);
+    });
 
-    this.updateResultsCount(filteredMarkers.length);
+    // Actualizar marcadores locales
+    this.mapManager.clearMarkers();
+    this.mapManager.addMarkers(filteredMarkersLocal);
+
+    // Actualizar marcadores estatales
+    this.mapManager.clearMarkersEstatal();
+    this.mapManager.addMarkersEstatal(filteredMarkersEstatal);
+
+    // Calcular total según toggles activos
+    let totalCount = 0;
+    if (this.showLocal) {
+      totalCount += filteredMarkersLocal.length;
+    }
+    if (this.showEstatal) {
+      totalCount += filteredMarkersEstatal.length;
+    }
+
+    this.updateResultsCount(totalCount);
   }
 
   /**
@@ -272,10 +310,24 @@ class FilterManager {
       window.timelineManager.reset();
     }
 
+    // Restaurar marcadores locales
     this.mapManager.clearMarkers();
     this.mapManager.addMarkers(this.allMarkers);
 
-    this.updateResultsCount(this.allMarkers.length);
+    // Restaurar marcadores estatales
+    this.mapManager.clearMarkersEstatal();
+    this.mapManager.addMarkersEstatal(this.allMarkersEstatal);
+
+    // Calcular total según toggles activos
+    let totalCount = 0;
+    if (this.showLocal) {
+      totalCount += this.allMarkers.length;
+    }
+    if (this.showEstatal) {
+      totalCount += this.allMarkersEstatal.length;
+    }
+
+    this.updateResultsCount(totalCount);
   }
 
   updateResultsCount(count) {
@@ -287,23 +339,34 @@ class FilterManager {
 
   /**
    * Obtiene estadísticas para generar opciones
-   * @param {Object} data - Datos de acciones
+   * @param {Object} data - Datos de acciones locales
+   * @param {Object} dataEstatal - Datos de acciones estatales (opcional)
    * @returns {Object} Estadísticas de filtros
    */
-  static getFilterStats(data) {
+  static getFilterStats(data, dataEstatal = null) {
     const stats = {
       tipos: new Set(),
       dependencias: new Set(),
       estados: new Set()
     };
 
-    if (!data || !data.acciones) return stats;
+    // Procesar datos locales
+    if (data && data.acciones) {
+      data.acciones.forEach((accion) => {
+        if (accion.tipo) stats.tipos.add(accion.tipo);
+        if (accion.dependencia) stats.dependencias.add(accion.dependencia);
+        if (accion.estado) stats.estados.add(accion.estado);
+      });
+    }
 
-    data.acciones.forEach((accion) => {
-      if (accion.tipo) stats.tipos.add(accion.tipo);
-      if (accion.dependencia) stats.dependencias.add(accion.dependencia);
-      if (accion.estado) stats.estados.add(accion.estado);
-    });
+    // Procesar datos estatales
+    if (dataEstatal && dataEstatal.acciones) {
+      dataEstatal.acciones.forEach((accion) => {
+        if (accion.tipo) stats.tipos.add(accion.tipo);
+        if (accion.dependencia) stats.dependencias.add(accion.dependencia);
+        if (accion.estado) stats.estados.add(accion.estado);
+      });
+    }
 
     return stats;
   }
@@ -336,6 +399,7 @@ class FilterManager {
     this.timelineStartDate = null;
     this.timelineEndDate = null;
     this.allMarkers = [];
+    this.allMarkersEstatal = [];
     this.allData = null;
     this.mapManager = null;
     this.isInitialized = false;

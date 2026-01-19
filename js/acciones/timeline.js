@@ -76,9 +76,14 @@ class TimelineManager {
       this.maxYear = maxDate.getFullYear();
       this.actionsByYear = yearCounts;
 
+      // Asegurar que el rango incluya al menos hasta 2026
+      if (this.maxYear < 2026) {
+        this.maxYear = 2026;
+      }
+
+      // Asegurar que haya al menos 2 años de rango
       if (this.minYear === this.maxYear) {
         this.minYear = this.minYear - 1;
-        this.maxYear = this.maxYear + 1;
       }
     }
   }

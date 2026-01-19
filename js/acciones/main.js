@@ -146,7 +146,8 @@ class AccionesClimaticasApp {
    */
   initFilters() {
     try {
-      const stats = FilterManager.getFilterStats(this.data);
+      // Obtener estadísticas combinando datos locales y estatales
+      const stats = FilterManager.getFilterStats(this.data, this.dataEstatal);
       const options = FilterManager.generateDropdownOptions(stats);
 
       this.populateDropdown('filterTipo', options.tipos);
@@ -154,14 +155,21 @@ class AccionesClimaticasApp {
       this.populateDropdownWithLabels('filterEstado', options.estados);
 
       this.filterManager = new FilterManager(this.mapManager, this.data);
-      this.filterManager.init(this.markersData);
+      // Inicializar con marcadores locales y estatales
+      this.filterManager.init(this.markersData, this.markersDataEstatal);
+      // Establecer estado inicial de toggles
+      this.filterManager.setToggleState(this.showLocal, this.showEstatal);
 
       this.timelineManager = new TimelineManager(this.filterManager, this.data);
       this.timelineManager.init(this.markersData);
 
       window.timelineManager = this.timelineManager;
 
-      this.filterManager.updateResultsCount(this.markersData.length);
+      // Calcular conteo inicial según toggles activos
+      let initialCount = 0;
+      if (this.showLocal) initialCount += this.markersData.length;
+      if (this.showEstatal) initialCount += this.markersDataEstatal.length;
+      this.filterManager.updateResultsCount(initialCount);
     } catch (error) {
       console.error("Error al inicializar filtros:", error);
     }
@@ -247,13 +255,18 @@ class AccionesClimaticasApp {
    * Manejador de cambio de alcance
    */
   onAlcanceChange() {
-    // Actualizar visualización del mapa
+    // Actualizar estado de toggles en FilterManager primero
+    if (this.filterManager) {
+      this.filterManager.setToggleState(this.showLocal, this.showEstatal);
+    }
+
+    // Actualizar visualización del mapa (controla visibilidad de capas y leyendas)
     this.mapManager.actualizarVisualizacion(this.showLocal, this.showEstatal);
 
     // Actualizar estadísticas
     this.updateStatsFromToggles();
 
-    // Actualizar conteo de resultados en filtros
+    // Actualizar conteo de resultados
     this.updateFilterResultsCount();
   }
 
@@ -294,12 +307,22 @@ class AccionesClimaticasApp {
   updateFilterResultsCount() {
     let count = 0;
 
-    if (this.showLocal) {
-      count += this.markersData?.length || 0;
-    }
-
-    if (this.showEstatal) {
-      count += this.markersDataEstatal?.length || 0;
+    // Si hay filterManager, obtener el conteo de marcadores visibles en el mapa
+    if (this.filterManager) {
+      if (this.showLocal) {
+        count += this.mapManager.markers?.length || 0;
+      }
+      if (this.showEstatal) {
+        count += this.mapManager.markersEstatal?.length || 0;
+      }
+    } else {
+      // Fallback: usar datos sin filtrar
+      if (this.showLocal) {
+        count += this.markersData?.length || 0;
+      }
+      if (this.showEstatal) {
+        count += this.markersDataEstatal?.length || 0;
+      }
     }
 
     const element = document.getElementById('filterResultsCount');

@@ -221,16 +221,24 @@ class PopupGenerator {
       `;
     }
 
+    // Para estatales, mostrar solo "Alcance: Todo el Estado" sin duplicar
+    if (esEstatal) {
+      return `
+        <div class="popup-field popup-field-full">
+          <div class="field-value">
+            ${icono} <strong>Alcance: Todo el Estado de Tlaxcala</strong>
+            <span class="badge badge-estatal">Estatal</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Para locales, mostrar lugar y municipios
     return `
       <div class="popup-field popup-field-full">
         <div class="field-value">
           ${icono} <strong>${ubicacion?.lugar || "Sin especificar"}</strong>
-          ${esEstatal ? '<span class="badge badge-estatal">Estatal</span>' : ""}
-          ${
-            esEstatal
-              ? '<div class="ubicacion-alcance">Alcance: Todo el Estado de Tlaxcala</div>'
-              : municipiosHtml
-          }
+          ${municipiosHtml}
         </div>
       </div>
     `;

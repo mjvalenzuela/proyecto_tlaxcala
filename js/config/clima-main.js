@@ -28,11 +28,14 @@ window.addEventListener('DOMContentLoaded', () => {
   let sincronizandoSplit = false;
 
   // ============================================================
-  // SINCRONIZACION DE MAPAS DEL CAPITULO 1 Y 2
+  // SINCRONIZACION DE MAPAS DEL CAPITULO 1, 2 Y 3
   // ============================================================
   const mapasCapitulo1Ids = ['map-1-primavera', 'map-1-verano', 'map-1-otono', 'map-1-invierno'];
-  const mapasCapitulo2Ids = ['map-2-primavera', 'map-2-verano', 'map-2-otono', 'map-2-invierno'];
-  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids];
+  // Capítulo 2: Escenarios 2021-2040 (comparativo 2x2)
+  const mapasCapitulo2Ids = ['map-2-temp-ssp245', 'map-2-temp-ssp585', 'map-2-prec-ssp245', 'map-2-prec-ssp585'];
+  // Capítulo 3: Escenarios 2041-2060 (comparativo 2x2)
+  const mapasCapitulo3Ids = ['map-3-temp-ssp245', 'map-3-temp-ssp585', 'map-3-prec-ssp245', 'map-3-prec-ssp585'];
+  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids, ...mapasCapitulo3Ids];
   let sincronizandoVista = false;
   let sincronizandoCapas = false;
 
