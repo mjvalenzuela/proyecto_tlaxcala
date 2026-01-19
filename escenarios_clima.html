@@ -180,185 +180,142 @@
         </section>
 
         <!-- ============================================================
-             CAPITULO 2 - ESCENARIOS 2021-2040 (Layout comparativo 2x2)
+             CAPITULO 2 - CLIMA HISTORICO (Layout de 4 mapas)
              ============================================================ -->
-        <section class="chapter chapter-clima chapter-comparativo" id="chapter-2" data-chapter="2">
-          <h2 class="map-title">Escenarios Climáticos 2021-2040</h2>
+        <section class="chapter chapter-clima" id="chapter-2" data-chapter="2">
+          <h2 class="map-title">Variables Climáticas</h2>
 
-          <div class="clima-content clima-content-comparativo">
+          <div class="clima-content">
             <!-- Card 1: Texto explicativo (20% ancho, 100% alto) -->
             <div class="clima-text-card">
-              <h3 class="card-title">Proyecciones 2021-2040</h3>
+              <h3 class="card-title">Variables Climáticas de Tlaxcala</h3>
               <div class="card-content">
                 <p>
-                  Comparación de proyecciones climáticas para el periodo cercano 2021-2040,
-                  bajo dos escenarios de emisiones diferentes.
+                  Esta sección presenta las principales variables climáticas del estado de Tlaxcala, incluyendo datos históricos y proyecciones a futuro.
+                </p>
+                <p>
+                  Los mapas permiten explorar la precipitación y temperatura en diferentes escalas temporales (anual y estacional).
                 </p>
 
                 <div class="clima-concepts">
-                  <h4 class="concept-title">Escenarios comparados</h4>
+                  <h4 class="concept-title">Mapas disponibles</h4>
                   <div class="concept-item">
-                    <span class="concept-label">SSP2-4.5</span>
-                    <span class="concept-desc">Escenario intermedio - Emisiones moderadas con políticas climáticas parciales</span>
+                    <span class="concept-label">Prec. Anual</span>
+                    <span class="concept-desc">Precipitación total anual histórica (mm)</span>
                   </div>
                   <div class="concept-item">
-                    <span class="concept-label">SSP5-8.5</span>
-                    <span class="concept-desc">Escenario alto - Altas emisiones sin políticas climáticas efectivas</span>
-                  </div>
-                </div>
-
-                <div class="clima-concepts">
-                  <h4 class="concept-title">Variables mostradas</h4>
-                  <div class="concept-item">
-                    <span class="concept-label">Temperatura</span>
-                    <span class="concept-desc">Cambio proyectado en temperatura media anual (°C)</span>
+                    <span class="concept-label">Escenarios</span>
+                    <span class="concept-desc">Proyecciones de precipitación 2021-2060</span>
                   </div>
                   <div class="concept-item">
-                    <span class="concept-label">Precipitación</span>
-                    <span class="concept-desc">Cambio proyectado en precipitación anual (mm)</span>
+                    <span class="concept-label">Temp. Anual</span>
+                    <span class="concept-desc">Temperatura media, máxima y mínima anual</span>
+                  </div>
+                  <div class="concept-item">
+                    <span class="concept-label">Variables</span>
+                    <span class="concept-desc">Todas las variables por estación del año</span>
                   </div>
                 </div>
 
-                <p class="fuente-datos">
-                  <strong>Fuente:</strong> Elaboración propia con datos de 5 MCG del CMIP6.
+                <p>
+                  Utiliza el control de capas en cada mapa para activar o desactivar las diferentes variables climáticas.
                 </p>
               </div>
             </div>
 
-            <!-- Card 2: Temperatura SSP2-4.5 -->
-            <div class="clima-map-card map-comparativo-tl">
+            <!-- Card 2: Mapa Precipitación Anual -->
+            <div class="clima-map-card map-primavera">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Temperatura SSP2-4.5</h4>
-                  <span class="map-card-subtitle">Escenario intermedio</span>
+                  <h4 class="map-card-title">Precipitación Anual</h4>
+                  <span class="map-card-subtitle">Clima histórico</span>
                 </div>
               </div>
-              <div class="map-container" id="map-2-temp-ssp245"></div>
+              <div class="map-container" id="map-2-primavera"></div>
             </div>
 
-            <!-- Card 3: Temperatura SSP5-8.5 -->
-            <div class="clima-map-card map-comparativo-tr">
+            <!-- Card 3: Mapa Escenarios Precipitación -->
+            <div class="clima-map-card map-verano">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Temperatura SSP5-8.5</h4>
-                  <span class="map-card-subtitle">Escenario alto</span>
+                  <h4 class="map-card-title">Escenarios Precipitación</h4>
+                  <span class="map-card-subtitle">Proyecciones 2021-2060</span>
                 </div>
               </div>
-              <div class="map-container" id="map-2-temp-ssp585"></div>
+              <div class="map-container" id="map-2-verano"></div>
             </div>
 
-            <!-- Card 4: Precipitación SSP2-4.5 -->
-            <div class="clima-map-card map-comparativo-bl">
+            <!-- Card 4: Mapa Temperatura Anual -->
+            <div class="clima-map-card map-otono">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Precipitación SSP2-4.5</h4>
-                  <span class="map-card-subtitle">Escenario intermedio</span>
+                  <h4 class="map-card-title">Temperatura Anual</h4>
+                  <span class="map-card-subtitle">Media, Máxima, Mínima</span>
                 </div>
               </div>
-              <div class="map-container" id="map-2-prec-ssp245"></div>
+              <div class="map-container" id="map-2-otono"></div>
             </div>
 
-            <!-- Card 5: Precipitación SSP5-8.5 -->
-            <div class="clima-map-card map-comparativo-br">
+            <!-- Card 5: Mapa Variables Climáticas -->
+            <div class="clima-map-card map-invierno">
               <div class="map-card-header">
                 <div>
-                  <h4 class="map-card-title">Precipitación SSP5-8.5</h4>
-                  <span class="map-card-subtitle">Escenario alto</span>
+                  <h4 class="map-card-title">Variables Climáticas</h4>
+                  <span class="map-card-subtitle">Todas las variables</span>
                 </div>
               </div>
-              <div class="map-container" id="map-2-prec-ssp585"></div>
+              <div class="map-container" id="map-2-invierno"></div>
             </div>
           </div>
         </section>
 
         <!-- ============================================================
-             CAPITULO 3 - ESCENARIOS 2041-2060 (Layout comparativo 2x2)
+             CAPITULO 3 - VARIABILIDAD CLIMATICA
              ============================================================ -->
-        <section class="chapter chapter-clima chapter-comparativo" id="chapter-3" data-chapter="3">
-          <h2 class="map-title">Escenarios Climáticos 2041-2060</h2>
+        <section class="chapter" id="chapter-3" data-chapter="3">
+          <h2 class="map-title">Variabilidad Climatica</h2>
 
-          <div class="clima-content clima-content-comparativo">
-            <!-- Card 1: Texto explicativo (20% ancho, 100% alto) -->
-            <div class="clima-text-card">
-              <h3 class="card-title">Proyecciones 2041-2060</h3>
-              <div class="card-content">
-                <p>
-                  Comparación de proyecciones climáticas para el periodo medio 2041-2060,
-                  bajo dos escenarios de emisiones diferentes.
-                </p>
+          <div class="chapter-map">
+            <div class="map-container" id="map-3"></div>
+          </div>
 
-                <div class="clima-concepts">
-                  <h4 class="concept-title">Escenarios comparados</h4>
-                  <div class="concept-item">
-                    <span class="concept-label">SSP2-4.5</span>
-                    <span class="concept-desc">Escenario intermedio - Emisiones moderadas con políticas climáticas parciales</span>
-                  </div>
-                  <div class="concept-item">
-                    <span class="concept-label">SSP5-8.5</span>
-                    <span class="concept-desc">Escenario alto - Altas emisiones sin políticas climáticas efectivas</span>
-                  </div>
-                </div>
-
-                <div class="clima-concepts">
-                  <h4 class="concept-title">Variables mostradas</h4>
-                  <div class="concept-item">
-                    <span class="concept-label">Temperatura</span>
-                    <span class="concept-desc">Cambio proyectado en temperatura media anual (°C)</span>
-                  </div>
-                  <div class="concept-item">
-                    <span class="concept-label">Precipitación</span>
-                    <span class="concept-desc">Cambio proyectado en precipitación anual (mm)</span>
-                  </div>
-                </div>
-
-                <p class="fuente-datos">
-                  <strong>Fuente:</strong> Elaboración propia con datos de 5 MCG del CMIP6.
-                </p>
-              </div>
+          <div class="chapter-text">
+            <h2 class="chapter-title">Fenomenos Extremos</h2>
+            <div class="chapter-content">
+              <p>
+                La variabilidad climatica en Tlaxcala se manifiesta a traves de diversos
+                fenomenos extremos que afectan a la poblacion y los ecosistemas.
+              </p>
+              <ul>
+                <li>Heladas tempranas y tardias</li>
+                <li>Granizadas intensas</li>
+                <li>Sequias recurrentes</li>
+                <li>Lluvias torrenciales</li>
+              </ul>
+              <p>
+                Comprender estos patrones es fundamental para desarrollar estrategias
+                de adaptacion efectivas.
+              </p>
             </div>
+          </div>
 
-            <!-- Card 2: Temperatura SSP2-4.5 -->
-            <div class="clima-map-card map-comparativo-tl">
-              <div class="map-card-header">
-                <div>
-                  <h4 class="map-card-title">Temperatura SSP2-4.5</h4>
-                  <span class="map-card-subtitle">Escenario intermedio</span>
+          <div class="chapter-chart-info">
+            <h2 class="chart-info-title">Frecuencia de eventos extremos</h2>
+            <div class="chart-info-content">
+              <div class="chart-section">
+                <div class="chart-container">
+                  <canvas id="chart-3"></canvas>
                 </div>
               </div>
-              <div class="map-container" id="map-3-temp-ssp245"></div>
-            </div>
-
-            <!-- Card 3: Temperatura SSP5-8.5 -->
-            <div class="clima-map-card map-comparativo-tr">
-              <div class="map-card-header">
-                <div>
-                  <h4 class="map-card-title">Temperatura SSP5-8.5</h4>
-                  <span class="map-card-subtitle">Escenario alto</span>
+              <div class="info-section">
+                <div class="info-content">
+                  <p>
+                    El registro historico muestra un incremento en la frecuencia e intensidad
+                    de eventos climaticos extremos, lo que representa un desafio creciente
+                    para la gestion del riesgo.
+                  </p>
                 </div>
               </div>
-              <div class="map-container" id="map-3-temp-ssp585"></div>
-            </div>
-
-            <!-- Card 4: Precipitación SSP2-4.5 -->
-            <div class="clima-map-card map-comparativo-bl">
-              <div class="map-card-header">
-                <div>
-                  <h4 class="map-card-title">Precipitación SSP2-4.5</h4>
-                  <span class="map-card-subtitle">Escenario intermedio</span>
-                </div>
-              </div>
-              <div class="map-container" id="map-3-prec-ssp245"></div>
-            </div>
-
-            <!-- Card 5: Precipitación SSP5-8.5 -->
-            <div class="clima-map-card map-comparativo-br">
-              <div class="map-card-header">
-                <div>
-                  <h4 class="map-card-title">Precipitación SSP5-8.5</h4>
-                  <span class="map-card-subtitle">Escenario alto</span>
-                </div>
-              </div>
-              <div class="map-container" id="map-3-prec-ssp585"></div>
             </div>
           </div>
         </section>
@@ -369,15 +326,16 @@
       <div class="timeline" id="timeline">
         <div class="timeline-item" data-chapter="1">
           <div class="timeline-circle">1</div>
-          <div class="timeline-label">Explorador</div>
+          <div class="timeline-label">Escenarios</div>
         </div>
         <div class="timeline-item" data-chapter="2">
           <div class="timeline-circle">2</div>
-          <div class="timeline-label">2021-2040</div>
+          <div class="timeline-label">Variables Climáticas</div>
         </div>
-        <div class="timeline-item" data-chapter="3">
+        <!-- Ocultos temporalmente -->
+        <div class="timeline-item" data-chapter="3" style="display: none;">
           <div class="timeline-circle">3</div>
-          <div class="timeline-label">2041-2060</div>
+          <div class="timeline-label">Variabilidad</div>
         </div>
       </div>
 

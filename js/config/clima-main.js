@@ -1547,8 +1547,7 @@ window.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
 
       // Actualizar modelo actual
-      modeloActual = btn.dataset.model;
-      console.log(`Modelo seleccionado: ${modeloActual}`);
+      modeloActual = btn.dataset.model;      
 
       // Actualizar capas
       actualizarCapasSegunSeleccion();
@@ -1693,8 +1692,7 @@ window.addEventListener('DOMContentLoaded', () => {
    * @param {Array} mapasIds - Array de IDs de mapas a actualizar
    */
   function actualizarCapasSegunSeleccionCapitulo(mapasIds) {
-    console.log(`Actualizando capas Cap 1: Variable=${variableActual}, Modelo=${modeloActual}, Periodo=${periodoActual}`);
-
+    
     mapasIds.forEach(mapId => {
       const capas = capasControladas[mapId];
       if (!capas) return;
@@ -1740,8 +1738,7 @@ window.addEventListener('DOMContentLoaded', () => {
    * Actualiza las capas del Capítulo 2 (Clima Histórico)
    */
   function actualizarCapasCapitulo2() {
-    console.log(`Actualizando capas Cap 2 (Clima Histórico): Variable=${variableActualCap2}`);
-
+    
     mapasCapitulo2Ids.forEach(mapId => {
       const capas = capasControladas[mapId];
       if (!capas) return;
