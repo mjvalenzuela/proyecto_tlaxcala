@@ -31,14 +31,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const chartsCapitulo3 = {};
 
   // ============================================================
-  // SINCRONIZACION DE MAPAS DEL CAPITULO 1, 2, 3, 4 Y 5
+  // SINCRONIZACION DE MAPAS DEL CAPITULO 1, 2, 3 Y 4
   // ============================================================
   const mapasCapitulo1Ids = ['map-1-primavera', 'map-1-verano', 'map-1-otono', 'map-1-invierno'];
   const mapasCapitulo2Ids = ['map-2-primavera', 'map-2-verano', 'map-2-otono', 'map-2-invierno'];
   const mapasCapitulo3Ids = ['map-3-intro'];
   const mapasCapitulo4Ids = ['map-4-temp-ssp245', 'map-4-temp-ssp585', 'map-4-prec-ssp245', 'map-4-prec-ssp585'];
-  const mapasCapitulo5Ids = ['map-5-temp-ssp245', 'map-5-temp-ssp585', 'map-5-prec-ssp245', 'map-5-prec-ssp585'];
-  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids, ...mapasCapitulo3Ids, ...mapasCapitulo4Ids, ...mapasCapitulo5Ids];
+  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids, ...mapasCapitulo3Ids, ...mapasCapitulo4Ids];
   let sincronizandoVista = false;
   let sincronizandoCapas = false;
 
@@ -706,14 +705,15 @@ window.addEventListener('DOMContentLoaded', () => {
       ]
     },
     // ============================================================
-    // CAPITULO 4 - ESCENARIOS 2021-2040 (Grid 2x2)
+    // CAPITULO 4 - ESCENARIOS COMPARATIVOS (Grid 2x2)
     // ============================================================
     {
       id: 'map-4-temp-ssp245',
       titulo: 'Temperatura SSP2-4.5',
       capitulo: 4,
       capasMultiples: [
-        { nombre: 'Temperatura 2021-2040 SSP2-4.5', capa: 'SEICCT:mapa_30a', visible: true, simbologia: 'tempMedia' }
+        { nombre: '2021-2040', capa: 'SEICCT:mapa_30a', visible: true, simbologia: 'tempMedia' },
+        { nombre: '2041-2060', capa: 'SEICCT:mapa_32a', visible: false, simbologia: 'tempMedia' }
       ]
     },
     {
@@ -721,7 +721,8 @@ window.addEventListener('DOMContentLoaded', () => {
       titulo: 'Temperatura SSP5-8.5',
       capitulo: 4,
       capasMultiples: [
-        { nombre: 'Temperatura 2021-2040 SSP5-8.5', capa: 'SEICCT:mapa_30b', visible: true, simbologia: 'tempMedia' }
+        { nombre: '2021-2040', capa: 'SEICCT:mapa_30b', visible: true, simbologia: 'tempMedia' },
+        { nombre: '2041-2060', capa: 'SEICCT:mapa_32b', visible: false, simbologia: 'tempMedia' }
       ]
     },
     {
@@ -729,7 +730,8 @@ window.addEventListener('DOMContentLoaded', () => {
       titulo: 'Precipitación SSP2-4.5',
       capitulo: 4,
       capasMultiples: [
-        { nombre: 'Precipitación 2021-2040 SSP2-4.5', capa: 'SEICCT:mapa_31a', visible: true, simbologia: 'priClim' }
+        { nombre: '2021-2040', capa: 'SEICCT:mapa_31a', visible: true, simbologia: 'priClim' },
+        { nombre: '2041-2060', capa: 'SEICCT:mapa_33a', visible: false, simbologia: 'priClim' }
       ]
     },
     {
@@ -737,42 +739,8 @@ window.addEventListener('DOMContentLoaded', () => {
       titulo: 'Precipitación SSP5-8.5',
       capitulo: 4,
       capasMultiples: [
-        { nombre: 'Precipitación 2021-2040 SSP5-8.5', capa: 'SEICCT:mapa_31b', visible: true, simbologia: 'priClim' }
-      ]
-    },
-    // ============================================================
-    // CAPITULO 5 - ESCENARIOS 2041-2060 (Grid 2x2)
-    // ============================================================
-    {
-      id: 'map-5-temp-ssp245',
-      titulo: 'Temperatura SSP2-4.5',
-      capitulo: 5,
-      capasMultiples: [
-        { nombre: 'Temperatura 2041-2060 SSP2-4.5', capa: 'SEICCT:mapa_32a', visible: true, simbologia: 'tempMedia' }
-      ]
-    },
-    {
-      id: 'map-5-temp-ssp585',
-      titulo: 'Temperatura SSP5-8.5',
-      capitulo: 5,
-      capasMultiples: [
-        { nombre: 'Temperatura 2041-2060 SSP5-8.5', capa: 'SEICCT:mapa_32b', visible: true, simbologia: 'tempMedia' }
-      ]
-    },
-    {
-      id: 'map-5-prec-ssp245',
-      titulo: 'Precipitación SSP2-4.5',
-      capitulo: 5,
-      capasMultiples: [
-        { nombre: 'Precipitación 2041-2060 SSP2-4.5', capa: 'SEICCT:mapa_33a', visible: true, simbologia: 'priClim' }
-      ]
-    },
-    {
-      id: 'map-5-prec-ssp585',
-      titulo: 'Precipitación SSP5-8.5',
-      capitulo: 5,
-      capasMultiples: [
-        { nombre: 'Precipitación 2041-2060 SSP5-8.5', capa: 'SEICCT:mapa_33b', visible: true, simbologia: 'priClim' }
+        { nombre: '2021-2040', capa: 'SEICCT:mapa_31b', visible: true, simbologia: 'priClim' },
+        { nombre: '2041-2060', capa: 'SEICCT:mapa_33b', visible: false, simbologia: 'priClim' }
       ]
     }
   ];
@@ -865,8 +833,8 @@ window.addEventListener('DOMContentLoaded', () => {
       simbologia: null
     });
 
-    // Crear controles para mapas con capas (capítulo 1 y 2)
-    if (todosLosMapasIds.includes(mapaConfig.id)) {
+    // Crear controles para mapas con capas (capítulo 1, 2, 4 y 5 - el cap 3 tiene control en HTML)
+    if (todosLosMapasIds.includes(mapaConfig.id) && mapaConfig.id !== 'map-3-intro') {
       crearControlCapas(mapaConfig.id, mapContainer);
       crearPanelLeyendas(mapaConfig.id, mapContainer);
       crearBotonSplit(mapaConfig.id, mapContainer);
@@ -878,7 +846,6 @@ window.addEventListener('DOMContentLoaded', () => {
         case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
         case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
         case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
-        case 5: mapasDelCapitulo = mapasCapitulo5Ids; break;
         default: mapasDelCapitulo = [];
       }
       if (mapasDelCapitulo.length > 1) {
@@ -973,7 +940,7 @@ window.addEventListener('DOMContentLoaded', () => {
             })[0];
             limiteGeometry = feature.getGeometry();
             limiteLoaded = true;
-            console.log('Limite cargado para clipping');
+            //console.log('Limite cargado para clipping');
             resolve(limiteGeometry);
           } else {
             reject('No se encontraron features del limite');
@@ -2050,7 +2017,6 @@ window.addEventListener('DOMContentLoaded', () => {
         case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
         case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
         case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
-        case 5: mapasDelCapitulo = mapasCapitulo5Ids; break;
         default: mapasDelCapitulo = [];
       }
       mapasDelCapitulo.forEach(mapId => {
@@ -2115,7 +2081,6 @@ window.addEventListener('DOMContentLoaded', () => {
               case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
               case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
               case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
-              case 5: mapasDelCapitulo = mapasCapitulo5Ids; break;
               default: mapasDelCapitulo = [];
             }
             mapasDelCapitulo.forEach(mapId => {
@@ -2169,6 +2134,19 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Toggle del panel de capas del capítulo 3
+  const map3Container = document.getElementById('map-3-intro');
+  if (map3Container) {
+    const layersToggle = map3Container.querySelector('.map-controls-toggle');
+    const layersControl = map3Container.querySelector('.clima-map-controls');
+    if (layersToggle && layersControl) {
+      layersToggle.addEventListener('click', () => {
+        layersControl.classList.toggle('collapsed');
+        layersToggle.textContent = layersControl.classList.contains('collapsed') ? '+' : '−';
+      });
+    }
+  }
 
   // ============================================================
   // CAPITULO 3 - FUNCIONALIDAD TABS DE GRAFICAS

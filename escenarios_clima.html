@@ -312,51 +312,51 @@
               </div>
             </div>
 
-            <!-- Panel derecho: Mapa con controles -->
+            <!-- Panel derecho: Mapa con controles flotantes -->
             <div class="intro-map-panel">
-              <div class="map-container" id="map-3-intro"></div>
-
-              <div class="intro-map-controls">
-                <h4 class="controls-title">Capas disponibles</h4>
-
-                <div class="control-group">
-                  <h5 class="control-group-title">Temperatura</h5>
-                  <label class="control-checkbox">
-                    <input type="checkbox" name="capa-intro" value="temp-2021-2040" data-capa="SEICCT:mapa_30a">
-                    <span>2021-2040 SSP2-4.5</span>
-                  </label>
-                  <label class="control-checkbox">
-                    <input type="checkbox" name="capa-intro" value="temp-2021-2040-ssp585" data-capa="SEICCT:mapa_30b">
-                    <span>2021-2040 SSP5-8.5</span>
-                  </label>
-                  <label class="control-checkbox">
-                    <input type="checkbox" name="capa-intro" value="temp-2041-2060" data-capa="SEICCT:mapa_32a">
-                    <span>2041-2060 SSP2-4.5</span>
-                  </label>
-                  <label class="control-checkbox">
-                    <input type="checkbox" name="capa-intro" value="temp-2041-2060-ssp585" data-capa="SEICCT:mapa_32b">
-                    <span>2041-2060 SSP5-8.5</span>
-                  </label>
-                </div>
-
-                <div class="control-group">
-                  <h5 class="control-group-title">Precipitación</h5>
-                  <label class="control-checkbox">
-                    <input type="checkbox" name="capa-intro" value="prec-2021-2040" data-capa="SEICCT:mapa_31a">
-                    <span>2021-2040 SSP2-4.5</span>
-                  </label>
-                  <label class="control-checkbox">
-                    <input type="checkbox" name="capa-intro" value="prec-2021-2040-ssp585" data-capa="SEICCT:mapa_31b">
-                    <span>2021-2040 SSP5-8.5</span>
-                  </label>
-                  <label class="control-checkbox">
-                    <input type="checkbox" name="capa-intro" value="prec-2041-2060" data-capa="SEICCT:mapa_33a">
-                    <span>2041-2060 SSP2-4.5</span>
-                  </label>
-                  <label class="control-checkbox">
-                    <input type="checkbox" name="capa-intro" value="prec-2041-2060-ssp585" data-capa="SEICCT:mapa_33b">
-                    <span>2041-2060 SSP5-8.5</span>
-                  </label>
+              <div class="map-container" id="map-3-intro">
+                <!-- Panel flotante de capas dentro del mapa (mismo estilo que cap 1 y 2) -->
+                <div class="map-controls clima-map-controls">
+                  <div class="map-controls-header">
+                    <div class="map-controls-title">Capas</div>
+                    <button class="map-controls-toggle">−</button>
+                  </div>
+                  <div class="map-controls-content">
+                    <div class="layer-group-title">Temperatura</div>
+                    <div class="layer-control">
+                      <input type="checkbox" id="layer-intro-temp-1" name="capa-intro" data-capa="SEICCT:mapa_30a">
+                      <label for="layer-intro-temp-1">2021-2040 SSP2-4.5</label>
+                    </div>
+                    <div class="layer-control">
+                      <input type="checkbox" id="layer-intro-temp-2" name="capa-intro" data-capa="SEICCT:mapa_30b">
+                      <label for="layer-intro-temp-2">2021-2040 SSP5-8.5</label>
+                    </div>
+                    <div class="layer-control">
+                      <input type="checkbox" id="layer-intro-temp-3" name="capa-intro" data-capa="SEICCT:mapa_32a">
+                      <label for="layer-intro-temp-3">2041-2060 SSP2-4.5</label>
+                    </div>
+                    <div class="layer-control">
+                      <input type="checkbox" id="layer-intro-temp-4" name="capa-intro" data-capa="SEICCT:mapa_32b">
+                      <label for="layer-intro-temp-4">2041-2060 SSP5-8.5</label>
+                    </div>
+                    <div class="layer-group-title">Precipitación</div>
+                    <div class="layer-control">
+                      <input type="checkbox" id="layer-intro-prec-1" name="capa-intro" data-capa="SEICCT:mapa_31a">
+                      <label for="layer-intro-prec-1">2021-2040 SSP2-4.5</label>
+                    </div>
+                    <div class="layer-control">
+                      <input type="checkbox" id="layer-intro-prec-2" name="capa-intro" data-capa="SEICCT:mapa_31b">
+                      <label for="layer-intro-prec-2">2021-2040 SSP5-8.5</label>
+                    </div>
+                    <div class="layer-control">
+                      <input type="checkbox" id="layer-intro-prec-3" name="capa-intro" data-capa="SEICCT:mapa_33a">
+                      <label for="layer-intro-prec-3">2041-2060 SSP2-4.5</label>
+                    </div>
+                    <div class="layer-control">
+                      <input type="checkbox" id="layer-intro-prec-4" name="capa-intro" data-capa="SEICCT:mapa_33b">
+                      <label for="layer-intro-prec-4">2041-2060 SSP5-8.5</label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -364,15 +364,15 @@
         </section>
 
         <!-- ============================================================
-             CAPITULO 4 - ESCENARIOS 2021-2040 (Grid 2x2)
+             CAPITULO 4 - ESCENARIOS COMPARATIVOS (Grid 2x2)
              ============================================================ -->
         <section class="chapter chapter-escenarios-grid" id="chapter-4" data-chapter="4">
-          <h2 class="map-title">Escenarios 2021-2040 - Horizonte Cercano</h2>
+          <h2 class="map-title">Comparativo de Escenarios Climáticos</h2>
 
           <div class="escenarios-grid-content">
             <!-- Fila 1: Temperatura -->
             <div class="grid-row">
-              <h3 class="grid-row-title">Temperatura 2021-2040</h3>
+              <h3 class="grid-row-title">Temperatura</h3>
               <div class="grid-maps-row">
                 <div class="grid-map-card">
                   <div class="grid-map-header grid-map-ssp245">
@@ -393,7 +393,7 @@
 
             <!-- Fila 2: Precipitación -->
             <div class="grid-row">
-              <h3 class="grid-row-title">Precipitación 2021-2040</h3>
+              <h3 class="grid-row-title">Precipitación</h3>
               <div class="grid-maps-row">
                 <div class="grid-map-card">
                   <div class="grid-map-header grid-map-ssp245">
@@ -408,59 +408,6 @@
                     <span>Escenario alto</span>
                   </div>
                   <div class="map-container" id="map-4-prec-ssp585"></div>
-                </div>
-              </div>
-            </div>
-
-            <p class="grid-fuente">Fuente: Elaboración propia con datos de 5 MCG del CMIP6.</p>
-          </div>
-        </section>
-
-        <!-- ============================================================
-             CAPITULO 5 - ESCENARIOS 2041-2060 (Grid 2x2)
-             ============================================================ -->
-        <section class="chapter chapter-escenarios-grid" id="chapter-5" data-chapter="5">
-          <h2 class="map-title">Escenarios 2041-2060 - Horizonte Intermedio</h2>
-
-          <div class="escenarios-grid-content">
-            <!-- Fila 1: Temperatura -->
-            <div class="grid-row">
-              <h3 class="grid-row-title">Temperatura 2041-2060</h3>
-              <div class="grid-maps-row">
-                <div class="grid-map-card">
-                  <div class="grid-map-header grid-map-ssp245">
-                    <h4>Temperatura SSP2-4.5</h4>
-                    <span>Escenario intermedio</span>
-                  </div>
-                  <div class="map-container" id="map-5-temp-ssp245"></div>
-                </div>
-                <div class="grid-map-card">
-                  <div class="grid-map-header grid-map-ssp585">
-                    <h4>Temperatura SSP5-8.5</h4>
-                    <span>Escenario alto</span>
-                  </div>
-                  <div class="map-container" id="map-5-temp-ssp585"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Fila 2: Precipitación -->
-            <div class="grid-row">
-              <h3 class="grid-row-title">Precipitación 2041-2060</h3>
-              <div class="grid-maps-row">
-                <div class="grid-map-card">
-                  <div class="grid-map-header grid-map-ssp245">
-                    <h4>Precipitación SSP2-4.5</h4>
-                    <span>Escenario intermedio</span>
-                  </div>
-                  <div class="map-container" id="map-5-prec-ssp245"></div>
-                </div>
-                <div class="grid-map-card">
-                  <div class="grid-map-header grid-map-ssp585">
-                    <h4>Precipitación SSP5-8.5</h4>
-                    <span>Escenario alto</span>
-                  </div>
-                  <div class="map-container" id="map-5-prec-ssp585"></div>
                 </div>
               </div>
             </div>
@@ -487,11 +434,7 @@
         </div>
         <div class="timeline-item" data-chapter="4">
           <div class="timeline-circle">4</div>
-          <div class="timeline-label">2021-2040</div>
-        </div>
-        <div class="timeline-item" data-chapter="5">
-          <div class="timeline-circle">5</div>
-          <div class="timeline-label">2041-2060</div>
+          <div class="timeline-label">Temp. y Prec.</div>
         </div>
       </div>
 
