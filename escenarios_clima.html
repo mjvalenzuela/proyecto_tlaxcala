@@ -270,53 +270,202 @@
         </section>
 
         <!-- ============================================================
-             CAPITULO 3 - VARIABILIDAD CLIMATICA
+             CAPITULO 3 - ESCENARIOS DE CAMBIO CLIMATICO - INTRODUCCION
              ============================================================ -->
-        <section class="chapter" id="chapter-3" data-chapter="3">
-          <h2 class="map-title">Variabilidad Climatica</h2>
+        <section class="chapter chapter-intro-escenarios" id="chapter-3" data-chapter="3">
+          <h2 class="map-title">Escenarios de Cambio Climático</h2>
 
-          <div class="chapter-map">
-            <div class="map-container" id="map-3"></div>
-          </div>
-
-          <div class="chapter-text">
-            <h2 class="chapter-title">Fenomenos Extremos</h2>
-            <div class="chapter-content">
-              <p>
-                La variabilidad climatica en Tlaxcala se manifiesta a traves de diversos
-                fenomenos extremos que afectan a la poblacion y los ecosistemas.
+          <div class="intro-escenarios-content">
+            <!-- Panel izquierdo: Texto y tabla -->
+            <div class="intro-text-panel">
+              <h3 class="intro-title">Comparativos Cambio Climático</h3>
+              <p class="intro-description">
+                Los escenarios de cambio climático nos permiten imaginar cómo podría cambiar el clima en los próximos años. Saberlo nos ayuda a prepararnos mejor y proteger lo que más valoramos: nuestra gente, la naturaleza y nuestras actividades.
+                Para Tlaxcala se analizan los escenarios SSP2-4.5 (emisión intermedia) y SSP5-8.5 (altas emisiones).
               </p>
-              <ul>
-                <li>Heladas tempranas y tardias</li>
-                <li>Granizadas intensas</li>
-                <li>Sequias recurrentes</li>
-                <li>Lluvias torrenciales</li>
-              </ul>
-              <p>
-                Comprender estos patrones es fundamental para desarrollar estrategias
-                de adaptacion efectivas.
-              </p>
-            </div>
-          </div>
 
-          <div class="chapter-chart-info">
-            <h2 class="chart-info-title">Frecuencia de eventos extremos</h2>
-            <div class="chart-info-content">
-              <div class="chart-section">
-                <div class="chart-container">
-                  <canvas id="chart-3"></canvas>
+              <a href="https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=889463769354" target="_blank" class="btn-link-inecc">
+                Ver Atlas de Vulnerabilidad - INECC
+              </a>
+
+              <!-- Tabs de gráficas -->
+              <div class="intro-tabs-container">
+                <div class="intro-tabs-header">
+                  <button class="intro-tab-btn active" data-tab="grafica-28">Temp. y Prec. Mensual</button>
+                  <button class="intro-tab-btn" data-tab="grafica-29">Anomalía Temp.</button>
+                  <button class="intro-tab-btn" data-tab="grafica-30">Anomalía Prec.</button>
                 </div>
-              </div>
-              <div class="info-section">
-                <div class="info-content">
-                  <p>
-                    El registro historico muestra un incremento en la frecuencia e intensidad
-                    de eventos climaticos extremos, lo que representa un desafio creciente
-                    para la gestion del riesgo.
-                  </p>
+                <div class="intro-tabs-content">
+                  <!-- Gráfica 28 -->
+                  <div class="intro-tab-panel active" id="grafica-28">
+                    <canvas id="chart-grafica-28"></canvas>
+                  </div>
+                  <!-- Gráfica 29 -->
+                  <div class="intro-tab-panel" id="grafica-29">
+                    <canvas id="chart-grafica-29"></canvas>
+                  </div>
+                  <!-- Gráfica 30 -->
+                  <div class="intro-tab-panel" id="grafica-30">
+                    <canvas id="chart-grafica-30"></canvas>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!-- Panel derecho: Mapa con controles -->
+            <div class="intro-map-panel">
+              <div class="map-container" id="map-3-intro"></div>
+
+              <div class="intro-map-controls">
+                <h4 class="controls-title">Capas disponibles</h4>
+
+                <div class="control-group">
+                  <h5 class="control-group-title">Temperatura</h5>
+                  <label class="control-checkbox">
+                    <input type="checkbox" name="capa-intro" value="temp-2021-2040" data-capa="SEICCT:mapa_30a">
+                    <span>2021-2040 SSP2-4.5</span>
+                  </label>
+                  <label class="control-checkbox">
+                    <input type="checkbox" name="capa-intro" value="temp-2021-2040-ssp585" data-capa="SEICCT:mapa_30b">
+                    <span>2021-2040 SSP5-8.5</span>
+                  </label>
+                  <label class="control-checkbox">
+                    <input type="checkbox" name="capa-intro" value="temp-2041-2060" data-capa="SEICCT:mapa_32a">
+                    <span>2041-2060 SSP2-4.5</span>
+                  </label>
+                  <label class="control-checkbox">
+                    <input type="checkbox" name="capa-intro" value="temp-2041-2060-ssp585" data-capa="SEICCT:mapa_32b">
+                    <span>2041-2060 SSP5-8.5</span>
+                  </label>
+                </div>
+
+                <div class="control-group">
+                  <h5 class="control-group-title">Precipitación</h5>
+                  <label class="control-checkbox">
+                    <input type="checkbox" name="capa-intro" value="prec-2021-2040" data-capa="SEICCT:mapa_31a">
+                    <span>2021-2040 SSP2-4.5</span>
+                  </label>
+                  <label class="control-checkbox">
+                    <input type="checkbox" name="capa-intro" value="prec-2021-2040-ssp585" data-capa="SEICCT:mapa_31b">
+                    <span>2021-2040 SSP5-8.5</span>
+                  </label>
+                  <label class="control-checkbox">
+                    <input type="checkbox" name="capa-intro" value="prec-2041-2060" data-capa="SEICCT:mapa_33a">
+                    <span>2041-2060 SSP2-4.5</span>
+                  </label>
+                  <label class="control-checkbox">
+                    <input type="checkbox" name="capa-intro" value="prec-2041-2060-ssp585" data-capa="SEICCT:mapa_33b">
+                    <span>2041-2060 SSP5-8.5</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             CAPITULO 4 - ESCENARIOS 2021-2040 (Grid 2x2)
+             ============================================================ -->
+        <section class="chapter chapter-escenarios-grid" id="chapter-4" data-chapter="4">
+          <h2 class="map-title">Escenarios 2021-2040 - Horizonte Cercano</h2>
+
+          <div class="escenarios-grid-content">
+            <!-- Fila 1: Temperatura -->
+            <div class="grid-row">
+              <h3 class="grid-row-title">Temperatura 2021-2040</h3>
+              <div class="grid-maps-row">
+                <div class="grid-map-card">
+                  <div class="grid-map-header grid-map-ssp245">
+                    <h4>Temperatura SSP2-4.5</h4>
+                    <span>Escenario intermedio</span>
+                  </div>
+                  <div class="map-container" id="map-4-temp-ssp245"></div>
+                </div>
+                <div class="grid-map-card">
+                  <div class="grid-map-header grid-map-ssp585">
+                    <h4>Temperatura SSP5-8.5</h4>
+                    <span>Escenario alto</span>
+                  </div>
+                  <div class="map-container" id="map-4-temp-ssp585"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila 2: Precipitación -->
+            <div class="grid-row">
+              <h3 class="grid-row-title">Precipitación 2021-2040</h3>
+              <div class="grid-maps-row">
+                <div class="grid-map-card">
+                  <div class="grid-map-header grid-map-ssp245">
+                    <h4>Precipitación SSP2-4.5</h4>
+                    <span>Escenario intermedio</span>
+                  </div>
+                  <div class="map-container" id="map-4-prec-ssp245"></div>
+                </div>
+                <div class="grid-map-card">
+                  <div class="grid-map-header grid-map-ssp585">
+                    <h4>Precipitación SSP5-8.5</h4>
+                    <span>Escenario alto</span>
+                  </div>
+                  <div class="map-container" id="map-4-prec-ssp585"></div>
+                </div>
+              </div>
+            </div>
+
+            <p class="grid-fuente">Fuente: Elaboración propia con datos de 5 MCG del CMIP6.</p>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             CAPITULO 5 - ESCENARIOS 2041-2060 (Grid 2x2)
+             ============================================================ -->
+        <section class="chapter chapter-escenarios-grid" id="chapter-5" data-chapter="5">
+          <h2 class="map-title">Escenarios 2041-2060 - Horizonte Intermedio</h2>
+
+          <div class="escenarios-grid-content">
+            <!-- Fila 1: Temperatura -->
+            <div class="grid-row">
+              <h3 class="grid-row-title">Temperatura 2041-2060</h3>
+              <div class="grid-maps-row">
+                <div class="grid-map-card">
+                  <div class="grid-map-header grid-map-ssp245">
+                    <h4>Temperatura SSP2-4.5</h4>
+                    <span>Escenario intermedio</span>
+                  </div>
+                  <div class="map-container" id="map-5-temp-ssp245"></div>
+                </div>
+                <div class="grid-map-card">
+                  <div class="grid-map-header grid-map-ssp585">
+                    <h4>Temperatura SSP5-8.5</h4>
+                    <span>Escenario alto</span>
+                  </div>
+                  <div class="map-container" id="map-5-temp-ssp585"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila 2: Precipitación -->
+            <div class="grid-row">
+              <h3 class="grid-row-title">Precipitación 2041-2060</h3>
+              <div class="grid-maps-row">
+                <div class="grid-map-card">
+                  <div class="grid-map-header grid-map-ssp245">
+                    <h4>Precipitación SSP2-4.5</h4>
+                    <span>Escenario intermedio</span>
+                  </div>
+                  <div class="map-container" id="map-5-prec-ssp245"></div>
+                </div>
+                <div class="grid-map-card">
+                  <div class="grid-map-header grid-map-ssp585">
+                    <h4>Precipitación SSP5-8.5</h4>
+                    <span>Escenario alto</span>
+                  </div>
+                  <div class="map-container" id="map-5-prec-ssp585"></div>
+                </div>
+              </div>
+            </div>
+
+            <p class="grid-fuente">Fuente: Elaboración propia con datos de 5 MCG del CMIP6.</p>
           </div>
         </section>
 
@@ -330,12 +479,19 @@
         </div>
         <div class="timeline-item" data-chapter="2">
           <div class="timeline-circle">2</div>
-          <div class="timeline-label">Variables Climáticas</div>
+          <div class="timeline-label">Variables</div>
         </div>
-        <!-- Ocultos temporalmente -->
-        <div class="timeline-item" data-chapter="3" style="display: none;">
+        <div class="timeline-item" data-chapter="3">
           <div class="timeline-circle">3</div>
-          <div class="timeline-label">Variabilidad</div>
+          <div class="timeline-label">Comparativos</div>
+        </div>
+        <div class="timeline-item" data-chapter="4">
+          <div class="timeline-circle">4</div>
+          <div class="timeline-label">2021-2040</div>
+        </div>
+        <div class="timeline-item" data-chapter="5">
+          <div class="timeline-circle">5</div>
+          <div class="timeline-label">2041-2060</div>
         </div>
       </div>
 

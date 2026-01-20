@@ -27,12 +27,18 @@ window.addEventListener('DOMContentLoaded', () => {
   const splitState = {};
   let sincronizandoSplit = false;
 
+  // Almacenar referencias a los charts del capítulo 3
+  const chartsCapitulo3 = {};
+
   // ============================================================
-  // SINCRONIZACION DE MAPAS DEL CAPITULO 1 Y 2
+  // SINCRONIZACION DE MAPAS DEL CAPITULO 1, 2, 3, 4 Y 5
   // ============================================================
   const mapasCapitulo1Ids = ['map-1-primavera', 'map-1-verano', 'map-1-otono', 'map-1-invierno'];
   const mapasCapitulo2Ids = ['map-2-primavera', 'map-2-verano', 'map-2-otono', 'map-2-invierno'];
-  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids];
+  const mapasCapitulo3Ids = ['map-3-intro'];
+  const mapasCapitulo4Ids = ['map-4-temp-ssp245', 'map-4-temp-ssp585', 'map-4-prec-ssp245', 'map-4-prec-ssp585'];
+  const mapasCapitulo5Ids = ['map-5-temp-ssp245', 'map-5-temp-ssp585', 'map-5-prec-ssp245', 'map-5-prec-ssp585'];
+  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids, ...mapasCapitulo3Ids, ...mapasCapitulo4Ids, ...mapasCapitulo5Ids];
   let sincronizandoVista = false;
   let sincronizandoCapas = false;
 
@@ -687,6 +693,87 @@ window.addEventListener('DOMContentLoaded', () => {
         { nombre: 'Temp. Mínima Primavera', capa: 'SEICCT:clima_Tem_Min_Primavera', visible: false, simbologia: 'tempMin' },
         { nombre: 'Temp. Mínima Verano', capa: 'SEICCT:clima_Tem_Min_Ver', visible: false, simbologia: 'tempMin' }
       ]
+    },
+    // ============================================================
+    // CAPITULO 3 - INTRODUCCION ESCENARIOS (mapa interactivo)
+    // ============================================================
+    {
+      id: 'map-3-intro',
+      titulo: 'Escenarios de Cambio Climático',
+      capitulo: 3,
+      capasMultiples: [
+        { nombre: 'Límite Estatal', capa: 'SEICCT:Limite', visible: true, simbologia: null }
+      ]
+    },
+    // ============================================================
+    // CAPITULO 4 - ESCENARIOS 2021-2040 (Grid 2x2)
+    // ============================================================
+    {
+      id: 'map-4-temp-ssp245',
+      titulo: 'Temperatura SSP2-4.5',
+      capitulo: 4,
+      capasMultiples: [
+        { nombre: 'Temperatura 2021-2040 SSP2-4.5', capa: 'SEICCT:mapa_30a', visible: true, simbologia: 'tempMedia' }
+      ]
+    },
+    {
+      id: 'map-4-temp-ssp585',
+      titulo: 'Temperatura SSP5-8.5',
+      capitulo: 4,
+      capasMultiples: [
+        { nombre: 'Temperatura 2021-2040 SSP5-8.5', capa: 'SEICCT:mapa_30b', visible: true, simbologia: 'tempMedia' }
+      ]
+    },
+    {
+      id: 'map-4-prec-ssp245',
+      titulo: 'Precipitación SSP2-4.5',
+      capitulo: 4,
+      capasMultiples: [
+        { nombre: 'Precipitación 2021-2040 SSP2-4.5', capa: 'SEICCT:mapa_31a', visible: true, simbologia: 'priClim' }
+      ]
+    },
+    {
+      id: 'map-4-prec-ssp585',
+      titulo: 'Precipitación SSP5-8.5',
+      capitulo: 4,
+      capasMultiples: [
+        { nombre: 'Precipitación 2021-2040 SSP5-8.5', capa: 'SEICCT:mapa_31b', visible: true, simbologia: 'priClim' }
+      ]
+    },
+    // ============================================================
+    // CAPITULO 5 - ESCENARIOS 2041-2060 (Grid 2x2)
+    // ============================================================
+    {
+      id: 'map-5-temp-ssp245',
+      titulo: 'Temperatura SSP2-4.5',
+      capitulo: 5,
+      capasMultiples: [
+        { nombre: 'Temperatura 2041-2060 SSP2-4.5', capa: 'SEICCT:mapa_32a', visible: true, simbologia: 'tempMedia' }
+      ]
+    },
+    {
+      id: 'map-5-temp-ssp585',
+      titulo: 'Temperatura SSP5-8.5',
+      capitulo: 5,
+      capasMultiples: [
+        { nombre: 'Temperatura 2041-2060 SSP5-8.5', capa: 'SEICCT:mapa_32b', visible: true, simbologia: 'tempMedia' }
+      ]
+    },
+    {
+      id: 'map-5-prec-ssp245',
+      titulo: 'Precipitación SSP2-4.5',
+      capitulo: 5,
+      capasMultiples: [
+        { nombre: 'Precipitación 2041-2060 SSP2-4.5', capa: 'SEICCT:mapa_33a', visible: true, simbologia: 'priClim' }
+      ]
+    },
+    {
+      id: 'map-5-prec-ssp585',
+      titulo: 'Precipitación SSP5-8.5',
+      capitulo: 5,
+      capasMultiples: [
+        { nombre: 'Precipitación 2041-2060 SSP5-8.5', capa: 'SEICCT:mapa_33b', visible: true, simbologia: 'priClim' }
+      ]
     }
   ];
 
@@ -785,9 +872,19 @@ window.addEventListener('DOMContentLoaded', () => {
       crearBotonSplit(mapaConfig.id, mapContainer);
 
       // Agregar eventos de sincronización de vista (zoom/pan) - solo dentro del mismo capítulo
-      const mapasDelCapitulo = mapaConfig.capitulo === 1 ? mapasCapitulo1Ids : mapasCapitulo2Ids;
-      map.getView().on('change:center', () => sincronizarVistaCapitulo(map, mapasDelCapitulo));
-      map.getView().on('change:resolution', () => sincronizarVistaCapitulo(map, mapasDelCapitulo));
+      let mapasDelCapitulo;
+      switch (mapaConfig.capitulo) {
+        case 1: mapasDelCapitulo = mapasCapitulo1Ids; break;
+        case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
+        case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
+        case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
+        case 5: mapasDelCapitulo = mapasCapitulo5Ids; break;
+        default: mapasDelCapitulo = [];
+      }
+      if (mapasDelCapitulo.length > 1) {
+        map.getView().on('change:center', () => sincronizarVistaCapitulo(map, mapasDelCapitulo));
+        map.getView().on('change:resolution', () => sincronizarVistaCapitulo(map, mapasDelCapitulo));
+      }
     }
   });
 
@@ -1922,7 +2019,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const btnNext = document.getElementById("btnNext");
 
   let currentChapter = 1;
-  const totalChapters = 3;
+  const totalChapters = 5;
 
   function goToChapter(chapterNum) {
     if (chapterNum < 1 || chapterNum > totalChapters) {
@@ -1947,26 +2044,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Actualizar tamano de todos los mapas del capitulo
     setTimeout(() => {
-      if (chapterNum === 1) {
-        // Capitulo 1 tiene 4 mapas
-        mapasCapitulo1Ids.forEach(mapId => {
-          if (mapas[mapId]) {
-            mapas[mapId].updateSize();
-          }
-        });
-      } else if (chapterNum === 2) {
-        // Capitulo 2 tiene 4 mapas
-        mapasCapitulo2Ids.forEach(mapId => {
-          if (mapas[mapId]) {
-            mapas[mapId].updateSize();
-          }
-        });
-      } else {
-        // Capitulo 3 tiene un solo mapa
-        const mapId = `map-${chapterNum}`;
+      let mapasDelCapitulo;
+      switch (chapterNum) {
+        case 1: mapasDelCapitulo = mapasCapitulo1Ids; break;
+        case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
+        case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
+        case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
+        case 5: mapasDelCapitulo = mapasCapitulo5Ids; break;
+        default: mapasDelCapitulo = [];
+      }
+      mapasDelCapitulo.forEach(mapId => {
         if (mapas[mapId]) {
           mapas[mapId].updateSize();
         }
+      });
+      // Resize charts del capítulo 3
+      if (chapterNum === 3 && typeof chartsCapitulo3 !== 'undefined') {
+        Object.values(chartsCapitulo3).forEach(chart => {
+          if (chart) chart.resize();
+        });
       }
     }, 300);
   }
@@ -2013,18 +2109,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
           // Actualizar mapas
           setTimeout(() => {
-            if (chapterNum === 1) {
-              mapasCapitulo1Ids.forEach(mapId => {
-                if (mapas[mapId]) mapas[mapId].updateSize();
-              });
-            } else if (chapterNum === 2) {
-              mapasCapitulo2Ids.forEach(mapId => {
-                if (mapas[mapId]) mapas[mapId].updateSize();
-              });
-            } else {
-              const mapId = `map-${chapterNum}`;
-              if (mapas[mapId]) mapas[mapId].updateSize();
+            let mapasDelCapitulo;
+            switch (chapterNum) {
+              case 1: mapasDelCapitulo = mapasCapitulo1Ids; break;
+              case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
+              case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
+              case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
+              case 5: mapasDelCapitulo = mapasCapitulo5Ids; break;
+              default: mapasDelCapitulo = [];
             }
+            mapasDelCapitulo.forEach(mapId => {
+              if (mapas[mapId]) mapas[mapId].updateSize();
+            });
           }, 100);
         }
       }
@@ -2042,5 +2138,481 @@ window.addEventListener('DOMContentLoaded', () => {
         mapas[mapId].updateSize();
       }
     });
+  }, 500);
+
+  // ============================================================
+  // CAPITULO 3 - FUNCIONALIDAD CHECKBOXES PARA CAPAS
+  // ============================================================
+  const capasIntroduccion = {}; // Almacena las capas creadas dinámicamente
+
+  const checkboxesIntro = document.querySelectorAll('input[name="capa-intro"]');
+  checkboxesIntro.forEach(checkbox => {
+    checkbox.addEventListener('change', (e) => {
+      const capaName = e.target.dataset.capa;
+      const mapIntro = mapas['map-3-intro'];
+
+      if (!mapIntro) return;
+
+      if (e.target.checked) {
+        // Agregar capa
+        if (!capasIntroduccion[capaName]) {
+          const layer = agregarCapaWMSConClipping(mapIntro, capaName, 5, 0.7);
+          capasIntroduccion[capaName] = layer;
+        } else {
+          capasIntroduccion[capaName].setVisible(true);
+        }
+      } else {
+        // Ocultar capa
+        if (capasIntroduccion[capaName]) {
+          capasIntroduccion[capaName].setVisible(false);
+        }
+      }
+    });
+  });
+
+  // ============================================================
+  // CAPITULO 3 - FUNCIONALIDAD TABS DE GRAFICAS
+  // ============================================================
+  const tabButtons = document.querySelectorAll('.intro-tab-btn');
+  const tabPanels = document.querySelectorAll('.intro-tab-panel');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.dataset.tab;
+
+      // Desactivar todos los tabs
+      tabButtons.forEach(b => b.classList.remove('active'));
+      tabPanels.forEach(p => p.classList.remove('active'));
+
+      // Activar tab seleccionado
+      btn.classList.add('active');
+      const panel = document.getElementById(tabId);
+      if (panel) {
+        panel.classList.add('active');
+        // Forzar resize del chart activo
+        setTimeout(() => {
+          if (chartsCapitulo3[tabId]) {
+            chartsCapitulo3[tabId].resize();
+          }
+        }, 50);
+      }
+    });
+  });
+
+  // ============================================================
+  // GRAFICAS 28, 29 Y 30 - CAPITULO 3
+  // ============================================================
+
+  // Gráfica 28: Temperatura y Precipitación mensual
+  const ctx28 = document.getElementById('chart-grafica-28');
+  if (ctx28) {
+    chartsCapitulo3['grafica-28'] = new Chart(ctx28, {
+      type: 'bar',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        datasets: [
+          // Barras de precipitación
+          {
+            label: 'Pcp Observada',
+            data: [12, 8, 10, 25, 55, 120, 110, 105, 115, 55, 12, 8],
+            backgroundColor: 'rgba(66, 165, 245, 0.8)',
+            order: 2,
+            yAxisID: 'y1'
+          },
+          {
+            label: 'Pcp SSP245 (2021-40)',
+            data: [15, 12, 18, 35, 70, 140, 125, 115, 130, 60, 18, 12],
+            backgroundColor: 'rgba(100, 100, 100, 0.7)',
+            order: 2,
+            yAxisID: 'y1'
+          },
+          {
+            label: 'Pcp SSP585 (2021-40)',
+            data: [18, 15, 22, 40, 85, 160, 140, 130, 145, 70, 22, 15],
+            backgroundColor: 'rgba(50, 50, 50, 0.8)',
+            order: 2,
+            yAxisID: 'y1'
+          },
+          // Líneas de temperatura
+          {
+            label: 'Tmed Observada',
+            data: [12.5, 13.5, 15.5, 17, 17.5, 17, 16.5, 16.5, 16, 15, 13.5, 12.5],
+            type: 'line',
+            borderColor: '#333',
+            borderDash: [5, 5],
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            order: 1,
+            yAxisID: 'y'
+          },
+          {
+            label: 'Tmed SSP245 (2021-40)',
+            data: [13, 14, 16, 17.5, 18, 17.5, 17, 17, 16.5, 15.5, 14, 13],
+            type: 'line',
+            borderColor: '#999',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            order: 1,
+            yAxisID: 'y'
+          },
+          {
+            label: 'Tmed SSP585 (2021-40)',
+            data: [13.5, 14.5, 16.5, 18, 18.5, 18, 17.5, 17.5, 17, 16, 14.5, 13.5],
+            type: 'line',
+            borderColor: '#333',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            order: 1,
+            yAxisID: 'y'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: { font: { size: 8 }, boxWidth: 12 }
+          }
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            title: { display: true, text: 'Temperatura (°C)', font: { size: 9 } },
+            min: 10,
+            max: 20,
+            ticks: { font: { size: 8 } }
+          },
+          y1: {
+            type: 'linear',
+            position: 'right',
+            title: { display: true, text: 'Precipitación (mm)', font: { size: 9 } },
+            min: 0,
+            max: 200,
+            grid: { drawOnChartArea: false },
+            ticks: { font: { size: 8 } }
+          },
+          x: {
+            title: { display: true, text: 'Mes', font: { size: 9 } },
+            ticks: { font: { size: 8 } }
+          }
+        }
+      }
+    });
+  }
+
+  // Gráfica 29: Anomalía de temperatura (1950-2100)
+  const ctx29 = document.getElementById('chart-grafica-29');
+  if (ctx29) {
+    // Generar años (cada año)
+    const years29 = [];
+    for (let y = 1950; y <= 2100; y++) years29.push(y);
+
+    // Datos históricos (1950-2020) - serie con variabilidad
+    const historico29 = [
+      -0.9, -1.5, -0.7, -0.5, -0.8, -0.6, -0.4, -0.3, -0.5, -0.2, // 1950-1959
+      -0.3, -0.1, 0.0, -0.2, -0.1, 0.1, 0.0, 0.2, 0.1, 0.3,       // 1960-1969
+      0.2, 0.4, 0.3, 0.5, 0.4, 0.3, 0.5, 0.6, 0.4, 0.7,           // 1970-1979
+      0.5, 0.6, 0.8, 0.7, 0.9, 0.8, 1.0, 0.9, 1.1, 1.0,           // 1980-1989
+      0.9, 1.1, 1.0, 1.2, 1.1, 1.0, 1.2, 1.3, 1.1, 1.4,           // 1990-1999
+      1.2, 1.3, 1.5, 1.4, 1.3, 1.5, 1.4, 1.6, 1.5, 1.4,           // 2000-2009
+      1.6, 1.5, 1.4, 1.6, 1.5, 1.7, 1.6, 1.5, 1.7, 1.6, 1.5       // 2010-2020
+    ];
+
+    // SSP245 (2021-2100) - escenario intermedio
+    const ssp245Data = [];
+    for (let i = 0; i < 71; i++) ssp245Data.push(null); // 1950-2020 null
+    let base245 = 1.5;
+    for (let y = 2021; y <= 2100; y++) {
+      const trend = (y - 2021) * 0.018; // tendencia más suave
+      const variation = (Math.sin(y * 0.5) * 0.15) + (Math.random() - 0.5) * 0.1;
+      ssp245Data.push(Math.round((base245 + trend + variation) * 100) / 100);
+    }
+
+    // SSP585 (2021-2100) - escenario alto
+    const ssp585Data = [];
+    for (let i = 0; i < 71; i++) ssp585Data.push(null); // 1950-2020 null
+    let base585 = 1.5;
+    for (let y = 2021; y <= 2100; y++) {
+      const trend = (y - 2021) * 0.055; // tendencia más pronunciada
+      const variation = (Math.sin(y * 0.5) * 0.2) + (Math.random() - 0.5) * 0.15;
+      ssp585Data.push(Math.round((base585 + trend + variation) * 100) / 100);
+    }
+
+    // Línea de tendencia SSP245
+    const lineal245 = [];
+    for (let i = 0; i < 71; i++) lineal245.push(null);
+    for (let y = 2021; y <= 2100; y++) {
+      lineal245.push(Math.round((1.5 + (y - 2021) * 0.018) * 100) / 100);
+    }
+
+    // Línea de tendencia SSP585
+    const lineal585 = [];
+    for (let i = 0; i < 71; i++) lineal585.push(null);
+    for (let y = 2021; y <= 2100; y++) {
+      lineal585.push(Math.round((1.5 + (y - 2021) * 0.055) * 100) / 100);
+    }
+
+    // Barras de error (min/max) para SSP245
+    const errorBars245 = ssp245Data.map((val, i) => {
+      if (val === null) return null;
+      const error = 0.3 + (i - 71) * 0.015; // error crece con el tiempo
+      return [val - error, val + error];
+    });
+
+    // Barras de error (min/max) para SSP585
+    const errorBars585 = ssp585Data.map((val, i) => {
+      if (val === null) return null;
+      const error = 0.4 + (i - 71) * 0.02;
+      return [val - error, val + error];
+    });
+
+    chartsCapitulo3['grafica-29'] = new Chart(ctx29, {
+      type: 'line',
+      data: {
+        labels: years29,
+        datasets: [
+          {
+            label: 'Histórico',
+            data: historico29,
+            borderColor: '#333',
+            backgroundColor: 'transparent',
+            borderWidth: 1.5,
+            pointRadius: 0,
+            tension: 0.1,
+            order: 1
+          },
+          {
+            label: 'SSP2-4.5',
+            data: ssp245Data,
+            borderColor: '#888',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.1,
+            order: 2
+          },
+          {
+            label: 'SSP5-8.5',
+            data: ssp585Data,
+            borderColor: '#222',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.1,
+            order: 3
+          },
+          {
+            label: 'Lineal (SSP245)',
+            data: lineal245,
+            borderColor: '#aaa',
+            backgroundColor: 'transparent',
+            borderWidth: 1,
+            borderDash: [2, 2],
+            pointRadius: 0,
+            order: 4
+          },
+          {
+            label: 'Lineal (SSP585)',
+            data: lineal585,
+            borderColor: '#555',
+            backgroundColor: 'transparent',
+            borderWidth: 1,
+            borderDash: [2, 2],
+            pointRadius: 0,
+            order: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: { font: { size: 7 }, boxWidth: 15, padding: 8 }
+          },
+          title: {
+            display: true,
+            text: '14.16°C es la temperatura promedio 1970-2000',
+            position: 'top',
+            align: 'start',
+            font: { size: 9, weight: 'normal' },
+            padding: { bottom: 5 }
+          }
+        },
+        scales: {
+          y: {
+            title: { display: true, text: 'Anomalía (°C)', font: { size: 9 } },
+            min: -2,
+            max: 7,
+            ticks: { font: { size: 8 }, stepSize: 1 },
+            grid: { color: '#e0e0e0' }
+          },
+          x: {
+            title: { display: true, text: 'Años', font: { size: 9 } },
+            ticks: {
+              font: { size: 8 },
+              maxTicksLimit: 16,
+              callback: function(value, index) {
+                const year = this.getLabelForValue(value);
+                return year % 10 === 0 ? year : '';
+              }
+            },
+            grid: { color: '#f0f0f0' }
+          }
+        }
+      }
+    });
+  }
+
+  // Gráfica 30: Anomalía de precipitación (1950-2100)
+  const ctx30 = document.getElementById('chart-grafica-30');
+  if (ctx30) {
+    // Generar años (cada año)
+    const years30 = [];
+    for (let y = 1950; y <= 2100; y++) years30.push(y);
+
+    // Datos históricos (1950-2020) - serie con ALTA variabilidad típica de precipitación
+    const historico30 = [
+      -15, -22, -45, 30, -8, -30, -32, 22, -18, -5,    // 1950-1959
+      -20, 15, -25, 22, -10, 8, -28, 20, -15, 5,       // 1960-1969
+      -12, 18, -22, 25, 10, -8, 22, -15, 12, -20,      // 1970-1979
+      15, -18, 25, -12, 20, -25, 8, -10, 22, -5,       // 1980-1989
+      18, -15, 12, -22, 20, -8, 15, -18, 10, -12,      // 1990-1999
+      8, -15, 18, -5, 12, -20, 22, 35, -10, 15,        // 2000-2009
+      -8, 20, -12, 8, -18, 12, -5, 18, -15, 10, -8     // 2010-2020
+    ];
+
+    // SSP245 (2021-2100) - variabilidad alta, tendencia ligeramente negativa
+    const ssp245_30 = [];
+    for (let i = 0; i < 71; i++) ssp245_30.push(null); // 1950-2020 null
+    for (let y = 2021; y <= 2100; y++) {
+      const trend = (y - 2021) * -0.03; // tendencia ligeramente negativa
+      const variation = (Math.sin(y * 0.8) * 8) + (Math.cos(y * 1.2) * 5) + (Math.random() - 0.5) * 10;
+      ssp245_30.push(Math.round((trend + variation) * 10) / 10);
+    }
+
+    // SSP585 (2021-2100) - variabilidad alta, tendencia más negativa
+    const ssp585_30 = [];
+    for (let i = 0; i < 71; i++) ssp585_30.push(null); // 1950-2020 null
+    for (let y = 2021; y <= 2100; y++) {
+      const trend = (y - 2021) * -0.08; // tendencia más pronunciada
+      const variation = (Math.sin(y * 0.7) * 10) + (Math.cos(y * 1.1) * 6) + (Math.random() - 0.5) * 12;
+      ssp585_30.push(Math.round((trend + variation) * 10) / 10);
+    }
+
+    // Línea de tendencia SSP585 (única línea de tendencia en esta gráfica)
+    const lineal585_30 = [];
+    for (let i = 0; i < 71; i++) lineal585_30.push(null);
+    for (let y = 2021; y <= 2100; y++) {
+      lineal585_30.push(Math.round(((y - 2021) * -0.08 - 3) * 10) / 10);
+    }
+
+    chartsCapitulo3['grafica-30'] = new Chart(ctx30, {
+      type: 'line',
+      data: {
+        labels: years30,
+        datasets: [
+          {
+            label: 'Histórico',
+            data: historico30,
+            borderColor: '#555',
+            backgroundColor: 'transparent',
+            borderWidth: 1.5,
+            pointRadius: 0,
+            tension: 0.1,
+            order: 1
+          },
+          {
+            label: 'SSP2-4.5',
+            data: ssp245_30,
+            borderColor: '#aaa',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.1,
+            order: 2
+          },
+          {
+            label: 'SSP5-8.5',
+            data: ssp585_30,
+            borderColor: '#444',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.1,
+            order: 3
+          },
+          {
+            label: 'Lineal (SSP585)',
+            data: lineal585_30,
+            borderColor: '#222',
+            backgroundColor: 'transparent',
+            borderWidth: 1,
+            borderDash: [2, 2],
+            pointRadius: 0,
+            order: 4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: { font: { size: 7 }, boxWidth: 15, padding: 8 }
+          },
+          title: {
+            display: true,
+            text: '712.08 mm es la precipitación anual promedio 1970-2000',
+            position: 'top',
+            align: 'start',
+            font: { size: 9, weight: 'normal' },
+            padding: { bottom: 5 }
+          }
+        },
+        scales: {
+          y: {
+            title: { display: true, text: 'Anomalía (%)', font: { size: 9 } },
+            min: -50,
+            max: 50,
+            ticks: { font: { size: 8 }, stepSize: 10 },
+            grid: { color: '#e0e0e0' }
+          },
+          x: {
+            title: { display: true, text: 'Año', font: { size: 9 } },
+            ticks: {
+              font: { size: 8 },
+              maxTicksLimit: 16,
+              callback: function(value, index) {
+                const year = this.getLabelForValue(value);
+                return year % 10 === 0 ? year : '';
+              }
+            },
+            grid: { color: '#f0f0f0' }
+          }
+        }
+      }
+    });
+  }
+
+  // Resize inicial de la gráfica activa
+  setTimeout(() => {
+    if (chartsCapitulo3['grafica-28']) {
+      chartsCapitulo3['grafica-28'].resize();
+    }
   }, 500);
 });

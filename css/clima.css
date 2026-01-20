@@ -788,3 +788,369 @@
   border-color: var(--color-primary, #A21A5C);
   box-shadow: 0 0 0 2px rgba(162, 26, 92, 0.2);
 }
+
+/* ============================================================
+   CAPITULO 3 - INTRODUCCION ESCENARIOS
+   Layout: 50% texto + 50% mapa con controles
+   ============================================================ */
+
+.chapter-intro-escenarios {
+  width: 100%;
+  height: calc(100vh - 65px) !important;
+  min-height: calc(100vh - 65px);
+  padding: 0.5rem;
+  box-sizing: border-box;
+  display: block !important;
+  grid-template-columns: none !important;
+}
+
+.chapter-intro-escenarios .map-title {
+  display: none;
+}
+
+.intro-escenarios-content {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Panel izquierdo - Texto */
+.intro-text-panel {
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.intro-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  flex-shrink: 0;
+}
+
+.intro-description {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--color-text-dark, #333);
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.btn-link-inecc {
+  display: inline-block;
+  padding: 0.5rem 0.8rem;
+  background: var(--color-secondary, #4a90d9);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.btn-link-inecc:hover {
+  background: #3576b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 144, 217, 0.3);
+}
+
+/* Tabs de gráficas */
+.intro-tabs-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 0.8rem;
+  border-top: 1px solid #ddd;
+  padding-top: 0.8rem;
+  overflow: hidden;
+}
+
+.intro-tabs-header {
+  display: flex;
+  gap: 0.2rem;
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.intro-tab-btn {
+  flex: 1;
+  padding: 0.5rem 0.3rem;
+  border: none;
+  background: #f0f0f0;
+  color: #666;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.intro-tab-btn:hover {
+  background: #e0e0e0;
+}
+
+.intro-tab-btn.active {
+  background: var(--color-primary, #A21A5C);
+  color: white;
+}
+
+.intro-tabs-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #f9f9f9;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.intro-tab-panel {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  background: white;
+  border-radius: 4px;
+}
+
+.intro-tab-panel.active {
+  display: block;
+}
+
+.intro-tab-panel canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Panel derecho - Mapa con controles */
+.intro-map-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  min-height: 0;
+  height: 100%;
+}
+
+.intro-map-panel .map-container {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  position: relative;
+}
+
+.intro-map-controls {
+  padding: 1rem;
+  background: #f5f5f5;
+  border-top: 1px solid #ddd;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.controls-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin-bottom: 0.8rem;
+}
+
+.control-group {
+  margin-bottom: 1rem;
+}
+
+.control-group-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-secondary, #4a90d9);
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.control-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.control-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.control-checkbox:hover {
+  background: rgba(74, 144, 217, 0.1);
+  border-radius: 4px;
+}
+
+/* ============================================================
+   CAPITULOS 4 y 5 - GRID 2x2 ESCENARIOS
+   ============================================================ */
+
+.chapter-escenarios-grid {
+  width: 100%;
+  height: calc(100vh - 65px) !important;
+  min-height: calc(100vh - 65px);
+  padding: 0.5rem;
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column;
+  grid-template-columns: none !important;
+}
+
+.chapter-escenarios-grid .map-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  text-align: center;
+  padding: 0.5rem;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.escenarios-grid-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.grid-row {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.grid-row-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-secondary, #4a90d9);
+  text-align: center;
+  margin: 0;
+  padding: 0.3rem;
+  background: rgba(74, 144, 217, 0.1);
+  border-radius: 4px 4px 0 0;
+  flex-shrink: 0;
+}
+
+.grid-maps-row {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.grid-map-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.grid-map-header {
+  padding: 0.4rem 0.8rem;
+  flex-shrink: 0;
+}
+
+.grid-map-header h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+}
+
+.grid-map-header span {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.grid-map-ssp245 {
+  background: linear-gradient(135deg, #4a90d9 0%, #3576b9 100%);
+}
+
+.grid-map-ssp585 {
+  background: linear-gradient(135deg, #e65100 0%, #bf360c 100%);
+}
+
+.grid-map-card .map-container {
+  flex: 1;
+  min-height: 150px;
+}
+
+.grid-fuente {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  padding: 0.5rem;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Responsive para capítulos 3, 4, 5 */
+@media (max-width: 992px) {
+  .intro-escenarios-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .intro-text-panel {
+    max-height: 250px;
+  }
+
+  .grid-maps-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .intro-text-panel {
+    max-height: 200px;
+    padding: 1rem;
+  }
+
+  .intro-title {
+    font-size: 1.2rem;
+  }
+
+  .chapter-escenarios-grid .map-title {
+    font-size: 1rem;
+  }
+
+  .grid-row-title {
+    font-size: 0.85rem;
+  }
+}
