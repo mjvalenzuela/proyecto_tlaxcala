@@ -1077,6 +1077,123 @@
   flex-shrink: 0;
 }
 
+/* ============================================================
+   CAPITULO 5 - LAYOUT TEXTO + GRAFICA (30% - 70%)
+   ============================================================ */
+
+.chapter-clima-grafica {
+  display: grid;
+  grid-template-columns: 30% 1fr;
+  grid-template-rows: 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+  height: calc(100vh - 65px) !important;
+  min-height: calc(100vh - 65px);
+  box-sizing: border-box;
+}
+
+.chapter-clima-grafica .map-title {
+  display: none;
+}
+
+.chapter-clima-grafica .chapter-text {
+  grid-column: 1;
+  grid-row: 1;
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+}
+
+.chapter-clima-grafica .chapter-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid var(--color-primary, #A21A5C);
+}
+
+.chapter-clima-grafica .chapter-content {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-dark, #333);
+}
+
+.chapter-clima-grafica .chapter-content p {
+  margin-bottom: 0.8rem;
+}
+
+.chapter-clima-grafica .chapter-chart-full {
+  grid-column: 2;
+  grid-row: 1;
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  padding: 0.8rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.chapter-clima-grafica .chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-secondary, #4a90d9);
+  margin-bottom: 0.5rem;
+}
+
+.chapter-clima-grafica .chart-container {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0;
+}
+
+.chapter-clima-grafica .chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* Listas del capítulo 5 */
+.chapter-clima-grafica .modelos-lista,
+.chapter-clima-grafica .datos-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.chapter-clima-grafica .modelos-lista li {
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.3rem;
+  background: rgba(74, 144, 217, 0.1);
+  border-left: 3px solid var(--color-secondary, #4a90d9);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85rem;
+}
+
+.chapter-clima-grafica .datos-titulo {
+  margin-top: 1rem;
+  color: var(--color-primary, #A21A5C);
+}
+
+.chapter-clima-grafica .datos-lista li {
+  padding: 0.5rem 0.6rem;
+  margin-bottom: 0.4rem;
+  background: rgba(162, 26, 92, 0.08);
+  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 /* Responsive para capítulos 3, 4, 5 */
 @media (max-width: 992px) {
   .intro-escenarios-content {
@@ -1090,6 +1207,22 @@
 
   .grid-maps-row {
     grid-template-columns: 1fr;
+  }
+
+  .chapter-clima-grafica {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .chapter-clima-grafica .chapter-text {
+    grid-column: 1;
+    grid-row: 1;
+    max-height: 200px;
+  }
+
+  .chapter-clima-grafica .chapter-chart-full {
+    grid-column: 1;
+    grid-row: 2;
   }
 }
 
@@ -1109,5 +1242,13 @@
 
   .grid-row-title {
     font-size: 0.85rem;
+  }
+
+  .chapter-clima-grafica .chapter-text {
+    max-height: 150px;
+  }
+
+  .chapter-clima-grafica .chapter-title {
+    font-size: 1rem;
   }
 }

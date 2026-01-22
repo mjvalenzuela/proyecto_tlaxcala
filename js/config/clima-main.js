@@ -30,6 +30,9 @@ window.addEventListener('DOMContentLoaded', () => {
   // Almacenar referencias a los charts del capítulo 3
   const chartsCapitulo3 = {};
 
+  // Almacenar referencia al chart del capítulo 5
+  let chartCapitulo5 = null;
+
   // ============================================================
   // SINCRONIZACION DE MAPAS DEL CAPITULO 1, 2, 3 Y 4
   // ============================================================
@@ -2030,6 +2033,10 @@ window.addEventListener('DOMContentLoaded', () => {
           if (chart) chart.resize();
         });
       }
+      // Resize chart del capítulo 5
+      if (chapterNum === 5 && chartCapitulo5) {
+        chartCapitulo5.resize();
+      }
     }, 300);
   }
 
@@ -2086,6 +2093,10 @@ window.addEventListener('DOMContentLoaded', () => {
             mapasDelCapitulo.forEach(mapId => {
               if (mapas[mapId]) mapas[mapId].updateSize();
             });
+            // Resize chart del capítulo 5
+            if (chapterNum === 5 && chartCapitulo5) {
+              chartCapitulo5.resize();
+            }
           }, 100);
         }
       }
@@ -2593,4 +2604,264 @@ window.addEventListener('DOMContentLoaded', () => {
       chartsCapitulo3['grafica-28'].resize();
     }
   }, 500);
+
+  // ============================================================
+  // CAPITULO 5 - GRAFICA DE VARIABLES CLIMATICAS (Datos reales)
+  // ============================================================
+  const ctx5Clima = document.getElementById('chart-5-clima');
+  if (ctx5Clima) {
+    const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+    // Datos basados en la Gráfica 28 - ERA5 y 5 MCG del CMIP6
+    chartCapitulo5 = new Chart(ctx5Clima, {
+      type: 'bar',
+      data: {
+        labels: meses,
+        datasets: [
+          // === PRECIPITACIÓN (Barras) ===
+          {
+            label: 'Pcp Observada',
+            data: [18, 22, 25, 65, 105, 185, 155, 150, 165, 70, 25, 15],
+            backgroundColor: 'rgba(0, 188, 212, 0.85)',
+            borderColor: 'rgba(0, 188, 212, 1)',
+            borderWidth: 1,
+            yAxisID: 'y1',
+            order: 5
+          },
+          {
+            label: 'Pcp SSP245 (2021-40)',
+            data: [22, 28, 35, 75, 115, 195, 165, 145, 155, 75, 35, 20],
+            backgroundColor: 'rgba(103, 58, 183, 0.75)',
+            borderColor: 'rgba(103, 58, 183, 1)',
+            borderWidth: 1,
+            yAxisID: 'y1',
+            order: 4
+          },
+          {
+            label: 'Pcp SSP585 (2021-40)',
+            data: [20, 25, 32, 70, 108, 175, 155, 140, 150, 72, 32, 18],
+            backgroundColor: 'rgba(233, 30, 99, 0.75)',
+            borderColor: 'rgba(233, 30, 99, 1)',
+            borderWidth: 1,
+            yAxisID: 'y1',
+            order: 3
+          },
+          {
+            label: 'Pcp SSP245 (2041-60)',
+            data: [25, 32, 40, 80, 120, 200, 170, 155, 165, 80, 40, 25],
+            backgroundColor: 'rgba(255, 152, 0, 0.7)',
+            borderColor: 'rgba(255, 152, 0, 1)',
+            borderWidth: 1,
+            yAxisID: 'y1',
+            order: 2
+          },
+          {
+            label: 'Pcp SSP585 (2041-60)',
+            data: [15, 20, 28, 60, 95, 160, 140, 125, 135, 65, 28, 12],
+            backgroundColor: 'rgba(244, 67, 54, 0.7)',
+            borderColor: 'rgba(244, 67, 54, 1)',
+            borderWidth: 1,
+            yAxisID: 'y1',
+            order: 1
+          },
+          // === TEMPERATURA (Líneas) ===
+          {
+            label: 'Tmed Observada',
+            data: [12.5, 13.2, 14.8, 16.2, 16.8, 16.5, 15.8, 15.9, 15.5, 14.8, 13.5, 12.8],
+            type: 'line',
+            borderColor: '#1a237e',
+            backgroundColor: 'rgba(26, 35, 126, 0.1)',
+            borderWidth: 3,
+            borderDash: [8, 4],
+            pointRadius: 5,
+            pointBackgroundColor: '#1a237e',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            fill: false,
+            yAxisID: 'y',
+            order: 0,
+            tension: 0.3
+          },
+          {
+            label: 'Tmed SSP245 (2021-40)',
+            data: [13.2, 13.8, 15.5, 17.2, 18.0, 17.5, 16.8, 16.9, 16.5, 15.5, 14.2, 13.5],
+            type: 'line',
+            borderColor: '#7b1fa2',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            pointRadius: 4,
+            pointBackgroundColor: '#7b1fa2',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            fill: false,
+            yAxisID: 'y',
+            order: 0,
+            tension: 0.3
+          },
+          {
+            label: 'Tmed SSP585 (2021-40)',
+            data: [13.5, 14.2, 16.0, 17.8, 18.5, 18.0, 17.2, 17.3, 16.8, 15.8, 14.5, 13.8],
+            type: 'line',
+            borderColor: '#c2185b',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            pointRadius: 4,
+            pointBackgroundColor: '#c2185b',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            fill: false,
+            yAxisID: 'y',
+            order: 0,
+            tension: 0.3
+          },
+          {
+            label: 'Tmed SSP245 (2041-60)',
+            data: [14.0, 14.8, 16.5, 18.2, 19.0, 18.5, 17.8, 17.9, 17.5, 16.5, 15.2, 14.5],
+            type: 'line',
+            borderColor: '#ff6f00',
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            borderDash: [5, 3],
+            pointRadius: 4,
+            pointBackgroundColor: '#ff6f00',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            fill: false,
+            yAxisID: 'y',
+            order: 0,
+            tension: 0.3
+          },
+          {
+            label: 'Tmed SSP585 (2041-60)',
+            data: [14.8, 15.5, 17.2, 19.0, 19.8, 19.2, 18.5, 18.6, 18.2, 17.2, 15.8, 15.2],
+            type: 'line',
+            borderColor: '#d32f2f',
+            backgroundColor: 'transparent',
+            borderWidth: 3,
+            pointRadius: 5,
+            pointBackgroundColor: '#d32f2f',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            fill: false,
+            yAxisID: 'y',
+            order: 0,
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              font: { size: 10, weight: '500' },
+              boxWidth: 18,
+              boxHeight: 10,
+              padding: 12,
+              usePointStyle: false
+            }
+          },
+          title: {
+            display: true,
+            text: [
+              'Cambio proyectado en temperatura media mensual (°C) y precipitación mensual (mm)',
+              'Estado de Tlaxcala - Periodo de referencia 1970-2000'
+            ],
+            font: { size: 13, weight: 'bold' },
+            color: '#333',
+            padding: { top: 5, bottom: 15 }
+          },
+          subtitle: {
+            display: true,
+            text: 'Fuente: Elaboración propia con datos de ERA5 y 5 MCG del CMIP6',
+            font: { size: 10, style: 'italic' },
+            color: '#666',
+            padding: { bottom: 10 }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            titleFont: { size: 12, weight: 'bold' },
+            bodyFont: { size: 11 },
+            padding: 12,
+            cornerRadius: 8,
+            displayColors: true
+          }
+        },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Temperatura (°C)',
+              font: { size: 12, weight: 'bold' },
+              color: '#c2185b'
+            },
+            min: 10,
+            max: 22,
+            ticks: {
+              font: { size: 10 },
+              color: '#c2185b',
+              stepSize: 2
+            },
+            grid: {
+              color: 'rgba(194, 24, 91, 0.1)',
+              lineWidth: 1
+            }
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Precipitación (mm)',
+              font: { size: 12, weight: 'bold' },
+              color: '#0097a7'
+            },
+            min: 0,
+            max: 220,
+            ticks: {
+              font: { size: 10 },
+              color: '#0097a7',
+              stepSize: 40
+            },
+            grid: { drawOnChartArea: false }
+          },
+          x: {
+            ticks: {
+              font: { size: 11, weight: '500' },
+              color: '#333'
+            },
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)',
+              lineWidth: 1
+            }
+          }
+        }
+      }
+    });
+
+    // Resize inicial después de que el layout esté listo
+    setTimeout(() => {
+      if (chartCapitulo5) {
+        chartCapitulo5.resize();
+      }
+    }, 600);
+  }
+
+  // Listener global de resize para el chart del capítulo 5
+  window.addEventListener('resize', () => {
+    if (chartCapitulo5) {
+      chartCapitulo5.resize();
+    }
+  });
 });
