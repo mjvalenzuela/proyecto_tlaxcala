@@ -1,0 +1,965 @@
+/**
+ * Estilos específicos para impactos.html
+ * Layout de mapa + texto similar al capítulo 6 de escenarios_clima.html
+ */
+
+/* ============================================================
+   CAPITULO 1 - LAYOUT MAPA + TEXTO (60% - 40%)
+   ============================================================ */
+
+.impactos-chapter-mapa-texto {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: auto 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+  height: calc(100vh - 65px) !important;
+  min-height: calc(100vh - 65px);
+  box-sizing: border-box;
+}
+
+.impactos-chapter-mapa-texto .map-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin: 0;
+  padding: 0.8rem 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.impactos-chapter-mapa-texto .chapter-map {
+  grid-column: 1;
+  grid-row: 2;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.impactos-chapter-mapa-texto .chapter-map .map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.impactos-chapter-mapa-texto .chapter-text {
+  grid-column: 2;
+  grid-row: 2;
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+}
+
+.impactos-chapter-mapa-texto .chapter-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-primary, #A21A5C);
+}
+
+.impactos-chapter-mapa-texto .chapter-content {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-dark, #333);
+}
+
+.impactos-chapter-mapa-texto .chapter-content p {
+  margin-bottom: 0.8rem;
+}
+
+.impactos-chapter-mapa-texto .chapter-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.impactos-chapter-mapa-texto .chapter-content li {
+  padding: 0.5rem 0.6rem;
+  margin-bottom: 0.4rem;
+  background: rgba(162, 26, 92, 0.05);
+  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   CONTROLES DE CAPAS
+   ============================================================ */
+
+.impactos-chapter-mapa-texto .map-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 160px;
+  font-size: 0.75rem;
+}
+
+.impactos-chapter-mapa-texto .map-controls-header {
+  padding: 0.4rem 0.6rem;
+  background: white;
+  color: #333;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.impactos-chapter-mapa-texto .map-controls-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.impactos-chapter-mapa-texto .map-controls-toggle {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.impactos-chapter-mapa-texto .map-controls-content {
+  padding: 0.4rem;
+}
+
+.impactos-chapter-mapa-texto .map-controls.collapsed .map-controls-content {
+  display: none;
+}
+
+.impactos-chapter-mapa-texto .layer-control {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0;
+}
+
+.impactos-chapter-mapa-texto .layer-control input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+
+.impactos-chapter-mapa-texto .layer-control label {
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Título de grupo de capas */
+.impactos-chapter-mapa-texto .layer-group-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-secondary, #4a90d9);
+  margin: 0.4rem 0 0.2rem 0;
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.impactos-chapter-mapa-texto .layer-group-title:first-child {
+  margin-top: 0;
+}
+
+/* ============================================================
+   PANEL DE LEYENDAS
+   ============================================================ */
+
+.impactos-chapter-mapa-texto .map-legends {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: auto;
+  width: auto;
+  max-width: 200px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  font-size: 0.65rem;
+  box-sizing: border-box;
+  padding: 0.3rem 0.5rem;
+}
+
+.impactos-chapter-mapa-texto .map-legends-header {
+  padding: 0.3rem 0.5rem;
+  background: #f5f5f5;
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.impactos-chapter-mapa-texto .map-legends-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.impactos-chapter-mapa-texto .map-legends-toggle {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.impactos-chapter-mapa-texto .map-legends-content {
+  padding: 0.25rem 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.impactos-chapter-mapa-texto .map-legends.collapsed .map-legends-content {
+  display: none;
+}
+
+.impactos-chapter-mapa-texto .legend-item {
+  margin: 0;
+  width: 100%;
+}
+
+.impactos-chapter-mapa-texto .legend-item-title {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.impactos-chapter-mapa-texto .legend-item-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.impactos-chapter-mapa-texto .legend-categoria {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0;
+}
+
+.impactos-chapter-mapa-texto .legend-simbolo {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.impactos-chapter-mapa-texto .legend-label {
+  font-size: 0.7rem;
+  color: #333;
+}
+
+.impactos-chapter-mapa-texto .map-legends-empty {
+  font-size: 0.65rem;
+  color: #888;
+  text-align: center;
+  padding: 0.3rem;
+}
+
+/* ============================================================
+   BOTON SPLIT PARA COMPARAR
+   ============================================================ */
+
+.impactos-split-btn {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--color-primary, #A21A5C);
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.impactos-split-btn:hover {
+  background: var(--color-primary, #A21A5C);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(162, 26, 92, 0.3);
+}
+
+.impactos-split-btn.active {
+  background: var(--color-primary, #A21A5C);
+  color: white;
+}
+
+.impactos-split-btn .split-icon {
+  font-size: 0.85rem;
+}
+
+/* Barra de Split Vertical */
+.impactos-split-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  cursor: ew-resize;
+  z-index: 150;
+  user-select: none;
+}
+
+.impactos-split-bar::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.impactos-split-bar::after {
+  content: "⇄";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-primary, #A21A5C);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Etiquetas de capas en modo Split */
+.impactos-split-label {
+  position: absolute;
+  bottom: 2.5rem;
+  padding: 0.3rem 0.6rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 140;
+  pointer-events: none;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.impactos-split-label-left {
+  left: 0.5rem;
+}
+
+.impactos-split-label-right {
+  right: 0.5rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 992px) {
+  .impactos-chapter-mapa-texto {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .impactos-chapter-mapa-texto .chapter-map {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 300px;
+  }
+
+  .impactos-chapter-mapa-texto .chapter-text {
+    grid-column: 1;
+    grid-row: 3;
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .impactos-chapter-mapa-texto .map-title {
+    font-size: 1.1rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .impactos-chapter-mapa-texto .chapter-text {
+    max-height: 180px;
+    padding: 0.8rem;
+  }
+
+  .impactos-chapter-mapa-texto .chapter-title {
+    font-size: 1rem;
+  }
+}
+
+/* ============================================================
+   TOOLTIP HOVER MUNICIPIOS
+   ============================================================ */
+
+.municipio-hover-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 200;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   TABLA 86 - SUPERFICIE AGRICOLA INTERACTIVA
+   ============================================================ */
+
+.tabla-agricola-container {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #eee;
+}
+
+.tabla-titulo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin: 0 0 0.6rem 0;
+  text-align: center;
+}
+
+.tabla-scroll {
+  overflow-x: auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-agricola {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  min-width: 400px;
+}
+
+.tabla-agricola thead {
+  background: linear-gradient(135deg, #8B1A4A 0%, #A21A5C 100%);
+}
+
+.tabla-agricola thead th {
+  color: white;
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.7rem;
+  line-height: 1.3;
+  border: none;
+}
+
+.tabla-agricola thead th .th-subtitle {
+  font-weight: 400;
+  font-size: 0.65rem;
+  opacity: 0.9;
+  display: block;
+}
+
+.tabla-agricola tbody tr {
+  transition: background 0.2s ease;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.tabla-agricola tbody tr:hover {
+  background: rgba(162, 26, 92, 0.08);
+}
+
+.tabla-agricola tbody tr.active {
+  background: rgba(162, 26, 92, 0.15);
+}
+
+.tabla-agricola tbody tr.active td:first-child {
+  border-left: 3px solid var(--color-primary, #A21A5C);
+}
+
+.tabla-agricola tbody td {
+  padding: 0.5rem 0.4rem;
+  text-align: left;
+  color: #333;
+  font-size: 0.72rem;
+}
+
+.tabla-agricola tbody td.num {
+  text-align: right;
+  font-family: 'Segoe UI', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabla-agricola tbody tr.fila-total {
+  background: rgba(162, 26, 92, 0.05);
+  border-top: 2px solid var(--color-primary, #A21A5C);
+}
+
+.tabla-agricola tbody tr.fila-total:hover {
+  background: rgba(162, 26, 92, 0.12);
+}
+
+.tabla-agricola tbody tr.fila-total td {
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+}
+
+/* Efecto de resaltado al hacer clic */
+.tabla-agricola tbody tr.highlight {
+  animation: highlightRow 0.5s ease;
+}
+
+@keyframes highlightRow {
+  0% {
+    background: rgba(162, 26, 92, 0.3);
+  }
+  100% {
+    background: rgba(162, 26, 92, 0.08);
+  }
+}
+
+/* Tooltip en celdas */
+.tabla-agricola td[data-tooltip] {
+  position: relative;
+}
+
+.tabla-agricola td[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.tabla-agricola td[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  bottom: calc(100% + 5px);
+}
+
+.tabla-fuente {
+  font-size: 0.7rem;
+  color: #666;
+  margin: 0.5rem 0 0 0;
+  text-align: center;
+}
+
+.tabla-fuente em {
+  color: #555;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabla-agricola {
+    font-size: 0.7rem;
+  }
+
+  .tabla-agricola thead th {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.65rem;
+  }
+
+  .tabla-agricola tbody td {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.68rem;
+  }
+
+  .tabla-titulo {
+    font-size: 0.8rem;
+  }
+}
+
+/* Indicadores de ordenamiento */
+.tabla-agricola thead th.sorted-asc::after {
+  content: ' ▲';
+  font-size: 0.6rem;
+  opacity: 0.8;
+}
+
+.tabla-agricola thead th.sorted-desc::after {
+  content: ' ▼';
+  font-size: 0.6rem;
+  opacity: 0.8;
+}
+
+.tabla-agricola thead th:not(:first-child):hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================================
+   CAPITULO 2 - LAYOUT TEXTO (20%) + TABLA (80%)
+   Similar al capítulo 1 de clima.html
+   ============================================================ */
+
+.chapter-impactos-tabla {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0.5rem;
+  height: calc(100vh - 65px);
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.chapter-impactos-tabla .map-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin: 0;
+  padding: 0.8rem 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.impactos-content {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  gap: 0.5rem;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Card de texto (izquierda) */
+.impactos-text-card {
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 0.8rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.impactos-text-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid var(--color-primary, #A21A5C);
+}
+
+.impactos-text-card .card-content {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text-dark, #333);
+  flex: 1;
+}
+
+.impactos-text-card .card-content p {
+  margin-bottom: 0.5rem;
+}
+
+.impactos-text-card .cultivos-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.impactos-text-card .cultivos-lista li {
+  padding: 0.3rem 0.5rem;
+  margin-bottom: 0.3rem;
+  background: rgba(162, 26, 92, 0.05);
+  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+/* Estadísticas destacadas */
+.impactos-stats {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #eee;
+}
+
+.impactos-stats .stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(162, 26, 92, 0.08);
+  border-radius: 6px;
+}
+
+.impactos-stats .stat-value {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary, #A21A5C);
+}
+
+.impactos-stats .stat-label {
+  display: block;
+  font-size: 0.65rem;
+  color: #666;
+  margin-top: 0.2rem;
+}
+
+/* Card de tabla (derecha) */
+.impactos-tabla-card {
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  min-height: 0;
+}
+
+.impactos-tabla-card .tabla-header {
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, #8B1A4A 0%, #A21A5C 100%);
+  flex-shrink: 0;
+}
+
+.impactos-tabla-card .tabla-titulo-grande {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  text-align: center;
+}
+
+.tabla-scroll-grande {
+  flex: 1;
+  overflow: auto;
+  padding: 0.5rem;
+}
+
+/* Tabla 89 - Siniestros */
+.tabla-siniestros {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tabla-siniestros thead {
+  background: #f5f5f5;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tabla-siniestros thead th {
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #333;
+  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  cursor: pointer;
+}
+
+.tabla-siniestros thead th:hover {
+  background: #eee;
+}
+
+.tabla-siniestros thead th:first-child {
+  cursor: default;
+}
+
+.tabla-siniestros thead th:first-child:hover {
+  background: #f5f5f5;
+}
+
+.tabla-siniestros tbody tr {
+  transition: background 0.2s ease;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.tabla-siniestros tbody tr:hover {
+  background: rgba(162, 26, 92, 0.08);
+}
+
+.tabla-siniestros tbody tr.active {
+  background: rgba(162, 26, 92, 0.15);
+}
+
+.tabla-siniestros tbody tr.active td:first-child {
+  border-left: 3px solid var(--color-primary, #A21A5C);
+}
+
+.tabla-siniestros tbody td {
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+  color: #333;
+  font-size: 0.85rem;
+}
+
+.tabla-siniestros tbody td.num {
+  text-align: center;
+  font-family: 'Segoe UI', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabla-siniestros tbody td.col-total {
+  font-weight: 600;
+  background: rgba(162, 26, 92, 0.05);
+}
+
+/* Fila crítica (2011 - mayor siniestro) */
+.tabla-siniestros tbody tr.fila-critica {
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.tabla-siniestros tbody tr.fila-critica:hover {
+  background: rgba(220, 53, 69, 0.18);
+}
+
+.tabla-siniestros tbody tr.fila-critica td {
+  color: #c62828;
+  font-weight: 500;
+}
+
+/* Fila destacada (2014 - segundo mayor) */
+.tabla-siniestros tbody tr.fila-destacada {
+  background: rgba(255, 152, 0, 0.1);
+}
+
+.tabla-siniestros tbody tr.fila-destacada:hover {
+  background: rgba(255, 152, 0, 0.18);
+}
+
+/* Footer de la tabla */
+.tabla-siniestros tfoot {
+  background: rgba(162, 26, 92, 0.08);
+}
+
+.tabla-siniestros tfoot tr.fila-total td {
+  padding: 0.6rem 0.4rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  border-top: 2px solid var(--color-primary, #A21A5C);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.tabla-fuente-grande {
+  font-size: 0.7rem;
+  color: #666;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+/* Indicadores de ordenamiento */
+.tabla-siniestros thead th.sorted-asc::after {
+  content: ' ▲';
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+.tabla-siniestros thead th.sorted-desc::after {
+  content: ' ▼';
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+/* Efecto de resaltado */
+.tabla-siniestros tbody tr.highlight {
+  animation: highlightRow 0.5s ease;
+}
+
+/* Responsive capítulo 2 */
+@media (max-width: 1200px) {
+  .impactos-content {
+    grid-template-columns: 25% 1fr;
+  }
+}
+
+@media (max-width: 992px) {
+  .chapter-impactos-tabla {
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .impactos-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .impactos-text-card {
+    max-height: 200px;
+    height: auto;
+  }
+
+  .impactos-tabla-card {
+    height: auto;
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chapter-impactos-tabla .map-title {
+    font-size: 1.1rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .impactos-text-card {
+    max-height: 180px;
+    padding: 0.6rem;
+  }
+
+  .impactos-text-card .card-title {
+    font-size: 1rem;
+  }
+
+  .tabla-siniestros {
+    font-size: 0.8rem;
+  }
+
+  .tabla-siniestros thead th,
+  .tabla-siniestros tbody td {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.75rem;
+  }
+}

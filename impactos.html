@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Story Map sobre los Impactos del Cambio Climático en Tlaxcala"
+    />
+    <title>Impactos - Tlaxcala</title>
+
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/story-map.css" />
+    <link rel="stylesheet" href="css/impactos.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="index.html" class="navbar-brand">
+          <span>Tlaxcala</span>
+        </a>
+
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menu">
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+          <span class="navbar-toggle-line"></span>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <a href="index.html" class="navbar-link">Inicio</a>
+          <a href="vulnerabilidad.html" class="navbar-link">Vulnerabilidad</a>
+          <a href="riesgo.html" class="navbar-link">Riesgo</a>
+          <a href="amenazas.html" class="navbar-link">Amenazas</a>
+          <a href="impactos.html" class="navbar-link active">Impactos</a>
+          <a href="clima.html" class="navbar-link">Clima</a>
+          <a href="escenarios_clima.html" class="navbar-link">Escenarios Climáticos</a>
+          <a href="acciones-climaticas.html" class="navbar-link">Acciones Climaticas</a>
+          <a href="mitigacion.html" class="navbar-link">Mitigacion</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="navbar-indicator" id="navbarIndicator"></div>
+
+    <div class="story-map-container">
+      <div class="chapters-container" id="chaptersContainer">
+
+        <!-- ============================================================
+             CAPITULO 1 - IMPACTOS DEL CAMBIO CLIMATICO (Layout mapa + texto 60%-40%)
+             ============================================================ -->
+        <section class="chapter impactos-chapter-mapa-texto" id="chapter-1" data-chapter="1">
+          <!-- Título del mapa -->
+          <h2 class="map-title">Impactos en el Sector Agrícola</h2>
+
+          <!-- Mapa -->
+          <div class="chapter-map impactos-chapter-map">
+            <div class="map-container" id="map-1"></div>
+            <!-- Los controles de capas se generan dinámicamente -->
+          </div>
+
+          <!-- Card de texto -->
+          <div class="chapter-text impactos-chapter-text">
+            <h2 class="chapter-title">¿Qué es un Impacto?</h2>
+            <div class="chapter-content">
+              <p>
+                Los <strong>impactos del cambio climático</strong> son los efectos observados o proyectados que las variaciones climáticas tienen sobre los sistemas naturales y humanos. Estos efectos pueden ser positivos o negativos, directos o indirectos.
+              </p>
+              <p>
+                Tlaxcala tiene 402,450 hectáreas, más de la mitad dedicadas a cultivos como maíz, cebada, trigo y frijol, principalmente en primavera-verano. La superficie agrícola ha disminuido un 6.1 % por cambios en el uso del suelo y urbanización. Los impactos se manifiestan principalmente en:
+              </p>
+              <ul class="datos-contexto">
+                <li><strong>Agricultura:</strong> Cambios en los ciclos de cultivo, pérdida de rendimiento agrícola y afectación a cultivos tradicionales como el maíz.</li>
+                <li><strong>Recursos hídricos:</strong> Disminución de la disponibilidad de agua, afectación a acuíferos y cambios en los patrones de precipitación.</li>
+                <li><strong>Salud humana:</strong> Incremento de enfermedades relacionadas con el calor, vectores y calidad del aire.</li>
+                <li><strong>Biodiversidad:</strong> Pérdida de especies, cambios en ecosistemas y afectación a áreas naturales protegidas como La Malinche.</li>
+                <li><strong>Infraestructura:</strong> Daños por eventos climáticos extremos, inundaciones y deslizamientos de tierra.</li>
+              </ul>
+              <!-- Tabla 86: Superficie sembrada y cosechada -->
+              <div class="tabla-agricola-container">
+                <h3 class="tabla-titulo">Superficie sembrada y superficie cosechada por ciclo agrícola</h3>
+                <div class="tabla-scroll">
+                  <table class="tabla-agricola" id="tabla-86">
+                    <thead>
+                      <tr>
+                        <th>Ciclo Agrícola<br><span class="th-subtitle">(Riego + Temporal)</span></th>
+                        <th>Superficie Sembrada<br><span class="th-subtitle">(ha)</span></th>
+                        <th>Superficie Cosechada<br><span class="th-subtitle">(ha)</span></th>
+                        <th>Valor de producción<br><span class="th-subtitle">(miles de pesos)</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr data-ciclo="primavera-verano">
+                        <td>Primavera-Verano</td>
+                        <td class="num">226,036.33</td>
+                        <td class="num">226,036.33</td>
+                        <td class="num">4,207,512.62</td>
+                      </tr>
+                      <tr data-ciclo="otono-invierno">
+                        <td>Otoño-Invierno</td>
+                        <td class="num">1,473.00</td>
+                        <td class="num">1,473.00</td>
+                        <td class="num">67,600.76</td>
+                      </tr>
+                      <tr data-ciclo="perennes">
+                        <td>Perennes</td>
+                        <td class="num">5,841.00</td>
+                        <td class="num">5,768.00</td>
+                        <td class="num">447,219.79</td>
+                      </tr>
+                      <tr class="fila-total" data-ciclo="total">
+                        <td><strong>Total</strong></td>
+                        <td class="num"><strong>233,350.33</strong></td>
+                        <td class="num"><strong>233,277.33</strong></td>
+                        <td class="num"><strong>4,722,333.17</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="tabla-fuente"><strong>Fuente:</strong> <em>Servicio de Información Agroalimentaria y Pesquera (SIAP), 2022.</em></p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             CAPITULO 2 - SUPERFICIE SINIESTRADA (Layout texto 20% + tabla 80%)
+             ============================================================ -->
+        <section class="chapter chapter-impactos-tabla" id="chapter-2" data-chapter="2">
+          <h2 class="map-title">Superficie Siniestrada por Cultivo</h2>
+
+          <div class="impactos-content">
+            <!-- Card 1: Texto explicativo (20% ancho) -->
+            <div class="impactos-text-card">
+              <h3 class="card-title">Siniestros Agrícolas</h3>
+              <div class="card-content">
+                <p>
+                  Entre 2010 y 2022, eventos como lluvias intensas, granizadas y heladas afectaron cultivos en Tlaxcala, sobre todo maíz, cebada, trigo y alfalfa. En 2011, se perdieron más de 33,000 ha de maíz, 22,600 ha de cebada y 15,300 ha de trigo (SIAP-SAGARPA).
+                </p>
+                <p>
+                  La <strong>superficie siniestrada</strong> representa las hectáreas de cultivo que sufrieron pérdidas totales debido a fenómenos climáticos adversos como sequías, heladas, granizadas o inundaciones.
+                </p>
+                <p>
+                  En Tlaxcala, los principales cultivos afectados históricamente son:
+                </p>
+                <ul class="cultivos-lista">
+                  <li><strong>Maíz grano:</strong> Principal cultivo del estado, altamente vulnerable a sequías y heladas.</li>
+                  <li><strong>Cebada:</strong> Sensible a exceso de humedad y granizo.</li>
+                  <li><strong>Trigo:</strong> Afectado por variaciones térmicas extremas.</li>
+                </ul>
+                <p>
+                  El año <strong>2011</strong> registró los mayores siniestros con más de 71,000 hectáreas afectadas, principalmente por heladas atípicas.
+                </p>
+                <div class="impactos-stats">
+                  <div class="stat-item">
+                    <span class="stat-value">71,714</span>
+                    <span class="stat-label">ha máximo (2011)</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-value">13</span>
+                    <span class="stat-label">años analizados</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: Tabla grande (80% ancho) -->
+            <div class="impactos-tabla-card">
+              <div class="tabla-header">
+                <h3 class="tabla-titulo-grande">Superficie (ha) siniestrada de los principales cultivos en el Estado</h3>
+              </div>
+              <div class="tabla-scroll-grande">
+                <table class="tabla-siniestros" id="tabla-89">
+                  <thead>
+                    <tr>
+                      <th>Año</th>
+                      <th>Maíz grano</th>
+                      <th>Trigo</th>
+                      <th>Cebada</th>
+                      <th>Alfalfa</th>
+                      <th>Durazno</th>
+                      <th class="col-total">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-year="2022">
+                      <td>2022</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">0</td>
+                    </tr>
+                    <tr data-year="2021">
+                      <td>2021</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">0</td>
+                    </tr>
+                    <tr data-year="2020">
+                      <td>2020</td>
+                      <td class="num">425</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">425</td>
+                    </tr>
+                    <tr data-year="2019">
+                      <td>2019</td>
+                      <td class="num">216</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">216</td>
+                    </tr>
+                    <tr data-year="2018">
+                      <td>2018</td>
+                      <td class="num">430</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">430</td>
+                    </tr>
+                    <tr data-year="2017">
+                      <td>2017</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">0</td>
+                    </tr>
+                    <tr data-year="2016">
+                      <td>2016</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">0</td>
+                    </tr>
+                    <tr data-year="2015">
+                      <td>2015</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">0</td>
+                    </tr>
+                    <tr data-year="2014" class="fila-destacada">
+                      <td>2014</td>
+                      <td class="num">1,050</td>
+                      <td class="num">130</td>
+                      <td class="num">5,000</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">6,180</td>
+                    </tr>
+                    <tr data-year="2013">
+                      <td>2013</td>
+                      <td class="num">0</td>
+                      <td class="num">50</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">50</td>
+                    </tr>
+                    <tr data-year="2012">
+                      <td>2012</td>
+                      <td class="num">7,154</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">7,154</td>
+                    </tr>
+                    <tr data-year="2011" class="fila-critica">
+                      <td>2011</td>
+                      <td class="num">33,765.29</td>
+                      <td class="num">15,319</td>
+                      <td class="num">22,629.8</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">71,714.09</td>
+                    </tr>
+                    <tr data-year="2010">
+                      <td>2010</td>
+                      <td class="num">687.5</td>
+                      <td class="num">386</td>
+                      <td class="num">649.5</td>
+                      <td class="num">0</td>
+                      <td class="num">0</td>
+                      <td class="num col-total">1,723</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr class="fila-total">
+                      <td><strong>Total</strong></td>
+                      <td class="num"><strong>43,727.79</strong></td>
+                      <td class="num"><strong>15,885</strong></td>
+                      <td class="num"><strong>28,279.3</strong></td>
+                      <td class="num"><strong>0</strong></td>
+                      <td class="num"><strong>0</strong></td>
+                      <td class="num col-total"><strong>87,892.09</strong></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <p class="tabla-fuente-grande"><strong>Fuente:</strong> <em>Anuario Estadístico de la Producción Agrícola, periodo de análisis 2010-2022. (https://nube.siap.gob.mx/cierreagricola/)</em></p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Timeline inferior -->
+      <div class="timeline" id="timeline">
+        <div class="timeline-item" data-chapter="1">
+          <div class="timeline-circle">1</div>
+          <div class="timeline-label">Sector Agrícola</div>
+        </div>
+        <div class="timeline-item" data-chapter="2">
+          <div class="timeline-circle">2</div>
+          <div class="timeline-label">Siniestros</div>
+        </div>
+      </div>
+
+      <!-- Botones de navegacion -->
+      <div class="nav-buttons left" id="navButtonsLeft">
+        <button class="nav-btn" id="btnPrev" aria-label="Capitulo anterior">
+          &#8592;
+        </button>
+      </div>
+      <div class="nav-buttons right" id="navButtonsRight">
+        <button class="nav-btn" id="btnNext" aria-label="Siguiente capitulo">
+          &#8594;
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="js/config/impactos-main.js"></script>
+
+    <script>
+      const navbarToggle = document.getElementById("navbarToggle");
+      const navbarMenu = document.getElementById("navbarMenu");
+
+      navbarToggle.addEventListener("click", () => {
+        navbarToggle.classList.toggle("active");
+        navbarMenu.classList.toggle("active");
+      });
+
+      const navbarLinks = document.querySelectorAll(".navbar-link");
+      navbarLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navbarToggle.classList.remove("active");
+          navbarMenu.classList.remove("active");
+        });
+      });
+
+      const navbar = document.querySelector(".navbar");
+      const navbarIndicator = document.getElementById("navbarIndicator");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      navbarIndicator.addEventListener("mouseenter", () => {
+        navbar.classList.add("visible");
+      });
+
+      navbar.addEventListener("mouseenter", () => {
+        navbar.classList.add("visible");
+      });
+
+      navbar.addEventListener("mouseleave", () => {
+        navbar.classList.remove("visible");
+      });
+
+      navbarIndicator.addEventListener("click", () => {
+        navbar.classList.toggle("visible");
+      });
+
+      // ============================================================
+      // TABLA 86 - INTERACTIVIDAD
+      // ============================================================
+      document.addEventListener('DOMContentLoaded', () => {
+        const tabla = document.getElementById('tabla-86');
+        if (!tabla) return;
+
+        const filas = tabla.querySelectorAll('tbody tr');
+
+        // Datos adicionales para tooltips
+        const datosAdicionales = {
+          'primavera-verano': {
+            porcentaje: '96.9%',
+            descripcion: 'Principal ciclo agrícola del estado'
+          },
+          'otono-invierno': {
+            porcentaje: '0.6%',
+            descripcion: 'Ciclo secundario con menor producción'
+          },
+          'perennes': {
+            porcentaje: '2.5%',
+            descripcion: 'Cultivos permanentes como frutales'
+          },
+          'total': {
+            porcentaje: '100%',
+            descripcion: 'Suma de todos los ciclos agrícolas'
+          }
+        };
+
+        filas.forEach(fila => {
+          // Clic para seleccionar/deseleccionar fila
+          fila.addEventListener('click', () => {
+            // Remover clase active de otras filas
+            filas.forEach(f => f.classList.remove('active'));
+            // Agregar clase active a la fila clickeada
+            fila.classList.add('active');
+            // Efecto de highlight
+            fila.classList.add('highlight');
+            setTimeout(() => fila.classList.remove('highlight'), 500);
+
+            // Mostrar info adicional en consola (para depuración)
+            const ciclo = fila.dataset.ciclo;
+            if (datosAdicionales[ciclo]) {
+              console.log(`Ciclo: ${ciclo}`, datosAdicionales[ciclo]);
+            }
+          });
+
+          // Añadir tooltips con porcentajes
+          const ciclo = fila.dataset.ciclo;
+          if (datosAdicionales[ciclo]) {
+            const celdas = fila.querySelectorAll('td.num');
+            if (celdas.length > 0) {
+              // Añadir tooltip a la primera celda numérica (Superficie Sembrada)
+              celdas[0].setAttribute('data-tooltip', `${datosAdicionales[ciclo].porcentaje} del total`);
+            }
+          }
+        });
+
+        // Ordenamiento de columnas al hacer clic en el header
+        const headers = tabla.querySelectorAll('thead th');
+        let sortDirection = {};
+
+        headers.forEach((header, index) => {
+          if (index === 0) return; // No ordenar la primera columna (nombres)
+
+          header.style.cursor = 'pointer';
+          header.title = 'Clic para ordenar';
+
+          header.addEventListener('click', () => {
+            const tbody = tabla.querySelector('tbody');
+            const filasArray = Array.from(tbody.querySelectorAll('tr:not(.fila-total)'));
+            const filaTotal = tbody.querySelector('tr.fila-total');
+
+            // Alternar dirección
+            sortDirection[index] = !sortDirection[index];
+
+            filasArray.sort((a, b) => {
+              const aVal = parseFloat(a.cells[index].textContent.replace(/,/g, '')) || 0;
+              const bVal = parseFloat(b.cells[index].textContent.replace(/,/g, '')) || 0;
+              return sortDirection[index] ? aVal - bVal : bVal - aVal;
+            });
+
+            // Reorganizar filas
+            filasArray.forEach(fila => tbody.appendChild(fila));
+            // Mantener fila total al final
+            if (filaTotal) tbody.appendChild(filaTotal);
+
+            // Indicador visual de ordenamiento
+            headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+            header.classList.add(sortDirection[index] ? 'sorted-asc' : 'sorted-desc');
+          });
+        });
+
+        // ============================================================
+        // TABLA 89 - INTERACTIVIDAD (Siniestros)
+        // ============================================================
+        const tabla89 = document.getElementById('tabla-89');
+        if (tabla89) {
+          const filas89 = tabla89.querySelectorAll('tbody tr');
+
+          filas89.forEach(fila => {
+            fila.addEventListener('click', () => {
+              filas89.forEach(f => f.classList.remove('active'));
+              fila.classList.add('active');
+              fila.classList.add('highlight');
+              setTimeout(() => fila.classList.remove('highlight'), 500);
+            });
+          });
+
+          // Ordenamiento de columnas
+          const headers89 = tabla89.querySelectorAll('thead th');
+          let sortDirection89 = {};
+
+          headers89.forEach((header, index) => {
+            if (index === 0) return;
+
+            header.title = 'Clic para ordenar';
+
+            header.addEventListener('click', () => {
+              const tbody = tabla89.querySelector('tbody');
+              const filasArray = Array.from(tbody.querySelectorAll('tr'));
+
+              sortDirection89[index] = !sortDirection89[index];
+
+              filasArray.sort((a, b) => {
+                const aVal = parseFloat(a.cells[index].textContent.replace(/,/g, '')) || 0;
+                const bVal = parseFloat(b.cells[index].textContent.replace(/,/g, '')) || 0;
+                return sortDirection89[index] ? aVal - bVal : bVal - aVal;
+              });
+
+              filasArray.forEach(fila => tbody.appendChild(fila));
+
+              headers89.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+              header.classList.add(sortDirection89[index] ? 'sorted-asc' : 'sorted-desc');
+            });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

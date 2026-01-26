@@ -40,7 +40,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const mapasCapitulo2Ids = ['map-2-primavera', 'map-2-verano', 'map-2-otono', 'map-2-invierno'];
   const mapasCapitulo3Ids = ['map-3-intro'];
   const mapasCapitulo4Ids = ['map-4-temp-ssp245', 'map-4-temp-ssp585', 'map-4-prec-ssp245', 'map-4-prec-ssp585'];
-  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids, ...mapasCapitulo3Ids, ...mapasCapitulo4Ids];
+  const mapasCapitulo6Ids = ['map-6'];
+  const todosLosMapasIds = [...mapasCapitulo1Ids, ...mapasCapitulo2Ids, ...mapasCapitulo3Ids, ...mapasCapitulo4Ids, ...mapasCapitulo6Ids];
   let sincronizandoVista = false;
   let sincronizandoCapas = false;
 
@@ -715,8 +716,8 @@ window.addEventListener('DOMContentLoaded', () => {
       titulo: 'Temperatura SSP2-4.5',
       capitulo: 4,
       capasMultiples: [
-        { nombre: '2021-2040', capa: 'SEICCT:mapa_30a', visible: true, simbologia: 'tempMedia' },
-        { nombre: '2041-2060', capa: 'SEICCT:mapa_32a', visible: false, simbologia: 'tempMedia' }
+        { nombre: '2021-2040', capa: 'SEICCT:Escenario_tas_Anual_Clim_2021-2040', visible: true, simbologia: 'tempMedia' },
+        { nombre: '2041-2060', capa: 'SEICCT:zzEscenario_tas_Anual_Clim_2041-2060', visible: false, simbologia: 'tempMedia' }
       ]
     },
     {
@@ -724,8 +725,8 @@ window.addEventListener('DOMContentLoaded', () => {
       titulo: 'Temperatura SSP5-8.5',
       capitulo: 4,
       capasMultiples: [
-        { nombre: '2021-2040', capa: 'SEICCT:mapa_30b', visible: true, simbologia: 'tempMedia' },
-        { nombre: '2041-2060', capa: 'SEICCT:mapa_32b', visible: false, simbologia: 'tempMedia' }
+        { nombre: '2021-2040', capa: 'SEICCT:SSP585_zzEscenario_tas_Anual_Clim_2021-2040', visible: true, simbologia: 'tempMedia' },
+        { nombre: '2041-2060', capa: 'SEICCT:SSP585_zzEscenario_tas_Anual_Clim_2041-2060', visible: false, simbologia: 'tempMedia' }
       ]
     },
     {
@@ -733,8 +734,8 @@ window.addEventListener('DOMContentLoaded', () => {
       titulo: 'Precipitación SSP2-4.5',
       capitulo: 4,
       capasMultiples: [
-        { nombre: '2021-2040', capa: 'SEICCT:mapa_31a', visible: true, simbologia: 'priClim' },
-        { nombre: '2041-2060', capa: 'SEICCT:mapa_33a', visible: false, simbologia: 'priClim' }
+        { nombre: '2021-2040', capa: 'SEICCT:Escenario_pr_Anual_Clim_2021-2040', visible: true, simbologia: 'precAnual' },
+        { nombre: '2041-2060', capa: 'SEICCT:Escenario_pr_Anual_Clim__2041-2060', visible: false, simbologia: 'precAnual' }
       ]
     },
     {
@@ -742,8 +743,19 @@ window.addEventListener('DOMContentLoaded', () => {
       titulo: 'Precipitación SSP5-8.5',
       capitulo: 4,
       capasMultiples: [
-        { nombre: '2021-2040', capa: 'SEICCT:mapa_31b', visible: true, simbologia: 'priClim' },
-        { nombre: '2041-2060', capa: 'SEICCT:mapa_33b', visible: false, simbologia: 'priClim' }
+        { nombre: '2021-2040', capa: 'SEICCT:SSP585_zzEscenario_pr_Anual_Clim_2021-2040', visible: true, simbologia: 'precAnual' },
+        { nombre: '2041-2060', capa: 'SEICCT:SSP585_zzEscenario_pr_Anual_Clim_2041-2060', visible: false, simbologia: 'precAnual' }
+      ]
+    },
+    // ============================================================
+    // CAPITULO 6 - MAPA CON CAPAS (similar a cap 3 de amenazas)
+    // ============================================================
+    {
+      id: 'map-6',
+      titulo: 'Capítulo 6',
+      capitulo: 6,
+      capasMultiples: [
+        { nombre: 'Límite Estatal', capa: 'SEICCT:Limite', visible: true, simbologia: null }
       ]
     }
   ];
@@ -804,7 +816,8 @@ window.addEventListener('DOMContentLoaded', () => {
         otoQ95: simbologiaOtoQ95,
         tempMax: simbologiaTempMax,
         tempMedia: simbologiaTempMedia,
-        tempMin: simbologiaTempMin
+        tempMin: simbologiaTempMin,
+        precAnual: simbologiaPrecipitacion
       };
 
       // Agregar múltiples capas con clipping
@@ -849,6 +862,7 @@ window.addEventListener('DOMContentLoaded', () => {
         case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
         case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
         case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
+        case 6: mapasDelCapitulo = mapasCapitulo6Ids; break;
         default: mapasDelCapitulo = [];
       }
       if (mapasDelCapitulo.length > 1) {
@@ -1183,20 +1197,22 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     splitBtn.addEventListener('click', () => {
-      // Verificar si es mapa del capítulo 2 (split independiente)
+      // Verificar si es mapa del capítulo 2 o 4 (split independiente)
       const esCapitulo2 = mapasCapitulo2Ids.includes(mapId);
+      const esCapitulo4 = mapasCapitulo4Ids.includes(mapId);
+      const esSplitIndependiente = esCapitulo2 || esCapitulo4;
 
       if (splitState[mapId].activo) {
-        if (esCapitulo2) {
-          // Capítulo 2: desactivar solo este mapa
+        if (esSplitIndependiente) {
+          // Capítulo 2 o 4: desactivar solo este mapa
           desactivarSplit(mapId, mapContainer, splitBtn);
         } else {
           // Capítulo 1: desactivar sincronizado
           sincronizarSplitDesactivar();
         }
       } else {
-        if (esCapitulo2) {
-          // Capítulo 2: activar solo este mapa
+        if (esSplitIndependiente) {
+          // Capítulo 2 o 4: activar solo este mapa
           activarSplitIndependiente(mapId, mapContainer, splitBtn);
         } else {
           // Capítulo 1: activar sincronizado
@@ -1398,8 +1414,8 @@ window.addEventListener('DOMContentLoaded', () => {
       state.position = currentPosition;
       map.render();
 
-      // Sincronizar posición en los otros mapas (solo capítulo 1)
-      if (!mapasCapitulo2Ids.includes(mapId)) {
+      // Sincronizar posición en los otros mapas (solo capítulo 1, no en cap 2 ni 4)
+      if (!mapasCapitulo2Ids.includes(mapId) && !mapasCapitulo4Ids.includes(mapId)) {
         sincronizarSplitPosicion(mapId, currentPosition);
       }
     };
@@ -1989,7 +2005,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const btnNext = document.getElementById("btnNext");
 
   let currentChapter = 1;
-  const totalChapters = 5;
+  const totalChapters = 6;
 
   function goToChapter(chapterNum) {
     if (chapterNum < 1 || chapterNum > totalChapters) {
@@ -2020,6 +2036,7 @@ window.addEventListener('DOMContentLoaded', () => {
         case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
         case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
         case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
+        case 6: mapasDelCapitulo = mapasCapitulo6Ids; break;
         default: mapasDelCapitulo = [];
       }
       mapasDelCapitulo.forEach(mapId => {
@@ -2088,6 +2105,7 @@ window.addEventListener('DOMContentLoaded', () => {
               case 2: mapasDelCapitulo = mapasCapitulo2Ids; break;
               case 3: mapasDelCapitulo = mapasCapitulo3Ids; break;
               case 4: mapasDelCapitulo = mapasCapitulo4Ids; break;
+              case 6: mapasDelCapitulo = mapasCapitulo6Ids; break;
               default: mapasDelCapitulo = [];
             }
             mapasDelCapitulo.forEach(mapId => {
@@ -2120,6 +2138,298 @@ window.addEventListener('DOMContentLoaded', () => {
   // CAPITULO 3 - FUNCIONALIDAD CHECKBOXES PARA CAPAS
   // ============================================================
   const capasIntroduccion = {}; // Almacena las capas creadas dinámicamente
+  const capasIntroInfo = []; // Almacena información de capas para leyendas y split
+
+  // Mapeo de capas a simbologías para el capítulo 3
+  const simbologiasCapitulo3 = {
+    // Temperatura
+    'SEICCT:Escenario_tas_Anual_Clim_2021-2040': { nombre: 'Temp. 2021-2040 SSP2-4.5', simbologia: simbologiaTempMedia, tipo: 'temperatura' },
+    'SEICCT:SSP585_zzEscenario_tas_Anual_Clim_2021-2040': { nombre: 'Temp. 2021-2040 SSP5-8.5', simbologia: simbologiaTempMedia, tipo: 'temperatura' },
+    'SEICCT:zzEscenario_tas_Anual_Clim_2041-2060': { nombre: 'Temp. 2041-2060 SSP2-4.5', simbologia: simbologiaTempMedia, tipo: 'temperatura' },
+    'SEICCT:SSP585_zzEscenario_tas_Anual_Clim_2041-2060': { nombre: 'Temp. 2041-2060 SSP5-8.5', simbologia: simbologiaTempMedia, tipo: 'temperatura' },
+    // Precipitación (usa simbologiaPrecipitacion = "Precipitación Anual (mm)")
+    'SEICCT:Escenario_pr_Anual_Clim_2021-2040': { nombre: 'Prec. 2021-2040 SSP2-4.5', simbologia: simbologiaPrecipitacion, tipo: 'precipitacion' },
+    'SEICCT:SSP585_zzEscenario_pr_Anual_Clim_2021-2040': { nombre: 'Prec. 2021-2040 SSP5-8.5', simbologia: simbologiaPrecipitacion, tipo: 'precipitacion' },
+    'SEICCT:Escenario_pr_Anual_Clim_2041-2060': { nombre: 'Prec. 2041-2060 SSP2-4.5', simbologia: simbologiaPrecipitacion, tipo: 'precipitacion' },
+    'SEICCT:SSP585_zzEscenario_pr_Anual_Clim_2041-2060': { nombre: 'Prec. 2041-2060 SSP5-8.5', simbologia: simbologiaPrecipitacion, tipo: 'precipitacion' }
+  };
+
+  // Estado del split para el capítulo 3
+  const splitStateCap3 = {
+    activo: false,
+    position: 0.5,
+    splitBar: null,
+    labelLeft: null,
+    labelRight: null,
+    capaA: null,
+    capaB: null
+  };
+
+  const map3Container = document.getElementById('map-3-intro');
+
+  // Crear panel de leyendas para el capítulo 3
+  if (map3Container) {
+    const legendsContainer = document.createElement('div');
+    legendsContainer.className = 'map-legends clima-map-legends';
+    legendsContainer.id = 'legends-map-3-intro';
+    legendsContainer.innerHTML = `
+      <div class="map-legends-header">
+        <div class="map-legends-title">Leyenda</div>
+        <button class="map-legends-toggle">−</button>
+      </div>
+      <div class="map-legends-content">
+        <div class="map-legends-empty">Seleccione una capa</div>
+      </div>
+    `;
+    map3Container.appendChild(legendsContainer);
+
+    // Toggle de leyendas
+    const legendsToggle = legendsContainer.querySelector('.map-legends-toggle');
+    legendsToggle.addEventListener('click', () => {
+      legendsContainer.classList.toggle('collapsed');
+      legendsToggle.textContent = legendsContainer.classList.contains('collapsed') ? '+' : '−';
+    });
+
+    // Crear botón de comparar para el capítulo 3
+    const splitBtn = document.createElement('button');
+    splitBtn.className = 'clima-split-btn';
+    splitBtn.id = 'split-btn-map-3-intro';
+    splitBtn.innerHTML = `
+      <span class="split-icon">⚡</span>
+      <span>Comparar</span>
+    `;
+    splitBtn.title = 'Comparar capas con Split Vertical (seleccione 2 capas)';
+    map3Container.appendChild(splitBtn);
+
+    // Evento del botón de split
+    splitBtn.addEventListener('click', () => {
+      if (splitStateCap3.activo) {
+        desactivarSplitCap3();
+      } else {
+        activarSplitCap3();
+      }
+    });
+  }
+
+  /**
+   * Actualiza las leyendas del capítulo 3
+   */
+  function actualizarLeyendasCap3() {
+    const legendsContent = document.querySelector('#legends-map-3-intro .map-legends-content');
+    if (!legendsContent) return;
+
+    // Obtener capas visibles
+    const capasVisibles = capasIntroInfo.filter(c => c.visible && c.simbologia);
+
+    if (capasVisibles.length === 0) {
+      legendsContent.innerHTML = '<div class="map-legends-empty">Seleccione una capa</div>';
+      return;
+    }
+
+    // Agrupar por tipo de simbología (temperatura y precipitación)
+    const tieneTemperatura = capasVisibles.some(c => c.tipo === 'temperatura');
+    const tienePrecipitacion = capasVisibles.some(c => c.tipo === 'precipitacion');
+
+    let html = '';
+
+    // Mostrar leyenda de temperatura si hay capas de temperatura activas
+    if (tieneTemperatura) {
+      const simbologia = simbologiaTempMedia;
+      const colors = simbologia.categorias.map(c => c.color);
+      const gradient = `linear-gradient(to right, ${colors.join(', ')})`;
+      const labels = simbologia.categorias;
+      const minLabel = labels[0].label;
+      const maxLabel = labels[labels.length - 1].label;
+
+      html += `
+        <div class="legend-item" style="margin-bottom: 0.5rem;">
+          <div class="legend-item-title">${simbologia.titulo}</div>
+          <div class="legend-ramp-container">
+            <div class="legend-ramp-bar" style="background: ${gradient};"></div>
+            <div class="legend-ramp-labels">
+              <span class="legend-ramp-label">${minLabel}</span>
+              <span class="legend-ramp-label">${maxLabel}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Mostrar leyenda de precipitación si hay capas de precipitación activas
+    if (tienePrecipitacion) {
+      const simbologia = simbologiaPrecipitacion;
+      const colors = simbologia.categorias.map(c => c.color);
+      const gradient = `linear-gradient(to right, ${colors.join(', ')})`;
+      const labels = simbologia.categorias;
+      const minLabel = labels[0].label;
+      const maxLabel = labels[labels.length - 1].label;
+
+      html += `
+        <div class="legend-item">
+          <div class="legend-item-title">${simbologia.titulo}</div>
+          <div class="legend-ramp-container">
+            <div class="legend-ramp-bar" style="background: ${gradient};"></div>
+            <div class="legend-ramp-labels">
+              <span class="legend-ramp-label">${minLabel}</span>
+              <span class="legend-ramp-label">${maxLabel}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    legendsContent.innerHTML = html;
+  }
+
+  /**
+   * Activa el modo split para el capítulo 3
+   */
+  function activarSplitCap3() {
+    const mapIntro = mapas['map-3-intro'];
+    if (!mapIntro || !map3Container) return;
+
+    // Obtener capas visibles
+    const capasVisibles = capasIntroInfo.filter(c => c.visible);
+    if (capasVisibles.length < 2) {
+      alert('Seleccione al menos 2 capas para comparar');
+      return;
+    }
+
+    // Usar las dos primeras capas visibles
+    const capaA = capasVisibles[0];
+    const capaB = capasVisibles[1];
+
+    splitStateCap3.capaA = capaA;
+    splitStateCap3.capaB = capaB;
+
+    // Crear barra de split
+    const splitBar = document.createElement('div');
+    splitBar.className = 'clima-split-bar';
+    splitBar.style.left = '50%';
+    map3Container.appendChild(splitBar);
+    splitStateCap3.splitBar = splitBar;
+
+    // Crear etiquetas
+    const labelLeft = document.createElement('div');
+    labelLeft.className = 'clima-split-label clima-split-label-left';
+    labelLeft.textContent = capaA.nombre;
+    map3Container.appendChild(labelLeft);
+    splitStateCap3.labelLeft = labelLeft;
+
+    const labelRight = document.createElement('div');
+    labelRight.className = 'clima-split-label clima-split-label-right';
+    labelRight.textContent = capaB.nombre;
+    map3Container.appendChild(labelRight);
+    splitStateCap3.labelRight = labelRight;
+
+    // Configurar clipping
+    let currentPosition = 0.5;
+
+    const prerenderFnA = (event) => {
+      const ctx = event.context;
+      const width = ctx.canvas.width;
+      const height = ctx.canvas.height;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, width * currentPosition, height);
+      ctx.clip();
+    };
+
+    const postrenderFnA = (event) => {
+      event.context.restore();
+    };
+
+    const prerenderFnB = (event) => {
+      const ctx = event.context;
+      const width = ctx.canvas.width;
+      const height = ctx.canvas.height;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(width * currentPosition, 0, width * (1 - currentPosition), height);
+      ctx.clip();
+    };
+
+    const postrenderFnB = (event) => {
+      event.context.restore();
+    };
+
+    capaA.layer.on('prerender', prerenderFnA);
+    capaA.layer.on('postrender', postrenderFnA);
+    capaB.layer.on('prerender', prerenderFnB);
+    capaB.layer.on('postrender', postrenderFnB);
+
+    splitStateCap3.prerenderFnA = prerenderFnA;
+    splitStateCap3.postrenderFnA = postrenderFnA;
+    splitStateCap3.prerenderFnB = prerenderFnB;
+    splitStateCap3.postrenderFnB = postrenderFnB;
+
+    // Drag de la barra
+    const onMouseMove = (e) => {
+      const rect = map3Container.getBoundingClientRect();
+      currentPosition = Math.max(0.1, Math.min(0.9, (e.clientX - rect.left) / rect.width));
+      splitBar.style.left = `${currentPosition * 100}%`;
+      splitStateCap3.position = currentPosition;
+      mapIntro.render();
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    splitBar.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    splitStateCap3.activo = true;
+    const splitBtn = document.getElementById('split-btn-map-3-intro');
+    if (splitBtn) splitBtn.classList.add('active');
+
+    mapIntro.render();
+  }
+
+  /**
+   * Desactiva el modo split para el capítulo 3
+   */
+  function desactivarSplitCap3() {
+    const mapIntro = mapas['map-3-intro'];
+    if (!mapIntro) return;
+
+    // Remover listeners de las capas
+    if (splitStateCap3.capaA && splitStateCap3.prerenderFnA) {
+      splitStateCap3.capaA.layer.un('prerender', splitStateCap3.prerenderFnA);
+      splitStateCap3.capaA.layer.un('postrender', splitStateCap3.postrenderFnA);
+    }
+    if (splitStateCap3.capaB && splitStateCap3.prerenderFnB) {
+      splitStateCap3.capaB.layer.un('prerender', splitStateCap3.prerenderFnB);
+      splitStateCap3.capaB.layer.un('postrender', splitStateCap3.postrenderFnB);
+    }
+
+    // Remover elementos del DOM
+    if (splitStateCap3.splitBar) {
+      splitStateCap3.splitBar.remove();
+      splitStateCap3.splitBar = null;
+    }
+    if (splitStateCap3.labelLeft) {
+      splitStateCap3.labelLeft.remove();
+      splitStateCap3.labelLeft = null;
+    }
+    if (splitStateCap3.labelRight) {
+      splitStateCap3.labelRight.remove();
+      splitStateCap3.labelRight = null;
+    }
+
+    splitStateCap3.activo = false;
+    splitStateCap3.capaA = null;
+    splitStateCap3.capaB = null;
+
+    const splitBtn = document.getElementById('split-btn-map-3-intro');
+    if (splitBtn) splitBtn.classList.remove('active');
+
+    mapIntro.render();
+  }
 
   const checkboxesIntro = document.querySelectorAll('input[name="capa-intro"]');
   checkboxesIntro.forEach(checkbox => {
@@ -2129,25 +2439,54 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (!mapIntro) return;
 
+      // Obtener info de simbología
+      const capaInfo = simbologiasCapitulo3[capaName] || { nombre: capaName, simbologia: null, tipo: null };
+
       if (e.target.checked) {
         // Agregar capa
         if (!capasIntroduccion[capaName]) {
-          const layer = agregarCapaWMSConClipping(mapIntro, capaName, 5, 0.7);
+          const layer = agregarCapaWMSConClipping(mapIntro, capaName, 5 + capasIntroInfo.length, 0.7);
           capasIntroduccion[capaName] = layer;
+
+          // Agregar a la lista de info
+          capasIntroInfo.push({
+            nombre: capaInfo.nombre,
+            capaName: capaName,
+            layer: layer,
+            visible: true,
+            simbologia: capaInfo.simbologia,
+            tipo: capaInfo.tipo
+          });
         } else {
           capasIntroduccion[capaName].setVisible(true);
+          // Actualizar visibilidad en la lista
+          const info = capasIntroInfo.find(c => c.capaName === capaName);
+          if (info) info.visible = true;
         }
       } else {
         // Ocultar capa
         if (capasIntroduccion[capaName]) {
           capasIntroduccion[capaName].setVisible(false);
+          // Actualizar visibilidad en la lista
+          const info = capasIntroInfo.find(c => c.capaName === capaName);
+          if (info) info.visible = false;
+        }
+
+        // Si el split está activo y esta capa está en el split, desactivar
+        if (splitStateCap3.activo) {
+          if ((splitStateCap3.capaA && splitStateCap3.capaA.capaName === capaName) ||
+              (splitStateCap3.capaB && splitStateCap3.capaB.capaName === capaName)) {
+            desactivarSplitCap3();
+          }
         }
       }
+
+      // Actualizar leyendas
+      actualizarLeyendasCap3();
     });
   });
 
   // Toggle del panel de capas del capítulo 3
-  const map3Container = document.getElementById('map-3-intro');
   if (map3Container) {
     const layersToggle = map3Container.querySelector('.map-controls-toggle');
     const layersControl = map3Container.querySelector('.clima-map-controls');

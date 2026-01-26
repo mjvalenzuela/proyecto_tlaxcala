@@ -324,36 +324,36 @@
                   <div class="map-controls-content">
                     <div class="layer-group-title">Temperatura</div>
                     <div class="layer-control">
-                      <input type="checkbox" id="layer-intro-temp-1" name="capa-intro" data-capa="SEICCT:mapa_30a">
+                      <input type="checkbox" id="layer-intro-temp-1" name="capa-intro" data-capa="SEICCT:Escenario_tas_Anual_Clim_2021-2040">
                       <label for="layer-intro-temp-1">2021-2040 SSP2-4.5</label>
                     </div>
                     <div class="layer-control">
-                      <input type="checkbox" id="layer-intro-temp-2" name="capa-intro" data-capa="SEICCT:mapa_30b">
+                      <input type="checkbox" id="layer-intro-temp-2" name="capa-intro" data-capa="SEICCT:SSP585_zzEscenario_tas_Anual_Clim_2021-2040">
                       <label for="layer-intro-temp-2">2021-2040 SSP5-8.5</label>
                     </div>
                     <div class="layer-control">
-                      <input type="checkbox" id="layer-intro-temp-3" name="capa-intro" data-capa="SEICCT:mapa_32a">
+                      <input type="checkbox" id="layer-intro-temp-3" name="capa-intro" data-capa="SEICCT:zzEscenario_tas_Anual_Clim_2041-2060">
                       <label for="layer-intro-temp-3">2041-2060 SSP2-4.5</label>
                     </div>
                     <div class="layer-control">
-                      <input type="checkbox" id="layer-intro-temp-4" name="capa-intro" data-capa="SEICCT:mapa_32b">
+                      <input type="checkbox" id="layer-intro-temp-4" name="capa-intro" data-capa="SEICCT:SSP585_zzEscenario_tas_Anual_Clim_2041-2060">
                       <label for="layer-intro-temp-4">2041-2060 SSP5-8.5</label>
                     </div>
                     <div class="layer-group-title">Precipitación</div>
                     <div class="layer-control">
-                      <input type="checkbox" id="layer-intro-prec-1" name="capa-intro" data-capa="SEICCT:mapa_31a">
+                      <input type="checkbox" id="layer-intro-prec-1" name="capa-intro" data-capa="SEICCT:Escenario_pr_Anual_Clim_2021-2040">
                       <label for="layer-intro-prec-1">2021-2040 SSP2-4.5</label>
                     </div>
                     <div class="layer-control">
-                      <input type="checkbox" id="layer-intro-prec-2" name="capa-intro" data-capa="SEICCT:mapa_31b">
+                      <input type="checkbox" id="layer-intro-prec-2" name="capa-intro" data-capa="SEICCT:SSP585_zzEscenario_pr_Anual_Clim_2021-2040">
                       <label for="layer-intro-prec-2">2021-2040 SSP5-8.5</label>
                     </div>
                     <div class="layer-control">
-                      <input type="checkbox" id="layer-intro-prec-3" name="capa-intro" data-capa="SEICCT:mapa_33a">
+                      <input type="checkbox" id="layer-intro-prec-3" name="capa-intro" data-capa="SEICCT:Escenario_pr_Anual_Clim_2041-2060">
                       <label for="layer-intro-prec-3">2041-2060 SSP2-4.5</label>
                     </div>
                     <div class="layer-control">
-                      <input type="checkbox" id="layer-intro-prec-4" name="capa-intro" data-capa="SEICCT:mapa_33b">
+                      <input type="checkbox" id="layer-intro-prec-4" name="capa-intro" data-capa="SEICCT:SSP585_zzEscenario_pr_Anual_Clim_2041-2060">
                       <label for="layer-intro-prec-4">2041-2060 SSP5-8.5</label>
                     </div>
                   </div>
@@ -452,6 +452,41 @@
           </div>
         </section>
 
+        <!-- ============================================================
+             CAPITULO 6 - OTROS DATOS (Layout similar a amenazas cap 3)
+             ============================================================ -->
+        <section class="chapter clima-chapter-mapa-texto" id="chapter-6" data-chapter="6">
+          <!-- Título del mapa -->
+          <h2 class="map-title">Otros datos</h2>
+
+          <!-- Mapa -->
+          <div class="chapter-map clima-chapter-map">
+            <div class="map-container" id="map-6"></div>
+            <!-- Los controles de capas se generan dinámicamente -->
+          </div>
+
+          <!-- Card de texto -->
+          <div class="chapter-text clima-chapter-text">
+            <h2 class="chapter-title">Contexto del Estado</h2>
+            <div class="chapter-content">
+              <p>
+                Para comprender los retos del cambio climático en Tlaxcala, es importante conocer algunas características clave del estado que inciden en su vulnerabilidad y capacidad de adaptación. Aquí presentamos datos relevantes que permiten contextualizar el análisis climático:
+              </p>
+              <ul class="datos-contexto">
+                <li><strong>Ubicación y extensión:</strong> Tlaxcala se localiza en el centro de México. Con una extensión de 4,060.93 km², es el estado más pequeño del país.</li>
+                <li><strong>Población:</strong> Cuenta con aproximadamente 1.34 millones de habitantes (2020), lo que lo convierte en uno de los estados más densamente poblados.</li>
+                <li><strong>Clima predominante:</strong> Principalmente templado subhúmedo, con lluvias en verano. En las zonas más altas se registran climas semifríos.</li>
+                <li><strong>Altitud:</strong> La mayor parte del estado se encuentra entre los 2,200 y 2,800 metros sobre el nivel del mar, con la cumbre de La Malinche alcanzando los 4,461 msnm.</li>
+                <li><strong>Hidrología:</strong> El estado pertenece a las cuencas del río Balsas y del río Pánuco. Sus principales cuerpos de agua incluyen la presa Atlangatepec y diversos ríos como el Zahuapan.</li>
+                <li><strong>Uso de suelo:</strong> Aproximadamente 60% del territorio se destina a actividades agropecuarias, 25% a zonas forestales y el resto a zonas urbanas y otros usos.</li>
+                <li><strong>Economía:</strong> La base económica se compone de manufactura (principalmente automotriz y textil), agricultura (maíz, cebada, trigo) y servicios.</li>
+                <li><strong>Biodiversidad:</strong> El estado alberga ecosistemas de bosque de pino-encino y pastizales de alta montaña, siendo La Malinche un área natural protegida de importancia regional.</li>
+                <li><strong>Principales amenazas climáticas:</strong> Sequías, heladas, ondas de calor, lluvias intensas y deslizamientos de laderas en zonas montañosas.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
       </div>
 
       <!-- Timeline inferior -->
@@ -475,6 +510,10 @@
         <div class="timeline-item" data-chapter="5">
           <div class="timeline-circle">5</div>
           <div class="timeline-label">Modelos</div>
+        </div>
+        <div class="timeline-item" data-chapter="6">
+          <div class="timeline-circle">6</div>
+          <div class="timeline-label">Otros datos</div>
         </div>
       </div>
 

@@ -447,13 +447,14 @@
   position: absolute;
   bottom: 0.5rem;
   left: 0.5rem;
-  right: 0.5rem;
-  width: calc(100% - 1rem);
+  right: auto;
+  width: auto;
+  max-width: 180px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 100;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   box-sizing: border-box;
   padding: 0.3rem 0.5rem;
 }
@@ -496,7 +497,7 @@
 }
 
 .clima-map-legends .legend-ramp-bar {
-  height: 16px;
+  height: 12px;
   width: 100%;
   min-width: 100%;
   border-radius: 3px;
@@ -507,7 +508,7 @@
 .clima-map-legends .legend-ramp-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   color: #555;
   padding: 0;
   width: 100%;
@@ -1194,7 +1195,97 @@
   line-height: 1.4;
 }
 
-/* Responsive para capítulos 3, 4, 5 */
+/* ============================================================
+   CAPITULO 6 - LAYOUT MAPA + TEXTO (60% - 40%)
+   Similar al capítulo 3 de amenazas.html
+   ============================================================ */
+
+.clima-chapter-mapa-texto {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: auto 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+  height: calc(100vh - 65px) !important;
+  min-height: calc(100vh - 65px);
+  box-sizing: border-box;
+}
+
+.clima-chapter-mapa-texto .map-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin: 0;
+  padding: 0.8rem 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.clima-chapter-mapa-texto .chapter-map {
+  grid-column: 1;
+  grid-row: 2;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.clima-chapter-mapa-texto .chapter-map .map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.clima-chapter-mapa-texto .chapter-text {
+  grid-column: 2;
+  grid-row: 2;
+  background: var(--color-card-bg, #ffffff);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+}
+
+.clima-chapter-mapa-texto .chapter-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary, #A21A5C);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-primary, #A21A5C);
+}
+
+.clima-chapter-mapa-texto .chapter-content {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text-dark, #333);
+}
+
+.clima-chapter-mapa-texto .chapter-content p {
+  margin-bottom: 0.8rem;
+}
+
+.clima-chapter-mapa-texto .chapter-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.clima-chapter-mapa-texto .chapter-content li {
+  padding: 0.5rem 0.6rem;
+  margin-bottom: 0.4rem;
+  background: rgba(162, 26, 92, 0.05);
+  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* Responsive para capítulos 3, 4, 5, 6 */
 @media (max-width: 992px) {
   .intro-escenarios-content {
     grid-template-columns: 1fr;
@@ -1223,6 +1314,23 @@
   .chapter-clima-grafica .chapter-chart-full {
     grid-column: 1;
     grid-row: 2;
+  }
+
+  .clima-chapter-mapa-texto {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .clima-chapter-mapa-texto .chapter-map {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 300px;
+  }
+
+  .clima-chapter-mapa-texto .chapter-text {
+    grid-column: 1;
+    grid-row: 3;
+    max-height: 200px;
   }
 }
 
