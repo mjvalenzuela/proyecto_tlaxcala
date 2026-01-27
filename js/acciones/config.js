@@ -7,7 +7,7 @@ const CONFIG = {
     const hostname = window.location.hostname;
 
     if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://localhost:3001/api/v1/surveys-geoserver/?type=Local";
+      return "http://localhost:3011/api/v1/surveys-geoserver/?type=Local";
     }
 
     if (hostname.includes("vercel.app")) {
@@ -22,7 +22,7 @@ const CONFIG = {
     const hostname = window.location.hostname;
 
     if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://localhost:3001/api/v1/surveys-geoserver/?type=Estatal";
+      return "http://localhost:3011/api/v1/surveys-geoserver/?type=Estatal";
     }
 
     if (hostname.includes("vercel.app")) {
@@ -174,7 +174,7 @@ const CONFIG = {
       const hostname = window.location.hostname;
       const wfsParams = "service=WFS&version=1.0.0&request=GetFeature&typeName=SEICCT:municipios_ganaperd&outputFormat=application/json&format_options=CHARSET:UTF-8";
       if (hostname === "localhost" || hostname === "127.0.0.1") {
-        return "http://localhost:3001/geoserver/SEICCT/ows?" + wfsParams;
+        return "http://localhost:3011/geoserver/SEICCT/ows?" + wfsParams;
       }
       if (hostname.includes("vercel.app")) {
         return "/api/proxy?path=" + encodeURIComponent("/geoserver/SEICCT/ows?" + wfsParams);

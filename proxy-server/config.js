@@ -1,7 +1,7 @@
 module.exports = {
   desarrollo: {
     geoserver: 'https://api.cambioclimaticotlaxcala.mx/geoserver',
-    puerto: 3001,
+    puerto: 3011,
     ambiente: 'desarrollo'
   },
 

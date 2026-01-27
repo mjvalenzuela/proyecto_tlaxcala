@@ -75,7 +75,7 @@ const RiesgoConfig = {
       const hostname = window.location.hostname;
 
       if (hostname === "localhost" || hostname === "127.0.0.1") {
-        return "http://localhost:3001/geoserver";
+        return "http://localhost:3011/geoserver";
       }
 
       if (hostname.includes("vercel.app")) {

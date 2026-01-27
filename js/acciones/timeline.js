@@ -324,9 +324,14 @@ class TimelineManager {
   }
 
   hideTimeline() {
+    // No ocultar el timeline, solo mostrar mensaje si no hay datos
     const timelineContainer = document.querySelector('.timeline-container');
     if (timelineContainer) {
-      timelineContainer.style.display = 'none';
+      // Mantener visible pero sin marcadores si no hay datos
+      const markersContainer = document.getElementById('timelineMarkers');
+      if (markersContainer) {
+        markersContainer.innerHTML = '<span style="color: #999; font-size: 0.875rem;">Sin datos de fechas disponibles</span>';
+      }
     }
   }
 

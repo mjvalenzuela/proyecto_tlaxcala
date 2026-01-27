@@ -99,6 +99,13 @@ class AccionesClimaticasApp {
       this.setupAlcanceToggle();
 
       this.showLoading(false);
+
+      // Forzar que el mapa se ajuste al contenedor después de que todo cargue
+      setTimeout(() => {
+        if (this.mapManager && this.mapManager.map) {
+          this.mapManager.map.invalidateSize();
+        }
+      }, 100);
     } catch (error) {
       this.showLoading(false);
       throw error;
@@ -161,7 +168,9 @@ class AccionesClimaticasApp {
       this.filterManager.setToggleState(this.showLocal, this.showEstatal);
 
       this.timelineManager = new TimelineManager(this.filterManager, this.data);
-      this.timelineManager.init(this.markersData);
+      // Combinar datos locales y estatales para el timeline
+      const allMarkersData = [...(this.markersData || []), ...(this.markersDataEstatal || [])];
+      this.timelineManager.init(allMarkersData);
 
       window.timelineManager = this.timelineManager;
 
@@ -341,6 +350,7 @@ class AccionesClimaticasApp {
       }
     }
   }
+
 
   /**
    * Muestra mensaje de error personalizado

@@ -52,10 +52,7 @@
     flex: 1;
   }
 
-  .map-wrapper {
-    height: 60vh;
-    min-height: 450px;
-  }
+  /* main-container usa flex: 1 1 auto, no necesita altura fija */
 
   .timeline-header {
     flex-direction: column;
@@ -101,14 +98,9 @@
   }
 
   .main-container {
-    padding: 1.5rem 1rem;
+    padding: 0.5rem 1rem;
   }
-
-  .map-wrapper {
-    height: 50vh;
-    min-height: 400px;
-    border-radius: 8px;
-  }
+  /* main-container usa flex: 1 1 auto, no necesita altura fija */
 
   .map-control-btn {
     width: 36px;
@@ -121,21 +113,8 @@
   }
 
   .timeline-container {
-    padding: 1rem;
-  }
-
-  .timeline-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .timeline-title {
-    font-size: 1.125rem;
-  }
-
-  .timeline-range {
-    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    height: 70px;
   }
 
   /* Popup adjustments */
@@ -208,14 +187,12 @@
   }
 
   .main-container {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
   }
+  /* main-container usa flex: 1 1 auto, no necesita altura fija */
 
   .map-wrapper {
-    height: 50vh;
-    min-height: 350px;
     border-radius: 8px;
-    margin-bottom: 1.5rem;
   }
 
   .map-control-btn {
@@ -231,35 +208,9 @@
   }
 
   .timeline-container {
-    padding: 1rem;
-    border-radius: 8px;
-  }
-
-  .timeline-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .timeline-title {
-    font-size: 1rem;
-  }
-
-  .timeline-range {
-    font-size: 0.813rem;
-  }
-
-  .timeline-content {
-    padding: 0.75rem 0;
-  }
-
-  .timeline-track {
-    height: 36px;
-  }
-
-  .timeline-note {
-    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    height: 70px;
+    border-radius: 0;
   }
 
   /* Popup adjustments */
@@ -342,12 +293,6 @@
   .popup-btn svg {
     width: 12px;
     height: 12px;
-  }
-
-  /* Footer */
-  .footer {
-    padding: 1rem;
-    font-size: 0.813rem;
   }
 }
 
@@ -753,9 +698,8 @@
    LANDSCAPE MODE (móviles en horizontal)
    =================================== */
 @media (max-height: 500px) and (orientation: landscape) {
-  .map-wrapper {
-    height: 80vh;
-    min-height: 300px;
+  .main-container {
+    height: calc(100vh - 70px - 58px);
   }
 
   .timeline-container {
@@ -793,7 +737,6 @@
 @media print {
   .navbar,
   .timeline-container,
-  .footer,
   .map-control-btn {
     display: none;
   }
