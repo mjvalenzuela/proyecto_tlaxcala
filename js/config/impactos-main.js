@@ -490,7 +490,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const btnNext = document.getElementById("btnNext");
 
   let currentChapter = 1;
-  const totalChapters = 6;
+  const totalChapters = 7;
 
   /**
    * Navega a un capítulo específico con scroll suave

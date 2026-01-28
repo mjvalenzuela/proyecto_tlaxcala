@@ -16,6 +16,38 @@
     <link rel="stylesheet" href="css/story-map.css" />
 
     <style>
+      /* Capítulo 1 - Card de texto a altura completa */
+      #chapter-1 {
+        display: grid;
+        grid-template-columns: 70% 30%;
+        grid-template-rows: auto 1fr;
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+
+      #chapter-1 .map-title {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+
+      #chapter-1 .chapter-map {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      #chapter-1 .chapter-text {
+        grid-column: 2;
+        grid-row: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #chapter-1 .chapter-text .chapter-content {
+        flex: 1;
+        overflow-y: auto;
+      }
+
       /* Sobrescribir estilos para gráficas del capítulo 2 al 100% del ancho */
       #chapter-2 .analytics-chart-1 .chart-container,
       #chapter-2 .analytics-chart-2 .chart-container {
@@ -345,6 +377,82 @@
           grid-template-columns: 1fr;
         }
       }
+
+      /* Estilos para popup de municipios */
+      .ol-popup {
+        position: absolute;
+        background-color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        bottom: 12px;
+        left: -50px;
+        min-width: 200px;
+        max-width: 300px;
+        z-index: 1000;
+      }
+
+      .ol-popup:after, .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+
+      .ol-popup:after {
+        border-top-color: white;
+        border-width: 10px;
+        left: 48px;
+        margin-left: -10px;
+      }
+
+      .ol-popup:before {
+        border-top-color: #ccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: -11px;
+      }
+
+      .ol-popup-closer {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .ol-popup-closer:after {
+        content: "✕";
+        font-size: 16px;
+        color: #666;
+      }
+
+      .ol-popup-closer:hover:after {
+        color: #333;
+      }
+
+      .popup-info p {
+        margin: 5px 0;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .popup-layer-name {
+        margin-bottom: 10px !important;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #A21A5C;
+        font-size: 1rem;
+      }
+
+      .popup-info strong {
+        color: #A21A5C;
+      }
     </style>
 
     <!-- OpenLayers CSS -->
@@ -418,6 +526,7 @@
             <h2 class="chapter-title">
               ¿Qué es una Amenaza?
             </h2>
+            <br>
             <div class="chapter-content">
               <p>
                 Se refiere a cualquier evento o fenómeno que tiene el potencial de causar daño o perjuicio.
@@ -430,30 +539,6 @@
               </p>
             </div>
           </div>
-
-<!-- Card combinada de gráfico e info (sin borde entre ellas) -->
-<div class="chapter-chart-info">
-  <!-- Título único para toda la card -->
-<!--   <h2 class="chart-info-title">Población expuesta a amenazas climáticas</h2> -->
-
-  <div class="chart-info-content">
-    <!-- Sección del gráfico -->
-<!--     <div class="chart-section">
-      <div class="chart-container">
-        <canvas id="chart-1"></canvas>
-      </div>
-    </div> -->
-
-    <!-- Sección de texto explicativo -->
-<!--     <div class="info-section">
-      <div class="info-content">
-        <p>
-          Las amenazas climáticas son eventos hidrometeorológicos extremos que pueden impactar negativamente a la población y al territorio. La identificación y el análisis de estas amenazas son fundamentales para la planificación territorial y la gestión del riesgo. Para conocer a detalle las variables y su análisis, te invitamos a consultar el PACCET 2023-2030.
-        </p>
-      </div>
-    </div> -->
-  </div>
-</div>
         </section>
 
         <!-- CAPÍTULO 2 -->
@@ -464,6 +549,7 @@
           <!-- Card de texto (izquierda, 30%) -->
           <div class="analytics-text">
             <h2 class="chapter-title">Diagnóstico Participativo</h2>
+            <br>
             <div class="chapter-content">
               <p>
                 En los talleres de diagnóstico, representantes de distintos sectores (académicos, industriales, población general y autoridades) identificaron los <strong>eventos climáticos ocurridos</strong>, los <strong>riesgos más frecuentes</strong> y las <strong>estrategias de protección</strong> necesarias para Tlaxcala, tanto de manera presencial como en línea.
@@ -505,6 +591,7 @@
           <!-- Card de texto -->
           <div class="chapter-text amenazas-chapter-text">
             <h2 class="chapter-title">Impacto Territorial</h2>
+            <br>
             <div class="chapter-content">
               <p>
                <ul>
@@ -566,8 +653,13 @@
             <br>
             <div class="chapter-content">
               <p>
-                Las heladas representan un riesgo para cultivos sensibles al frío.
+                Las heladas son eventos climáticos que ocurren cuando la temperatura del aire desciende por debajo del punto de congelación, lo que puede dar lugar a la formación de hielo en superficies y vegetación. Las heladas pueden ser perjudiciales para la agricultura de varias maneras:
               </p>
+              <ul>
+                <li><strong>Pérdida de cosechas:</strong> En casos graves, las heladas pueden llevar a la pérdida total de una cosecha, lo que resulta en pérdidas económicas significativas para los agricultores.</li>
+                <li><strong>Impacto en la producción de alimentos:</strong> Las heladas pueden afectar la producción de alimentos, lo que puede llevar a la escasez y al aumento de los precios de los productos agrícolas.</li>
+                <li><strong>Cambio climático:</strong> El cambio climático ha aumentado la preocupación por la variabilidad del clima, lo que incluye eventos de heladas inesperadas en lugares donde no son comunes, lo que puede afectar la planificación agrícola.</li>
+              </ul>
               <p>
                 Tlaxcala experimenta un número variable de días con heladas (FD0) cada año, lo que exige medidas de protección para evitar daños significativos a las cosechas.
               </p>
@@ -921,8 +1013,9 @@
             wfsLayer.set('tipo', 'wfs');
             map.addLayer(wfsLayer);
 
-            
+
             configurarHoverMunicipios(map);
+            configurarPopupMunicipios(map, 'map-1');
 
             capasWMS.push(null); // Mantener índice
           }
@@ -999,10 +1092,95 @@
                 tooltip.style.left = `${evt.originalEvent.offsetX + 15}px`;
                 tooltip.style.top = `${evt.originalEvent.offsetY + 15}px`;
 
-                return true; 
+                return true;
               }
             });
           });
+        }
+
+        /**
+         * Configura popup para mostrar información del municipio al hacer clic
+         * @param {ol.Map} mapa - Instancia del mapa de OpenLayers
+         * @param {string} mapId - ID del contenedor del mapa
+         */
+        function configurarPopupMunicipios(mapa, mapId) {
+          const mapElement = document.getElementById(mapId);
+          if (!mapElement) return;
+
+          // Crear elemento del popup
+          const popupElement = document.createElement('div');
+          popupElement.className = 'ol-popup';
+          popupElement.innerHTML = `
+            <a href="#" class="ol-popup-closer"></a>
+            <div class="ol-popup-content"></div>
+          `;
+          mapElement.appendChild(popupElement);
+
+          // Crear overlay del popup
+          const overlay = new ol.Overlay({
+            element: popupElement,
+            autoPan: {
+              animation: {
+                duration: 250,
+              },
+            },
+          });
+          mapa.addOverlay(overlay);
+
+          // Evento de click para mostrar popup
+          mapa.on('singleclick', (evt) => {
+            const features = [];
+
+            mapa.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
+              if (layer && layer.get('tipo') === 'wfs' && layer.getVisible()) {
+                features.push({
+                  feature: feature,
+                  layer: layer,
+                });
+              }
+            });
+
+            if (features.length > 0) {
+              const firstItem = features[0];
+              const feature = firstItem.feature;
+              const layer = firstItem.layer;
+              const properties = feature.getProperties();
+
+              let nombreCapa = layer.get('name') || 'Información';
+              nombreCapa = nombreCapa.replace(/\s*\(Interacción\)\s*/gi, '').trim();
+
+              let contenido = '<div class="popup-info">';
+              contenido += `<p class="popup-layer-name"><strong>${nombreCapa}</strong></p>`;
+
+              for (const key in properties) {
+                const value = properties[key];
+                if (
+                  key !== 'geometry' &&
+                  !key.startsWith('_') &&
+                  value !== null &&
+                  value !== ''
+                ) {
+                  contenido += `<p><strong>${key}:</strong> ${value}</p>`;
+                }
+              }
+              contenido += '</div>';
+
+              const popupContent = popupElement.querySelector('.ol-popup-content');
+              popupContent.innerHTML = contenido;
+              overlay.setPosition(evt.coordinate);
+            } else {
+              overlay.setPosition(undefined);
+            }
+          });
+
+          // Cerrar popup al hacer clic en el botón de cerrar
+          const popupCloser = popupElement.querySelector('.ol-popup-closer');
+          if (popupCloser) {
+            popupCloser.addEventListener('click', (e) => {
+              e.preventDefault();
+              overlay.setPosition(undefined);
+            });
+          }
         }
 
         /**
@@ -1738,8 +1916,9 @@
           wfsLayer.set('tipo', 'wfs');
           map3.addLayer(wfsLayer);
 
-          
+
           configurarHoverMunicipios3(map3);
+          configurarPopupMunicipios(map3, 'map-3');
 
           capasWMS3.push(null); // Mantener índice
         }
@@ -2176,6 +2355,131 @@
         heladasLayer.set('name', 'Heladas');
 
         map5.addLayer(heladasLayer);
+
+        // Agregar capa WFS para interacción (hover y popup)
+        const typeName5 = 'SEICCT:M82_Vulnerabilidad_CC';
+        const layerParts5 = typeName5.split(':');
+        const workspace5WFS = layerParts5.length > 1 ? layerParts5[0] : 'SEICCT';
+
+        const vectorSource5 = new ol.source.Vector({
+          format: new ol.format.GeoJSON(),
+          url: function(extent) {
+            const params = new URLSearchParams({
+              service: 'WFS',
+              version: '1.0.0',
+              request: 'GetFeature',
+              typeName: typeName5,
+              outputFormat: 'application/json',
+              srsname: 'EPSG:3857',
+              bbox: `${extent.join(',')},EPSG:3857`
+            });
+
+            if (isVercelProxy) {
+              const wfsPath = `/geoserver/${workspace5WFS}/ows?${params.toString()}`;
+              const encodedPath = encodeURIComponent(wfsPath);
+              return `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+            } else {
+              return `${proxyUrl}/${workspace5WFS}/ows?${params.toString()}`;
+            }
+          },
+          strategy: ol.loadingstrategy.bbox
+        });
+
+        const transparentStyle5 = new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: 'rgba(0, 0, 0, 0)',
+            width: 0
+          }),
+          fill: new ol.style.Fill({
+            color: 'rgba(0, 0, 0, 0)'
+          })
+        });
+
+        const wfsLayer5 = new ol.layer.Vector({
+          source: vectorSource5,
+          style: transparentStyle5,
+          visible: true,
+          zIndex: 999
+        });
+        wfsLayer5.set('name', 'Municipios (Interacción)');
+        wfsLayer5.set('tipo', 'wfs');
+        map5.addLayer(wfsLayer5);
+
+        // Configurar hover para mapa 5
+        configurarHoverMunicipios5(map5);
+        // Configurar popup para mapa 5
+        configurarPopupMunicipios(map5, 'map-5');
+
+        /**
+         * Configura hover para municipios en el mapa del capítulo 5
+         * @param {ol.Map} mapa - Instancia del mapa de OpenLayers
+         */
+        function configurarHoverMunicipios5(mapa) {
+          const mapElement = document.getElementById('map-5');
+          if (!mapElement) return;
+
+          let tooltip = mapElement.querySelector('.municipio-hover-tooltip');
+          if (!tooltip) {
+            tooltip = document.createElement('div');
+            tooltip.className = 'municipio-hover-tooltip';
+            tooltip.style.display = 'none';
+            mapElement.appendChild(tooltip);
+          }
+
+          let currentFeature5 = null;
+          let defaultStyle5 = null;
+
+          const hoverStyle5 = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: '#A21A5C',
+              width: 3
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(162, 26, 92, 0.2)'
+            })
+          });
+
+          mapa.on('pointermove', (evt) => {
+            const pixel = mapa.getEventPixel(evt.originalEvent);
+
+            if (currentFeature5) {
+              currentFeature5.setStyle(defaultStyle5);
+              currentFeature5 = null;
+              tooltip.style.display = 'none';
+            }
+
+            mapa.forEachFeatureAtPixel(pixel, (feature, layer) => {
+              if (layer && layer.get('tipo') === 'wfs') {
+                currentFeature5 = feature;
+                defaultStyle5 = feature.getStyle() || layer.getStyle();
+
+                feature.setStyle(hoverStyle5);
+
+                const properties = feature.getProperties();
+                const nombreMunicipio =
+                  properties.Municipio ||
+                  properties.MUNICIPIO ||
+                  properties.municipio ||
+                  properties.nombre ||
+                  properties.NOMBRE ||
+                  properties.NOM_MUN ||
+                  properties.nom_mun ||
+                  properties.NOMGEO ||
+                  properties.nomgeo ||
+                  'Municipio';
+
+                tooltip.textContent = nombreMunicipio;
+                tooltip.style.display = 'block';
+                tooltip.style.left = `${evt.originalEvent.offsetX + 15}px`;
+                tooltip.style.top = `${evt.originalEvent.offsetY + 15}px`;
+
+                return true;
+              }
+            });
+
+            mapa.getTargetElement().style.cursor = currentFeature5 ? 'pointer' : '';
+          });
+        }
 
         // Configuración de capas para el mapa 5
         const capasConfigMap5 = [

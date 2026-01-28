@@ -957,7 +957,6 @@ window.addEventListener('DOMContentLoaded', () => {
             })[0];
             limiteGeometry = feature.getGeometry();
             limiteLoaded = true;
-            //console.log('Limite cargado para clipping');
             resolve(limiteGeometry);
           } else {
             reject('No se encontraron features del limite');
@@ -1644,7 +1643,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // Actualizar periodo actual
       periodoActual = btn.dataset.period;
-      console.log(`Periodo seleccionado: ${periodoActual}`);
 
       // Actualizar capas
       actualizarCapasSegunSeleccion();
@@ -1658,7 +1656,6 @@ window.addEventListener('DOMContentLoaded', () => {
   if (variableSelect) {
     variableSelect.addEventListener('change', (e) => {
       variableActual = e.target.value;
-      console.log(`Variable seleccionada (Cap 1): ${variableActual} (${nombresVariable[variableActual]})`);
 
       // Actualizar capas en todos los mapas del capítulo 1
       actualizarCapasSegunSeleccionCapitulo(mapasCapitulo1Ids);
@@ -1675,7 +1672,6 @@ window.addEventListener('DOMContentLoaded', () => {
   if (variableSelect2) {
     variableSelect2.addEventListener('change', (e) => {
       variableActualCap2 = e.target.value;
-      console.log(`Variable seleccionada (Cap 2): ${variableActualCap2} (${nombresVariable[variableActualCap2]})`);
 
       // Actualizar capas en todos los mapas del capítulo 2
       actualizarCapasCapitulo2();
@@ -1805,7 +1801,6 @@ window.addEventListener('DOMContentLoaded', () => {
           capaInfo.layer.set('name', nuevaCapa);
           capaInfo.nombre = nuevoNombre;
           capaInfo.simbologia = nuevaSimbologia;
-          console.log(`  ${mapId}: ${capaInfo.nombre} -> ${nuevaCapa}`);
         }
       });
 
@@ -1845,7 +1840,6 @@ window.addEventListener('DOMContentLoaded', () => {
           capaInfo.layer.set('name', nuevaCapa);
           capaInfo.nombre = nuevoNombre;
           capaInfo.simbologia = nuevaSimbologia;
-          console.log(`  ${mapId}: ${capaInfo.nombre} -> ${nuevaCapa}`);
         }
       });
 

@@ -120,7 +120,7 @@ class StoryMapApp {
     try {
       this.mapManager.inicializarMapaCapitulo(mapElementId, capitulo, numero);
 
-      if (numero === 1) {
+      if (numero === 1 || numero === 2) {
         const mapaId = `cap-${numero}`;
         setTimeout(() => {
           this.mapManager.configurarHoverMunicipios(mapaId, mapElementId);

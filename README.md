@@ -1,404 +1,532 @@
-# Story Maps - Cambio climático Tlaxcala
+# Atlas de Cambio Climático - Tlaxcala
 
-Aplicación web geográfica interactiva para visualizar y explicar el cambio climático en el estado de Tlaxcala mediante Story Maps.
+Aplicación web interactiva para visualizar información sobre cambio climático en el estado de Tlaxcala mediante Story Maps navegables.
 
-## Descripción
+---
 
-Plataforma web que presenta diferentes story maps interactivos sobre cambio climático:
+## Índice
 
-- **Vulnerabilidad** - Análisis de vulnerabilidad climática por municipio con modelos de ganancia/pérdida de especies
-- **Riesgo** - Riesgo climático, eventos y declaratorias, atlas de riesgo municipal
-- **Amenazas** - Amenazas climáticas y su impacto en el estado
-- **Impactos** - Impactos del cambio climático en diferentes sectores
-- **Acciones Climáticas** - Mapa interactivo de proyectos y programas de acción climática
+1. [Descripción General](#descripción-general)
+2. [Secciones de la Aplicación](#secciones-de-la-aplicación)
+3. [Instalación y Configuración](#instalación-y-configuración)
+4. [Guía: Agregar un Capítulo Nuevo](#guía-agregar-un-capítulo-nuevo)
+5. [Guía: Agregar Capas desde GeoServer](#guía-agregar-capas-desde-geoserver)
+6. [Preguntas Frecuentes (FAQ)](#preguntas-frecuentes-faq)
+7. [Estructura de Archivos](#estructura-de-archivos)
 
-Cada story map contiene capítulos navegables con mapas interactivos (OpenLayers/Leaflet), gráficos de datos (Chart.js) y narrativa explicativa.
+---
 
-## Estructura del proyecto
+## Descripción General
 
-```
-proyecto_tlaxcala/
-├── proxy-server/              # Servidor proxy para GeoServer y API de Proyectos
-│   ├── server.js             # Servidor Express con proxy para evitar CORS
-│   ├── config.js             # Configuración de entornos (desarrollo/producción)
-│   └── package.json
-│
-├── css/                       # Estilos
-│   ├── variables.css         # Variables CSS (colores, fuentes)
-│   ├── main.css              # Estilos generales y story maps
-│   ├── navbar.css            # Navbar contraído con hover
-│   ├── landing.css           # Página de inicio
-│   ├── riesgo.css            # Estilos específicos de riesgo.html
-│   ├── acciones-climaticas.css        # Estilos de acciones climáticas
-│   └── acciones-responsive.css        # Responsive para acciones
-│
-├── js/                        # JavaScript
-│   ├── config/               # Configuraciones de story maps
-│   │   ├── vulnerabilidad-config.js   # Capítulos y capas de vulnerabilidad
-│   │   ├── riesgo-config.js           # Capítulos y capas de riesgo
-│   │   └── riesgo-main.js             # Lógica principal de riesgo
-│   │
-│   ├── managers/             # Gestores globales
-│   │   ├── MapManager.js     # Gestión de mapas OpenLayers (WMS/WFS)
-│   │   ├── ChartManager.js   # Gestión de gráficos Chart.js
-│   │   ├── ScrollManager.js  # Navegación por scroll
-│   │   └── TimelineManager.js # Timeline de capítulos
-│   │
-│   ├── acciones/             # Módulos específicos de acciones climáticas
-│   │   ├── config.js         # Configuración de mapa y APIs
-│   │   ├── data.js           # DataManager para fetch y caché
-│   │   ├── data-adapter.js   # Adaptador para API Real (transforma datos)
-│   │   ├── map.js            # MapManager de Leaflet
-│   │   ├── popup.js          # Generación de popups
-│   │   └── main.js           # App principal
-│   │
-│   ├── utils/                # Utilidades
-│   │   └── proxy-helper.js   # Helper para proxy
-│   │
-│   └── main.js               # Inicialización global
-│
-├── data/                      # Datos CSV
-│   └── links.csv             # Links a atlas municipales de riesgo
-│
-├── index.html                # Landing page
-├── vulnerabilidad.html       # Story map de vulnerabilidad
-├── riesgo.html              # Story map de riesgo
-├── amenazas.html            # Story map de amenazas
-├── impactos.html            # Story map de impactos
-└── acciones-climaticas.html # Mapa interactivo de acciones climáticas
-```
+Esta plataforma presenta información sobre cambio climático en Tlaxcala a través de **Story Maps** (mapas narrativos). Cada sección contiene **capítulos** que combinan:
 
-## Instalación
+- **Mapas interactivos** - Visualización geográfica de datos
+- **Gráficas** - Datos estadísticos y tendencias
+- **Texto explicativo** - Información contextual
+- **Tablas** - Datos numéricos organizados
+- **Imágenes** - Mapas estáticos y fotografías
 
-### Requisitos previos
+---
 
-- Node.js (v14 o superior)
-- GeoServer funcionando con capas SEICCT
-- API de Proyectos en `https://api.cambioclimaticotlaxcala.mx/api/v1/projects/`
+## Secciones de la Aplicación
 
-### Paso 1: Instalar dependencias del proxy
+| Sección | Archivo | Descripción | Capítulos |
+|---------|---------|-------------|-----------|
+| **Inicio** | `index.html` | Página principal con acceso a todas las secciones | - |
+| **Vulnerabilidad** | `vulnerabilidad.html` | Índice de vulnerabilidad climática por municipio | 4 |
+| **Riesgo** | `riesgo.html` | Riesgo climático, eventos y atlas municipal | 3 |
+| **Amenazas** | `amenazas.html` | Amenazas climáticas (sequía, heladas, etc.) | 7 |
+| **Impactos** | `impactos.html` | Impactos en agricultura, bosques y suelo | 7 |
+| **Clima** | `clima.html` | Datos climáticos históricos | Variable |
+| **Escenarios Climáticos** | `escenarios_clima.html` | Proyecciones de cambio climático | 6 |
+| **Acciones Climáticas** | `acciones-climaticas.html` | Mapa de proyectos y programas | 1 (mapa interactivo) |
+| **Mitigación** | `mitigacion.html` | Estrategias de mitigación | Variable |
+
+### Descripción detallada de cada sección
+
+#### Vulnerabilidad
+- **Capítulo 1:** Contexto del estado
+- **Capítulo 2:** Temperatura promedio
+- **Capítulo 3:** Índice de vulnerabilidad por municipio
+- **Capítulo 4:** Modelos climáticos (ganancia/pérdida de especies)
+
+#### Riesgo
+- **Capítulo 1:** Riesgo climático por municipio
+- **Capítulo 2:** Eventos por año y declaratorias
+- **Capítulo 3:** Atlas de riesgo municipal
+
+#### Amenazas
+- **Capítulo 1:** Introducción a amenazas
+- **Capítulo 2:** Sequía
+- **Capítulo 3:** Heladas
+- **Capítulo 4:** Precipitación extrema
+- **Capítulo 5:** Ondas de calor
+- **Capítulo 6:** Incendios forestales
+- **Capítulo 7:** Recursos forestales
+
+#### Impactos
+- **Capítulo 1:** Sector agrícola
+- **Capítulo 2:** Superficie siniestrada
+- **Capítulo 3:** Estrategias de adaptación
+- **Capítulo 4:** Incendios forestales
+- **Capítulo 5:** Plagas forestales
+- **Capítulo 6:** Degradación del suelo
+- **Capítulo 7:** Escarabajo descortezador
+
+#### Escenarios Climáticos
+- **Capítulo 1:** Introducción
+- **Capítulo 2:** Temperatura futura
+- **Capítulo 3:** Precipitación futura
+- **Capítulo 4:** Escenario RCP 4.5
+- **Capítulo 5:** Escenario RCP 8.5
+- **Capítulo 6:** Conclusiones
+
+---
+
+## Instalación y Configuración
+
+### Requisitos
+
+- **Node.js** versión 14 o superior
+- **Navegador web** Chrome, Firefox, Edge
+- **Editor de texto** Visual Studio Code
+
+### Paso 1: Instalar dependencias
 
 ```bash
 cd proxy-server
 npm install
 ```
 
-### Paso 2: Configurar entornos
+### Paso 2: Iniciar el servidor proxy
 
-Edita `proxy-server/config.js` según tu entorno:
-
-```javascript
-desarrollo: {
-  geoserver: 'https://api.cambioclimaticotlaxcala.mx/geoserver',
-  puerto: 3001
-},
-produccion: {
-  geoserver: 'https://api.cambioclimaticotlaxcala.mx/geoserver',
-  puerto: 3001
-}
-```
-
-## Uso
-
-### 1. Iniciar el servidor proxy
-
-El proxy es necesario para evitar errores de CORS al conectar con GeoServer y la API de Proyectos.
-
-**En desarrollo:**
 ```bash
 cd proxy-server
 npm start
 ```
 
-El proxy estará disponible en `http://localhost:3001`
+El servidor estará en `http://localhost:3011`
 
-**Endpoints disponibles:**
-- `/geoserver/*` - Proxy para GeoServer WMS/WFS
-- `/api/*` - Proxy para API de Proyectos
-- `/health` - Health check del proxy
+### Paso 3: Abrir la aplicación
 
-**En producción:**
-```bash
-cd proxy-server
-npm run prod
+Abrir `index.html` con Live Server (VS Code) o cualquier servidor web local.
+
+---
+
+## Guía: Agregar un Capítulo Nuevo
+
+### Pasos generales (aplica a todas las secciones)
+
+Agregar un capítulo nuevo requiere **3 pasos**:
+
+1. **Agregar el HTML** del capítulo
+2. **Agregar estilos CSS** (si es necesario)
+3. **Actualizar el JavaScript** contador de capítulos y timeline
+
+---
+
+### Para: Impactos, Amenazas, Escenarios Climáticos
+
+Estas secciones usan la misma estructura. Ejemplo para **impactos.html**:
+
+#### Paso 1: Agregar HTML
+
+Abrir `impactos.html` y buscar el último capítulo (ejemplo: `chapter-7`).
+
+Agregar el nuevo capítulo **antes** de la etiqueta `</div>` que cierra `chapters-container`:
+
+```html
+<!-- CAPITULO 8 - NUEVO CAPITULO -->
+<section class="chapter chapter-nuevo" id="chapter-8" data-chapter="8">
+  <h2 class="map-title">Título del Nuevo Capítulo</h2>
+
+  <div class="nuevo-content">
+    <!-- Lado izquierdo: Mapa o imagen -->
+    <div class="nuevo-map-container">
+      <img src="images/mi-mapa.png" alt="Descripción" class="mapa-img">
+    </div>
+
+    <!-- Lado derecho: Texto explicativo -->
+    <div class="nuevo-text-card">
+      <h3 class="card-title">Subtítulo</h3>
+      <div class="card-content">
+        <p>Texto explicativo aquí...</p>
+      </div>
+    </div>
+  </div>
+</section>
 ```
 
-### 2. Abrir la aplicación
+#### Paso 2: Agregar al Timeline
 
-Abre `index.html` con:
+Buscar la sección del timeline y agregar:
 
-**Live Server (extensión de VS Code):**
-- Click derecho en `index.html` > "Open with Live Server"
-- La aplicación estará en `http://localhost:5500`
-
-**Servidor HTTP simple:**
-```bash
-# Python 3
-python -m http.server 5500
-
-# Node.js (http-server)
-npx http-server -p 5500
+```html
+<div class="timeline-item" data-chapter="8">
+  <div class="timeline-circle">8</div>
+  <div class="timeline-label">Nombre Corto</div>
+</div>
 ```
 
-### 3. Verificar funcionamiento
+#### Paso 3: Actualizar JavaScript
 
-1. **Verifica el proxy:** `http://localhost:3001/health`
-   - Debe retornar JSON con status "ok"
-
-2. **Abre la aplicación:** `http://localhost:5500`
-   - Navega por las diferentes cards de la landing page
-
-3. **Prueba los story maps:**
-   - Vulnerabilidad: Scroll por capítulos, comparaciones de mapas
-   - Riesgo: Timeline de capítulos, popups en atlas municipal
-   - Acciones Climáticas: Mapa con markers clusterizados
-
-## Funcionalidades por Story Map
-
-### Vulnerabilidad (vulnerabilidad.html)
-
-**Capítulos:**
-1. Contexto del Estado
-2. Temperatura promedio 2010-2024
-3. Índice de vulnerabilidad por municipio
-4. Modelos climáticos (6 subcapítulos: Encinos, Pinos, Oyameles, Abetos, Murciélagos, Áreas de Interés)
-
-**Características:**
-- Mapas OpenLayers con capas WMS de GeoServer
-- Selector de modelos climáticos (ganancia/pérdida)
-- Comparación de mapas: Split vertical, Área de interés, Rayos X
-- Hover sobre municipios con información
-- Gráficos Chart.js con datos CSV
-
-### Riesgo (riesgo.html)
-
-**Capítulos:**
-1. Riesgo climático por municipio
-2. Eventos por año y declaratorias (gráficos)
-3. Atlas de Riesgo Municipal (mapa interactivo)
-
-**Características:**
-- Mapas OpenLayers con WMS/WFS
-- Popup al hacer click en municipios con atlas
-- Links a PDF de atlas municipales
-- Timeline de navegación entre capítulos
-- Hover sobre municipios
-
-### Acciones Climáticas (acciones-climaticas.html)
-
-**API Implementada**
-
-**Características:**
-- Mapa Leaflet con clustering de markers
-- **API Nativa** exclusiva: `https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/`
-- Agrupación: Múltiples actividades se agrupan por proyecto (email + nombre + objetivo)
-- **Popup** con todos los campos disponibles
-- Filtrado por dependencia
-- Estadísticas en header (proyectos, ubicaciones, dependencias)
-- Sistema de caché optimizado (localStorage, 5 min TTL)
-- Validación de coordenadas dentro de Tlaxcala
-
-**Popup (tipo formulario):**
-- **Header coloreado:** Dependencia + Nombre del programa
-- **Body con campos estructurados:**
-  - Tipo (Proyecto/Programa) y Estado (badges)
-  - **Sección multi-ubicación colapsable:**
-    - Chip naranja clickeable muestra número de ubicaciones
-    - Click en el chip expande/contrae la lista de ubicaciones
-    - Flecha animada indica estado (▼ contraído, ▲ expandido)
-    - Ahorra espacio en el popup cuando está contraído
-  - Ubicación con coordenadas
-  - Fecha de inicio y Temporalidad
-  - Actividad (campo grande)
-  - Objetivo del programa (campo grande)
-  - Población Objetivo (campo grande)
-- **Footer con botones:** PDF, Fotos, Videos (funcionalidad futura)
-- **Ancho optimizado:** max-width 300px (evita scroll horizontal)
-
-**Markers diferenciados:**
-- 🛡️ **Proyectos:** Forma de escudo
-- ⭕ **Programas:** Forma circular
-- **Colores por dependencia:** Cada dependencia tiene su color único
-- **Badge numérico naranja:** Muestra número de ubicaciones en proyectos multi-ubicación
-- **Anillo naranja:** Rodea markers multi-ubicación para mayor visibilidad
-- 🏛️ **Indicador morado:** Marca proyectos de nivel estatal
-
-**Estructura de datos:**
-- Cada elemento del array JSON = 1 ACTIVIDAD (no 1 proyecto completo)
-- Los proyectos se agrupan automáticamente por: `email + nombre del programa + objetivo`
-- Un mismo proyecto puede tener múltiples ubicaciones (Local y Estatal)
-
-## Configuración de Story Maps
-
-Los story maps se configuran mediante archivos JavaScript en `js/config/`:
-
-### Ejemplo: vulnerabilidad-config.js
+Abrir `js/config/impactos-main.js` y cambiar:
 
 ```javascript
-const VulnerabilidadConfig = {
-  proxy: {
-    url: (() => {
-      const hostname = window.location.hostname;
-      if (hostname === "localhost" || hostname === "127.0.0.1") {
-        return "http://localhost:3001/geoserver";
-      }
-      if (hostname.includes("vercel.app")) {
-        return "/api/proxy?path=";
-      }
-      return "https://api.cambioclimaticotlaxcala.mx/geoserver";
-    })()
-  },
-  capitulos: [
-    {
-      id: 1,
-      titulo: 'Contexto del Estado',
-      mapId: 'map-1',
-      chartId: 'chart-1',
-      capas: [
-        {
-          nombre: 'Limite',
-          tipo: 'wms',
-          layer: 'SEICCT:Limite',
-          opacity: 1,
-          zIndex: 1
-        }
-      ]
-    }
-    // Más capítulos...
-  ]
-};
+// Antes
+const totalChapters = 7;
+
+// Después
+const totalChapters = 8;
 ```
 
-### Ejemplo: acciones/config.js
+#### Paso 4: Agregar estilos CSS (si es necesario)
 
-```javascript
-const CONFIG = {
-  // API Nativa (sin parámetros - retorna todas las actividades)
-  API_REAL_URL: (() => {
-    const hostname = window.location.hostname;
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://localhost:3001/api/v1/surveys-geoserver/";
-    }
-    if (hostname.includes("vercel.app")) {
-      return "/api/proxy?path=api/v1/surveys-geoserver/";
-    }
-    return "https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/";
-  })(),
-
-  COLORS: {
-    'Comisión Estatal del Agua y Saneamiento': '#4A90E2',
-    'Secretaría de Medio Ambiente y Recursos Naturales': '#76BC21',
-    // Más dependencias...
-  },
-
-  CACHE: {
-    enabled: true,
-    ttl: 5 * 60 * 1000, // 5 minutos (optimizado)
-    key: 'acciones_climaticas_cache'
-  }
-};
-```
-
-## Tecnologías Utilizadas
-
-### Frontend
-- **OpenLayers 9.x** - Mapas interactivos con WMS/WFS de GeoServer
-- **Leaflet 1.9.x** - Mapas ligeros para acciones climáticas
-- **Leaflet.markercluster** - Clustering de markers
-- **Chart.js 4.x** - Gráficos interactivos (barras, líneas, pie)
-- **CSS Grid/Flexbox** - Layouts responsivos
-- **CSS Variables** - Paleta de colores centralizada
-
-### Backend
-- **Express.js** - Servidor proxy para CORS
-- **http-proxy-middleware** - Proxy para GeoServer y API
-- **Node.js** - Runtime del servidor
-
-### APIs y Datos
-- **GeoServer** - Capas WMS/WFS (workspace: SEICCT)
-- **API de Acciones Climáticas** - `https://api.cambioclimaticotlaxcala.mx/api/v1/surveys-geoserver/`
-- **DataAdapter** - Capa de transformación y agrupación de actividades
-
-## Personalización
-
-### Colores
-
-Edita `css/variables.css`:
+Abrir `css/impactos.css` y agregar estilos al final:
 
 ```css
-:root {
-  --primary-color: #582574;
-  --secondary-color: #A21A5C;
-  --accent-color: #D0B787;
-  --success-color: #76BC21;
-  --info-color: #4A90E2;
+/* CAPITULO 8 - NUEVO CAPITULO */
+.chapter-nuevo {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  height: calc(100vh - 65px) !important;
 }
+
+.nuevo-content {
+  display: grid;
+  grid-template-columns: 65% 35%;
+  gap: 0.8rem;
+}
+
+/* ... más estilos según necesidad */
 ```
 
-### Capas de GeoServer
+---
 
-Las capas se configuran en los archivos de configuración:
+### Para: Vulnerabilidad y Riesgo
+
+Estas secciones usan **archivos de configuración** separados.
+
+#### Paso 1: Agregar configuración de capas
+
+Abrir `js/config/vulnerabilidad-config.js` o `js/config/riesgo-config.js`:
 
 ```javascript
-capas: [
+capitulos: [
+  // ... capítulos existentes ...
+
+  // Nuevo capítulo
   {
-    nombre: 'Municipios',
-    tipo: 'wms',
-    layer: 'SEICCT:municipios_ganaperd',
-    opacity: 1,
-    zIndex: 2
+    id: 5,
+    titulo: 'Nuevo Capítulo',
+    mapId: 'map-5',
+    capas: [
+      {
+        nombre: 'Capa Principal',
+        tipo: 'wms',
+        layer: 'SEICCT:nombre_capa',
+        opacity: 1,
+        zIndex: 1
+      }
+    ]
   }
 ]
 ```
 
-**Capas disponibles:**
-- `SEICCT:Limite` - Límite estatal
-- `SEICCT:municipios_ganaperd` - Municipios con datos de ganancia/pérdida
-- `SEICCT:abejas_ganancia` / `SEICCT:abejas_perdida`
-- `SEICCT:abejas_ganancia` / `SEICCT:abejas_perdida`
-- Etc.
+#### Paso 2: Agregar HTML
 
-### Dependencias en Acciones Climáticas
+Agregar la sección HTML correspondiente con el `id="chapter-5"` y `id="map-5"`.
 
-Edita `js/acciones/config.js` para agregar nuevas dependencias:
+#### Paso 3: Actualizar contador
+
+En el archivo JavaScript principal, actualizar `totalChapters`.
+
+---
+
+### Para: Acciones Climáticas
+
+Esta sección es diferente. Usa un **mapa interactivo** con datos de una API.
+
+Para modificar:
+- **Filtros:** Editar `js/acciones/filters.js`
+- **Popup:** Editar `js/acciones/popup.js`
+- **Estilos de marcadores:** Editar `js/acciones/map.js`
+- **Colores por dependencia:** Editar `js/acciones/config.js`
+
+---
+
+## Guía: Agregar Capas desde GeoServer
+
+### ¿Qué es una capa de GeoServer?
+
+Una **capa** es un conjunto de datos geográficos (municipios, ríos, temperaturas) almacenados en un servidor especializado llamado GeoServer.
+
+### Requisitos previos
+
+1. La capa debe estar publicada en GeoServer
+2. Conocer el **nombre completo** de la capa (formato: `WORKSPACE:nombre_capa`)
+3. El servidor proxy debe estar funcionando
+
+### Paso 1: Identificar el nombre de la capa
+
+Las capas de este proyecto están en el workspace `SEICCT`. Ejemplos:
+
+| Nombre de capa | Descripción |
+|----------------|-------------|
+| `SEICCT:Limite` | Límite estatal de Tlaxcala |
+| `SEICCT:municipios_ganaperd` | Municipios con datos |
+| `SEICCT:temperatura_2020` | Temperatura del año 2020 |
+
+### Paso 2: Agregar la capa al archivo de configuración
+
+Abrir el archivo de configuración correspondiente (ejemplo: `vulnerabilidad-config.js`):
 
 ```javascript
-COLORS: {
-  'Nueva Dependencia': '#COLOR_HEX',
-  // ...
+capas: [
+  // Capa existente
+  {
+    nombre: 'Límite Estatal',
+    tipo: 'wms',
+    layer: 'SEICCT:Limite',
+    opacity: 1,
+    zIndex: 1
+  },
+
+  // NUEVA CAPA
+  {
+    nombre: 'Mi Nueva Capa',      // Nombre para mostrar
+    tipo: 'wms',                   // Tipo de servicio
+    layer: 'SEICCT:mi_capa',      // Nombre en GeoServer
+    opacity: 0.8,                  // Transparencia (0 a 1)
+    zIndex: 2                      // Orden de apilamiento
+  }
+]
+```
+
+### Parámetros de configuración
+
+| Parámetro | Descripción | Valores |
+|-----------|-------------|---------|
+| `nombre` | Nombre visible para el usuario | Texto libre |
+| `tipo` | Tipo de servicio | `wms` (imagen) o `wfs` (vectores) |
+| `layer` | Nombre en GeoServer | `WORKSPACE:nombre` |
+| `opacity` | Transparencia | `0` (invisible) a `1` (opaco) |
+| `zIndex` | Orden de capas | Número mayor = más arriba |
+| `visible` | Visibilidad inicial | `true` o `false` |
+
+### Paso 3: Verificar que funciona
+
+1. Guardar los cambios
+2. Recargar la página en el navegador
+3. Navegar al capítulo correspondiente
+4. La capa debería aparecer en el mapa
+
+### Solución de problemas comunes
+
+**La capa no aparece:**
+- Verificar que el nombre de la capa es correcto
+- Verificar que el servidor proxy está funcionando (`http://localhost:3011/health`)
+- Revisar la consola del navegador (F12) para ver errores
+
+**La capa aparece en blanco:**
+- Verificar que la capa tiene datos en la zona de Tlaxcala
+- Ajustar el parámetro `opacity`
+
+---
+
+## Preguntas Frecuentes (FAQ)
+
+### General
+
+#### ¿Necesito saber programar para usar esta aplicación?
+**Para ver la aplicación:** No, solo necesitas un navegador web.
+**Para modificar contenido:** Conocimientos básicos de HTML ayudan, pero esta guía explica los pasos.
+**Para agregar funcionalidades nuevas:** Sí, se requiere conocimiento de JavaScript y CSS.
+
+#### ¿Por qué no se ven los mapas?
+1. Verifica que el servidor proxy esté funcionando:
+   - Abre una terminal en la carpeta `proxy-server`
+   - Ejecuta `npm start`
+   - Debe mostrar "Servidor proxy escuchando en puerto 3011"
+
+2. Verifica la conexión:
+   - Abre `http://localhost:3011/health` en el navegador
+   - Debe mostrar `{"status":"ok"}`
+
+#### ¿Puedo usar esta aplicación sin internet?
+**Parcialmente.** Los mapas base (OpenStreetMap, satélite) requieren internet. Las capas de GeoServer y la API de acciones climáticas también requieren conexión al servidor.
+
+---
+
+### Sobre los capítulos
+
+#### ¿Cuántos capítulos puedo agregar?
+No hay límite técnico. Sin embargo, recomendamos no más de 10-12 capítulos por sección para mantener una buena experiencia de usuario.
+
+#### ¿Puedo cambiar el orden de los capítulos?
+Sí, pero requiere:
+1. Renumerar los `id` y `data-chapter` en el HTML
+2. Reorganizar el timeline
+3. Actualizar las referencias en CSS y JavaScript
+
+#### ¿Puedo eliminar un capítulo?
+Sí:
+1. Eliminar la sección HTML del capítulo
+2. Eliminar el item del timeline
+3. Reducir `totalChapters` en el JavaScript
+4. Renumerar los capítulos restantes (recomendado)
+
+#### ¿Por qué mi nuevo capítulo no aparece?
+Verifica:
+1. El HTML tiene el `id` correcto (`chapter-N`)
+2. El `data-chapter` coincide con el número
+3. El timeline tiene el item correspondiente
+4. El `totalChapters` en JavaScript incluye el nuevo capítulo
+
+---
+
+### Sobre las imágenes
+
+#### ¿Qué formato de imagen debo usar?
+- **PNG:** Para mapas, gráficas y elementos con transparencia
+- **JPG:** Para fotografías
+- **Tamaño recomendado:** Máximo 2000px de ancho, optimizadas para web
+
+#### ¿Dónde guardo las imágenes?
+En la carpeta `images/` en la raíz del proyecto.
+
+#### ¿Por qué mi imagen no se ve?
+Verifica:
+1. El archivo existe en la carpeta `images/`
+2. El nombre del archivo es correcto (incluyendo mayúsculas/minúsculas)
+3. La ruta en el HTML es correcta: `src="images/mi-imagen.png"`
+
+---
+
+### Sobre GeoServer
+
+#### ¿Cómo sé qué capas están disponibles?
+Contacta al administrador del servidor GeoServer o revisa la documentación del proyecto.
+
+#### ¿Puedo crear nuevas capas?
+Sí, pero requiere acceso de administrador al servidor GeoServer. Esto está fuera del alcance de esta guía.
+
+#### ¿Por qué una capa se ve pixelada?
+La capa puede tener baja resolución en GeoServer. Contacta al administrador para verificar la calidad de los datos originales.
+
+---
+
+### Sobre estilos y diseño
+
+#### ¿Puedo cambiar los colores?
+Sí. Los colores principales están en `css/variables.css`:
+
+```css
+:root {
+  --color-primary: #582574;    /* Morado principal */
+  --color-secondary: #A21A5C;  /* Rosa/magenta */
+  --color-accent: #D0B787;     /* Dorado/beige */
 }
 ```
 
-Y en `js/acciones/data-adapter.js`:
+#### ¿Por qué el texto se ve muy pequeño/grande?
+Ajusta los valores de `font-size` en el archivo CSS correspondiente. Los valores usan `rem` (relativo al tamaño base):
+- `0.8rem` = 80% del tamaño base
+- `1rem` = 100% del tamaño base
+- `1.2rem` = 120% del tamaño base
 
-```javascript
-static DEPENDENCIAS = {
-  6: {
-    nombre: 'Nueva Dependencia',
-    color: '#COLOR_HEX'
-  }
-};
+#### ¿Cómo hago que algo se vea en móviles?
+Los estilos responsivos están al final de cada archivo CSS, dentro de `@media` queries:
+
+```css
+@media (max-width: 768px) {
+  /* Estilos para pantallas pequeñas */
+}
 ```
 
-## Responsive
+---
 
-La aplicación es completamente responsive:
+### Solución de problemas
 
-### Desktop (> 1024px)
-- Layout de 3 columnas en story maps
-- Mapas y gráficos lado a lado
-- Timeline horizontal
+#### Error: "Cannot read property of undefined"
+- Verifica que todos los archivos JavaScript se cargan correctamente
+- Revisa la consola del navegador (F12) para más detalles
 
-### Tablet (768px - 1023px)
-- Layout de 2 columnas
-- Mapas más anchos
-- Timeline adaptado
+#### La página se ve rota o sin estilos
+- Verifica que los archivos CSS se cargan (revisa las rutas en el HTML)
+- Limpia la caché del navegador (Ctrl+F5)
 
-### Mobile (< 767px)
-- Layout vertical (1 columna)
-- Cards apiladas
-- Timeline vertical
-- Navbar colapsable
+#### El timeline no funciona
+- Verifica que `totalChapters` coincide con el número real de capítulos
+- Verifica que cada capítulo tiene su item correspondiente en el timeline
 
+---
 
-**Última actualización:** Noviembre 2025
+## Estructura de Archivos
+
+```
+proyecto_tlaxcala/
+│
+├── index.html                    # Página principal
+├── vulnerabilidad.html           # Sección vulnerabilidad
+├── riesgo.html                   # Sección riesgo
+├── amenazas.html                 # Sección amenazas
+├── impactos.html                 # Sección impactos
+├── clima.html                    # Sección clima
+├── escenarios_clima.html         # Sección escenarios
+├── acciones-climaticas.html      # Mapa de acciones
+├── mitigacion.html               # Sección mitigación
+│
+├── css/                          # Estilos
+│   ├── variables.css             # Colores y fuentes globales
+│   ├── main.css                  # Estilos generales
+│   ├── navbar.css                # Barra de navegación
+│   ├── impactos.css              # Estilos de impactos
+│   ├── amenazas.css              # Estilos de amenazas
+│   ├── escenarios.css            # Estilos de escenarios
+│   └── acciones-climaticas.css   # Estilos de acciones
+│
+├── js/                           # JavaScript
+│   ├── config/                   # Configuraciones
+│   │   ├── vulnerabilidad-config.js
+│   │   ├── riesgo-config.js
+│   │   ├── impactos-main.js
+│   │   └── amenazas-main.js
+│   │
+│   ├── managers/                 # Gestores de funcionalidad
+│   │   ├── MapManager.js
+│   │   ├── ChartManager.js
+│   │   └── ScrollManager.js
+│   │
+│   └── acciones/                 # Módulo de acciones climáticas
+│       ├── config.js
+│       ├── map.js
+│       ├── data.js
+│       └── main.js
+│
+├── images/                       # Imágenes
+│   ├── mapa73.png
+│   ├── mapa75.png
+│   └── ...
+│
+├── data/                         # Datos CSV
+│   └── links.csv
+│
+└── proxy-server/                 # Servidor proxy
+    ├── server.js
+    ├── config.js
+    └── package.json
+```
+
+---
+
+## Contacto y Soporte
+
+Para dudas o problemas técnicos, revisar primero la sección de [Preguntas Frecuentes](#preguntas-frecuentes-faq).
+
+---
+
+**Última actualización:** Enero 2026

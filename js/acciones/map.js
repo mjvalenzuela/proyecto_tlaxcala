@@ -450,7 +450,6 @@ class MapManager {
       // Actualizar labels según zoom actual
       this.updateMunicipioLabels();
 
-      //console.log('Municipios GeoJSON cargados correctamente');
       return true;
 
     } catch (error) {

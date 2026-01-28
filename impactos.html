@@ -717,6 +717,74 @@
           </div>
         </section>
 
+        <!-- ============================================================
+             CAPITULO 7 - ESCARABAJO DESCORTEZADOR (Layout mapa imagen + texto)
+             ============================================================ -->
+        <section class="chapter chapter-descortezador" id="chapter-7" data-chapter="7">
+          <h2 class="map-title">Riesgo por Escarabajo Descortezador</h2>
+
+          <div class="descortezador-content">
+            <!-- Contenedor del mapa imagen y simbología -->
+            <div class="descortezador-map-container">
+              <div class="mapa-descortezador-wrapper">
+                <img src="images/mapa73.png" alt="Mapa de riesgo por escarabajo descortezador en Tlaxcala" class="mapa-descortezador-img">
+              </div>
+
+              <!-- Simbología -->
+              <div class="simbologia-descortezador">
+                <div class="simbologia-section">
+                  <h4 class="simbologia-titulo">Simbología</h4>
+                  <div class="simbologia-items">
+                    <div class="simbologia-item">
+                      <span class="simbologia-icono limite-municipal"></span>
+                      <span class="simbologia-texto">Límite municipal</span>
+                    </div>
+                    <div class="simbologia-item">
+                      <span class="simbologia-icono poligono-estado"></span>
+                      <span class="simbologia-texto">Polígono del Estado de Tlaxcala</span>
+                    </div>
+                    <div class="simbologia-item">
+                      <span class="simbologia-icono limite-estado"></span>
+                      <span class="simbologia-texto">Límite del Estado de Tlaxcala</span>
+                    </div>
+                    <div class="simbologia-item">
+                      <span class="simbologia-icono limite-estatal"></span>
+                      <span class="simbologia-texto">Límite Estatal</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="simbologia-section">
+                  <h4 class="simbologia-titulo">Descortezador - Riesgo</h4>
+                  <div class="simbologia-items riesgo-items">
+                    <div class="simbologia-item">
+                      <span class="simbologia-color riesgo-moderado"></span>
+                      <span class="simbologia-texto">Moderado</span>
+                    </div>
+                    <div class="simbologia-item">
+                      <span class="simbologia-color riesgo-alto"></span>
+                      <span class="simbologia-texto">Alto</span>
+                    </div>
+                    <div class="simbologia-item">
+                      <span class="simbologia-color riesgo-muy-alto"></span>
+                      <span class="simbologia-texto">Muy Alto</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card de texto explicativo -->
+            <div class="descortezador-text-card">
+              <h3 class="card-title">Impacto del Cambio Climático</h3>
+              <div class="card-content">
+                <p>
+                  El cambio climático está creando condiciones más favorables para el escarabajo descortezador en Tlaxcala, acelerando su ciclo de vida y aumentando su reproducción. Al mismo tiempo, la sequía y el calor debilitan a los árboles, haciéndolos más vulnerables a la infestación. Esto representa una amenaza seria para los bosques del estado, ya que el insecto puede causar daños extensos y afectar la biodiversidad.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
 
       <!-- Timeline inferior -->
@@ -744,6 +812,10 @@
         <div class="timeline-item" data-chapter="6">
           <div class="timeline-circle">6</div>
           <div class="timeline-label">Degradación del Suelo</div>
+        </div>
+        <div class="timeline-item" data-chapter="7">
+          <div class="timeline-circle">7</div>
+          <div class="timeline-label">Descortezador</div>
         </div>
       </div>
 
@@ -844,13 +916,7 @@
             fila.classList.add('active');
             // Efecto de highlight
             fila.classList.add('highlight');
-            setTimeout(() => fila.classList.remove('highlight'), 500);
-
-            // Mostrar info adicional en consola (para depuración)
-            const ciclo = fila.dataset.ciclo;
-            if (datosAdicionales[ciclo]) {
-              console.log(`Ciclo: ${ciclo}`, datosAdicionales[ciclo]);
-            }
+            setTimeout(() => fila.classList.remove('highlight'), 500);            
           });
 
           // Añadir tooltips con porcentajes

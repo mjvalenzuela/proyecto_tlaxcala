@@ -102,12 +102,18 @@ export const storyMapConfig = {
             layers: "SEICCT:M82_Vulnerabilidad_CC",
             visible: true,
             leyenda: true,
-            
+          },
+          {
+            nombre: "Vulnerabilidad por Municipio (Interacción)",
+            tipo: "wfs",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:M82_Vulnerabilidad_CC",
+            visible: true,
+            leyenda: false,
+            transparente: true,
           },
         ],
       },
-      
-      
     },
     {
       id: "cap-2-1",
