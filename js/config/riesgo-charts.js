@@ -104,7 +104,10 @@ class RiesgoCharts {
       'rgba(76, 175, 80, 1)'
     ];
 
-    const ctx = document.getElementById('donutChart').getContext('2d');
+    const canvas = document.getElementById('donutChart');
+    canvas.width = 150;
+    canvas.height = 150;
+    const ctx = canvas.getContext('2d');
     this.donutChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -117,7 +120,7 @@ class RiesgoCharts {
         }]
       },
       options: {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: true,
         aspectRatio: 1,
         layout: {
@@ -133,13 +136,26 @@ class RiesgoCharts {
             display: false
           },
           tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            titleFont: {
+              size: 13,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 12
+            },
+            padding: 12,
+            boxPadding: 6,
+            displayColors: true,
             callbacks: {
+              title: function(context) {
+                return context[0].label || '';
+              },
               label: function(context) {
-                const label = context.label || '';
                 const value = context.parsed || 0;
                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                 const percentage = ((value / total) * 100).toFixed(1);
-                return `${label}: ${value} (${percentage}%)`;
+                return `Cantidad: ${value} (${percentage}%)`;
               }
             }
           }
@@ -324,7 +340,10 @@ class RiesgoCharts {
       'rgba(255, 152, 0, 1)'
     ];
 
-    const ctx = document.getElementById('donutChart2').getContext('2d');
+    const canvas2 = document.getElementById('donutChart2');
+    canvas2.width = 150;
+    canvas2.height = 150;
+    const ctx = canvas2.getContext('2d');
     this.donutChart2 = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -337,7 +356,7 @@ class RiesgoCharts {
         }]
       },
       options: {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: true,
         aspectRatio: 1,
         layout: {
@@ -353,13 +372,26 @@ class RiesgoCharts {
             display: false
           },
           tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            titleFont: {
+              size: 13,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 12
+            },
+            padding: 12,
+            boxPadding: 6,
+            displayColors: true,
             callbacks: {
+              title: function(context) {
+                return context[0].label || '';
+              },
               label: function(context) {
-                const label = context.label || '';
                 const value = context.parsed || 0;
                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                 const percentage = ((value / total) * 100).toFixed(1);
-                return `${label}: ${value} (${percentage}%)`;
+                return `Cantidad: ${value} (${percentage}%)`;
               }
             }
           }

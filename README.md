@@ -529,4 +529,10 @@ Para dudas o problemas técnicos, revisar primero la sección de [Preguntas Frec
 
 ---
 
+## Documentación
+
+Presentación: https://docs.google.com/presentation/d/1BtHFzTq2s1vKJBcjl-sx-5ogD50vI95qhVuJm6MI3ew/edit?usp=sharing
+
+---
+
 **Última actualización:** Enero 2026

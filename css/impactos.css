@@ -24,10 +24,10 @@
   grid-row: 1;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0;
   padding: 0.8rem 1rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -50,7 +50,7 @@
 .impactos-chapter-mapa-texto .chapter-text {
   grid-column: 2;
   grid-row: 2;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -60,16 +60,16 @@
 .impactos-chapter-mapa-texto .chapter-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.8rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .impactos-chapter-mapa-texto .chapter-content {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
 }
 
 .impactos-chapter-mapa-texto .chapter-content p {
@@ -86,7 +86,7 @@
   padding: 0.5rem 0.6rem;
   margin-bottom: 0.4rem;
   background: rgba(162, 26, 92, 0.05);
-  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-left: 3px solid var(--color-btn-primary);
   border-radius: 0 4px 4px 0;
   font-size: 0.9rem;
   line-height: 1.4;
@@ -110,10 +110,10 @@
 
 .impactos-chapter-mapa-texto .map-controls-header {
   padding: 0.4rem 0.6rem;
-  background: white;
-  color: #333;
+  background: var(--color-bg-white);
+  color: var(--color-gray-900);
   border-radius: 6px 6px 0 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border-light);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -127,7 +127,7 @@
 .impactos-chapter-mapa-texto .map-controls-toggle {
   background: transparent;
   border: none;
-  color: #666;
+  color: var(--color-text-gray);
   cursor: pointer;
   font-size: 0.7rem;
   padding: 0.1rem 0.3rem;
@@ -157,17 +157,17 @@
 .impactos-chapter-mapa-texto .layer-control label {
   font-size: 0.75rem;
   cursor: pointer;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 /* Título de grupo de capas */
 .impactos-chapter-mapa-texto .layer-group-title {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--color-secondary, #4a90d9);
+  color: var(--color-data-blue);
   margin: 0.4rem 0 0.2rem 0;
   padding-bottom: 0.15rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .impactos-chapter-mapa-texto .layer-group-title:first-child {
@@ -196,7 +196,7 @@
 
 .impactos-chapter-mapa-texto .map-legends-header {
   padding: 0.3rem 0.5rem;
-  background: #f5f5f5;
+  background: var(--color-bg-gray);
   border-radius: 6px 6px 0 0;
   display: flex;
   justify-content: space-between;
@@ -206,13 +206,13 @@
 .impactos-chapter-mapa-texto .map-legends-title {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 .impactos-chapter-mapa-texto .map-legends-toggle {
   background: transparent;
   border: none;
-  color: #666;
+  color: var(--color-text-gray);
   cursor: pointer;
   font-size: 0.7rem;
   padding: 0.1rem 0.3rem;
@@ -236,7 +236,7 @@
 .impactos-chapter-mapa-texto .legend-item-title {
   font-size: 0.6rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-gray-900);
   margin-bottom: 0.25rem;
 }
 
@@ -261,12 +261,12 @@
 
 .impactos-chapter-mapa-texto .legend-label {
   font-size: 0.7rem;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 .impactos-chapter-mapa-texto .map-legends-empty {
   font-size: 0.65rem;
-  color: #888;
+  color: var(--color-gray-600);
   text-align: center;
   padding: 0.3rem;
 }
@@ -280,7 +280,7 @@
   bottom: 0.5rem;
   right: 0.5rem;
   background: rgba(255, 255, 255, 0.95);
-  border: 2px solid var(--color-primary, #A21A5C);
+  border: 2px solid var(--color-btn-primary);
   border-radius: 6px;
   padding: 0.3rem 0.5rem;
   cursor: pointer;
@@ -290,21 +290,21 @@
   gap: 0.3rem;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .impactos-split-btn:hover {
-  background: var(--color-primary, #A21A5C);
-  color: white;
+  background: var(--color-btn-primary);
+  color: var(--color-bg-white);
   transform: translateY(-1px);
   box-shadow: 0 3px 8px rgba(162, 26, 92, 0.3);
 }
 
 .impactos-split-btn.active {
-  background: var(--color-primary, #A21A5C);
-  color: white;
+  background: var(--color-btn-primary);
+  color: var(--color-bg-white);
 }
 
 .impactos-split-btn .split-icon {
@@ -317,7 +317,7 @@
   top: 0;
   bottom: 0;
   width: 4px;
-  background: white;
+  background: var(--color-bg-white);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   cursor: ew-resize;
   z-index: 150;
@@ -332,7 +332,7 @@
   transform: translate(-50%, -50%);
   width: 24px;
   height: 40px;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -343,7 +343,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   font-size: 1rem;
   font-weight: bold;
 }
@@ -354,7 +354,7 @@
   bottom: 2.5rem;
   padding: 0.3rem 0.6rem;
   background: rgba(0, 0, 0, 0.75);
-  color: white;
+  color: var(--color-bg-white);
   font-size: 0.65rem;
   font-weight: 600;
   border-radius: 4px;
@@ -421,7 +421,7 @@
 .municipio-hover-tooltip {
   position: absolute;
   background: rgba(0, 0, 0, 0.8);
-  color: white;
+  color: var(--color-bg-white);
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
   font-size: 0.75rem;
@@ -439,13 +439,13 @@
 .tabla-agricola-container {
   margin-top: 1rem;
   padding-top: 0.8rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .tabla-titulo {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0 0 0.6rem 0;
   text-align: center;
 }
@@ -464,11 +464,11 @@
 }
 
 .tabla-agricola thead {
-  background: linear-gradient(135deg, #8B1A4A 0%, #A21A5C 100%);
+  background: linear-gradient(135deg, var(--color-btn-primary-hover) 0%, var(--color-btn-primary) 100%);
 }
 
 .tabla-agricola thead th {
-  color: white;
+  color: var(--color-bg-white);
   padding: 0.6rem 0.5rem;
   text-align: center;
   font-weight: 600;
@@ -487,7 +487,7 @@
 .tabla-agricola tbody tr {
   transition: background 0.2s ease;
   cursor: pointer;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .tabla-agricola tbody tr:hover {
@@ -499,13 +499,13 @@
 }
 
 .tabla-agricola tbody tr.active td:first-child {
-  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-left: 3px solid var(--color-btn-primary);
 }
 
 .tabla-agricola tbody td {
   padding: 0.5rem 0.4rem;
   text-align: left;
-  color: #333;
+  color: var(--color-gray-900);
   font-size: 0.72rem;
 }
 
@@ -517,7 +517,7 @@
 
 .tabla-agricola tbody tr.fila-total {
   background: rgba(162, 26, 92, 0.05);
-  border-top: 2px solid var(--color-primary, #A21A5C);
+  border-top: 2px solid var(--color-btn-primary);
 }
 
 .tabla-agricola tbody tr.fila-total:hover {
@@ -526,7 +526,7 @@
 
 .tabla-agricola tbody tr.fila-total td {
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
 }
 
 /* Efecto de resaltado al hacer clic */
@@ -555,7 +555,7 @@
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.85);
-  color: white;
+  color: var(--color-bg-white);
   padding: 0.3rem 0.5rem;
   border-radius: 4px;
   font-size: 0.65rem;
@@ -574,13 +574,13 @@
 
 .tabla-fuente {
   font-size: 0.7rem;
-  color: #666;
+  color: var(--color-text-gray);
   margin: 0.5rem 0 0 0;
   text-align: center;
 }
 
 .tabla-fuente em {
-  color: #555;
+  color: var(--color-gray-800);
 }
 
 
@@ -642,10 +642,10 @@
   grid-row: 1;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0;
   padding: 0.8rem 1rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -664,7 +664,7 @@
 
 /* Card de texto (izquierda) */
 .impactos-text-card {
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   padding: 0.8rem;
@@ -678,16 +678,16 @@
 .impactos-text-card .card-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.5rem;
   padding-bottom: 0.3rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .impactos-text-card .card-content {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
   flex: 1;
 }
 
@@ -705,7 +705,7 @@
   padding: 0.3rem 0.5rem;
   margin-bottom: 0.3rem;
   background: rgba(162, 26, 92, 0.05);
-  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-left: 3px solid var(--color-btn-primary);
   border-radius: 0 4px 4px 0;
   font-size: 0.9rem;
   line-height: 1.4;
@@ -717,7 +717,7 @@
   gap: 0.5rem;
   margin-top: 0.8rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .impactos-stats .stat-item {
@@ -732,19 +732,19 @@
   display: block;
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
 }
 
 .impactos-stats .stat-label {
   display: block;
   font-size: 0.65rem;
-  color: #666;
+  color: var(--color-text-gray);
   margin-top: 0.2rem;
 }
 
 /* Card de tabla (derecha) */
 .impactos-tabla-card {
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -756,14 +756,14 @@
 
 .impactos-tabla-card .tabla-header {
   padding: 0.6rem 1rem;
-  background: linear-gradient(135deg, #8B1A4A 0%, #A21A5C 100%);
+  background: linear-gradient(135deg, var(--color-btn-primary-hover) 0%, var(--color-btn-primary) 100%);
   flex-shrink: 0;
 }
 
 .impactos-tabla-card .tabla-titulo-grande {
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--color-bg-white);
   margin: 0;
   text-align: center;
 }
@@ -782,7 +782,7 @@
 }
 
 .tabla-siniestros thead {
-  background: #f5f5f5;
+  background: var(--color-bg-gray);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -793,13 +793,13 @@
   text-align: center;
   font-weight: 600;
   font-size: 0.85rem;
-  color: #333;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  color: var(--color-gray-900);
+  border-bottom: 2px solid var(--color-btn-primary);
   cursor: pointer;
 }
 
 .tabla-siniestros thead th:hover {
-  background: #eee;
+  background: var(--color-border-light);
 }
 
 .tabla-siniestros thead th:first-child {
@@ -807,13 +807,13 @@
 }
 
 .tabla-siniestros thead th:first-child:hover {
-  background: #f5f5f5;
+  background: var(--color-bg-gray);
 }
 
 .tabla-siniestros tbody tr {
   transition: background 0.2s ease;
   cursor: pointer;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .tabla-siniestros tbody tr:hover {
@@ -825,13 +825,13 @@
 }
 
 .tabla-siniestros tbody tr.active td:first-child {
-  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-left: 3px solid var(--color-btn-primary);
 }
 
 .tabla-siniestros tbody td {
   padding: 0.5rem 0.4rem;
   text-align: center;
-  color: #333;
+  color: var(--color-gray-900);
   font-size: 0.85rem;
 }
 
@@ -856,7 +856,7 @@
 }
 
 .tabla-siniestros tbody tr.fila-critica td {
-  color: #c62828;
+  color: var(--color-error-dark);
   font-weight: 500;
 }
 
@@ -877,19 +877,19 @@
 .tabla-siniestros tfoot tr.fila-total td {
   padding: 0.6rem 0.4rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
-  border-top: 2px solid var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
+  border-top: 2px solid var(--color-btn-primary);
   text-align: center;
   font-size: 0.85rem;
 }
 
 .tabla-fuente-grande {
   font-size: 0.7rem;
-  color: #666;
+  color: var(--color-text-gray);
   margin: 0;
   padding: 0.5rem 1rem;
-  background: #f9f9f9;
-  border-top: 1px solid #eee;
+  background: var(--color-gray-100);
+  border-top: 1px solid var(--color-border-light);
 }
 
 /* Indicadores de ordenamiento */
@@ -983,10 +983,10 @@
   grid-row: 1;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0;
   padding: 0.8rem 1rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -995,7 +995,7 @@
 .chapter-estrategias .chapter-text {
   grid-column: 1;
   grid-row: 2;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -1005,16 +1005,16 @@
 .chapter-estrategias .chapter-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.8rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .chapter-estrategias .chapter-content {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
 }
 
 .chapter-estrategias .chapter-content p {
@@ -1033,11 +1033,11 @@
 
 /* Card de estrategia individual */
 .estrategia-card {
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border-light);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -1055,7 +1055,7 @@
   align-items: center;
   gap: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .estrategia-icon {
@@ -1070,24 +1070,24 @@
 }
 
 .estrategia-icon.agua {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  background: linear-gradient(135deg, var(--color-strategy-blue-light) 0%, var(--color-strategy-blue) 100%);
 }
 
 .estrategia-icon.sostenible {
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  background: linear-gradient(135deg, var(--color-strategy-green-light) 0%, var(--color-strategy-green) 100%);
 }
 
 .estrategia-icon.tecnologia {
-  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  background: linear-gradient(135deg, var(--color-strategy-orange-light) 0%, var(--color-strategy-orange) 100%);
 }
 
 .estrategia-icon.territorio {
-  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+  background: linear-gradient(135deg, var(--color-strategy-pink-light) 0%, var(--color-strategy-pink) 100%);
 }
 
 .estrategia-card-header h4 {
   margin: 0;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.3;
@@ -1108,9 +1108,9 @@
   gap: 0.5rem;
   padding: 0.4rem 0;
   font-size: 0.9rem;
-  color: #444;
+  color: var(--color-gray-900);
   line-height: 1.4;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid var(--color-bg-gray);
 }
 
 .estrategia-acciones li:last-child {
@@ -1119,7 +1119,7 @@
 
 .estrategia-acciones li::before {
   content: "✓";
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   font-weight: bold;
   flex-shrink: 0;
   margin-top: 0.1rem;
@@ -1176,10 +1176,10 @@
   grid-row: 1;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0;
   padding: 0.8rem 1rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -1188,7 +1188,7 @@
 .chapter-incendios .chapter-text {
   grid-column: 1;
   grid-row: 2;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -1198,16 +1198,16 @@
 .chapter-incendios .chapter-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.8rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .chapter-incendios .chapter-content {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
 }
 
 .chapter-incendios .chapter-content p {
@@ -1217,7 +1217,7 @@
 .chapter-incendios .chapter-chart-full {
   grid-column: 2;
   grid-row: 2;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -1231,7 +1231,7 @@
   margin-bottom: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   text-align: center;
 }
 
@@ -1255,7 +1255,7 @@
   gap: 0.5rem;
   margin-top: 1rem;
   padding-top: 0.8rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .incendios-stats .stat-item {
@@ -1264,20 +1264,20 @@
   padding: 0.5rem;
   background: rgba(255, 152, 0, 0.1);
   border-radius: 6px;
-  border-left: 3px solid #ff9800;
+  border-left: 3px solid var(--color-warning-orange);
 }
 
 .incendios-stats .stat-value {
   display: block;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #e65100;
+  color: var(--color-warning-orange-dark);
 }
 
 .incendios-stats .stat-label {
   display: block;
   font-size: 0.65rem;
-  color: #666;
+  color: var(--color-text-gray);
   margin-top: 0.2rem;
 }
 
@@ -1341,10 +1341,10 @@
   grid-row: 1;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0;
   padding: 0.8rem 1rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -1363,7 +1363,7 @@
 
 /* Card de texto para plagas */
 .plagas-text-card {
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   padding: 0.8rem;
@@ -1377,16 +1377,16 @@
 .plagas-text-card .card-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.5rem;
   padding-bottom: 0.3rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .plagas-text-card .card-content {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
   flex: 1;
 }
 
@@ -1405,7 +1405,7 @@
   padding: 0.3rem 0.5rem;
   margin-bottom: 0.3rem;
   background: rgba(76, 175, 80, 0.08);
-  border-left: 3px solid #4caf50;
+  border-left: 3px solid var(--color-success-alt);
   border-radius: 0 4px 4px 0;
   font-size: 0.88rem;
   line-height: 1.4;
@@ -1417,7 +1417,7 @@
   gap: 0.5rem;
   margin-top: 0.8rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .plagas-stats .stat-item {
@@ -1426,26 +1426,26 @@
   padding: 0.5rem;
   background: rgba(76, 175, 80, 0.1);
   border-radius: 6px;
-  border-left: 3px solid #4caf50;
+  border-left: 3px solid var(--color-success-alt);
 }
 
 .plagas-stats .stat-value {
   display: block;
   font-size: 1rem;
   font-weight: 700;
-  color: #2e7d32;
+  color: var(--color-success-dark);
 }
 
 .plagas-stats .stat-label {
   display: block;
   font-size: 0.6rem;
-  color: #666;
+  color: var(--color-text-gray);
   margin-top: 0.2rem;
 }
 
 /* Card de tabla para plagas */
 .plagas-tabla-card {
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -1457,14 +1457,14 @@
 
 .plagas-tabla-card .tabla-header {
   padding: 0.6rem 1rem;
-  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+  background: linear-gradient(135deg, var(--color-success-dark) 0%, var(--color-success-alt) 100%);
   flex-shrink: 0;
 }
 
 .plagas-tabla-card .tabla-titulo-grande {
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--color-bg-white);
   margin: 0;
   text-align: center;
 }
@@ -1477,7 +1477,7 @@
 }
 
 .tabla-plagas thead {
-  background: #f5f5f5;
+  background: var(--color-bg-gray);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -1488,13 +1488,13 @@
   text-align: center;
   font-weight: 600;
   font-size: 0.85rem;
-  color: #333;
-  border-bottom: 2px solid #4caf50;
+  color: var(--color-gray-900);
+  border-bottom: 2px solid var(--color-success-alt);
   cursor: pointer;
 }
 
 .tabla-plagas thead th:hover {
-  background: #eee;
+  background: var(--color-border-light);
 }
 
 .tabla-plagas thead th:first-child {
@@ -1502,13 +1502,13 @@
 }
 
 .tabla-plagas thead th:first-child:hover {
-  background: #f5f5f5;
+  background: var(--color-bg-gray);
 }
 
 .tabla-plagas tbody tr {
   transition: background 0.2s ease;
   cursor: pointer;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .tabla-plagas tbody tr:hover {
@@ -1520,13 +1520,13 @@
 }
 
 .tabla-plagas tbody tr.active td:first-child {
-  border-left: 3px solid #4caf50;
+  border-left: 3px solid var(--color-success-alt);
 }
 
 .tabla-plagas tbody td {
   padding: 0.5rem 0.4rem;
   text-align: center;
-  color: #333;
+  color: var(--color-gray-900);
   font-size: 0.85rem;
 }
 
@@ -1551,7 +1551,7 @@
 }
 
 .tabla-plagas tbody tr.fila-critica td {
-  color: #c62828;
+  color: var(--color-error-dark);
   font-weight: 500;
 }
 
@@ -1563,8 +1563,8 @@
 .tabla-plagas tfoot tr.fila-total td {
   padding: 0.6rem 0.4rem;
   font-weight: 600;
-  color: #2e7d32;
-  border-top: 2px solid #4caf50;
+  color: var(--color-success-dark);
+  border-top: 2px solid var(--color-success-alt);
   text-align: center;
   font-size: 0.85rem;
 }
@@ -1675,10 +1675,10 @@
   grid-row: 1;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0;
   padding: 0.8rem 1rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -1697,7 +1697,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   padding: 0.8rem;
@@ -1728,7 +1728,7 @@
 .tabla-erosion-container .tabla-titulo {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0 0 0.5rem 0;
   text-align: center;
 }
@@ -1740,7 +1740,7 @@
 }
 
 .tabla-erosion thead {
-  background: linear-gradient(135deg, #8B1A4A 0%, #A21A5C 100%);
+  background: linear-gradient(135deg, var(--color-btn-primary-hover) 0%, var(--color-btn-primary) 100%);
 }
 
 .tabla-erosion thead th {
@@ -1748,14 +1748,14 @@
   text-align: center;
   font-weight: 600;
   font-size: 0.75rem;
-  color: white;
+  color: var(--color-bg-white);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .tabla-erosion tbody td {
   padding: 0.5rem 0.4rem;
   text-align: center;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-gray-300);
   font-size: 0.8rem;
 }
 
@@ -1790,14 +1790,14 @@
 
 .tabla-erosion-container .tabla-fuente {
   font-size: 0.7rem;
-  color: #666;
+  color: var(--color-text-gray);
   margin: 0.4rem 0 0 0;
   text-align: right;
 }
 
 /* Card de texto explicativo */
 .degradacion-text-card {
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -1808,10 +1808,10 @@
 .degradacion-text-card .card-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: white;
+  color: var(--color-bg-white);
   margin: 0;
   padding: 0.7rem 1rem;
-  background: linear-gradient(135deg, #8B1A4A 0%, #A21A5C 100%);
+  background: linear-gradient(135deg, var(--color-btn-primary-hover) 0%, var(--color-btn-primary) 100%);
 }
 
 .degradacion-text-card .card-content {
@@ -1823,7 +1823,7 @@
 .degradacion-text-card p {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: #333;
+  color: var(--color-gray-900);
   margin: 0 0 0.6rem 0;
 }
 
@@ -1832,13 +1832,13 @@
   padding: 0.6rem;
   background: rgba(162, 26, 92, 0.05);
   border-radius: 6px;
-  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-left: 3px solid var(--color-btn-primary);
 }
 
 .zonas-erosion h4 {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0 0 0.4rem 0;
 }
 
@@ -1851,7 +1851,7 @@
 .zonas-erosion li {
   padding: 0.25rem 0;
   font-size: 0.9rem;
-  color: #444;
+  color: var(--color-gray-900);
   position: relative;
   padding-left: 1rem;
 }
@@ -1860,7 +1860,7 @@
   content: "•";
   position: absolute;
   left: 0;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   font-weight: bold;
 }
 
@@ -1872,7 +1872,7 @@
 .niveles-erosion h4 {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0 0 0.5rem 0;
 }
 
@@ -1892,35 +1892,35 @@
 
 .nivel-texto {
   font-size: 0.88rem;
-  color: #444;
+  color: var(--color-gray-900);
 }
 
 .nivel-item.extrema .nivel-color {
-  background: #8B0000;
+  background: var(--color-scale-critical);
 }
 
 .nivel-item.fuerte .nivel-color {
-  background: #CD5C5C;
+  background: var(--color-scale-high);
 }
 
 .nivel-item.moderada .nivel-color {
-  background: #F0E68C;
+  background: var(--color-scale-medium);
 }
 
 .nivel-item.leve .nivel-color {
-  background: #90EE90;
+  background: var(--color-scale-low);
 }
 
 .nivel-item.estable .nivel-color {
-  background: #228B22;
+  background: var(--color-scale-minimal);
 }
 
 .nota-fuente {
   font-size: 0.85rem !important;
-  color: #666 !important;
+  color: var(--color-text-gray) !important;
   margin-top: 0.8rem !important;
   padding-top: 0.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border-light);
 }
 
 /* ============================================================
@@ -2017,10 +2017,10 @@
   grid-row: 1;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0;
   padding: 0.8rem 1rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -2039,7 +2039,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   padding: 0.8rem;
@@ -2068,9 +2068,9 @@
   display: flex;
   gap: 2rem;
   padding: 0.8rem 1rem;
-  background: #f9f9f9;
+  background: var(--color-gray-100);
   border-radius: 6px;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border-light);
 }
 
 .simbologia-section {
@@ -2080,10 +2080,10 @@
 .simbologia-titulo {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-gray-900);
   margin: 0 0 0.5rem 0;
   padding-bottom: 0.3rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .simbologia-items {
@@ -2108,25 +2108,25 @@
 }
 
 .simbologia-icono.limite-municipal {
-  border: 1.5px solid #888;
+  border: 1.5px solid var(--color-gray-600);
   background: transparent;
   border-radius: 2px;
 }
 
 .simbologia-icono.poligono-estado {
-  background: #d0d0d0;
+  background: var(--color-icon-disabled);
   border-radius: 2px;
 }
 
 .simbologia-icono.limite-estado {
-  background: #333;
+  background: var(--color-gray-900);
   border-radius: 50%;
   width: 8px;
   height: 8px;
 }
 
 .simbologia-icono.limite-estatal {
-  border: 1.5px dashed #666;
+  border: 1.5px dashed var(--color-text-gray);
   background: transparent;
   border-radius: 2px;
 }
@@ -2140,20 +2140,20 @@
 }
 
 .simbologia-color.riesgo-moderado {
-  background: #FFFF99;
+  background: var(--color-risk-low);
 }
 
 .simbologia-color.riesgo-alto {
-  background: #FFA500;
+  background: var(--color-risk-medium);
 }
 
 .simbologia-color.riesgo-muy-alto {
-  background: #FF0000;
+  background: var(--color-risk-high);
 }
 
 .simbologia-texto {
   font-size: 0.85rem;
-  color: #444;
+  color: var(--color-gray-900);
 }
 
 .riesgo-items {
@@ -2163,7 +2163,7 @@
 
 /* Card de texto explicativo */
 .descortezador-text-card {
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -2174,10 +2174,10 @@
 .descortezador-text-card .card-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: white;
+  color: var(--color-bg-white);
   margin: 0;
   padding: 0.7rem 1rem;
-  background: linear-gradient(135deg, #8B1A4A 0%, #A21A5C 100%);
+  background: linear-gradient(135deg, var(--color-btn-primary-hover) 0%, var(--color-btn-primary) 100%);
 }
 
 .descortezador-text-card .card-content {
@@ -2191,7 +2191,7 @@
 .descortezador-text-card p {
   font-size: 1.1rem;
   line-height: 1.7;
-  color: #333;
+  color: var(--color-gray-900);
   margin: 0;
   text-align: justify;
 }

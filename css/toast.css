@@ -19,8 +19,8 @@
 /* Toast individual */
 .toast {
   pointer-events: auto;
-  background: #ffffff;
-  border: 2px solid #D4AF37;
+  background: var(--color-bg-white);
+  border: 2px solid var(--color-gold);
   border-radius: 12px;
   padding: 16px 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -91,14 +91,14 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 14px;
-  color: #333;
+  color: var(--color-gray-900);
   margin: 0;
   line-height: 1.4;
 }
 
 .toast-message {
   font-size: 13px;
-  color: #666;
+  color: var(--color-text-gray);
   margin: 0;
   line-height: 1.5;
 }
@@ -117,12 +117,12 @@
   justify-content: center;
   border-radius: 4px;
   transition: background 0.2s ease;
-  color: #999;
+  color: var(--color-text-light);
 }
 
 .toast-close:hover {
   background: rgba(212, 175, 55, 0.1);
-  color: #D4AF37;
+  color: var(--color-gold);
 }
 
 .toast-close svg {
@@ -136,7 +136,7 @@
   bottom: 0;
   left: 0;
   height: 3px;
-  background: #D4AF37;
+  background: var(--color-gold);
   transition: width linear;
 }
 
@@ -144,67 +144,67 @@
 
 /* Info */
 .toast.toast-info .toast-icon {
-  color: #2196F3;
+  color: var(--color-info-blue);
 }
 
 .toast.toast-info {
-  border-color: #2196F3;
+  border-color: var(--color-info-blue);
 }
 
 .toast.toast-info .toast-progress {
-  background: #2196F3;
+  background: var(--color-info-blue);
 }
 
 /* Success */
 .toast.toast-success .toast-icon {
-  color: #4CAF50;
+  color: var(--color-success-alt);
 }
 
 .toast.toast-success {
-  border-color: #4CAF50;
+  border-color: var(--color-success-alt);
 }
 
 .toast.toast-success .toast-progress {
-  background: #4CAF50;
+  background: var(--color-success-alt);
 }
 
 /* Warning */
 .toast.toast-warning .toast-icon {
-  color: #FF9800;
+  color: var(--color-warning-orange);
 }
 
 .toast.toast-warning {
-  border-color: #FF9800;
+  border-color: var(--color-warning-orange);
 }
 
 .toast.toast-warning .toast-progress {
-  background: #FF9800;
+  background: var(--color-warning-orange);
 }
 
 /* Error */
 .toast.toast-error .toast-icon {
-  color: #F44336;
+  color: var(--color-error-red);
 }
 
 .toast.toast-error {
-  border-color: #F44336;
+  border-color: var(--color-error-red);
 }
 
 .toast.toast-error .toast-progress {
-  background: #F44336;
+  background: var(--color-error-red);
 }
 
 /* Default (dorado) */
 .toast.toast-default .toast-icon {
-  color: #D4AF37;
+  color: var(--color-gold);
 }
 
 .toast.toast-default {
-  border-color: #D4AF37;
+  border-color: var(--color-gold);
 }
 
 .toast.toast-default .toast-progress {
-  background: #D4AF37;
+  background: var(--color-gold);
 }
 
 /* Responsive */

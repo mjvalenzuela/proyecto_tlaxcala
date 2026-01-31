@@ -83,7 +83,7 @@
   display: inline-block;
   padding: 0.75rem 2rem;
   background: var(--color-btn-primary);
-  color: white;
+  color: var(--color-bg-white);
   border-radius: var(--radius-md);
   font-weight: 600;
   transition: all var(--transition-normal);
@@ -134,11 +134,11 @@
 
 /* Clima - Azul cielo */
 .card-clima {
-  border-top: 4px solid #4a90d9;
+  border-top: 4px solid var(--color-data-blue);
 }
 
 .card-clima .story-map-icon {
-  color: #4a90d9;
+  color: var(--color-data-blue);
 }
 
 /* Acciones Climáticas - Verde (éxito) */
@@ -152,11 +152,11 @@
 
 /* Mitigación - Verde oscuro */
 .card-mitigacion {
-  border-top: 4px solid #2E7D32;
+  border-top: 4px solid var(--color-success-dark);
 }
 
 .card-mitigacion .story-map-icon {
-  color: #2E7D32;
+  color: var(--color-success-dark);
 }
 
 /* ===== FOOTER ===== */

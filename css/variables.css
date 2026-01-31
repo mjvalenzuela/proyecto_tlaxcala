@@ -1,44 +1,48 @@
 /* ===================================
    VARIABLES DE COLORES - TLAXCALA
-   Basado en la paleta oficial
+   Manual de Marca: Una Nueva Historia (2021-2027)
+   Actualizado: Enero 2026
    =================================== */
 
 :root {
-  /* === COLORES PRINCIPALES - PALETA REFINADA === */
+  /* === COLORES PRINCIPALES - PALETA OFICIAL === */
 
-  /* Header y Navegación - Morado Principal */
-  --color-header-bg: #582574;
+  /* Vino Institucional - Color principal */
+  --color-header-bg: #6B1233;
   --color-header-text: #FFFFFF;
   --color-header-text-secondary: rgba(255, 255, 255, 0.8);
 
-  /* Botones y Acentos - Magenta */
-  --color-btn-primary: #A21A5C;
-  --color-btn-primary-hover: #8A1650;
+  /* Botones Primarios - Vino Institucional */
+  --color-btn-primary: #6B1233;
+  --color-btn-primary-hover: #8A1D3E;
 
-  /* Botones Secundarios - Morado */
-  --color-btn-secondary: #582574;
-  --color-btn-secondary-hover: #481D5E;
+  /* Botones Secundarios - Vino */
+  --color-btn-secondary: #6B1233;
+  --color-btn-secondary-hover: #551029;
 
-  /* Acentos Magenta para interactividad */
-  --color-accent-magenta: #A21A5C;
-  --color-accent-magenta-hover: #8A1650;
+  /* Acentos para interactividad */
+  --color-accent-magenta: #6B1233;
+  --color-accent-magenta-hover: #8A1D3E;
 
   /* Colores por Tema */
-  --color-theme-vulnerabilidad: #A21A5C;
-  --color-theme-riesgo: #D0B787;
-  --color-theme-amenazas: #582574;
-  --color-theme-impactos: #A21A5C;
+  --color-theme-vulnerabilidad: #6B1233;
+  --color-theme-riesgo: #C6A86A;
+  --color-theme-amenazas: #6B1233;
+  --color-theme-impactos: #6B1233;
 
   /* Títulos y Textos */
-  --color-title-purple: #582574;
-  --color-title-purple-dark: #481D5E;
+  --color-title-purple: #6B1233;
+  --color-title-purple-dark: #551029;
   --color-text-dark: #2D2D2D;
   --color-text-gray: #666666;
   --color-text-light: #999999;
 
-  /* Detalles y bordes - Beige */
-  --color-beige: #D0B787;
-  --color-beige-light: #E5D9C3;
+  /* Dorado Institucional - Acentos */
+  --color-beige: #C6A86A;
+  --color-beige-light: #D4BC8A;
+  --color-gold: #C6A86A;
+  --color-gold-dark: #A8905A;
+  --color-gold-light: #D4BC8A;
 
   /* === FONDOS === */
 
@@ -46,11 +50,26 @@
   --color-bg-light: #FAFAFA;
   --color-bg-gray: #F5F5F5;
   --color-bg-gray-light: #F8F9FA;
+  --color-bg-beige: #F5F3E5;
+
+  /* === GRISES NEUTROS === */
+
+  --color-gray-50: #FAFAFA;
+  --color-gray-100: #F5F5F5;
+  --color-gray-200: #F0F0F0;
+  --color-gray-300: #E0E0E0;
+  --color-gray-400: #CCCCCC;
+  --color-gray-500: #AAAAAA;
+  --color-gray-600: #888888;
+  --color-gray-700: #777777;
+  --color-gray-800: #555555;
+  --color-gray-900: #333333;
 
   /* === BORDES Y SOMBRAS === */
 
   --color-border: #DDDDDD;
   --color-border-light: #E8E8E8;
+  --color-border-dark: #CCCCCC;
   --color-shadow-sm: rgba(0, 0, 0, 0.08);
   --color-shadow-md: rgba(0, 0, 0, 0.1);
   --color-shadow-lg: rgba(0, 0, 0, 0.15);
@@ -58,17 +77,88 @@
   /* === ESTADOS === */
 
   --color-success: #76BC21;
-  --color-warning: #D0B787;
-  --color-error: #A21A5C;
-  --color-info: #582574;
+  --color-success-alt: #4CAF50;
+  --color-success-dark: #2E7D32;
+  --color-warning: #C6A86A;
+  --color-warning-orange: #FF9800;
+  --color-warning-orange-dark: #F57C00;
+  --color-error: #6B1233;
+  --color-error-red: #F44336;
+  --color-error-dark: #C62828;
+  --color-info: #6B1233;
+  --color-info-blue: #2196F3;
+  --color-info-blue-dark: #1565C0;
 
-  /* === GRÁFICOS === */
+  /* === COLORES DE DATOS Y GRÁFICOS === */
 
-  --color-chart-primary: #A21A5C;
-  --color-chart-secondary: #582574;
-  --color-chart-tertiary: #D0B787;
+  --color-chart-primary: #6B1233;
+  --color-chart-secondary: #6B1233;
+  --color-chart-tertiary: #C6A86A;
   --color-chart-quaternary: #2D2D2D;
-  --color-chart-quinternary: #E5D9C3;
+  --color-chart-quinternary: #D4BC8A;
+
+  --color-data-blue: #4A90E2;
+  --color-data-blue-dark: #3576B9;
+  --color-data-green: #4CAF50;
+  --color-data-orange: #FF9800;
+
+  /* === COLORES POR SECTOR (ACCIONES CLIMÁTICAS) === */
+
+  --color-sector-agua: #4A90E2;
+  --color-sector-ambiente: #76BC21;
+  --color-sector-rural: #8B6F47;
+  --color-sector-obras: #C6A86A;
+  --color-sector-economico: #6B1233;
+
+  /* === COLORES PARA MAPAS Y UI === */
+
+  --color-purple-ui: #5E3B8C;
+  --color-purple-leaflet: #9C27B0;
+  --color-purple-active: #7B1FA2;
+
+  /* === ESCALAS DE DEGRADACIÓN (SUELO) === */
+
+  --color-scale-critical: #8B0000;
+  --color-scale-high: #CD5C5C;
+  --color-scale-medium: #F0E68C;
+  --color-scale-low: #90EE90;
+  --color-scale-minimal: #228B22;
+
+  /* === ESCALAS DE RIESGO === */
+
+  --color-risk-low: #FFFF99;
+  --color-risk-medium: #FFA500;
+  --color-risk-high: #FF0000;
+
+  /* === COLORES ESPECIALES === */
+
+  --color-highlight-yellow: #FFF8E1;
+  --color-highlight-orange: #FFF3E0;
+  --color-pink-error: #E11D48;
+  --color-pink-error-bg: #FEE2E2;
+  --color-highlight-blue: #F0F7FF;
+  --color-neutral-gray: #9E9E9E;
+  --color-black: #000000;
+  --color-dark-ui: #1A1A2E;
+  --color-dark-bg: #2A2A2A;
+  --color-dark-surface: #444444;
+
+  /* Gradientes de temperatura */
+  --color-temp-hot: #E65100;
+  --color-temp-hot-dark: #BF360C;
+
+  /* Gradientes de estrategias */
+  --color-strategy-blue-light: #E3F2FD;
+  --color-strategy-blue: #BBDEFB;
+  --color-strategy-green-light: #E8F5E9;
+  --color-strategy-green: #C8E6C9;
+  --color-strategy-orange-light: #FFF3E0;
+  --color-strategy-orange: #FFE0B2;
+  --color-strategy-pink-light: #FCE4EC;
+  --color-strategy-pink: #F8BBD9;
+
+  /* Iconos especiales */
+  --color-icon-disabled: #D0D0D0;
 
   /* === ESPACIADO === */
 

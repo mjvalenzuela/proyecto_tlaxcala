@@ -3,7 +3,7 @@
   max-width: 300px;
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 .leaflet-popup-content-wrapper {
@@ -21,7 +21,7 @@
 }
 
 .leaflet-popup-tip {
-  background: white;
+  background: var(--color-bg-white);
 }
 
 /* ============================================ */
@@ -33,7 +33,7 @@
   padding-bottom: 10px;
   padding-left: 15px;
   padding-right: 15px;
-  color: white;
+  color: var(--color-bg-white);
 }
 
 .popup-header-field {
@@ -71,7 +71,7 @@
 
 .popup-body {
   padding: 12px;
-  background-color: #ffffff;
+  background-color: var(--color-bg-white);
 }
 
 /* Fila de campos */
@@ -102,7 +102,7 @@
   display: block;
   font-size: 11px;
   font-weight: 600;
-  color: #555;
+  color: var(--color-gray-800);
   margin-bottom: 1px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
@@ -110,15 +110,15 @@
 
 .popup-field .field-value {
   font-size: 13px;
-  color: #333;
+  color: var(--color-gray-900);
   line-height: 1.5;
 }
 
 .popup-field .field-value-textarea {
-  background-color: #f9f9f9;
+  background-color: var(--color-gray-100);
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-gray-300);
   min-height: 50px;
 }
 
@@ -127,15 +127,15 @@
 /* ============================================ */
 
 .popup-field-destacado {
-  background-color: #f5f3e5;
-  border: 2px solid #b07927;
+  background-color: var(--color-bg-beige);
+  border: 2px solid var(--color-gold-dark);
   border-radius: 6px;
   padding: 12px;
   margin-bottom: 16px;
 }
 
 .popup-field-destacado label {
-  color: #b07927;
+  color: var(--color-gold-dark);
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -144,7 +144,7 @@
 }
 
 .ubicaciones-mini-list {
-  background-color: white;
+  background-color: var(--color-bg-white);
   border-radius: 4px;
   padding: 8px;
   margin-bottom: 10px;
@@ -163,9 +163,9 @@
 
 .ubicacion-mini-item {
   padding: 6px 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-gray-300);
   font-size: 12px;
-  color: #555;
+  color: var(--color-gray-800);
 }
 
 .ubicacion-mini-item:last-child {
@@ -174,15 +174,15 @@
 
 .ubicacion-mini-item.more {
   font-style: italic;
-  color: #999;
+  color: var(--color-text-light);
   text-align: center;
 }
 
 .btn-ver-ubicaciones {
   width: 100%;
   padding: 8px 12px;
-  background-color: #9c27b0;
-  color: white;
+  background-color: var(--color-purple-leaflet);
+  color: var(--color-bg-white);
   border: none;
   border-radius: 4px;
   font-size: 12px;
@@ -193,7 +193,7 @@
 }
 
 .btn-ver-ubicaciones:hover {
-  background-color: #7b1fa2;
+  background-color: var(--color-purple-active);
 }
 
 /* ============================================ */
@@ -202,19 +202,19 @@
 
 .popup-field .field-value strong {
   font-weight: 600;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 .ubicacion-alcance {
   font-size: 12px;
-  color: #5e3b8c;
+  color: var(--color-purple-ui);
   font-weight: 600;
   margin-top: 4px;
 }
 
 .ubicacion-coords {
   font-size: 11px;
-  color: #777;
+  color: var(--color-gray-700);
   margin-top: 4px;
   font-family: monospace;
 }
@@ -223,15 +223,15 @@
 .ubicacion-municipios {
   margin-top: 8px;
   padding: 8px 10px;
-  background-color: #f0f7ff;
+  background-color: var(--color-highlight-blue);
   border-radius: 6px;
-  border-left: 3px solid #4A90E2;
+  border-left: 3px solid var(--color-data-blue);
 }
 
 .ubicacion-municipios .municipios-label {
   font-size: 11px;
   font-weight: 600;
-  color: #555;
+  color: var(--color-gray-800);
   text-transform: uppercase;
   letter-spacing: 0.3px;
   display: block;
@@ -240,14 +240,14 @@
 
 .ubicacion-municipios .municipios-list {
   font-size: 12px;
-  color: #333;
+  color: var(--color-gray-900);
   line-height: 1.5;
   display: block;
 }
 
 /* Badge para múltiples municipios */
 .badge-multi-mun {
-  background-color: #4A90E2;
+  background-color: var(--color-data-blue);
   font-size: 10px;
   padding: 2px 8px;
   margin-left: 8px;
@@ -256,7 +256,7 @@
 
 /* Badge para marcador expandido (1 de N) */
 .badge-expandido {
-  background-color: #FF9800;
+  background-color: var(--color-warning-orange);
   font-size: 10px;
   padding: 2px 8px;
   margin-left: 8px;
@@ -273,32 +273,32 @@
   border-radius: 12px;
   font-size: 11px;
   font-weight: 600;
-  color: white;
+  color: var(--color-bg-white);
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
 
 /* Badge de tipo */
 .badge-tipo.badge-proyecto {
-  background-color: #4A90E2;
+  background-color: var(--color-data-blue);
 }
 
 .badge-tipo.badge-programa {
-  background-color: #76BC21;
+  background-color: var(--color-success);
 }
 
 /* Badge de estado */
 .badge-estado.badge-activo {
-  background-color: #4CAF50;
+  background-color: var(--color-success-alt);
 }
 
 .badge-estado.badge-concluido {
-  background-color: #9E9E9E;
+  background-color: var(--color-neutral-gray);
 }
 
 /* Badge de conteo */
 .badge-count {
-  background-color: #FF9800;
+  background-color: var(--color-warning-orange);
 }
 
 /* Badge clickeable (para toggle ubicaciones) */
@@ -312,7 +312,7 @@
 }
 
 .badge-clickeable:hover {
-  background-color: #F57C00;
+  background-color: var(--color-warning-orange-dark);
   transform: scale(1.05);
 }
 
@@ -333,7 +333,7 @@
 
 /* Badge estatal */
 .badge-estatal {
-  background-color: #5e3b8c;
+  background-color: var(--color-purple-ui);
 }
 
 /* ============================================ */
@@ -342,8 +342,8 @@
 
 .popup-footer {
   padding: 8px 8px;
-  background-color: #f5f5f5;
-  border-top: 1px solid #e0e0e0;
+  background-color: var(--color-bg-gray);
+  border-top: 1px solid var(--color-gray-300);
   display: flex;
   gap: 8px;
 }
@@ -365,21 +365,21 @@
 }
 
 .popup-btn-primary {
-  background-color: #c2185b;
-  color: white;
+  background-color: var(--color-btn-primary-hover);
+  color: var(--color-bg-white);
 }
 
 .popup-btn-primary:hover {
-  background-color: #880e4f;
+  background-color: var(--color-btn-secondary-hover);
 }
 
 .popup-btn-secondary {
-  background-color: #c2185b;
-  color: white;
+  background-color: var(--color-btn-primary-hover);
+  color: var(--color-bg-white);
 }
 
 .popup-btn-secondary:hover {
-  background-color: #880e4f;
+  background-color: var(--color-btn-secondary-hover);
 }
 
 .popup-btn:active {
@@ -399,16 +399,16 @@
 }
 
 .leaflet-popup-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--color-gray-100);
 }
 
 .leaflet-popup-content::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--color-gray-600);
   border-radius: 4px;
 }
 
 .leaflet-popup-content::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--color-gray-800);
 }
 
 /* ============================================ */
@@ -498,12 +498,12 @@
 .leaflet-popup-close-button {
   font-size: 22px;
   padding: 6px 10px 0 0;
-  color: #333 !important;
+  color: var(--color-gray-900) !important;
   font-weight: 700;
 }
 
 .leaflet-popup-close-button:hover {
-  color: #000 !important;
+  color: var(--color-black) !important;
 }
 
 /* Ajustar ancho máximo del popup en Leaflet */
@@ -536,13 +536,13 @@
 
 /* Cuando no hay datos */
 .field-value.no-data {
-  color: #999;
+  color: var(--color-text-light);
   font-style: italic;
 }
 
 /* Links o elementos interactivos en el popup */
 .popup-field a {
-  color: #5e3b8c;
+  color: var(--color-purple-ui);
   text-decoration: none;
   font-weight: 600;
 }

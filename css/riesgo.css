@@ -3,6 +3,22 @@
  */
 
 /* ===================================
+   TAMAÑO DE FUENTE 16px PARA CAPÍTULOS 1 Y 2
+   =================================== */
+#risk-chapter-1 .chapter-content,
+#risk-chapter-1 .chapter-content p,
+#risk-chapter-1 .chapter-content li,
+#risk-chapter-1 .chapter-title,
+#risk-chapter-1 .events-list li,
+#risk-chapter-2 .chapter-content,
+#risk-chapter-2 .chapter-content p,
+#risk-chapter-2 .chapter-content li,
+#risk-chapter-2 .chapter-title,
+#risk-chapter-2 .events-list li {
+  font-size: 16px;
+}
+
+/* ===================================
    LISTA DE EVENTOS
    =================================== */
 .events-list {
@@ -14,7 +30,7 @@
 .events-list li {
   padding: 0.5rem 0;
   border-bottom: 1px solid rgba(88, 37, 116, 0.1);
-  font-size: 0.9rem;
+  font-size: 16px;
   line-height: 1.6;
 }
 
@@ -28,9 +44,9 @@
 .btn-atlas {
   display: inline-block !important;
   padding: 0.75rem 1.5rem !important;
-  background-color: #582574 !important;
-  background: #582574 !important;
-  color: white !important;
+  background-color: var(--color-header-bg) !important;
+  background: var(--color-header-bg) !important;
+  color: var(--color-bg-white) !important;
   border: none !important;
   border-radius: 8px !important;
   font-size: 0.938rem !important;
@@ -44,29 +60,29 @@
 }
 
 .btn-atlas:hover {
-  background-color: #a21a5c !important;
-  background: #a21a5c !important;
-  color: white !important;
+  background-color: var(--color-btn-primary) !important;
+  background: var(--color-btn-primary) !important;
+  color: var(--color-bg-white) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 4px 12px rgba(88, 37, 116, 0.3) !important;
   text-decoration: none !important;
 }
 
 .btn-atlas:active {
-  background-color: #7a1444 !important;
-  background: #7a1444 !important;
-  color: white !important;
+  background-color: var(--color-btn-primary-hover) !important;
+  background: var(--color-btn-primary-hover) !important;
+  color: var(--color-bg-white) !important;
   transform: translateY(0) !important;
 }
 
 .btn-atlas:focus {
-  color: white !important;
+  color: var(--color-bg-white) !important;
   outline: 2px solid rgba(88, 37, 116, 0.5) !important;
   outline-offset: 2px !important;
 }
 
 .btn-atlas:visited {
-  color: white !important;
+  color: var(--color-bg-white) !important;
 }
 
 /* ===================================
@@ -74,10 +90,10 @@
    =================================== */
 .ol-popup {
   position: absolute;
-  background-color: white;
+  background-color: var(--color-bg-white);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
   bottom: 12px;
   left: -50px;
   min-width: 280px;
@@ -96,14 +112,14 @@
 }
 
 .ol-popup:after {
-  border-top-color: white;
+  border-top-color: var(--color-bg-white);
   border-width: 10px;
   left: 48px;
   margin-left: -10px;
 }
 
 .ol-popup:before {
-  border-top-color: #ddd;
+  border-top-color: var(--color-border);
   border-width: 11px;
   left: 48px;
   margin-left: -11px;
@@ -116,7 +132,7 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  color: #999;
+  color: var(--color-text-light);
   font-size: 18px;
   line-height: 20px;
   text-align: center;
@@ -124,7 +140,7 @@
 }
 
 .ol-popup-closer:hover {
-  color: #582574;
+  color: var(--color-header-bg);
 }
 
 .ol-popup-closer:before {
@@ -138,15 +154,15 @@
 }
 
 .ol-popup-content a:hover {
-  background: #a21a5c !important;
+  background: var(--color-btn-primary) !important;
 }
 
 /* ===================================
    INFORMACIÓN DE ATLAS (Capítulo 3)
    =================================== */
 #atlas-info {
-  margin-top: 1rem;  
-  background: #f8f9fa;
+  margin-top: 1rem;
+  background: var(--color-bg-gray-light);
   border-radius: 8px;
   border-left: 4px solid var(--primary-color);
 }
@@ -161,7 +177,7 @@
 #atlas-info p {
   margin: 0 0 0.75rem 0;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-text-gray);
 }
 
 /* ===================================
@@ -184,7 +200,7 @@
 .risk-card-1 {
   grid-column: 1 !important;
   grid-row: 2 !important;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -199,7 +215,7 @@
 .risk-card-2 {
   grid-column: 2 !important;
   grid-row: 2 !important;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -211,7 +227,7 @@
 .risk-card-3 {
   grid-column: 1 !important;
   grid-row: 3 !important;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 12px;
   padding: 0.75rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -238,7 +254,7 @@
 .risk-card-4 {
   grid-column: 2 !important;
   grid-row: 3 !important;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -254,7 +270,7 @@
 .card-subtitle {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #582574;
+  color: var(--color-header-bg);
   margin: 0;
   padding: 0.25rem 0;
   text-align: center;
@@ -277,7 +293,7 @@
   border-radius: 8px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #582574;
+  color: var(--color-header-bg);
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
@@ -287,15 +303,15 @@
 
 .risk-btn:hover {
   background: linear-gradient(135deg, rgba(88, 37, 116, 0.15) 0%, rgba(162, 26, 92, 0.15) 100%);
-  border-color: #582574;
+  border-color: var(--color-header-bg);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(88, 37, 116, 0.3);
 }
 
 .risk-btn:active {
-  background: #582574;
-  color: white;
-  border-color: #582574;
+  background: var(--color-header-bg);
+  color: var(--color-bg-white);
+  border-color: var(--color-header-bg);
   transform: translateY(0);
   box-shadow: 0 2px 6px rgba(88, 37, 116, 0.2);
 }
@@ -303,22 +319,21 @@
 /* Contenedores de gráficas */
 /* Card 3: Contenedor de gráfica de dona (lado izquierdo) */
 .chart-container-dona {
-  flex: 0 0 50%;
+  flex: 0 0 auto;
+  width: 150px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 0;
-  max-height: 100%;
   position: relative;
   overflow: hidden;
 }
 
 .chart-container-dona canvas {
-  max-width: 100% !important;
-  max-height: 100% !important;
-  width: auto !important;
-  height: auto !important;
-  object-fit: contain;
+  width: 150px !important;
+  height: 150px !important;
+  max-width: 150px !important;
+  max-height: 150px !important;
 }
 
 /* Card 3: Leyenda de la gráfica de dona (lado derecho) */
@@ -349,14 +364,14 @@
 }
 
 .legend-label {
-  color: #333;
+  color: var(--color-gray-900);
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.2;
 }
 
 .legend-value {
-  color: #666;
+  color: var(--color-text-gray);
   font-size: 0.7rem;
   margin-left: auto;
   white-space: nowrap;
@@ -471,7 +486,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -490,7 +505,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -552,7 +567,15 @@
   }
 
   .chart-container-dona {
-    flex: 0 0 45%;
+    width: 130px;
+    height: 130px;
+  }
+
+  .chart-container-dona canvas {
+    width: 130px !important;
+    height: 130px !important;
+    max-width: 130px !important;
+    max-height: 130px !important;
   }
 
   .chart-legend {
@@ -688,11 +711,16 @@
   }
 
   .chart-container-dona {
-    flex: 0 0 auto;
-    width: 100%;
-    max-width: 200px;
-    max-height: 200px;
+    width: 150px;
+    height: 150px;
     margin: 0 auto;
+  }
+
+  .chart-container-dona canvas {
+    width: 150px !important;
+    height: 150px !important;
+    max-width: 150px !important;
+    max-height: 150px !important;
   }
 
   .chart-legend {
@@ -776,7 +804,7 @@
   position: absolute;
   top: 0rem;
   right: 0rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -789,7 +817,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
-  color: #333;
+  color: var(--color-gray-900);
   padding-bottom: 0.5rem;
   border-bottom: 2px solid rgba(88, 37, 116, 0.2);
 }
@@ -797,7 +825,7 @@
 .layer-control-subtitle {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #582574;
+  color: var(--color-header-bg);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: 0.75rem;
@@ -820,12 +848,12 @@
 
 .layer-control input[type="checkbox"] {
   cursor: pointer;
-  accent-color: #582574;
+  accent-color: var(--color-header-bg);
 }
 
 .layer-control label {
   cursor: pointer;
-  color: #666;
+  color: var(--color-text-gray);
   user-select: none;
 }
 

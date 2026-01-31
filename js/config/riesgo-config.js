@@ -25,7 +25,7 @@ const simbologias = {
     ]
   },
   "SEICCT:contingencia_climatica": {
-    titulo: "Contingencia Climática",
+    titulo: "# Contingencias Climáticas",
     tipo: "polygon",
     categorias: [
       { label: "0", color: "#fcfdbf", stroke: "#232323" },
@@ -40,7 +40,7 @@ const simbologias = {
     ]
   },
   "SEICCT:desastres": {
-    titulo: "Desastres",
+    titulo: "# Desastres",
     tipo: "polygon",
     categorias: [
       { label: "1", color: "#ffea46", stroke: "#232323" },
@@ -50,7 +50,7 @@ const simbologias = {
     ]
   },
   "SEICCT:emergencias": {
-    titulo: "Emergencias",
+    titulo: "# Emergencias",
     tipo: "polygon",
     categorias: [
       { label: "2", color: "#def5e5", stroke: "#232323" },
@@ -120,7 +120,7 @@ const RiesgoConfig = {
           leyenda: true,
         },
         {
-          nombre: "Contingencia Climática",
+          nombre: "# Contingencias Climática",
           tipo: "wms",
           layer: "SEICCT:contingencia_climatica",
           opacity: 1,
@@ -129,7 +129,7 @@ const RiesgoConfig = {
           leyenda: true,
         },
         {
-          nombre: "Desastres",
+          nombre: "# Desastres",
           tipo: "wms",
           layer: "SEICCT:desastres",
           opacity: 1,
@@ -138,7 +138,7 @@ const RiesgoConfig = {
           leyenda: true,
         },
         {
-          nombre: "Emergencias",
+          nombre: "# Emergencias",
           tipo: "wms",
           layer: "SEICCT:emergencias",
           opacity: 1,
@@ -175,7 +175,7 @@ const RiesgoConfig = {
           leyenda: true,
         },
         {
-          nombre: "Contingencia Climática",
+          nombre: "# Contingencias Climáticas",
           tipo: "wms",
           layer: "SEICCT:contingencia_climatica",
           opacity: 1,
@@ -184,7 +184,7 @@ const RiesgoConfig = {
           leyenda: true,
         },
         {
-          nombre: "Desastres",
+          nombre: "# Desastres",
           tipo: "wms",
           layer: "SEICCT:desastres",
           opacity: 1,
@@ -193,7 +193,7 @@ const RiesgoConfig = {
           leyenda: true,
         },
         {
-          nombre: "Emergencias",
+          nombre: "# Emergencias",
           tipo: "wms",
           layer: "SEICCT:emergencias",
           opacity: 1,

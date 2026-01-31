@@ -47,7 +47,7 @@
 .clima-text-card {
   grid-column: 1;
   grid-row: 1 / 3;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   padding: 0.8rem;
@@ -59,16 +59,16 @@
 .clima-text-card .card-title {
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.5rem;
   padding-bottom: 0.3rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .clima-text-card .card-content {
   font-size: 0.8rem;
   line-height: 1.5;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
   flex: 1;
 }
 
@@ -96,7 +96,7 @@
   top: 0.6rem;
   width: 6px;
   height: 6px;
-  background: var(--color-primary, #A21A5C);
+  background: var(--color-btn-primary);
   border-radius: 50%;
 }
 
@@ -110,7 +110,7 @@
   gap: 0.6rem;
   margin-top: 1rem;
   padding-top: 0.8rem;
-  border-top: 2px solid var(--color-primary, #A21A5C);
+  border-top: 2px solid var(--color-btn-primary);
 }
 
 .selector-group {
@@ -122,7 +122,7 @@
 .selector-label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   min-width: 60px;
 }
 
@@ -137,8 +137,8 @@
   padding: 0.4rem 0.6rem;
   font-size: 0.75rem;
   font-weight: 500;
-  border: 2px solid #ddd;
-  background: white;
+  border: 2px solid var(--color-border);
+  background: var(--color-bg-white);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -146,27 +146,27 @@
 }
 
 .selector-btn:hover {
-  background: #f5f5f5;
-  border-color: var(--color-primary, #A21A5C);
+  background: var(--color-bg-gray);
+  border-color: var(--color-btn-primary);
 }
 
 .selector-btn.active {
-  background: var(--color-primary, #A21A5C);
-  color: white;
-  border-color: var(--color-primary, #A21A5C);
+  background: var(--color-btn-primary);
+  color: var(--color-bg-white);
+  border-color: var(--color-btn-primary);
 }
 
 /* Seccion de conceptos Q05/Q95 */
 .clima-concepts {
   margin-top: 0.5rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .clima-concepts .concept-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-secondary, #4a90d9);
+  color: var(--color-data-blue);
   margin-bottom: 0.3rem;
 }
 
@@ -183,13 +183,13 @@
 .clima-concepts .concept-label {
   font-weight: 600;
   font-size: 0.75rem;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   min-width: 30px;
 }
 
 .clima-concepts .concept-desc {
   font-size: 1rem;
-  color: #555;
+  color: var(--color-gray-800);
   line-height: 1.3;
 }
 
@@ -198,7 +198,7 @@
    ============================================================ */
 
 .clima-map-card {
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -269,8 +269,8 @@
 
 .clima-map-card .map-controls-header {
   padding: 0.4rem 0.6rem;
-  background: var(--color-primary, #A21A5C);
-  color: white;
+  background: var(--color-btn-primary);
+  color: var(--color-bg-white);
   border-radius: 8px 8px 0 0;
   display: flex;
   justify-content: space-between;
@@ -285,7 +285,7 @@
 .clima-map-card .map-controls-toggle {
   background: transparent;
   border: none;
-  color: white;
+  color: var(--color-bg-white);
   cursor: pointer;
   font-size: 0.7rem;
   padding: 0.1rem 0.3rem;
@@ -334,7 +334,7 @@
 
 .clima-map-card .map-legends-header {
   padding: 0.3rem 0.5rem;
-  background: #f5f5f5;
+  background: var(--color-bg-gray);
   border-radius: 8px 8px 0 0;
   display: flex;
   justify-content: space-between;
@@ -344,7 +344,7 @@
 .clima-map-card .map-legends-title {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 .clima-map-card .map-legends-content {
@@ -367,7 +367,7 @@
 
 .clima-map-card .legend-label {
   font-size: 0.7rem;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 /* ============================================================
@@ -388,10 +388,10 @@
 
 .clima-map-controls .map-controls-header {
   padding: 0.4rem 0.6rem;
-  background: #ffffff;
-  color: #333;
+  background: var(--color-bg-white);
+  color: var(--color-gray-900);
   border-radius: 6px 6px 0 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-border-light);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -400,13 +400,13 @@
 .clima-map-controls .map-controls-title {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 .clima-map-controls .map-controls-toggle {
   background: transparent;
   border: none;
-  color: #666;
+  color: var(--color-text-gray);
   cursor: pointer;
   font-size: 0.7rem;
   padding: 0.1rem 0.3rem;
@@ -436,7 +436,7 @@
 .clima-map-controls .layer-control label {
   font-size: 0.75rem;
   cursor: pointer;
-  color: #333;
+  color: var(--color-gray-900);
 }
 
 /* ============================================================
@@ -482,7 +482,7 @@
 .clima-map-legends .legend-item-title {
   font-size: 0.6rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-gray-900);
   margin-bottom: 0.25rem;
   text-align: center;
 }
@@ -501,7 +501,7 @@
   width: 100%;
   min-width: 100%;
   border-radius: 3px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-gray-400);
   box-sizing: border-box;
 }
 
@@ -509,7 +509,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.5rem;
-  color: #555;
+  color: var(--color-gray-800);
   padding: 0;
   width: 100%;
 }
@@ -520,7 +520,7 @@
 
 .map-legends-empty {
   font-size: 0.65rem;
-  color: #888;
+  color: var(--color-gray-600);
   text-align: center;
   padding: 0.3rem;
 }
@@ -533,8 +533,8 @@
   display: flex;
   gap: 0.2rem;
   padding: 0.2rem;
-  background: #f5f5f5;
-  border-top: 1px solid #eee;
+  background: var(--color-bg-gray);
+  border-top: 1px solid var(--color-border-light);
   flex-shrink: 0;
 }
 
@@ -542,21 +542,21 @@
   flex: 1;
   padding: 0.2rem 0.4rem;
   font-size: 0.65rem;
-  border: 1px solid #ddd;
-  background: white;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-white);
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .scenario-btn:hover {
-  background: #f0f0f0;
+  background: var(--color-gray-200);
 }
 
 .scenario-btn.active {
-  background: var(--color-primary, #A21A5C);
-  color: white;
-  border-color: var(--color-primary, #A21A5C);
+  background: var(--color-btn-primary);
+  color: var(--color-bg-white);
+  border-color: var(--color-btn-primary);
 }
 
 /* ============================================================
@@ -645,7 +645,7 @@
   right: 0.5rem;
   display: none; /* OCULTO TEMPORALMENTE */
   background: rgba(255, 255, 255, 0.95);
-  border: 2px solid var(--color-primary, #A21A5C);
+  border: 2px solid var(--color-btn-primary);
   border-radius: 6px;
   padding: 0.3rem 0.5rem;
   cursor: pointer;
@@ -655,21 +655,21 @@
   gap: 0.3rem;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .clima-split-btn:hover {
-  background: var(--color-primary, #A21A5C);
-  color: white;
+  background: var(--color-btn-primary);
+  color: var(--color-bg-white);
   transform: translateY(-1px);
   box-shadow: 0 3px 8px rgba(162, 26, 92, 0.3);
 }
 
 .clima-split-btn.active {
-  background: var(--color-primary, #A21A5C);
-  color: white;
+  background: var(--color-btn-primary);
+  color: var(--color-bg-white);
 }
 
 .clima-split-btn .split-icon {
@@ -682,7 +682,7 @@
   top: 0;
   bottom: 0;
   width: 4px;
-  background: white;
+  background: var(--color-bg-white);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   cursor: ew-resize;
   z-index: 150;
@@ -697,7 +697,7 @@
   transform: translate(-50%, -50%);
   width: 24px;
   height: 40px;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -708,7 +708,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   font-size: 1rem;
   font-weight: bold;
 }
@@ -719,7 +719,7 @@
   bottom: 2.5rem;
   padding: 0.3rem 0.6rem;
   background: rgba(0, 0, 0, 0.75);
-  color: white;
+  color: var(--color-bg-white);
   font-size: 0.65rem;
   font-weight: 600;
   border-radius: 4px;
@@ -762,17 +762,17 @@
 .clima-variable-selector label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   white-space: nowrap;
 }
 
 .clima-variable-select {
   font-size: 0.75rem;
   padding: 0.3rem 0.5rem;
-  border: 2px solid var(--color-primary, #A21A5C);
+  border: 2px solid var(--color-btn-primary);
   border-radius: 4px;
-  background: white;
-  color: var(--color-text-dark, #333);
+  background: var(--color-bg-white);
+  color: var(--color-gray-900);
   cursor: pointer;
   font-weight: 500;
   outline: none;
@@ -780,11 +780,11 @@
 }
 
 .clima-variable-select:hover {
-  border-color: var(--color-primary-dark, #8B1550);
+  border-color: var(--color-btn-primary-hover);
 }
 
 .clima-variable-select:focus {
-  border-color: var(--color-primary, #A21A5C);
+  border-color: var(--color-btn-primary);
   box-shadow: 0 0 0 2px rgba(162, 26, 92, 0.2);
 }
 
@@ -818,7 +818,7 @@
 
 /* Panel izquierdo - Texto */
 .intro-text-panel {
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   padding: 1rem;
@@ -832,17 +832,17 @@
 .intro-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.5rem;
   padding-bottom: 0.3rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
   flex-shrink: 0;
 }
 
 .intro-description {
   font-size: 0.85rem;
   line-height: 1.4;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
   margin-bottom: 0.5rem;
   flex-shrink: 0;
 }
@@ -850,8 +850,8 @@
 .btn-link-inecc {
   display: inline-block;
   padding: 0.5rem 0.8rem;
-  background: var(--color-secondary, #4a90d9);
-  color: white;
+  background: var(--color-data-blue);
+  color: var(--color-bg-white);
   text-decoration: none;
   border-radius: 6px;
   font-weight: 600;
@@ -862,7 +862,7 @@
 }
 
 .btn-link-inecc:hover {
-  background: #3576b9;
+  background: var(--color-data-blue-dark);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(74, 144, 217, 0.3);
 }
@@ -874,7 +874,7 @@
   flex-direction: column;
   min-height: 0;
   margin-top: 0.8rem;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--color-border);
   padding-top: 0.8rem;
   overflow: hidden;
 }
@@ -890,8 +890,8 @@
   flex: 1;
   padding: 0.5rem 0.3rem;
   border: none;
-  background: #f0f0f0;
-  color: #666;
+  background: var(--color-gray-200);
+  color: var(--color-text-gray);
   font-size: 0.7rem;
   font-weight: 600;
   cursor: pointer;
@@ -901,18 +901,18 @@
 }
 
 .intro-tab-btn:hover {
-  background: #e0e0e0;
+  background: var(--color-gray-300);
 }
 
 .intro-tab-btn.active {
-  background: var(--color-primary, #A21A5C);
-  color: white;
+  background: var(--color-btn-primary);
+  color: var(--color-bg-white);
 }
 
 .intro-tabs-content {
   flex: 1 1 auto;
   min-height: 0;
-  background: #f9f9f9;
+  background: var(--color-gray-100);
   border-radius: 0 0 6px 6px;
   overflow: hidden;
   position: relative;
@@ -927,7 +927,7 @@
   bottom: 0;
   padding: 0.5rem;
   box-sizing: border-box;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 4px;
 }
 
@@ -944,7 +944,7 @@
 .intro-map-panel {
   display: flex;
   flex-direction: column;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
@@ -963,10 +963,10 @@
 .layer-group-title {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--color-secondary, #4a90d9);
+  color: var(--color-data-blue);
   margin: 0.4rem 0 0.2rem 0;
   padding-bottom: 0.15rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .layer-group-title:first-child {
@@ -1010,7 +1010,7 @@
 .grid-row-title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--color-secondary, #4a90d9);
+  color: var(--color-data-blue);
   text-align: center;
   margin: 0;
   padding: 0.3rem;
@@ -1030,7 +1030,7 @@
 .grid-map-card {
   display: flex;
   flex-direction: column;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 0 0 8px 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
@@ -1046,7 +1046,7 @@
   margin: 0;
   font-size: 0.9rem;
   font-weight: 600;
-  color: white;
+  color: var(--color-bg-white);
 }
 
 .grid-map-header span {
@@ -1055,11 +1055,11 @@
 }
 
 .grid-map-ssp245 {
-  background: linear-gradient(135deg, #4a90d9 0%, #3576b9 100%);
+  background: linear-gradient(135deg, var(--color-data-blue) 0%, var(--color-data-blue-dark) 100%);
 }
 
 .grid-map-ssp585 {
-  background: linear-gradient(135deg, #e65100 0%, #bf360c 100%);
+  background: linear-gradient(135deg, var(--color-temp-hot) 0%, var(--color-temp-hot-dark) 100%);
 }
 
 .grid-map-card .map-container {
@@ -1069,7 +1069,7 @@
 
 .grid-fuente {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--color-text-gray);
   text-align: center;
   padding: 0.5rem;
   margin: 0;
@@ -1101,7 +1101,7 @@
 .chapter-clima-grafica .chapter-text {
   grid-column: 1;
   grid-row: 1;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -1111,16 +1111,16 @@
 .chapter-clima-grafica .chapter-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.5rem;
   padding-bottom: 0.3rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .chapter-clima-grafica .chapter-content {
   font-size: 0.9rem;
   line-height: 1.6;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
 }
 
 .chapter-clima-grafica .chapter-content p {
@@ -1130,7 +1130,7 @@
 .chapter-clima-grafica .chapter-chart-full {
   grid-column: 2;
   grid-row: 1;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   padding: 0.8rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -1141,7 +1141,7 @@
 .chapter-clima-grafica .chart-title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--color-secondary, #4a90d9);
+  color: var(--color-data-blue);
   margin-bottom: 0.5rem;
 }
 
@@ -1175,21 +1175,21 @@
   padding: 0.4rem 0.6rem;
   margin-bottom: 0.3rem;
   background: rgba(74, 144, 217, 0.1);
-  border-left: 3px solid var(--color-secondary, #4a90d9);
+  border-left: 3px solid var(--color-data-blue);
   border-radius: 0 4px 4px 0;
   font-size: 0.85rem;
 }
 
 .chapter-clima-grafica .datos-titulo {
   margin-top: 1rem;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
 }
 
 .chapter-clima-grafica .datos-lista li {
   padding: 0.5rem 0.6rem;
   margin-bottom: 0.4rem;
   background: rgba(162, 26, 92, 0.08);
-  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-left: 3px solid var(--color-btn-primary);
   border-radius: 0 4px 4px 0;
   font-size: 0.85rem;
   line-height: 1.4;
@@ -1217,10 +1217,10 @@
   grid-row: 1;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin: 0;
   padding: 0.8rem 1rem;
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -1243,7 +1243,7 @@
 .clima-chapter-mapa-texto .chapter-text {
   grid-column: 2;
   grid-row: 2;
-  background: var(--color-card-bg, #ffffff);
+  background: var(--color-bg-white);
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -1253,16 +1253,16 @@
 .clima-chapter-mapa-texto .chapter-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--color-primary, #A21A5C);
+  color: var(--color-btn-primary);
   margin-bottom: 0.8rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-primary, #A21A5C);
+  border-bottom: 2px solid var(--color-btn-primary);
 }
 
 .clima-chapter-mapa-texto .chapter-content {
   font-size: 0.9rem;
   line-height: 1.6;
-  color: var(--color-text-dark, #333);
+  color: var(--color-gray-900);
 }
 
 .clima-chapter-mapa-texto .chapter-content p {
@@ -1279,7 +1279,7 @@
   padding: 0.5rem 0.6rem;
   margin-bottom: 0.4rem;
   background: rgba(162, 26, 92, 0.05);
-  border-left: 3px solid var(--color-primary, #A21A5C);
+  border-left: 3px solid var(--color-btn-primary);
   border-radius: 0 4px 4px 0;
   font-size: 0.85rem;
   line-height: 1.4;

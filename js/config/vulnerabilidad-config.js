@@ -124,21 +124,21 @@ export const storyMapConfig = {
       capituloPadre: 2,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [
-          {
-            nombre: "Riqueza de Abejas",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:riqueza_abejas",
-            visible: true,
-            leyenda: true,
-          },
           {
             nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+          {
+            nombre: "Riqueza de Abejas",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:riqueza_abejas",
             visible: true,
             leyenda: true,
           },
@@ -154,21 +154,21 @@ export const storyMapConfig = {
       capituloPadre: 2,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [
-          {
-            nombre: "Riqueza de Agaves",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:riqueza_agaves",
-            visible: true,
-            leyenda: true,
-          },
           {
             nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+          {
+            nombre: "Riqueza de Agaves",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:riqueza_agaves",
             visible: true,
             leyenda: true,
           },
@@ -184,21 +184,21 @@ export const storyMapConfig = {
       capituloPadre: 2,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [
-          {
-            nombre: "Riqueza de Hongos",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:riqueza_hongos",
-            visible: true,
-            leyenda: true,
-          },
           {
             nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+          {
+            nombre: "Riqueza de Hongos",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:riqueza_hongos",
             visible: true,
             leyenda: true,
           },
@@ -214,21 +214,21 @@ export const storyMapConfig = {
       capituloPadre: 2,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [
-          {
-            nombre: "Riqueza de Polillas",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:riqueza_polillas",
-            visible: true,
-            leyenda: true,
-          },
           {
             nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+          {
+            nombre: "Riqueza de Polillas",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:riqueza_polillas",
             visible: true,
             leyenda: true,
           },
@@ -244,21 +244,21 @@ export const storyMapConfig = {
       capituloPadre: 2,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [
-          {
-            nombre: "Riqueza de Murciélagos",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:riqueza_murcielagos",
-            visible: true,
-            leyenda: true,
-          },
           {
             nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+          {
+            nombre: "Riqueza de Murciélagos",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:riqueza_murcielagos",
             visible: true,
             leyenda: true,
           },
@@ -274,21 +274,21 @@ export const storyMapConfig = {
       capituloPadre: 2,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [
-          {
-            nombre: "Especies de Interés",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:riqueza_interes",
-            visible: true,
-            leyenda: true,
-          },
           {
             nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+          {
+            nombre: "Especies de Interés",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:riqueza_interes",
             visible: true,
             leyenda: true,
           },
@@ -304,21 +304,21 @@ export const storyMapConfig = {
       capituloPadre: 2,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [
-          {
-            nombre: "Especies en Riesgo/Prioritarias",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:riqueza_riesgo",
-            visible: true,
-            leyenda: true,
-          },
           {
             nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+          {
+            nombre: "Especies en Riesgo/Prioritarias",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:riqueza_riesgo",
             visible: true,
             leyenda: true,
           },
@@ -334,21 +334,21 @@ export const storyMapConfig = {
       capituloPadre: 2,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [
-          {
-            nombre: "Subespecies",
-            tipo: "wms",
-            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
-            layers: "SEICCT:riqueza_subespecies",
-            visible: true,
-            leyenda: true,
-          },
           {
             nombre: "Límite",
             tipo: "wms",
             url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
             layers: "SEICCT:Limite",
+            visible: true,
+            leyenda: true,
+          },
+          {
+            nombre: "Subespecies",
+            tipo: "wms",
+            url: "https://api.cambioclimaticotlaxcala.mx/geoserver/SEICCT/ows",
+            layers: "SEICCT:riqueza_subespecies",
             visible: true,
             leyenda: true,
           },
@@ -376,7 +376,7 @@ export const storyMapConfig = {
       capituloPadre: 3,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -559,7 +559,7 @@ export const storyMapConfig = {
       capituloPadre: 3,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -742,7 +742,7 @@ export const storyMapConfig = {
       capituloPadre: 3,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -925,7 +925,7 @@ export const storyMapConfig = {
       capituloPadre: 3,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -1112,7 +1112,7 @@ export const storyMapConfig = {
       capituloPadre: 3,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -1303,7 +1303,7 @@ export const storyMapConfig = {
       capituloPadre: 3,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -1490,7 +1490,7 @@ export const storyMapConfig = {
       capituloPadre: 3,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -1673,7 +1673,7 @@ export const storyMapConfig = {
       capituloPadre: 3,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -1868,7 +1868,7 @@ export const storyMapConfig = {
       capituloPadre: 4,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -2051,7 +2051,7 @@ export const storyMapConfig = {
       capituloPadre: 4,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -2234,7 +2234,7 @@ export const storyMapConfig = {
       capituloPadre: 4,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -2417,7 +2417,7 @@ export const storyMapConfig = {
       capituloPadre: 4,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -2604,7 +2604,7 @@ export const storyMapConfig = {
       capituloPadre: 4,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -2795,7 +2795,7 @@ export const storyMapConfig = {
       capituloPadre: 4,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -2978,7 +2978,7 @@ export const storyMapConfig = {
       capituloPadre: 4,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {
@@ -3161,7 +3161,7 @@ export const storyMapConfig = {
       capituloPadre: 4,
       mapa: {
         centro: [-98.16560203447955, 19.42964878131165],
-        zoom: 10,
+        zoom: 10.5,
         capas: [],
       },
       modelosClimaticos: {

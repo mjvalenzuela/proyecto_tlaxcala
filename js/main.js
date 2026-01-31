@@ -403,10 +403,107 @@ class StoryMapApp {
 
           this.mapManager.configurarHoverMunicipios(mapaId, mapElementId);
         }, 500);
+
+        // Mostrar simbología dinámica
+        this.mostrarSimbologia(subcapituloId, numeroCapitulo, capasDelModelo);
       }
     } else {
       console.error(`Error al actualizar capas del modelo ${modelo}`);
     }
+  }
+
+  /**
+   * Muestra la simbología para los capítulos 3 y 4
+   * @param {string} subcapituloId - ID del subcapítulo (ej: "3-1")
+   * @param {number} numeroCapitulo - Número del capítulo padre (3 o 4)
+   * @param {Array} capas - Array de capas activas
+   */
+  mostrarSimbologia(subcapituloId, numeroCapitulo, capas) {
+    const legendsContainer = document.getElementById(`legends-map-${subcapituloId}`);
+    if (!legendsContainer) return;
+
+    const legendsContent = legendsContainer.querySelector('.map-legends-content');
+    if (!legendsContent) return;
+
+    // Limpiar contenido anterior
+    legendsContent.innerHTML = '';
+
+    // Obtener las capas de datos (excluir municipios)
+    const capasData = capas.filter(capa =>
+      capa.layers && !capa.layers.includes('municipios')
+    );
+
+    if (capasData.length === 0) {
+      legendsContainer.style.display = 'none';
+      return;
+    }
+
+    // Definir título según el tipo de capítulo
+    const esGanancia = numeroCapitulo === 3;
+    const titulo = esGanancia ? 'Ganancia de Especies' : 'Pérdida de Especies';
+
+    // Crear una sola simbología para todas las capas del subcapítulo
+    const legendItem = document.createElement('div');
+    legendItem.className = 'legend-item';
+
+    // Crear título
+    const itemTitle = document.createElement('div');
+    itemTitle.className = 'legend-item-title';
+    itemTitle.textContent = titulo;
+    legendItem.appendChild(itemTitle);
+
+    // Crear la simbología
+    this.cargarYRecrearSimbologia('', '', legendItem, esGanancia);
+
+    legendsContent.appendChild(legendItem);
+
+    // Mostrar el contenedor de simbología
+    legendsContainer.style.display = 'block';
+
+    // Configurar toggle
+    const toggleBtn = legendsContainer.querySelector('.map-legends-toggle');
+    if (toggleBtn && !toggleBtn.dataset.configured) {
+      toggleBtn.dataset.configured = 'true';
+      toggleBtn.addEventListener('click', () => {
+        legendsContainer.classList.toggle('collapsed');
+        toggleBtn.textContent = legendsContainer.classList.contains('collapsed') ? '+' : '−';
+      });
+    }
+  }
+
+  /**
+   * Carga la leyenda del WMS y recrea la simbología con HTML
+   * Basado en los estilos SLD que usan la paleta Viridis
+   * @param {string} legendUrl - URL del GetLegendGraphic
+   * @param {string} layerName - Nombre de la capa
+   * @param {HTMLElement} container - Contenedor donde agregar la simbología
+   * @param {boolean} esGanancia - Si es capítulo de ganancia (true) o pérdida (false)
+   */
+  async cargarYRecrearSimbologia(legendUrl, layerName, container, esGanancia) {
+    const simbologiaDiv = document.createElement('div');
+    simbologiaDiv.className = 'legend-simbologia';
+
+    // Paleta Viridis usada en los SLD del proyecto
+    // Los valores van de 0 (sin cambio) a 4+ (mayor cambio)
+    const categorias = [
+      { color: '#fde725', label: '4+' },
+      { color: '#5dc963', label: '3' },
+      { color: '#21908d', label: '2' },
+      { color: '#3b528b', label: '1' },
+      { color: '#440154', label: '0' }
+    ];
+
+    categorias.forEach(cat => {
+      const categoriaDiv = document.createElement('div');
+      categoriaDiv.className = 'legend-categoria';
+      categoriaDiv.innerHTML = `
+        <span class="legend-simbolo" style="background-color: ${cat.color};"></span>
+        <span class="legend-label">${cat.label}</span>
+      `;
+      simbologiaDiv.appendChild(categoriaDiv);
+    });
+
+    container.appendChild(simbologiaDiv);
   }
 
   /**
