@@ -964,7 +964,7 @@ class RiesgoApp {
       legendsContainer.id = `legends-${mapId}`;
       legendsContainer.innerHTML = `
         <div class="map-legends-header">
-          <div class="map-legends-title">Simbología</div>
+          <div class="map-legends-title">Leyenda</div>
           <button class="map-legends-toggle" title="Ocultar/Mostrar leyendas">▲</button>
         </div>
         <div class="map-legends-content"></div>
