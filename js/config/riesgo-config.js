@@ -64,6 +64,98 @@ const simbologias = {
       { label: "10", color: "#382a54", stroke: "#232323" },
       { label: "11", color: "#26172a", stroke: "#232323" }
     ]
+  },
+  "SEICCT:total_fenomenos": {
+    titulo: "Total de Fenómenos",
+    tipo: "polygon",
+    categorias: [
+      { label: "4 - 6", color: "#0c5406", stroke: "#232323" },
+      { label: "6 - 8", color: "#85a503", stroke: "#232323" },
+      { label: "8 - 10", color: "#fff700", stroke: "#232323" },
+      { label: "10 - 14", color: "#e27c00", stroke: "#232323" },
+      { label: "14 - 20", color: "#c40000", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:actividad_volcanica": {
+    titulo: "Actividad Volcánica",
+    tipo: "polygon",
+    categorias: [
+      { label: "Sí", color: "#fc9ca1", stroke: "#232323" },
+      { label: "No", color: "#cecece", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:bajas_temperaturas": {
+    titulo: "Bajas Temperaturas",
+    tipo: "polygon",
+    categorias: [
+      { label: "Sí", color: "#9178cd", stroke: "#232323" },
+      { label: "No", color: "#d2d2d2", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:ciclones": {
+    titulo: "Ciclones",
+    tipo: "polygon",
+    categorias: [
+      { label: "Sí", color: "#5dc178", stroke: "#232323" },
+      { label: "No", color: "#d7d7d7", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:heladas": {
+    titulo: "Heladas",
+    tipo: "polygon",
+    categorias: [
+      { label: "1", color: "#fc7b5c", stroke: "#232323" },
+      { label: "2", color: "#ffc750", stroke: "#232323" },
+      { label: "3", color: "#494489", stroke: "#232323" },
+      { label: "No", color: "#dadada", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:lluvias": {
+    titulo: "Lluvias",
+    tipo: "polygon",
+    categorias: [
+      { label: "1", color: "#fffee3", stroke: "#232323" },
+      { label: "2", color: "#f8ff9a", stroke: "#232323" },
+      { label: "3", color: "#b2ed61", stroke: "#232323" },
+      { label: "4", color: "#2fc838", stroke: "#232323" },
+      { label: "5", color: "#22576b", stroke: "#232323" },
+      { label: "6", color: "#2f1475", stroke: "#232323" },
+      { label: "No", color: "#dbdbdb", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:nevadas_helada_granizo": {
+    titulo: "Nevadas-Helada-Granizo",
+    tipo: "polygon",
+    categorias: [
+      { label: "1", color: "#0c5406", stroke: "#232323" },
+      { label: "2", color: "#3d7632", stroke: "#232323" },
+      { label: "3", color: "#6d985e", stroke: "#232323" },
+      { label: "4", color: "#9eba89", stroke: "#232323" },
+      { label: "5", color: "#cedcb5", stroke: "#232323" },
+      { label: "6", color: "#fffee1", stroke: "#232323" },
+      { label: "7", color: "#d8cbc0", stroke: "#232323" },
+      { label: "8", color: "#b1989f", stroke: "#232323" },
+      { label: "9", color: "#8a667f", stroke: "#232323" },
+      { label: "10", color: "#63335e", stroke: "#232323" },
+      { label: "No", color: "#cec7ce", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:sequia": {
+    titulo: "Sequía",
+    tipo: "polygon",
+    categorias: [
+      { label: "1", color: "#faea92", stroke: "#232323" },
+      { label: "2", color: "#cc9f35", stroke: "#232323" },
+      { label: "No", color: "#d5d5d5", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:sismos": {
+    titulo: "Sismos",
+    tipo: "polygon",
+    categorias: [
+      { label: "Sí", color: "#86607c", stroke: "#232323" },
+      { label: "No", color: "#d7dad8", stroke: "#232323" }
+    ]
   }
 };
 
@@ -164,41 +256,86 @@ const RiesgoConfig = {
           zIndex: 1,
           leyenda: true,
         },
-        { tipo: "subtitulo", titulo: "Declaratorias" },
+        { tipo: "subtitulo", titulo: "Fenómenos" },
         {
-          nombre: "Total de Declaratorias",
+          nombre: "Total de Fenómenos",
           tipo: "wms",
-          layer: "SEICCT:total_de_declaratorias",
+          layer: "SEICCT:total_fenomenos",
           opacity: 1,
           visible: false,
           zIndex: 2,
           leyenda: true,
         },
         {
-          nombre: "# Contingencias Climáticas",
+          nombre: "Sequía",
           tipo: "wms",
-          layer: "SEICCT:contingencia_climatica",
+          layer: "SEICCT:sequia",
           opacity: 1,
           visible: false,
           zIndex: 3,
           leyenda: true,
         },
         {
-          nombre: "# Desastres",
+          nombre: "Lluvias",
           tipo: "wms",
-          layer: "SEICCT:desastres",
+          layer: "SEICCT:lluvias",
           opacity: 1,
           visible: false,
           zIndex: 4,
           leyenda: true,
         },
         {
-          nombre: "# Emergencias",
+          nombre: "Bajas Temperaturas",
           tipo: "wms",
-          layer: "SEICCT:emergencias",
+          layer: "SEICCT:bajas_temperaturas",
           opacity: 1,
           visible: false,
           zIndex: 5,
+          leyenda: true,
+        },
+        {
+          nombre: "Heladas",
+          tipo: "wms",
+          layer: "SEICCT:heladas",
+          opacity: 1,
+          visible: false,
+          zIndex: 6,
+          leyenda: true,
+        },
+        {
+          nombre: "Nevadas, Helada y Granizo",
+          tipo: "wms",
+          layer: "SEICCT:nevadas_helada_granizo",
+          opacity: 1,
+          visible: false,
+          zIndex: 7,
+          leyenda: true,
+        },
+        {
+          nombre: "Ciclones",
+          tipo: "wms",
+          layer: "SEICCT:ciclones",
+          opacity: 1,
+          visible: false,
+          zIndex: 8,
+          leyenda: true,
+        },
+        {
+          nombre: "Sismos",
+          tipo: "wms",
+          layer: "SEICCT:sismos",
+          opacity: 1,
+          visible: false,
+          zIndex: 9,
+          leyenda: true,
+        },
+        {
+          nombre: "Actividad Volcánica",
+          tipo: "wms",
+          layer: "SEICCT:actividad_volcanica",
+          opacity: 1,
+          visible: false,
+          zIndex: 10,
           leyenda: true,
         },
       ],

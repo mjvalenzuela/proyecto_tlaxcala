@@ -128,8 +128,8 @@
         height: 100% !important;
       }
 
-      /* Estilos para gráficas del capítulo 5 - Heladas */
-      #chapter-5 .analytics-chart-1 .chart-container {
+      /* Estilos para gráficas del capítulo 3 - Sequía */
+      #chapter-3 .analytics-chart-2 .chart-container {
         width: 100% !important;
         max-width: none !important;
         max-height: none !important;
@@ -137,245 +137,81 @@
         margin: 0 !important;
       }
 
-      #chapter-5 .analytics-chart-1 canvas {
+      #chapter-3 .analytics-chart-2 canvas {
         width: 100% !important;
         height: 100% !important;
       }
 
-      #chapter-5 .analytics-chart-1 {
+      #chapter-3 .analytics-chart-2 {
         display: flex;
         flex-direction: column;
         overflow: hidden;
       }
 
-      #chapter-5 .analytics-chart-1 .chart-title {
+      #chapter-3 .analytics-chart-2 .chart-title {
         flex-shrink: 0;
         margin-bottom: 0.5rem;
       }
 
-      /* Layout especial para capítulo 6 - Huracanes */
-      .chapter-huracanes {
-        display: grid;
-        grid-template-columns: 35% 65%;
-        grid-template-rows: auto 1fr;
-        gap: 1rem;
-        padding: 1rem;
-      }
-
-      .chapter-huracanes .map-title {
-        grid-column: 1 / -1;
-        grid-row: 1;
-      }
-
-      .chapter-huracanes .chapter-text {
-        grid-column: 1;
-        grid-row: 2;
-      }
-
-      .chapter-huracanes .chapter-effects-grid {
-        grid-column: 2;
-        grid-row: 2;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 1rem;
-      }
-
-      .effect-card {
-        background: white;
-        border-radius: var(--radius-lg);
-        padding: 1.25rem;
-        box-shadow: 0 4px 15px var(--color-shadow-md);
-        border: 1px solid var(--color-beige-light);
-        display: flex;
-        gap: 1rem;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-
-      .effect-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px var(--color-shadow-lg);
-      }
-
-      .effect-icon {
-        font-size: 2.5rem;
-        flex-shrink: 0;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-        border-radius: var(--radius-md);
-      }
-
-      .effect-content h4 {
-        margin: 0 0 0.5rem 0;
-        color: var(--color-guinda);
-        font-size: 1rem;
-        font-weight: 600;
-      }
-
-      .effect-content p {
-        margin: 0;
-        font-size: 0.85rem;
-        color: #555;
-        line-height: 1.5;
-      }
-
-      /* Responsive para capítulo 6 */
-      @media (max-width: 1024px) {
-        .chapter-huracanes {
-          grid-template-columns: 1fr;
-          grid-template-rows: auto auto auto;
-        }
-
-        .chapter-huracanes .chapter-text {
-          grid-column: 1;
-          grid-row: 2;
-        }
-
-        .chapter-huracanes .chapter-effects-grid {
-          grid-column: 1;
-          grid-row: 3;
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @media (max-width: 640px) {
-        .chapter-huracanes .chapter-effects-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .effect-card {
-          flex-direction: column;
-          text-align: center;
-        }
-
-        .effect-icon {
-          margin: 0 auto;
-        }
-      }
-
-      /* Layout especial para capítulo 7 - Recursos Forestales */
-      .chapter-forestales {
-        display: grid;
-        grid-template-columns: 35% 65%;
-        grid-template-rows: auto 1fr;
-        gap: 1rem;
-        padding: 1rem;
-      }
-
-      .chapter-forestales .map-title {
-        grid-column: 1 / -1;
-        grid-row: 1;
-      }
-
-      .chapter-forestales .chapter-text {
-        grid-column: 1;
-        grid-row: 2;
-      }
-
-      .chapter-forestales .chapter-regions-grid {
-        grid-column: 2;
-        grid-row: 2;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 1rem;
-      }
-
-      .region-card {
-        background: white;
-        border-radius: var(--radius-lg);
-        padding: 1.25rem;
-        box-shadow: 0 4px 15px var(--color-shadow-md);
-        border: 1px solid var(--color-beige-light);
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-
-      .region-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px var(--color-shadow-lg);
-      }
-
-      .region-card-header {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-
-      .region-icon {
-        flex-shrink: 0;
+      /* Estilos para tabla de cultivos */
+      .tabla-cultivos {
         width: 100%;
-        height: 120px;
-        border-radius: var(--radius-md);
+        border-collapse: collapse;
+        margin-top: 1rem;
+        font-size: 14px;
+      }
+
+      .tabla-cultivos th,
+      .tabla-cultivos td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .tabla-cultivos th {
+        background-color: var(--color-btn-primary, #8B1A4A);
+        color: white;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .tabla-cultivos tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .tabla-cultivos tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      .tabla-cultivos td:last-child {
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      /* Estilos para gráficas del capítulo 4 - Heladas */
+      #chapter-4 .analytics-chart-1 .chart-container {
+        width: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        height: calc(100% - 2rem) !important;
+        margin: 0 !important;
+      }
+
+      #chapter-4 .analytics-chart-1 canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      #chapter-4 .analytics-chart-1 {
+        display: flex;
+        flex-direction: column;
         overflow: hidden;
       }
 
-      .region-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .region-card-header h4 {
-        margin: 0;
-        color: var(--color-guinda);
-        font-size: 1rem;
-        font-weight: 600;
-        line-height: 1.3;
-      }
-
-      .region-card p {
-        margin: 0;
-        font-size: 0.85rem;
-        color: #555;
-        line-height: 1.5;
-      }
-
-      .region-card .region-alert {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.5rem;
-        background: #fff3e0;
-        padding: 0.5rem 0.75rem;
-        border-radius: var(--radius-sm);
-        font-size: 0.8rem;
-        color: #e65100;
-        margin-top: auto;
-      }
-
-      .region-card .region-alert-icon {
+      #chapter-4 .analytics-chart-1 .chart-title {
         flex-shrink: 0;
-      }
-
-      /* Responsive para capítulo 7 */
-      @media (max-width: 1024px) {
-        .chapter-forestales {
-          grid-template-columns: 1fr;
-          grid-template-rows: auto auto auto;
-        }
-
-        .chapter-forestales .chapter-text {
-          grid-column: 1;
-          grid-row: 2;
-        }
-
-        .chapter-forestales .chapter-regions-grid {
-          grid-column: 1;
-          grid-row: 3;
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @media (max-width: 640px) {
-        .chapter-forestales .chapter-regions-grid {
-          grid-template-columns: 1fr;
-        }
+        margin-bottom: 0.5rem;
       }
 
       /* Estilos para popup de municipios */
@@ -518,19 +354,16 @@
           <!-- Card de texto -->
           <div class="chapter-text">
             <!-- <span class="chapter-number">Capítulo 1</span> -->
-            <h2 class="chapter-title">
+            <h2 class="chapter-title" style="font-size: 16px;">
               ¿Qué es una Amenaza?
             </h2>
             <br>
-            <div class="chapter-content">
+            <div class="chapter-content" style="font-size: 16px;">
               <p>
                 Se refiere a cualquier evento o fenómeno que tiene el potencial de causar daño o perjuicio.
               </p>
               <p>
-                Las amenazas pueden ser naturales, como huracanes, terremotos o inundaciones, o pueden ser antropogénicas, como la contaminación o el conflicto armado. 
-              </p>
-              <p>
-                En el contexto del cambio climático, las amenazas incluyen el aumento de la temperatura, el cambio en los patrones de precipitación y la ocurrencia de fenómenos climáticos extremos.
+                Las amenazas en Tlaxcala pueden ser geológicas o hidrometeorológicas, fenómenos cada vez más frecuentes por el cambio climático, afectando cosechas, viviendas, infraestructura y la salud de la población.
               </p>
             </div>
           </div>
@@ -543,7 +376,7 @@
 
           <!-- Card de texto (izquierda, 30%) -->
           <div class="analytics-text">
-            <h2 class="chapter-title">Diagnóstico Participativo</h2>
+            <h2 class="chapter-title"><strong>Diagnóstico Participativo</strong></h2>
             <br>
             <div class="chapter-content">
               <p>
@@ -551,6 +384,22 @@
               </p>
               <p>
                 Los resultados muestran <strong>consistencia entre el análisis de vulnerabilidad y el conocimiento local</strong>: municipios como <strong>Altzayanca</strong> (vulnerabilidad "Muy alta") y <strong>Tlaxco</strong> (mayor cantidad de riesgos mencionados) coinciden con altos niveles de pobreza extrema. Esto confirma que <strong>la vulnerabilidad se acentúa en las localidades más pobres</strong>, donde la falta de capacidad adaptativa convierte eventos naturales en catástrofes.
+              </p>
+              <br>
+              <h2 class="chapter-title"><strong>Impacto Territorial</strong></h2>
+            <br>
+              <p>
+               <ul>
+                <li><strong>🌵 Sequía:</strong>Entre 2010 y 2023 prevalecieron condiciones de sequía "anormalmente seca" (D0), ligadas a la disminución de lluvias en la región. <br>🔗Fuente: <a href="https://smn.conagua.gob.mx/es/climatologia/monitor-de-sequia/monitor-de-sequia-en-mexico" target="_blank">Monitor de sequías CONAGUA</a></li>
+                <li><br></li>
+                <li><strong>🔥 Fuegos forestales:</strong>Registrados en distintas zonas del estado, con información detallada en el SNIF. <br>🔗Fuente: <a href="https://snif.cnf.gob.mx/incendios/" target="_blank">Incendios forestales – SNIF</a></li>
+                <li><br></li>
+                <li><strong>🌊 Inundaciones:</strong>Identificadas como amenazas recurrentes en varios municipios. <br>🔗Datos disponibles en: <a href="http://www.atlasnacionalderiesgos.gob.mx/archivo/visor-capas.html" target="_blank">Atlas Nacional de Riesgos</a></li>
+                <li><br></li>
+                <li><strong>🌲 Deforestación:</strong>Vinculada a la pérdida de cobertura vegetal y al aumento de la vulnerabilidad del territorio. <br>🔗Fuente: <a href="https://snmf.cnf.gob.mx/sistema-nacional-de-monitoreo-forestal-2/" target="_blank">Sistema Nacional de Monitoreo Forestal</a></li>
+                <li><br></li>
+                <li><strong>🏭 Emisión de contaminantes:</strong>Mencionada como amenaza, pero se recomienda moverla a la sección de Mitigación por su relación con reducción de emisiones y calidad del aire. <br>🔗Fuente: <a href="https://gisviewer.semarnat.gob.mx/wmaplicacion/inem/" target="_blank">Inventario Nacional de Emisiones - SEMARNAT</a></li>
+               </ul>
               </p>
             </div>
           </div>
@@ -573,72 +422,72 @@
         </section>
 
         <!-- CAPÍTULO 3 -->
-        <section class="chapter amenazas-chapter-3" id="chapter-3" data-chapter="3">
-          <!-- Título del mapa -->
-          <h2 class="map-title">Distribución espacial de amenazas climáticas</h2>
+        <section class="chapter chapter-analytics" id="chapter-3" data-chapter="3">
+          <!-- Título del capítulo -->
+          <h2 class="map-title">Amenazas al sector agrícola: Sequía</h2>
 
-          <!-- Mapa -->
-          <div class="chapter-map amenazas-chapter-map">
-            <div class="map-container" id="map-3"></div>
-            <!-- Los controles de capas se generan dinámicamente -->
-          </div>
-
-          <!-- Card de texto -->
-          <div class="chapter-text amenazas-chapter-text">
-            <h2 class="chapter-title">Impacto Territorial</h2>
-            <br>
+          <!-- Card de texto (izquierda, 30%) -->
+          <div class="analytics-text">
+            <h2 class="chapter-title">Agricultura y Sequía</h2>
             <div class="chapter-content">
               <p>
-               <ul>
-                <li><strong>🌵 Sequía:</strong>Entre 2010 y 2023 prevalecieron condiciones de sequía "anormalmente seca" (D0), ligadas a la disminución de lluvias en la región. <br>🔗Fuente: <a href="https://smn.conagua.gob.mx/es/climatologia/monitor-de-sequia/monitor-de-sequia-en-mexico" target="_blank">Monitor de sequías CONAGUA</a></li>
-                <li><br></li>
-                <li><strong>🔥 Fuegos forestales:</strong>Registrados en distintas zonas del estado, con información detallada en el SNIF. <br>🔗Fuente: <a href="https://snif.cnf.gob.mx/incendios/" target="_blank">Incendios forestales – SNIF</a></li>
-                <li><br></li>
-                <li><strong>🌊 Inundaciones:</strong>Identificadas como amenazas recurrentes en varios municipios. <br>🔗Datos disponibles en: <a href="http://www.atlasnacionalderiesgos.gob.mx/archivo/visor-capas.html" target="_blank">Atlas Nacional de Riesgos</a></li>
-                <li><br></li>
-                <li><strong>🌲 Deforestación:</strong>Vinculada a la pérdida de cobertura vegetal y al aumento de la vulnerabilidad del territorio. <br>🔗Fuente: <a href="https://snmf.cnf.gob.mx/sistema-nacional-de-monitoreo-forestal-2/" target="_blank">Sistema Nacional de Monitoreo Forestal</a></li>
-                <li><br></li>
-                <li><strong>🏭 Emisión de contaminantes:</strong>Mencionada como amenaza, pero se recomienda moverla a la sección de Mitigación por su relación con reducción de emisiones y calidad del aire. <br>🔗Fuente: <a href="https://gisviewer.semarnat.gob.mx/wmaplicacion/inem/" target="_blank">Inventario Nacional de Emisiones - SEMARNAT</a></li>
-               </ul>
+                La <strong>sequía</strong> es un fenómeno climático caracterizado por escasez prolongada de lluvias y humedad insuficiente. Sus efectos en la agricultura son devastadores: <strong>pérdida de cultivos, disminución de producción de alimentos</strong> y escasez de agua para riego.
               </p>
+              <p>
+                Entre <strong>2010 y 2023</strong>, según el Monitor de Sequías, en Tlaxcala ha prevalecido principalmente la condición <strong>"Anormalmente seco" (D0)</strong>, atribuida a la disminución de lluvias en la región.
+              </p>
+              <p>
+                El Estado de Tlaxcala cuenta con una superficie total de <strong>203,977 ha de temporal</strong> y <strong>24,901.25 de agricultura de riego</strong>.
+              </p>
+              <p>
+                En la entidad se registra la <strong>producción de 68 cultivos</strong>, los principales cultivos que se siembran son: maíz (grano y maíz forrajero en verde), cebada grano, trigo grano, frijol, avena, alfalfa verde y otros como la canola, papa, amaranto, brócoli, tomate verde, durazno y maguey pulquero (SIAP 2022).
+              </p>
+
+              <table class="tabla-cultivos">
+                <thead>
+                  <tr>
+                    <th>Ciclo agrícola</th>
+                    <th>Principales cultivos</th>
+                    <th>Superficie sembrada (has)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Primavera Verano</td>
+                    <td>Maíz grano, Avena forrajera, maíz forrajero, tomate verde, brócoli, lechuga, zanahoria, frijol, haba verde, cilantro.</td>
+                    <td>226,036</td>
+                  </tr>
+                  <tr>
+                    <td>Otoño Invierno</td>
+                    <td>Avena forrajera, zanahoria, cilantro, haba, ajo, brócoli, lechuga, cebolla, tomate verde</td>
+                    <td>14,773</td>
+                  </tr>
+                  <tr>
+                    <td>Perennes</td>
+                    <td>Alfalfa, durazno, espárrago, aguacate, manzana</td>
+                    <td>5,841</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Card mapa (derecha arriba, 70%) -->
+          <div class="analytics-chart-1 analytics-map">
+            <div class="map-container" id="map-3"></div>
+          </div>
+
+          <!-- Card gráfica (derecha abajo, 70%) -->
+          <div class="analytics-chart-2">
+            <h3 class="chart-title">Evolución y el porcentaje de área del Estado afectado con una o varias categorías de sequía</h3>
+            <div class="chart-container">
+              <canvas id="chart-3-1"></canvas>
             </div>
           </div>
         </section>
 
         <!-- CAPÍTULO 4 -->
-        <section class="chapter chapter-sequia" id="chapter-4" data-chapter="4">
-          <!-- Título del capítulo -->
-          <h2 class="map-title">Amenazas al sector agrícola: Sequía</h2>
-
-          <!-- Card de texto (izquierda, 30%) -->
-          <div class="chapter-text">
-            <h2 class="chapter-title">Agricultura y Sequía</h2>
-            <br>
-            <br>
-                        <div class="chapter-content">
-              <p>
-                La <strong>agricultura</strong> es fundamental para la producción de alimentos, fibras y materiales. Incluye actividades como preparación del suelo, siembra, riego, fertilización, control de plagas y cosecha. En Tlaxcala existen diversos tipos: de subsistencia, comercial, de regadío y orgánica.
-              </p>
-              <p>
-                La <strong>sequía</strong> es un fenómeno climático caracterizado por escasez prolongada de lluvias y humedad insuficiente. Sus efectos en la agricultura son devastadores: <strong>pérdida de cultivos, disminución de producción de alimentos</strong> y escasez de agua para riego, generando pérdida de ingresos e inseguridad alimentaria.
-              </p>
-              <p>
-                Entre <strong>2010 y 2023</strong>, según el Monitor de Sequías, en Tlaxcala ha prevalecido principalmente la condición <strong>"Anormalmente seco" (D0)</strong>, atribuida a la disminución de lluvias en la región durante dicho periodo.
-              </p>
-            </div>
-          </div>
-
-          <!-- Card gráfica única (derecha, 70%) -->
-          <div class="chapter-chart-full">
-            <h3 class="chart-title">Evolución y el porcentaje de área del Estado afectado con una o varias categorías de sequía</h3>
-            <div class="chart-container">
-              <canvas id="chart-4-1"></canvas>
-            </div>
-          </div>
-        </section>
-
-        <!-- CAPÍTULO 5 -->
-        <section class="chapter chapter-analytics" id="chapter-5" data-chapter="5">
+        <section class="chapter chapter-analytics" id="chapter-4" data-chapter="4">
           <!-- Título del capítulo -->
           <h2 class="map-title">Amenazas al sector agrícola: Helada</h2>
 
@@ -665,153 +514,16 @@
           <div class="analytics-chart-1">
             <h3 class="chart-title">Número de días de heladas (FD0)</h3>
             <div class="chart-container">
-              <canvas id="chart-5-1"></canvas>
+              <canvas id="chart-4-1"></canvas>
             </div>
           </div>
 
           <!-- Card mapa inferior (derecha abajo, 70%) -->
           <div class="analytics-chart-2 analytics-map">
-            <div class="map-container" id="map-5"></div>
+            <div class="map-container" id="map-4"></div>
           </div>
         </section>
 
-        <!-- CAPÍTULO 6 -->
-        <section class="chapter chapter-huracanes" id="chapter-6" data-chapter="6">
-          <!-- Título del capítulo -->
-          <h2 class="map-title">Amenazas al sector agrícola: Huracanes</h2>
-
-          <!-- Card de texto (izquierda, 35%) -->
-          <div class="chapter-text">
-            <h2 class="chapter-title">Huracanes y Agricultura</h2>
-            <br>
-            <br>
-            <div class="chapter-content">
-              <p>
-                Los <strong>huracanes</strong> pueden tener un impacto significativo y negativo en la agricultura al dañar cultivos, suelos y la infraestructura agrícola, lo que puede tener consecuencias económicas y alimentarias importantes en las áreas afectadas.
-              </p>
-              <p>
-                Los agricultores a menudo se enfrentan a desafíos considerables para <strong>adaptarse y recuperarse</strong> de los efectos de los huracanes.
-              </p>
-            </div>
-          </div>
-
-          <!-- Cards de efectos (derecha, 65%) -->
-          <div class="chapter-effects-grid">
-            <div class="effect-card">
-              <div class="effect-icon">🌾</div>
-              <div class="effect-content">
-                <h4>Pérdida de cultivos</h4>
-                <p>Los vientos fuertes y las lluvias torrenciales pueden destruir o dañar gravemente los cultivos en la trayectoria del huracán, resultando en pérdidas económicas significativas para los agricultores.</p>
-              </div>
-            </div>
-
-            <div class="effect-card">
-              <div class="effect-icon">🌊</div>
-              <div class="effect-content">
-                <h4>Inundaciones</h4>
-                <p>Las lluvias intensas asociadas a los huracanes pueden provocar inundaciones en las áreas agrícolas, dañando las cosechas y erosionando el suelo.</p>
-              </div>
-            </div>
-
-            <div class="effect-card">
-              <div class="effect-icon">🏚️</div>
-              <div class="effect-content">
-                <h4>Daños a infraestructura</h4>
-                <p>Los huracanes pueden destruir instalaciones agrícolas como graneros, sistemas de riego, cercas y maquinaria, afectando la capacidad productiva.</p>
-              </div>
-            </div>
-
-            <div class="effect-card">
-              <div class="effect-icon">💰</div>
-              <div class="effect-content">
-                <h4>Impacto económico</h4>
-                <p>La pérdida de cosechas e infraestructura genera pérdida de ingresos e inseguridad alimentaria, afectando a las comunidades rurales.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- CAPÍTULO 7 -->
-        <section class="chapter chapter-forestales" id="chapter-7" data-chapter="7">
-          <!-- Título del capítulo -->
-          <h2 class="map-title">Amenazas a los Recursos Forestales</h2>
-
-          <!-- Card de texto (izquierda, 35%) -->
-          <div class="chapter-text">
-            <h2 class="chapter-title">Bosques y Cambio Climático</h2>
-            <br>
-            <div class="chapter-content">
-              <p>
-                Los <strong>bosques</strong> son fundamentales para la mitigación del cambio climático al actuar como <strong>sumideros de carbono</strong>: absorben más CO2 del que emiten mediante la fotosíntesis, almacenándolo en su biomasa y suelos.
-              </p>
-              <p>
-                En Tlaxcala, los recursos forestales se distribuyen en <strong>4 regiones</strong> con características y problemáticas distintas. Los municipios con mayor superficie forestal son: <strong>Tlaxco, Calpulalpan, Huamantla, Españita y Nanacamilpa</strong>.
-              </p>
-              <p>
-                Las principales amenazas incluyen: cambios en temperatura y precipitación, expansión urbana, incendios forestales, y plagas como el descortezador y muérdago.
-              </p>
-            </div>
-          </div>
-
-          <!-- Cards de regiones forestales (derecha, 65%) -->
-          <div class="chapter-regions-grid">
-            <div class="region-card">
-              <div class="region-card-header">
-                <div class="region-icon">
-                  <img src="images/tlaxco_terrestre.png" alt="Región Tlaxco-Terrenate">
-                </div>
-                <h4>Región Tlaxco-Terrenate</h4>
-              </div>
-              <p>Principal zona de <strong>aprovechamiento forestal comercial</strong>. Tenencia: 36% privada, 64% social.</p>
-              <div class="region-alert">
-                <span class="region-alert-icon">⚠️</span>
-                <span>Tala clandestina y cambio de uso de suelo. Procesos erosivos por pérdida de cobertura vegetal.</span>
-              </div>
-            </div>
-
-            <div class="region-card">
-              <div class="region-card-header">
-                <div class="region-icon">
-                  <img src="images/nanacamilpa_calpulalpan.png" alt="Región Nanacamilpa-Calpulalpan">
-                </div>
-                <h4>Región Nanacamilpa-Calpulalpan</h4>
-              </div>
-              <p>Zona de manejo forestal diversificado. Tenencia: 47% privada, 53% social. Destaca por el <strong>ecoturismo de luciérnagas</strong>.</p>
-              <div class="region-alert">
-                <span class="region-alert-icon">⚠️</span>
-                <span>Presión por actividades turísticas no reguladas.</span>
-              </div>
-            </div>
-
-            <div class="region-card">
-              <div class="region-card-header">
-                <div class="region-icon">
-                  <img src="images/parque_malinche.png" alt="Parque Nacional La Malinche">
-                </div>
-                <h4>Parque Nacional La Malinche</h4>
-              </div>
-              <p><strong>Área Natural Protegida</strong> compartida: Tlaxcala (33,155 ha) y Puebla (12,650 ha). Tala ilegal controlada.</p>
-              <div class="region-alert">
-                <span class="region-alert-icon">⚠️</span>
-                <span>Incendios forestales y 687.9 ha afectadas por descortezador y plantas parásitas (2020-2021).</span>
-              </div>
-            </div>
-
-            <div class="region-card">
-              <div class="region-card-header">
-                <div class="region-icon">
-                  <img src="images/centro_poniente.png" alt="Región Centro-Poniente">
-                </div>
-                <h4>Región Centro-Poniente</h4>
-              </div>
-              <p>Vegetación forestal <strong>fragmentada</strong> debido a expansión agropecuaria y extracción de leña.</p>
-              <div class="region-alert">
-                <span class="region-alert-icon">⚠️</span>
-                <span>Degradación forestal, presencia de descortezador y muérdago.</span>
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
 
       <!-- Timeline inferior -->
@@ -826,23 +538,11 @@
         </div>
         <div class="timeline-item" data-chapter="3">
           <div class="timeline-circle">3</div>
-          <div class="timeline-label">Impacto Territorial</div>
+          <div class="timeline-label">Sequías</div>
         </div>
         <div class="timeline-item" data-chapter="4">
           <div class="timeline-circle">4</div>
-          <div class="timeline-label">Amenazas: Sequía</div>
-        </div>
-        <div class="timeline-item" data-chapter="5">
-          <div class="timeline-circle">5</div>
-          <div class="timeline-label">Amenazas: Heladas</div>
-        </div>
-        <div class="timeline-item" data-chapter="6">
-          <div class="timeline-circle">6</div>
-          <div class="timeline-label">Amenazas: Huracanes</div>
-        </div>
-        <div class="timeline-item" data-chapter="7">
-          <div class="timeline-circle">7</div>
-          <div class="timeline-label">Recursos Forestales</div>
+          <div class="timeline-label">Heladas</div>
         </div>
       </div>
 
@@ -1425,7 +1125,7 @@
                   color: '#333',
                   font: {
                     weight: 'bold',
-                    size: 10
+                    size: 16
                   },
                   formatter: function(value) {
                     return value;
@@ -1445,10 +1145,10 @@
                     display: false
                   },
                   ticks: {
-                    maxRotation: 45,
-                    minRotation: 45,
+                    maxRotation: 90,
+                    minRotation: 90,
                     font: {
-                      size: 9
+                      size: 16
                     }
                   }
                 },
@@ -1524,7 +1224,7 @@
                   color: '#333',
                   font: {
                     weight: 'bold',
-                    size: 8
+                    size: 16
                   },
                   formatter: function(value) {
                     return value;
@@ -1545,9 +1245,9 @@
                   },
                   ticks: {
                     maxRotation: 90,
-                    minRotation: 45,
+                    minRotation: 90,
                     font: {
-                      size: 7
+                      size: 16
                     }
                   }
                 },
@@ -1569,11 +1269,135 @@
         }
 
         // ============================================================
-        // CAPÍTULO 4 - GRÁFICA DE SEQUÍA (Área apilada)
+        // CAPÍTULO 3 - MAPA DE SEQUÍA
+        // ============================================================
+        const mapContainer3 = document.getElementById('map-3');
+        if (mapContainer3) {
+          const map3 = new ol.Map({
+            target: 'map-3',
+            layers: [
+              new ol.layer.Tile({
+                source: new ol.source.OSM(),
+                zIndex: 0,
+              }),
+            ],
+            view: new ol.View({
+              center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
+              zoom: 9.5,
+            }),
+            controls: ol.control.defaults.defaults({
+              zoom: true,
+              attribution: false,
+            }),
+          });
+
+          // Capa WMS de Sequía
+          const sequiaLayer = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+              url: proxyUrl + '/SEICCT/wms',
+              params: {
+                'LAYERS': 'SEICCT:sequia',
+                'TILED': true,
+                'VERSION': '1.1.0',
+              },
+              serverType: 'geoserver',
+            }),
+            visible: true,
+            zIndex: 1,
+          });
+          sequiaLayer.set('name', 'Sequía');
+          sequiaLayer.set('layerId', 'SEICCT:sequia');
+          map3.addLayer(sequiaLayer);
+
+          // Crear control de capas para map-3
+          let controlsContainer3 = document.createElement('div');
+          controlsContainer3.className = 'map-controls';
+          controlsContainer3.id = 'map-controls-3';
+          mapContainer3.appendChild(controlsContainer3);
+
+          controlsContainer3.innerHTML = `
+            <div class="map-controls-header">
+              <div class="map-controls-title">Capas</div>
+              <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
+            </div>
+            <div class="map-controls-content"></div>
+          `;
+
+          const contentContainer3 = controlsContainer3.querySelector('.map-controls-content');
+          const toggleBtn3 = controlsContainer3.querySelector('.map-controls-toggle');
+
+          toggleBtn3.addEventListener('click', () => {
+            controlsContainer3.classList.toggle('collapsed');
+            toggleBtn3.textContent = controlsContainer3.classList.contains('collapsed') ? '▼' : '▲';
+          });
+
+          // Agregar checkbox para la capa de Sequía
+          const layerControl3 = document.createElement('div');
+          layerControl3.className = 'layer-control';
+          layerControl3.innerHTML = `
+            <input type="checkbox" id="layer-sequia-3" checked />
+            <label for="layer-sequia-3">Sequía</label>
+          `;
+          contentContainer3.appendChild(layerControl3);
+
+          const checkbox3 = layerControl3.querySelector('#layer-sequia-3');
+          checkbox3.addEventListener('change', (e) => {
+            sequiaLayer.setVisible(e.target.checked);
+          });
+
+          // Crear panel de leyendas para map-3
+          let legendsContainer3 = document.createElement('div');
+          legendsContainer3.className = 'map-legends';
+          legendsContainer3.id = 'map-legends-3';
+          mapContainer3.appendChild(legendsContainer3);
+
+          legendsContainer3.innerHTML = `
+            <div class="map-legends-header">
+              <div class="map-legends-title">Leyenda</div>
+              <button class="map-legends-toggle" title="Ocultar/Mostrar leyenda">▲</button>
+            </div>
+            <div class="map-legends-content"></div>
+          `;
+
+          const legendsContent3 = legendsContainer3.querySelector('.map-legends-content');
+          const legendsToggleBtn3 = legendsContainer3.querySelector('.map-legends-toggle');
+
+          legendsToggleBtn3.addEventListener('click', () => {
+            legendsContainer3.classList.toggle('collapsed');
+            legendsToggleBtn3.textContent = legendsContainer3.classList.contains('collapsed') ? '▼' : '▲';
+          });
+
+          // Generar leyenda para Sequía
+          const simbologiaSequia = storyMapConfig.simbologias['SEICCT:sequia'];
+          if (simbologiaSequia) {
+            const legendItem = document.createElement('div');
+            legendItem.className = 'legend-item';
+            legendItem.innerHTML = `<div class="legend-item-title">${simbologiaSequia.titulo}</div>`;
+
+            const simbologia = document.createElement('div');
+            simbologia.className = 'legend-simbologia';
+
+            simbologiaSequia.categorias.forEach(cat => {
+              const categoria = document.createElement('div');
+              categoria.className = 'legend-categoria';
+              categoria.innerHTML = `
+                <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
+                <span class="legend-label">${cat.label}</span>
+              `;
+              simbologia.appendChild(categoria);
+            });
+
+            legendItem.appendChild(simbologia);
+            legendsContent3.appendChild(legendItem);
+          }
+        }
+
+        // ============================================================
+        // CAPÍTULO 3 - GRÁFICA DE SEQUÍA (Área apilada)
         // ============================================================
 
-        const ctx41 = document.getElementById('chart-4-1');
-        if (ctx41) {
+        const ctx31 = document.getElementById('chart-3-1');
+        if (ctx31) {
           // Fechas desde enero 2010 hasta enero 2023 (mensual simplificado a trimestral para mejor visualización)
           const fechasSequia = [
             '2010-01', '2010-04', '2010-07', '2010-10',
@@ -1638,7 +1462,7 @@
             0, 0, 0, 0, 0
           ];
 
-          new Chart(ctx41.getContext('2d'), {
+          new Chart(ctx31.getContext('2d'), {
             type: 'line',
             data: {
               labels: fechasSequia,
@@ -2189,11 +2013,11 @@
         }
 
         // ============================================================
-        // CAPÍTULO 5 - GRÁFICA DE HELADAS (FD0)
+        // CAPÍTULO 4 - GRÁFICA DE HELADAS (FD0)
         // ============================================================
 
-        const ctx51 = document.getElementById('chart-5-1');
-        if (ctx51) {
+        const ctx41 = document.getElementById('chart-4-1');
+        if (ctx41) {
           // Años desde 1975 hasta 2020
           const aniosHeladas = [];
           for (let y = 1975; y <= 2020; y++) {
@@ -2207,7 +2031,7 @@
             26, 28, 21, 27, 25, 36, 21, 36, 25, 13, 6, 9, 22, 17, 25, 21 // 2005-2020
           ];
 
-          new Chart(ctx51.getContext('2d'), {
+          new Chart(ctx41.getContext('2d'), {
             type: 'bar',
             data: {
               labels: aniosHeladas,
@@ -2251,7 +2075,7 @@
                     maxRotation: 90,
                     minRotation: 90,
                     autoSkip: false,
-                    font: { size: 8 }
+                    font: { size: 12 }
                   },
                   grid: {
                     display: false
@@ -2279,10 +2103,10 @@
         }
 
         // ============================================================
-        // CAPÍTULO 5 - MAPA DE HELADAS
+        // CAPÍTULO 4 - MAPA DE HELADAS
         // ============================================================
-        const map5 = new ol.Map({
-          target: 'map-5',
+        const map4 = new ol.Map({
+          target: 'map-4',
           layers: [
             new ol.layer.Tile({
               source: new ol.source.OSM(),
@@ -2349,7 +2173,7 @@
         });
         heladasLayer.set('name', 'Heladas');
 
-        map5.addLayer(heladasLayer);
+        map4.addLayer(heladasLayer);
 
         // Agregar capa WFS para interacción (hover y popup)
         const typeName5 = 'SEICCT:M82_Vulnerabilidad_CC';
@@ -2390,27 +2214,27 @@
           })
         });
 
-        const wfsLayer5 = new ol.layer.Vector({
+        const wfsLayer4 = new ol.layer.Vector({
           source: vectorSource5,
           style: transparentStyle5,
           visible: true,
           zIndex: 999
         });
-        wfsLayer5.set('name', 'Municipios (Interacción)');
-        wfsLayer5.set('tipo', 'wfs');
-        map5.addLayer(wfsLayer5);
+        wfsLayer4.set('name', 'Municipios (Interacción)');
+        wfsLayer4.set('tipo', 'wfs');
+        map4.addLayer(wfsLayer4);
 
-        // Configurar hover para mapa 5
-        configurarHoverMunicipios5(map5);
-        // Configurar popup para mapa 5
-        configurarPopupMunicipios(map5, 'map-5');
+        // Configurar hover para mapa 4
+        configurarHoverMunicipios4(map4);
+        // Configurar popup para mapa 4
+        configurarPopupMunicipios(map4, 'map-4');
 
         /**
-         * Configura hover para municipios en el mapa del capítulo 5
+         * Configura hover para municipios en el mapa del capítulo 4
          * @param {ol.Map} mapa - Instancia del mapa de OpenLayers
          */
-        function configurarHoverMunicipios5(mapa) {
-          const mapElement = document.getElementById('map-5');
+        function configurarHoverMunicipios4(mapa) {
+          const mapElement = document.getElementById('map-4');
           if (!mapElement) return;
 
           let tooltip = mapElement.querySelector('.municipio-hover-tooltip');
@@ -2421,10 +2245,10 @@
             mapElement.appendChild(tooltip);
           }
 
-          let currentFeature5 = null;
-          let defaultStyle5 = null;
+          let currentFeature4 = null;
+          let defaultStyle4 = null;
 
-          const hoverStyle5 = new ol.style.Style({
+          const hoverStyle4 = new ol.style.Style({
             stroke: new ol.style.Stroke({
               color: '#A21A5C',
               width: 3
@@ -2437,18 +2261,18 @@
           mapa.on('pointermove', (evt) => {
             const pixel = mapa.getEventPixel(evt.originalEvent);
 
-            if (currentFeature5) {
-              currentFeature5.setStyle(defaultStyle5);
-              currentFeature5 = null;
+            if (currentFeature4) {
+              currentFeature4.setStyle(defaultStyle4);
+              currentFeature4 = null;
               tooltip.style.display = 'none';
             }
 
             mapa.forEachFeatureAtPixel(pixel, (feature, layer) => {
               if (layer && layer.get('tipo') === 'wfs') {
-                currentFeature5 = feature;
-                defaultStyle5 = feature.getStyle() || layer.getStyle();
+                currentFeature4 = feature;
+                defaultStyle4 = feature.getStyle() || layer.getStyle();
 
-                feature.setStyle(hoverStyle5);
+                feature.setStyle(hoverStyle4);
 
                 const properties = feature.getProperties();
                 const nombreMunicipio =
@@ -2472,7 +2296,7 @@
               }
             });
 
-            mapa.getTargetElement().style.cursor = currentFeature5 ? 'pointer' : '';
+            mapa.getTargetElement().style.cursor = currentFeature4 ? 'pointer' : '';
           });
         }
 
@@ -2487,15 +2311,15 @@
           }
         ];
 
-        // Crear control de capas para map-5
-        const mapContainer5 = document.getElementById('map-5');
-        if (mapContainer5) {
-          let controlsContainer5 = document.createElement('div');
-          controlsContainer5.className = 'map-controls';
-          controlsContainer5.id = 'map-controls-5';
-          mapContainer5.appendChild(controlsContainer5);
+        // Crear control de capas para map-4
+        const mapContainer4 = document.getElementById('map-4');
+        if (mapContainer4) {
+          let controlsContainer4 = document.createElement('div');
+          controlsContainer4.className = 'map-controls';
+          controlsContainer4.id = 'map-controls-4';
+          mapContainer4.appendChild(controlsContainer4);
 
-          controlsContainer5.innerHTML = `
+          controlsContainer4.innerHTML = `
             <div class="map-controls-header">
               <div class="map-controls-title">Capas</div>
               <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
@@ -2503,26 +2327,82 @@
             <div class="map-controls-content"></div>
           `;
 
-          const contentContainer5 = controlsContainer5.querySelector('.map-controls-content');
-          const toggleBtn5 = controlsContainer5.querySelector('.map-controls-toggle');
+          const contentContainer4 = controlsContainer4.querySelector('.map-controls-content');
+          const toggleBtn4 = controlsContainer4.querySelector('.map-controls-toggle');
 
-          toggleBtn5.addEventListener('click', () => {
-            controlsContainer5.classList.toggle('collapsed');
-            toggleBtn5.textContent = controlsContainer5.classList.contains('collapsed') ? '▼' : '▲';
+          toggleBtn4.addEventListener('click', () => {
+            controlsContainer4.classList.toggle('collapsed');
+            toggleBtn4.textContent = controlsContainer4.classList.contains('collapsed') ? '▼' : '▲';
           });
 
           // Agregar checkbox para la capa de Heladas
-          const layerControl5 = document.createElement('div');
-          layerControl5.className = 'layer-control';
-          layerControl5.innerHTML = `
-            <input type="checkbox" id="layer-heladas-5" checked />
-            <label for="layer-heladas-5">Heladas</label>
+          const layerControl4 = document.createElement('div');
+          layerControl4.className = 'layer-control';
+          layerControl4.innerHTML = `
+            <input type="checkbox" id="layer-heladas-4" checked />
+            <label for="layer-heladas-4">Heladas</label>
           `;
-          contentContainer5.appendChild(layerControl5);
+          contentContainer4.appendChild(layerControl4);
 
-          const checkbox5 = layerControl5.querySelector('#layer-heladas-5');
-          checkbox5.addEventListener('change', (e) => {
+          // Crear panel de leyendas para map-4
+          let legendsContainer4 = document.createElement('div');
+          legendsContainer4.className = 'map-legends';
+          legendsContainer4.id = 'map-legends-4';
+          mapContainer4.appendChild(legendsContainer4);
+
+          legendsContainer4.innerHTML = `
+            <div class="map-legends-header">
+              <div class="map-legends-title">Leyenda</div>
+              <button class="map-legends-toggle" title="Ocultar/Mostrar leyenda">▲</button>
+            </div>
+            <div class="map-legends-content"></div>
+          `;
+
+          const legendsContent4 = legendsContainer4.querySelector('.map-legends-content');
+          const legendsToggleBtn4 = legendsContainer4.querySelector('.map-legends-toggle');
+
+          legendsToggleBtn4.addEventListener('click', () => {
+            legendsContainer4.classList.toggle('collapsed');
+            legendsToggleBtn4.textContent = legendsContainer4.classList.contains('collapsed') ? '▼' : '▲';
+          });
+
+          // Simbología de Heladas
+          const simbologiaHeladas = {
+            titulo: "Heladas",
+            categorias: [
+              { label: "1", color: "#fc7b5c", stroke: "#232323" },
+              { label: "2", color: "#ffc750", stroke: "#232323" },
+              { label: "3", color: "#494489", stroke: "#232323" },
+              { label: "No", color: "#dadada", stroke: "#232323" }
+            ]
+          };
+
+          const legendItem4 = document.createElement('div');
+          legendItem4.className = 'legend-item';
+          legendItem4.id = 'legend-heladas-4';
+          legendItem4.innerHTML = `<div class="legend-item-title">${simbologiaHeladas.titulo}</div>`;
+
+          const simbologia4 = document.createElement('div');
+          simbologia4.className = 'legend-simbologia';
+
+          simbologiaHeladas.categorias.forEach(cat => {
+            const categoria = document.createElement('div');
+            categoria.className = 'legend-categoria';
+            categoria.innerHTML = `
+              <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
+              <span class="legend-label">${cat.label}</span>
+            `;
+            simbologia4.appendChild(categoria);
+          });
+
+          legendItem4.appendChild(simbologia4);
+          legendsContent4.appendChild(legendItem4);
+
+          // Evento del checkbox para mostrar/ocultar capa y leyenda
+          const checkbox4 = layerControl4.querySelector('#layer-heladas-4');
+          checkbox4.addEventListener('change', (e) => {
             heladasLayer.setVisible(e.target.checked);
+            legendItem4.style.display = e.target.checked ? 'block' : 'none';
           });
         }
 
