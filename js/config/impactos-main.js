@@ -185,6 +185,38 @@ const simbologias = {
       { label: 'Alto', color: '#ff9900', stroke: '#232323' },
       { label: 'Muy Alto', color: '#c72225', stroke: '#232323' }
     ]
+  },
+  'SEICCT:causas_degradacion': {
+    titulo: 'Causas de Degradación',
+    tipo: 'polygon',
+    categorias: [
+      { label: 'Actividades agrícolas', color: '#FFCCA7', stroke: '#232323' },
+      { label: 'Actividades agrícolas / Sobrepastoreo', color: '#F1B661', stroke: '#232323' },
+      { label: 'Actividades agrícolas / Sobrexplotación de la vegetación', color: '#CC9E89', stroke: '#232323' },
+      { label: 'Deforestación y remoción de la vegetación', color: '#ED5B41', stroke: '#232323' },
+      { label: 'Sobrepastoreo', color: '#9E7FA3', stroke: '#232323' },
+      { label: 'Sobrepastoreo / Actividades agrícolas', color: '#DE9AE7', stroke: '#232323' },
+      { label: 'Sobrepastoreo / Sobrexplotación de la vegetación', color: '#BBADBF', stroke: '#232323' }
+    ]
+  },
+  'SEICCT:tipo_degradacion': {
+    titulo: 'Tipo de Degradación',
+    tipo: 'polygon',
+    categorias: [
+      { label: 'Degradación física por compactación', color: '#E565E5', stroke: '#232323' },
+      { label: 'Degradación química por declinación de la fertilidad', color: '#BAEA77', stroke: '#232323' },
+      { label: 'Erosión eólica con pérdida del suelo superficial', color: '#647ADD', stroke: '#232323' },
+      { label: 'Erosión hídrica con deformación del terreno', color: '#E9461D', stroke: '#232323' },
+      { label: 'Erosión hídrica con pérdida del suelo superficial', color: '#1DCD8A', stroke: '#232323' }
+    ]
+  },
+  'SEICCT:grado_degradacion': {
+    titulo: 'Grado de Degradación',
+    tipo: 'polygon',
+    categorias: [
+      { label: 'Ligero', color: '#E1B66A', stroke: '#232323' },
+      { label: 'Moderado', color: '#C07A29', stroke: '#232323' }
+    ]
   }
 };
 
@@ -1767,6 +1799,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const capasMap8 = [
       { nombre: 'Límite Municipal', layer: 'SEICCT:Limite', visible: true, zIndex: 1, leyenda: false },
+      { nombre: 'Causas de Degradación', layer: 'SEICCT:causas_degradacion', visible: true, zIndex: 2, leyenda: true },
+      { nombre: 'Tipo de Degradación', layer: 'SEICCT:tipo_degradacion', visible: false, zIndex: 3, leyenda: true },
+      { nombre: 'Grado de Degradación', layer: 'SEICCT:grado_degradacion', visible: false, zIndex: 4, leyenda: true },
     ];
 
     const capasWMS8 = [];

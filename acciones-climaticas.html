@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/main.css" />
-    <link rel="stylesheet" href="css/navbar.css" />
+
     <link rel="stylesheet" href="css/acciones-climaticas.css" />
     <link rel="stylesheet" href="css/popups.css" />
     <link rel="stylesheet" href="css/filters.css" />
@@ -40,32 +40,6 @@
     <link rel="stylesheet" href="css/toast.css" />
   </head>
   <body>
-    <nav class="navbar">
-      <div class="navbar-container">
-        <button class="navbar-toggle" id="navbarToggle" aria-label="Abrir menú">
-          <span class="navbar-toggle-line"></span>
-          <span class="navbar-toggle-line"></span>
-          <span class="navbar-toggle-line"></span>
-        </button>
-
-        <div class="navbar-menu" id="navbarMenu">
-          <a href="https://cambioclimaticotlaxcala.mx/climate-information" class="navbar-link">Inicio</a>
-          <a href="vulnerabilidad.html" class="navbar-link">Vulnerabilidad</a>
-          <a href="riesgo.html" class="navbar-link">Riesgo</a>
-          <a href="amenazas.html" class="navbar-link">Amenazas</a>
-          <a href="impactos.html" class="navbar-link">Impactos</a>
-          <a href="clima.html" class="navbar-link">Clima</a>
-          <a href="escenarios_clima.html" class="navbar-link">Escenarios Climáticos</a>
-          <a href="acciones-climaticas.html" class="navbar-link active"
-            >Acciones Climáticas</a
-          >
-          <a href="mitigacion.html" class="navbar-link">Mitigación</a>
-        </div>
-      </div>
-    </nav>
-
-    <div class="navbar-indicator" id="navbarIndicator"></div>
-
     <header class="acciones-header">
       <div class="header-content">
         <div class="header-left">
@@ -342,50 +316,5 @@
     <script src="js/acciones/timeline.js"></script>
     <script src="js/acciones/main.js"></script>
 
-    <script>
-      const navbar = document.querySelector(".navbar");
-      const navbarIndicator = document.getElementById("navbarIndicator");
-      const navbarToggle = document.getElementById("navbarToggle");
-      const navbarMenu = document.getElementById("navbarMenu");
-
-      navbarToggle.addEventListener("click", () => {
-        navbarToggle.classList.toggle("active");
-        navbarMenu.classList.toggle("active");
-
-        navbar.classList.add("visible");
-      });
-
-      const navbarLinks = document.querySelectorAll(".navbar-link");
-      navbarLinks.forEach((link) => {
-        link.addEventListener("click", () => {
-          navbarToggle.classList.remove("active");
-          navbarMenu.classList.remove("active");
-        });
-      });
-
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 50) {
-          navbar.classList.add("scrolled");
-        } else {
-          navbar.classList.remove("scrolled");
-        }
-      });
-
-      navbarIndicator.addEventListener("mouseenter", () => {
-        navbar.classList.add("visible");
-      });
-
-      navbar.addEventListener("mouseenter", () => {
-        navbar.classList.add("visible");
-      });
-
-      navbar.addEventListener("mouseleave", () => {
-        navbar.classList.remove("visible");
-      });
-
-      navbarIndicator.addEventListener("click", () => {
-        navbar.classList.toggle("visible");
-      });
-    </script>
   </body>
 </html>
