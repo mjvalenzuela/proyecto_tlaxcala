@@ -1,6 +1,6 @@
 /**
- * Sistema de línea de tiempo interactiva
- * Filtra proyectos por año o rango de fechas
+ * Sistema de línea de tiempo interactiva con Chart.js
+ * Muestra gráfica de línea con acciones por año y permite filtrar por click
  */
 class TimelineManager {
   constructor(filterManager, data) {
@@ -13,6 +13,9 @@ class TimelineManager {
     this.selectedStartDate = null;
     this.selectedEndDate = null;
     this.isInitialized = false;
+    this.chart = null;
+    this.years = [];
+    this.counts = [];
   }
 
   /**
@@ -28,9 +31,8 @@ class TimelineManager {
         return;
       }
 
-      this.generateYearMarkers();
-
-      this.setupEventListeners();
+      this.createChart();
+      this.setupDateRangeModal();
 
       this.isInitialized = true;
     } catch (error) {
@@ -44,9 +46,7 @@ class TimelineManager {
    * @param {Array} markersData - Array de markers
    */
   calculateActionsByYear(markersData) {
-    if (!markersData || markersData.length === 0) {
-      return;
-    }
+    if (!markersData || markersData.length === 0) return;
 
     const yearCounts = {};
     let minDate = null;
@@ -58,15 +58,9 @@ class TimelineManager {
         const date = new Date(fechaInicio);
         if (!isNaN(date.getTime())) {
           const year = date.getFullYear();
-
           yearCounts[year] = (yearCounts[year] || 0) + 1;
-
-          if (!minDate || date < minDate) {
-            minDate = date;
-          }
-          if (!maxDate || date > maxDate) {
-            maxDate = date;
-          }
+          if (!minDate || date < minDate) minDate = date;
+          if (!maxDate || date > maxDate) maxDate = date;
         }
       }
     });
@@ -75,226 +69,256 @@ class TimelineManager {
       this.minYear = minDate.getFullYear();
       this.maxYear = maxDate.getFullYear();
       this.actionsByYear = yearCounts;
-
-      // Asegurar que el rango incluya al menos hasta 2026
-      if (this.maxYear < 2026) {
-        this.maxYear = 2026;
-      }
-
-      // Asegurar que haya al menos 2 años de rango
-      if (this.minYear === this.maxYear) {
-        this.minYear = this.minYear - 1;
-      }
+      if (this.maxYear < 2026) this.maxYear = 2026;
+      if (this.minYear === this.maxYear) this.minYear = this.minYear - 1;
     }
   }
 
   /**
-   * Genera marcadores visuales para cada año
+   * Obtiene el color según la cantidad de acciones usando RANGOS_ACCIONES
+   * @param {number} count - Cantidad de acciones
+   * @returns {string} Color hex
    */
-  generateYearMarkers() {
-    const markersContainer = document.getElementById('timelineMarkers');
-    if (!markersContainer) return;
+  getColorForCount(count) {
+    if (count === 0) return CONFIG.COLOR_SIN_ACCIONES;
+    for (const rango of CONFIG.RANGOS_ACCIONES) {
+      if (count >= rango.min && count <= rango.max) {
+        return rango.color;
+      }
+    }
+    return CONFIG.COLOR_SIN_ACCIONES;
+  }
 
-    markersContainer.innerHTML = '';
+  /**
+   * Convierte color hex a rgba
+   * @param {string} hex - Color en formato hex
+   * @param {number} alpha - Transparencia (0-1)
+   * @returns {string} Color en formato rgba
+   */
+  hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  /**
+   * Crea la gráfica Chart.js de línea de tiempo
+   */
+  createChart() {
+    const canvas = document.getElementById('timelineChart');
+    if (!canvas) return;
+
+    this.years = [];
+    this.counts = [];
+    const pointColors = [];
+    const pointBorderColors = [];
+    const pointSizes = [];
 
     for (let year = this.minYear; year <= this.maxYear; year++) {
+      this.years.push(year);
       const count = this.actionsByYear[year] || 0;
-
-      const marker = document.createElement('div');
-      marker.className = 'timeline-year-marker';
-      marker.dataset.year = year;
-
-      const dot = document.createElement('div');
-      dot.className = 'timeline-marker-dot';
-
-      const yearLabel = document.createElement('div');
-      yearLabel.className = 'timeline-marker-year';
-      yearLabel.textContent = year;
-
-      const countBadge = document.createElement('div');
-      countBadge.className = 'timeline-marker-count';
-      countBadge.textContent = `${count} ${count === 1 ? 'acción' : 'acciones'}`;
-
-      marker.appendChild(countBadge);
-      marker.appendChild(dot);
-      marker.appendChild(yearLabel);
-
-      markersContainer.appendChild(marker);
+      this.counts.push(count);
+      const color = this.getColorForCount(count);
+      pointColors.push(color);
+      pointBorderColors.push(color === CONFIG.COLOR_SIN_ACCIONES ? '#bbb' : color);
+      pointSizes.push(count > 0 ? Math.max(5, Math.min(10, 3 + count * 0.3)) : 4);
     }
-  }
 
-  /**
-   * Configura event listeners del timeline
-   */
-  setupEventListeners() {
-    const markersContainer = document.getElementById('timelineMarkers');
-    if (!markersContainer) return;
+    const self = this;
 
-    markersContainer.addEventListener('click', (e) => {
-      const marker = e.target.closest('.timeline-year-marker');
-      if (marker) {
-        const year = parseInt(marker.dataset.year);
-        this.handleYearClick(year);
+    // Plugin: Etiquetas de conteo encima de cada punto
+    const dataLabelsPlugin = {
+      id: 'timelineDataLabels',
+      afterDatasetsDraw(chart) {
+        const ctx = chart.ctx;
+        const meta = chart.getDatasetMeta(0);
+
+        meta.data.forEach((point, index) => {
+          const count = chart.data.datasets[0].data[index];
+          if (count > 0) {
+            ctx.save();
+            ctx.font = 'bold 12px Montserrat, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillStyle = self.getColorForCount(count);
+            ctx.fillText(count, point.x, point.y - 10);
+            ctx.restore();
+          }
+        });
       }
-    });
+    };
 
-    this.setupDateRangeModal();
-  }
+    // Plugin: Resaltar año seleccionado con anillo
+    const selectedHighlightPlugin = {
+      id: 'selectedHighlight',
+      afterDatasetsDraw(chart) {
+        if (self.selectedYear === null) return;
 
-  /**
-   * Configura modal de rango de fechas
-   */
-  setupDateRangeModal() {
-    const calendarIcon = document.querySelector('.timeline-calendar-icon');
-    const modal = document.getElementById('dateRangeModal');
-    const closeBtn = document.getElementById('closeDateModal');
-    const applyBtn = document.getElementById('applyDateRange');
-    const clearBtn = document.getElementById('clearDateRange');
+        const yearIndex = self.years.indexOf(self.selectedYear);
+        if (yearIndex === -1) return;
 
-    if (calendarIcon) {
-      calendarIcon.addEventListener('click', () => {
-        this.openDateRangeModal();
-      });
-    }
+        const meta = chart.getDatasetMeta(0);
+        const point = meta.data[yearIndex];
+        if (!point) return;
 
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        this.closeDateRangeModal();
-      });
-    }
+        const ctx = chart.ctx;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 14, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 152, 0, 0.12)';
+        ctx.fill();
+        ctx.strokeStyle = '#FF9800';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+      }
+    };
 
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          this.closeDateRangeModal();
+    this.chart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: this.years,
+        datasets: [{
+          data: this.counts,
+          borderColor: '#C6A86A',
+          backgroundColor: 'transparent',
+          pointBackgroundColor: pointColors,
+          pointBorderColor: pointBorderColors,
+          pointBorderWidth: 1.5,
+          pointRadius: pointSizes,
+          pointHoverRadius: pointSizes.map(s => s + 3),
+          borderWidth: 2.5,
+          tension: 0.3,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            top: 22,
+            right: 15,
+            bottom: 2,
+            left: 15
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          title: { display: false },
+          tooltip: {
+            enabled: true,
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            titleFont: { family: 'Montserrat', size: 12, weight: '700' },
+            bodyFont: { family: 'Open Sans', size: 11 },
+            padding: 8,
+            cornerRadius: 6,
+            displayColors: false,
+            callbacks: {
+              title: (items) => items[0].label,
+              label: (item) => {
+                const count = item.raw;
+                return count + (count === 1 ? ' acción' : ' acciones');
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            border: { display: false },
+            ticks: {
+              font: { family: 'Montserrat', size: 10, weight: '600' },
+              color: '#999',
+              maxRotation: 0,
+              autoSkip: false
+            }
+          },
+          y: {
+            display: false,
+            beginAtZero: true
+          }
+        },
+        onHover: (event, elements) => {
+          const target = event.native?.target;
+          if (target) {
+            target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+          }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const year = self.years[index];
+            self.handleYearClick(year);
+          }
         }
-      });
-    }
-
-    if (applyBtn) {
-      applyBtn.addEventListener('click', () => {
-        this.applyDateRange();
-      });
-    }
-
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        this.clearDateRange();
-      });
-    }
-  }
-
-  openDateRangeModal() {
-    const modal = document.getElementById('dateRangeModal');
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-
-    if (modal) {
-      if (this.selectedStartDate) {
-        startDateInput.value = this.selectedStartDate;
-      }
-      if (this.selectedEndDate) {
-        endDateInput.value = this.selectedEndDate;
-      }
-
-      modal.style.display = 'flex';
-    }
-  }
-
-  closeDateRangeModal() {
-    const modal = document.getElementById('dateRangeModal');
-    if (modal) {
-      modal.style.display = 'none';
-    }
+      },
+      plugins: [dataLabelsPlugin, selectedHighlightPlugin]
+    });
   }
 
   /**
-   * Aplica filtro por rango de fechas
-   */
-  applyDateRange() {
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-
-    const startDate = startDateInput.value;
-    const endDate = endDateInput.value;
-
-    if (!startDate || !endDate) {
-      alert('Por favor selecciona ambas fechas');
-      return;
-    }
-
-    if (new Date(startDate) > new Date(endDate)) {
-      alert('La fecha de inicio debe ser anterior a la fecha de fin');
-      return;
-    }
-
-    this.selectedStartDate = startDate;
-    this.selectedEndDate = endDate;
-
-    this.selectedYear = null;
-    this.clearYearSelection();
-
-    this.closeDateRangeModal();
-
-    this.applyTimelineFilter();
-  }
-
-  clearDateRange() {
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-
-    if (startDateInput) startDateInput.value = '';
-    if (endDateInput) endDateInput.value = '';
-
-    this.selectedStartDate = null;
-    this.selectedEndDate = null;
-
-    this.closeDateRangeModal();
-
-    this.applyTimelineFilter();
-  }
-
-  /**
-   * Maneja click en marcador de año
+   * Maneja click en un punto del año
    * @param {number} year - Año seleccionado
    */
   handleYearClick(year) {
     if (this.selectedYear === year) {
       this.selectedYear = null;
-      this.clearYearSelection();
     } else {
       this.selectedYear = year;
-      this.setYearSelection(year);
     }
 
+    this.updateChartSelection();
     this.applyTimelineFilter();
   }
 
-  setYearSelection(year) {
-    const markers = document.querySelectorAll('.timeline-year-marker');
-    markers.forEach(marker => {
-      if (parseInt(marker.dataset.year) === year) {
-        marker.classList.add('active');
+  /**
+   * Actualiza la apariencia del chart según la selección activa
+   */
+  updateChartSelection() {
+    if (!this.chart) return;
+
+    const dataset = this.chart.data.datasets[0];
+    const pointColors = [];
+    const pointBorderColors = [];
+    const pointSizes = [];
+
+    this.years.forEach((year, index) => {
+      const count = this.counts[index];
+      const baseColor = this.getColorForCount(count);
+      const baseBorder = baseColor === CONFIG.COLOR_SIN_ACCIONES ? '#bbb' : baseColor;
+      const baseSize = count > 0 ? Math.max(5, Math.min(10, 3 + count * 0.3)) : 4;
+
+      if (this.selectedYear !== null) {
+        if (year === this.selectedYear) {
+          pointColors.push(baseColor);
+          pointBorderColors.push(baseBorder);
+          pointSizes.push(baseSize + 3);
+        } else {
+          pointColors.push(this.hexToRgba(baseColor, 0.3));
+          pointBorderColors.push(this.hexToRgba(baseColor, 0.3));
+          pointSizes.push(baseSize);
+        }
       } else {
-        marker.classList.remove('active');
+        pointColors.push(baseColor);
+        pointBorderColors.push(baseBorder);
+        pointSizes.push(baseSize);
       }
     });
-  }
 
-  clearYearSelection() {
-    const markers = document.querySelectorAll('.timeline-year-marker');
-    markers.forEach(marker => {
-      marker.classList.remove('active');
-    });
+    dataset.pointBackgroundColor = pointColors;
+    dataset.pointBorderColor = pointBorderColors;
+    dataset.pointRadius = pointSizes;
+
+    this.chart.update('none');
   }
 
   /**
    * Aplica filtro de timeline al FilterManager
    */
   applyTimelineFilter() {
-    if (!this.filterManager || !this.filterManager.isInitialized) {
-      return;
-    }
+    if (!this.filterManager || !this.filterManager.isInitialized) return;
 
     if (this.selectedStartDate && this.selectedEndDate) {
       this.filterManager.setTimelineDateRange(this.selectedStartDate, this.selectedEndDate);
@@ -309,13 +333,91 @@ class TimelineManager {
   }
 
   /**
+   * Configura modal de rango de fechas
+   */
+  setupDateRangeModal() {
+    const modal = document.getElementById('dateRangeModal');
+    const closeBtn = document.getElementById('closeDateModal');
+    const applyBtn = document.getElementById('applyDateRange');
+    const clearBtn = document.getElementById('clearDateRange');
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => this.closeDateRangeModal());
+    }
+
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) this.closeDateRangeModal();
+      });
+    }
+
+    if (applyBtn) {
+      applyBtn.addEventListener('click', () => this.applyDateRange());
+    }
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => this.clearDateRange());
+    }
+  }
+
+  openDateRangeModal() {
+    const modal = document.getElementById('dateRangeModal');
+    if (modal) {
+      const startDateInput = document.getElementById('startDate');
+      const endDateInput = document.getElementById('endDate');
+      if (this.selectedStartDate && startDateInput) startDateInput.value = this.selectedStartDate;
+      if (this.selectedEndDate && endDateInput) endDateInput.value = this.selectedEndDate;
+      modal.style.display = 'flex';
+    }
+  }
+
+  closeDateRangeModal() {
+    const modal = document.getElementById('dateRangeModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  applyDateRange() {
+    const startDate = document.getElementById('startDate')?.value;
+    const endDate = document.getElementById('endDate')?.value;
+
+    if (!startDate || !endDate) {
+      alert('Por favor selecciona ambas fechas');
+      return;
+    }
+
+    if (new Date(startDate) > new Date(endDate)) {
+      alert('La fecha de inicio debe ser anterior a la fecha de fin');
+      return;
+    }
+
+    this.selectedStartDate = startDate;
+    this.selectedEndDate = endDate;
+    this.selectedYear = null;
+    this.updateChartSelection();
+    this.closeDateRangeModal();
+    this.applyTimelineFilter();
+  }
+
+  clearDateRange() {
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    if (startDateInput) startDateInput.value = '';
+    if (endDateInput) endDateInput.value = '';
+
+    this.selectedStartDate = null;
+    this.selectedEndDate = null;
+    this.closeDateRangeModal();
+    this.applyTimelineFilter();
+  }
+
+  /**
    * Resetea timeline a valores por defecto
    */
   reset() {
     this.selectedYear = null;
     this.selectedStartDate = null;
     this.selectedEndDate = null;
-    this.clearYearSelection();
+    this.updateChartSelection();
 
     const startDateInput = document.getElementById('startDate');
     const endDateInput = document.getElementById('endDate');
@@ -324,14 +426,9 @@ class TimelineManager {
   }
 
   hideTimeline() {
-    // No ocultar el timeline, solo mostrar mensaje si no hay datos
     const timelineContainer = document.querySelector('.timeline-container');
     if (timelineContainer) {
-      // Mantener visible pero sin marcadores si no hay datos
-      const markersContainer = document.getElementById('timelineMarkers');
-      if (markersContainer) {
-        markersContainer.innerHTML = '<span style="color: #999; font-size: 0.875rem;">Sin datos de fechas disponibles</span>';
-      }
+      timelineContainer.innerHTML = '<div class="timeline-wrapper" style="display:flex;align-items:center;justify-content:center;height:100%;"><span style="color: #999; font-size: 0.875rem;">Sin datos de fechas disponibles</span></div>';
     }
   }
 
@@ -341,44 +438,40 @@ class TimelineManager {
    * @returns {boolean}
    */
   passesTimelineFilter(marker) {
-    if (!this.isInitialized) {
-      return true;
-    }
+    if (!this.isInitialized) return true;
 
-    if (!this.selectedYear && !this.selectedStartDate && !this.selectedEndDate) {
-      return true;
-    }
+    if (!this.selectedYear && !this.selectedStartDate && !this.selectedEndDate) return true;
 
     const fechaInicio = marker.fecha_inicio || marker.created_at;
-    if (!fechaInicio) {
-      return true;
-    }
+    if (!fechaInicio) return true;
 
     const date = new Date(fechaInicio);
-    if (isNaN(date.getTime())) {
-      return true;
-    }
+    if (isNaN(date.getTime())) return true;
 
     if (this.selectedStartDate && this.selectedEndDate) {
       const startDate = new Date(this.selectedStartDate);
       const endDate = new Date(this.selectedEndDate);
       endDate.setHours(23, 59, 59, 999);
-
       return date >= startDate && date <= endDate;
     }
 
     if (this.selectedYear) {
-      const year = date.getFullYear();
-      return year === this.selectedYear;
+      return date.getFullYear() === this.selectedYear;
     }
 
     return true;
   }
 
   destroy() {
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
     this.filterManager = null;
     this.data = null;
     this.actionsByYear = {};
+    this.years = [];
+    this.counts = [];
     this.isInitialized = false;
   }
 }

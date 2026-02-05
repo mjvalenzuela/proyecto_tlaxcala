@@ -153,6 +153,49 @@
         margin-bottom: 0.5rem;
       }
 
+      /* Leyendas compactas para capítulos 3 y 4 (mapas en mitad de pantalla) */
+      #map-legends-3,
+      #map-legends-4 {
+        max-height: 35vh;
+        padding: 0.5rem;
+      }
+
+      #map-legends-3 .legend-simbologia,
+      #map-legends-4 .legend-simbologia {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.1rem 0.5rem;
+      }
+
+      #map-legends-3 .legend-categoria,
+      #map-legends-4 .legend-categoria {
+        font-size: 0.75rem;
+        gap: 0.2rem;
+      }
+
+      #map-legends-3 .legend-simbolo,
+      #map-legends-4 .legend-simbolo {
+        width: 12px;
+        height: 12px;
+        min-width: 12px;
+      }
+
+      #map-legends-3 .legend-item,
+      #map-legends-4 .legend-item {
+        gap: 0.25rem;
+        padding-bottom: 0.4rem;
+      }
+
+      #map-legends-3 .legend-item-title,
+      #map-legends-4 .legend-item-title {
+        font-size: 0.8rem;
+      }
+
+      #map-legends-3 .map-legends-content,
+      #map-legends-4 .map-legends-content {
+        gap: 0.5rem;
+      }
+
       /* Estilos para tabla de cultivos */
       .tabla-cultivos {
         width: 100%;
@@ -1309,6 +1352,82 @@
           sequiaLayer.set('layerId', 'SEICCT:sequia');
           map3.addLayer(sequiaLayer);
 
+          // Capa WMS de Uso de Suelo
+          const usoSueloSource3 = new ol.source.TileWMS({
+            url: proxyUrl + '/SEICCT/wms',
+            params: {
+              'LAYERS': 'SEICCT:uso_de_suelo',
+              'TILED': true,
+              'FORMAT': 'image/png',
+              'TRANSPARENT': true,
+            },
+            serverType: 'geoserver',
+          });
+          const usoSueloLayer3 = new ol.layer.Tile({
+            source: usoSueloSource3,
+            opacity: 1,
+            zIndex: 2,
+            visible: false,
+          });
+          usoSueloLayer3.set('name', 'Uso de Suelo');
+          map3.addLayer(usoSueloLayer3);
+
+          // Capa WFS de Número de Días Secos (vector, mismo workaround que heladas)
+          const coloresDiasSecos = {
+            4: '#af3129',  // 50-55 días
+            5: '#fd9e75',  // 55-60 días
+            6: '#ead891',  // 60-65 días
+            7: '#bdf09f',  // 65-70 días
+            8: '#75be7b',  // 70-75 días
+            9: '#25781a',  // 75-80 días
+          };
+
+          const diasSecosVectorSource = new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+            url: function(extent) {
+              const params = new URLSearchParams({
+                service: 'WFS',
+                version: '1.0.0',
+                request: 'GetFeature',
+                typeName: 'SEICCT:numero_dias_secos',
+                outputFormat: 'application/json',
+                srsname: 'EPSG:3857',
+                bbox: `${extent.join(',')},EPSG:3857`
+              });
+              if (isVercelProxy) {
+                const wfsPath = `/geoserver/SEICCT/ows?${params.toString()}`;
+                return `${proxyUrl.replace('?path=', '')}?path=${encodeURIComponent(wfsPath)}`;
+              } else {
+                return `${proxyUrl}/SEICCT/ows?${params.toString()}`;
+              }
+            },
+            strategy: ol.loadingstrategy.bbox
+          });
+
+          const diasSecosLayer = new ol.layer.Vector({
+            source: diasSecosVectorSource,
+            style: function(feature) {
+              const cdd = feature.get('CDD');
+              const color = coloresDiasSecos[cdd] || '#cccccc';
+              return new ol.style.Style({
+                fill: new ol.style.Fill({ color: color }),
+                stroke: new ol.style.Stroke({ color: '#232323', width: 0.5 })
+              });
+            },
+            opacity: 1,
+            zIndex: 3,
+            visible: false,
+          });
+          diasSecosLayer.set('name', 'Número de Días Secos');
+          map3.addLayer(diasSecosLayer);
+
+          // Configuración de capas del mapa 3
+          const capasMap3 = [
+            { nombre: 'Sequía', layer: 'SEICCT:sequia', olLayer: sequiaLayer, visible: true, leyenda: true },
+            { nombre: 'Uso de Suelo', layer: 'SEICCT:uso_de_suelo', olLayer: usoSueloLayer3, visible: false, leyenda: true },
+            { nombre: 'Número de Días Secos', layer: 'SEICCT:numero_dias_secos', olLayer: diasSecosLayer, visible: false, leyenda: true },
+          ];
+
           // Crear control de capas para map-3
           let controlsContainer3 = document.createElement('div');
           controlsContainer3.className = 'map-controls';
@@ -1329,20 +1448,6 @@
           toggleBtn3.addEventListener('click', () => {
             controlsContainer3.classList.toggle('collapsed');
             toggleBtn3.textContent = controlsContainer3.classList.contains('collapsed') ? '▼' : '▲';
-          });
-
-          // Agregar checkbox para la capa de Sequía
-          const layerControl3 = document.createElement('div');
-          layerControl3.className = 'layer-control';
-          layerControl3.innerHTML = `
-            <input type="checkbox" id="layer-sequia-3" checked />
-            <label for="layer-sequia-3">Sequía</label>
-          `;
-          contentContainer3.appendChild(layerControl3);
-
-          const checkbox3 = layerControl3.querySelector('#layer-sequia-3');
-          checkbox3.addEventListener('change', (e) => {
-            sequiaLayer.setVisible(e.target.checked);
           });
 
           // Crear panel de leyendas para map-3
@@ -1367,29 +1472,59 @@
             legendsToggleBtn3.textContent = legendsContainer3.classList.contains('collapsed') ? '▼' : '▲';
           });
 
-          // Generar leyenda para Sequía
-          const simbologiaSequia = storyMapConfig.simbologias['SEICCT:sequia'];
-          if (simbologiaSequia) {
-            const legendItem = document.createElement('div');
-            legendItem.className = 'legend-item';
-            legendItem.innerHTML = `<div class="legend-item-title">${simbologiaSequia.titulo}</div>`;
+          const simbologias3 = storyMapConfig.simbologias || {};
 
-            const simbologia = document.createElement('div');
-            simbologia.className = 'legend-simbologia';
-
-            simbologiaSequia.categorias.forEach(cat => {
-              const categoria = document.createElement('div');
-              categoria.className = 'legend-categoria';
-              categoria.innerHTML = `
-                <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
-                <span class="legend-label">${cat.label}</span>
-              `;
-              simbologia.appendChild(categoria);
+          function actualizarLeyendasMap3() {
+            legendsContent3.innerHTML = '';
+            let activas = 0;
+            capasMap3.forEach((capa) => {
+              if (capa.olLayer.getVisible() && capa.leyenda) {
+                activas++;
+                const simbologia = simbologias3[capa.layer];
+                if (simbologia) {
+                  const legendItem = document.createElement('div');
+                  legendItem.className = 'legend-item';
+                  legendItem.innerHTML = `<div class="legend-item-title">${simbologia.titulo}</div>`;
+                  const simbologiaDiv = document.createElement('div');
+                  simbologiaDiv.className = 'legend-simbologia';
+                  simbologia.categorias.forEach(cat => {
+                    const categoria = document.createElement('div');
+                    categoria.className = 'legend-categoria';
+                    categoria.innerHTML = `
+                      <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
+                      <span class="legend-label">${cat.label}</span>
+                    `;
+                    simbologiaDiv.appendChild(categoria);
+                  });
+                  legendItem.appendChild(simbologiaDiv);
+                  legendsContent3.appendChild(legendItem);
+                }
+              }
             });
-
-            legendItem.appendChild(simbologia);
-            legendsContent3.appendChild(legendItem);
+            if (activas === 0) {
+              legendsContent3.innerHTML = '<div class="map-legends-empty">Seleccione una capa para ver su leyenda</div>';
+            }
           }
+
+          // Crear checkboxes para cada capa
+          capasMap3.forEach((capa, index) => {
+            const layerControl = document.createElement('div');
+            layerControl.className = 'layer-control';
+            const checkboxId = `layer-map3-${index}`;
+            layerControl.innerHTML = `
+              <input type="checkbox" id="${checkboxId}" ${capa.visible ? 'checked' : ''} />
+              <label for="${checkboxId}">${capa.nombre}</label>
+            `;
+            contentContainer3.appendChild(layerControl);
+
+            const checkbox = layerControl.querySelector(`#${checkboxId}`);
+            checkbox.addEventListener('change', (e) => {
+              capa.olLayer.setVisible(e.target.checked);
+              actualizarLeyendasMap3();
+            });
+          });
+
+          actualizarLeyendasMap3();
         }
 
         // ============================================================
@@ -2175,6 +2310,102 @@
 
         map4.addLayer(heladasLayer);
 
+        // Agregar capa de Número de Días de Heladas como WFS vectorial
+        // El SLD en GeoServer tiene un bug con el atributo "Num dias" (espacio),
+        // por lo que se carga como vector y se estiliza con FD0 del lado del cliente.
+        const coloresDiasHeladas = {
+          2: '#f4f5da',  // 5-10 días
+          3: '#c8cfcb',  // 10-15 días
+          4: '#9caabd',  // 15-20 días
+          5: '#7184ae',  // 20-25 días
+          6: '#455fa0',  // 25-30 días
+        };
+
+        const diasHeladasVectorSource = new ol.source.Vector({
+          format: new ol.format.GeoJSON(),
+          url: function(extent) {
+            const params = new URLSearchParams({
+              service: 'WFS',
+              version: '1.0.0',
+              request: 'GetFeature',
+              typeName: 'SEICCT:numero_dias_heladas',
+              outputFormat: 'application/json',
+              srsname: 'EPSG:3857',
+              bbox: `${extent.join(',')},EPSG:3857`
+            });
+            if (isVercelProxy) {
+              const wfsPath = `/geoserver/SEICCT/ows?${params.toString()}`;
+              return `${proxyUrl.replace('?path=', '')}?path=${encodeURIComponent(wfsPath)}`;
+            } else {
+              return `${proxyUrl}/SEICCT/ows?${params.toString()}`;
+            }
+          },
+          strategy: ol.loadingstrategy.bbox
+        });
+
+        const diasHeladasLayer = new ol.layer.Vector({
+          source: diasHeladasVectorSource,
+          style: function(feature) {
+            const fd0 = feature.get('FD0');
+            const color = coloresDiasHeladas[fd0] || '#cccccc';
+            return new ol.style.Style({
+              fill: new ol.style.Fill({ color: color }),
+              stroke: new ol.style.Stroke({ color: '#232323', width: 0.5 })
+            });
+          },
+          opacity: 1,
+          zIndex: 2,
+          visible: false,
+        });
+        diasHeladasLayer.set('name', 'Número de Días de Heladas');
+        map4.addLayer(diasHeladasLayer);
+
+        // Agregar capa WMS de Uso de Suelo
+        let usoSueloSource4;
+        if (isVercelProxy) {
+          const basePathUS = `/geoserver/${workspace5}/wms`;
+          usoSueloSource4 = new ol.source.TileWMS({
+            url: proxyUrl.replace('?path=', ''),
+            params: {
+              'LAYERS': 'SEICCT:uso_de_suelo',
+              'TILED': true,
+              'VERSION': '1.1.0',
+              'FORMAT': 'image/png',
+              'TRANSPARENT': true,
+            },
+            serverType: 'geoserver',
+            crossOrigin: 'anonymous',
+            tileLoadFunction: function(imageTile, src) {
+              const url = new URL(src, window.location.origin);
+              const params = url.searchParams.toString();
+              const fullPath = `${basePathUS}?${params}`;
+              const encodedPath = encodeURIComponent(fullPath);
+              const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+              imageTile.getImage().src = finalUrl;
+            },
+          });
+        } else {
+          usoSueloSource4 = new ol.source.TileWMS({
+            url: proxyUrl + '/SEICCT/wms',
+            params: {
+              'LAYERS': 'SEICCT:uso_de_suelo',
+              'TILED': true,
+              'FORMAT': 'image/png',
+              'TRANSPARENT': true,
+            },
+            serverType: 'geoserver',
+          });
+        }
+
+        const usoSueloLayer4 = new ol.layer.Tile({
+          source: usoSueloSource4,
+          opacity: 1,
+          zIndex: 3,
+          visible: false,
+        });
+        usoSueloLayer4.set('name', 'Uso de Suelo');
+        map4.addLayer(usoSueloLayer4);
+
         // Agregar capa WFS para interacción (hover y popup)
         const typeName5 = 'SEICCT:M82_Vulnerabilidad_CC';
         const layerParts5 = typeName5.split(':');
@@ -2335,14 +2566,12 @@
             toggleBtn4.textContent = controlsContainer4.classList.contains('collapsed') ? '▼' : '▲';
           });
 
-          // Agregar checkbox para la capa de Heladas
-          const layerControl4 = document.createElement('div');
-          layerControl4.className = 'layer-control';
-          layerControl4.innerHTML = `
-            <input type="checkbox" id="layer-heladas-4" checked />
-            <label for="layer-heladas-4">Heladas</label>
-          `;
-          contentContainer4.appendChild(layerControl4);
+          // Configuración de capas del mapa 4
+          const capasMap4 = [
+            { nombre: 'Heladas', layer: 'SEICCT:heladas', olLayer: heladasLayer, visible: true, leyenda: true },
+            { nombre: 'Número de Días de Heladas', layer: 'SEICCT:numero_dias_heladas', olLayer: diasHeladasLayer, visible: false, leyenda: true },
+            { nombre: 'Uso de Suelo', layer: 'SEICCT:uso_de_suelo', olLayer: usoSueloLayer4, visible: false, leyenda: true },
+          ];
 
           // Crear panel de leyendas para map-4
           let legendsContainer4 = document.createElement('div');
@@ -2366,44 +2595,59 @@
             legendsToggleBtn4.textContent = legendsContainer4.classList.contains('collapsed') ? '▼' : '▲';
           });
 
-          // Leyenda de Heladas
-          const simbologiaHeladas = {
-            titulo: "Heladas",
-            categorias: [
-              { label: "1", color: "#fc7b5c", stroke: "#232323" },
-              { label: "2", color: "#ffc750", stroke: "#232323" },
-              { label: "3", color: "#494489", stroke: "#232323" },
-              { label: "No", color: "#dadada", stroke: "#232323" }
-            ]
-          };
+          const simbologias4 = storyMapConfig.simbologias || {};
 
-          const legendItem4 = document.createElement('div');
-          legendItem4.className = 'legend-item';
-          legendItem4.id = 'legend-heladas-4';
-          legendItem4.innerHTML = `<div class="legend-item-title">${simbologiaHeladas.titulo}</div>`;
+          function actualizarLeyendasMap4() {
+            legendsContent4.innerHTML = '';
+            let activas = 0;
+            capasMap4.forEach((capa) => {
+              if (capa.olLayer.getVisible() && capa.leyenda) {
+                activas++;
+                const simbologia = simbologias4[capa.layer];
+                if (simbologia) {
+                  const legendItem = document.createElement('div');
+                  legendItem.className = 'legend-item';
+                  legendItem.innerHTML = `<div class="legend-item-title">${simbologia.titulo}</div>`;
+                  const simbologiaDiv = document.createElement('div');
+                  simbologiaDiv.className = 'legend-simbologia';
+                  simbologia.categorias.forEach(cat => {
+                    const categoria = document.createElement('div');
+                    categoria.className = 'legend-categoria';
+                    categoria.innerHTML = `
+                      <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
+                      <span class="legend-label">${cat.label}</span>
+                    `;
+                    simbologiaDiv.appendChild(categoria);
+                  });
+                  legendItem.appendChild(simbologiaDiv);
+                  legendsContent4.appendChild(legendItem);
+                }
+              }
+            });
+            if (activas === 0) {
+              legendsContent4.innerHTML = '<div class="map-legends-empty">Seleccione una capa para ver su leyenda</div>';
+            }
+          }
 
-          const simbologia4 = document.createElement('div');
-          simbologia4.className = 'legend-simbologia';
-
-          simbologiaHeladas.categorias.forEach(cat => {
-            const categoria = document.createElement('div');
-            categoria.className = 'legend-categoria';
-            categoria.innerHTML = `
-              <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
-              <span class="legend-label">${cat.label}</span>
+          // Crear checkboxes para cada capa
+          capasMap4.forEach((capa, index) => {
+            const layerControl = document.createElement('div');
+            layerControl.className = 'layer-control';
+            const checkboxId = `layer-map4-${index}`;
+            layerControl.innerHTML = `
+              <input type="checkbox" id="${checkboxId}" ${capa.visible ? 'checked' : ''} />
+              <label for="${checkboxId}">${capa.nombre}</label>
             `;
-            simbologia4.appendChild(categoria);
+            contentContainer4.appendChild(layerControl);
+
+            const checkbox = layerControl.querySelector(`#${checkboxId}`);
+            checkbox.addEventListener('change', (e) => {
+              capa.olLayer.setVisible(e.target.checked);
+              actualizarLeyendasMap4();
+            });
           });
 
-          legendItem4.appendChild(simbologia4);
-          legendsContent4.appendChild(legendItem4);
-
-          // Evento del checkbox para mostrar/ocultar capa y leyenda
-          const checkbox4 = layerControl4.querySelector('#layer-heladas-4');
-          checkbox4.addEventListener('change', (e) => {
-            heladasLayer.setVisible(e.target.checked);
-            legendItem4.style.display = e.target.checked ? 'block' : 'none';
-          });
+          actualizarLeyendasMap4();
         }
 
         // ============================================================

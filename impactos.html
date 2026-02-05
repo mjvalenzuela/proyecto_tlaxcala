@@ -396,51 +396,41 @@
 
           <!-- Card de texto (izquierda, 30%) -->
           <div class="chapter-text">
-            <h2 class="chapter-title">Adaptación al Cambio Climático</h2>
+            <!-- <h2 class="chapter-title">Recursos Hídricos</h2> -->
             <div class="chapter-content">
               <p>
-                Frente a la <strong>sequía</strong> y otros efectos del cambio climático, el sector agrícola de Tlaxcala requiere implementar estrategias de adaptación que permitan mantener la productividad y garantizar la seguridad alimentaria.
+                <strong>Fuentes de agua:</strong> Más del <strong>82%</strong> del agua utilizada en el estado de Tlaxcala proviene del <strong>subsuelo</strong>.
               </p>
               <p>
-                Estas estrategias se organizan en <strong>4 ejes principales</strong>: gestión eficiente del agua, prácticas agrícolas sostenibles, innovación tecnológica y gestión integral del territorio.
-              </p>
-              <p>
-                La implementación de estas medidas contribuirá a <strong>reducir la vulnerabilidad</strong> de los agricultores y a fortalecer la resiliencia del sector ante eventos climáticos extremos.
+                <strong>Aprovechamiento del agua:</strong> Más del <strong>50%</strong> del agua en el estado se usa para la <strong>agricultura</strong>, el segundo uso es el público urbano con el <strong>36%</strong>, concentrando en la zona metropolitana de Tlaxcala-Puebla.
               </p>
 
-              <h3 class="estrategia-titulo">💧 Gestión del Agua</h3>
-              <ul class="estrategia-lista">
-                <li>Construcción de embalses y sistemas de riego más eficientes</li>
-                <li>Uso productivo de agua tratada para riego agrícola</li>
-                <li>Aprovechamiento de lodos de tratamiento para mejoramiento de suelos</li>
-                <li>Implementación de medidas de conservación hídrica</li>
-              </ul>
+              <!-- Gráfica de dona - Aprovechamiento del agua -->
+              <div class="chart-hidrologia-container">
+                <canvas id="chart-aprovechamiento-agua"></canvas>
+              </div>
 
-              <h3 class="estrategia-titulo">🌱 Prácticas Sostenibles</h3>
-              <ul class="estrategia-lista">
-                <li>Labranza de conservación para mantener reservas de carbono</li>
-                <li>Rotación de cultivos y variedades de corta duración</li>
-                <li>Impulso al uso de abonos orgánicos</li>
-                <li>Reducción de emisiones por uso de fertilizantes</li>
-                <li>Control de quemas agropecuarias y forestales</li>
-              </ul>
+              <!-- Disponibilidad Media Anual -->
+              <h3 class="hidrologia-subtitulo">Disponibilidad Media Anual de los acuíferos 16.9%. Acuíferos:</h3>
+              <div class="acuiferos-container">
+                <ul class="acuiferos-lista">
+                  <li><span class="acuifero-nombre alto-atoyac">Alto Atoyac:</span> <strong>12.5%</strong></li>
+                  <li><span class="acuifero-nombre soltepec">Soltepec:</span> <strong>41%</strong></li>
+                  <li><span class="acuifero-nombre huamantla">Huamantla:</span> <strong>13%</strong></li>
+                  <li><span class="acuifero-nombre emiliano-zapata">Emiliano Zapata:</span> <strong>5.6%</strong></li>
+                </ul>
+                <img src="images/gotas.png" alt="Gotas de agua" class="gotas-img">
+              </div>
+              <!-- <p>Para el <strong>2050</strong> se estima <strong>déficit</strong> en los cuatro acuíferos.</p> -->
 
-              <h3 class="estrategia-titulo">🔬 Investigación y Tecnología</h3>
-              <ul class="estrategia-lista">
-                <li>Desarrollo de variedades de cultivos resistentes a sequía</li>
-                <li>Ajuste de calendarios y fechas de siembra</li>
-                <li>Validación de paquetes tecnológicos por región</li>
-                <li>Validación de tecnología de labranza de conservación</li>
-                <li>Diversificación de cultivos adaptados al clima</li>
-              </ul>
+              <p class="deficit-texto">
+                Para el <strong>2050</strong> se estima <strong>déficit</strong> en los cuatro acuíferos.
+              </p>
 
-              <h3 class="estrategia-titulo">🗺️ Gestión del Territorio</h3>
-              <ul class="estrategia-lista">
-                <li>Actualización de mapas de potencial productivo</li>
-                <li>Restauración de tierras degradadas o de bajo potencial</li>
-                <li>Conversión de espacios abandonados en áreas verdes</li>
-                <li>Prevención de incendios forestales</li>
-              </ul>
+              <!-- Gráfica de líneas - Proyección acuíferos -->
+              <div class="chart-hidrologia-container chart-lineas">
+                <canvas id="chart-proyeccion-acuiferos"></canvas>
+              </div>
             </div>
           </div>
 
@@ -451,13 +441,48 @@
         </section>
 
         <!-- ============================================================
-             CAPITULO 5 - INCENDIOS FORESTALES
+             CAPITULO 5 - HIDROLOGÍA 3
              ============================================================ -->
-        <section class="chapter chapter-incendios" id="chapter-5" data-chapter="5">
-          <h2 class="map-title">Impactos: Incendios Forestales</h2>
+        <section class="chapter chapter-estrategias" id="chapter-5" data-chapter="5">
+          <h2 class="map-title">Hidrología 3</h2>
 
           <!-- Card de texto (izquierda, 30%) -->
           <div class="chapter-text">
+            <div class="chapter-content">
+              <h3 class="hidrologia-subtitulo">Aumento en la demanda</h3>
+              <p>
+                Con las tendencias en el incremento de la población, el aumento en la actividad industrial y de servicios y la agricultura de riego, el estado prevé un <strong>incremento en el consumo del 38%</strong> para el <strong>2060</strong>.
+              </p>
+
+              <!-- Gráfica de barras - Demanda de agua -->
+              <div class="chart-hidrologia-container chart-barras">
+                <canvas id="chart-demanda-agua"></canvas>
+              </div>
+
+              <h3 class="hidrologia-subtitulo">Reducción del rendimiento hídrico</h3>
+              <p>
+                Se estima una <strong>reducción del 14%</strong> en el rendimiento hídrico del estado.
+              </p>
+              <p>
+                La disminución más drástica del rendimiento hídrico se ubicaría en la <strong>región nororiental del volcán La Malinche</strong>; en áreas de los municipios de: <strong>Atlangatepec, San Lucas Tecopilco, Xaltocan, Yauhquemehcan, Apizaco, Panotla, Atltzayanca</strong> y <strong>El Carmen Tequexquitla</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Mapa (derecha, 70%) -->
+          <div class="chapter-map">
+            <div class="map-container" id="map-5"></div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             CAPITULO 6 - INCENDIOS FORESTALES
+             ============================================================ -->
+        <section class="chapter chapter-incendios-mapa" id="chapter-6" data-chapter="6">
+          <h2 class="map-title">Impactos: Incendios Forestales</h2>
+
+          <!-- Card de texto (izquierda, 30%) -->
+          <div class="incendios-text">
             <h2 class="chapter-title">Incendios y Cambio Climático</h2>
             <div class="chapter-content">
               <p>
@@ -479,11 +504,26 @@
                   <span class="stat-label">Período analizado</span>
                 </div>
               </div>
+              <br>
+              <p>
+                Los bosques de Tlaxcala son un pilar de su patrimonio natural y cultural, ofreciendo servicios esenciales como agua, biodiversidad y regulación del clima. Sin embargo, están cada vez más amenazados por el cambio climático: el aumento de temperaturas, la menor lluvia y la proliferación de plagas afectan su salud y sostenibilidad, impactando a las comunidades que dependen de ellos. Por ello, es necesario implementar medidas que protejan este legado, adaptándonos a los desafíos climáticos y asegurando un futuro sostenible para Tlaxcala.
+              </p>
+              <p>
+                <strong>Cobertura Forestal:</strong> Los bosques cubren el <strong>18.6%</strong> de Tlaxcala (74,170 ha), incluyendo bosques de encino, pino-encino, oyamel y pino.
+              </p>
+              <p>
+                <strong>Especies Clave:</strong> Especies importantes incluyen <em>Juniperus deppeana</em>, varios tipos de pinos y <em>Pseudotsuga menziesii</em> (amenazada).
+              </p>
             </div>
           </div>
 
-          <!-- Card gráfica única (derecha, 70%) -->
-          <div class="chapter-chart-full">
+          <!-- Card mapa (derecha arriba) -->
+          <div class="incendios-map">
+            <div class="map-container" id="map-6"></div>
+          </div>
+
+          <!-- Card gráfica (derecha abajo) -->
+          <div class="incendios-chart">
             <h3 class="chart-title">Superficie total (ha) afectada por incendios para el periodo 1970 a 2022</h3>
             <div class="chart-container">
               <canvas id="chart-incendios"></canvas>
@@ -492,43 +532,72 @@
         </section>
 
         <!-- ============================================================
-             CAPITULO 6 - PLAGAS Y ENFERMEDADES FORESTALES
+             CAPITULO 7 - PLAGAS Y ENFERMEDADES FORESTALES
              ============================================================ -->
-        <section class="chapter chapter-plagas-tabla" id="chapter-6" data-chapter="6">
+        <section class="chapter chapter-plagas-mapa" id="chapter-7" data-chapter="7">
           <h2 class="map-title">Impactos: Plagas y Enfermedades Forestales</h2>
 
-          <div class="plagas-content">
-            <!-- Card 1: Texto explicativo (22% ancho) -->
-            <div class="plagas-text-card">
-              <h3 class="card-title">Sanidad Forestal</h3>
-              <div class="card-content">
-                <p>
-                  La superficie boscosa de Tlaxcala (coníferas y latifoliadas) enfrenta diversas <strong>plagas forestales</strong>: descortezadores, defoliadores, barrenadores y plantas parásitas como el <strong>muérdago enano</strong>.
-                </p>
-                <p>
-                  El <strong>descortezador</strong> en el Parque Nacional La Malinche presenta desafíos significativos debido a restricciones para derribar árboles afectados, fragmentación de terrenos e indefinición en la tenencia de la tierra.
-                </p>
-                <p>
-                  La <strong>disminución de precipitación</strong> y el <strong>aumento de temperatura</strong> debilitan los bosques, haciéndolos más vulnerables. La sequía propicia un desequilibrio que facilita el ataque de estos insectos.
-                </p>
-                <ul class="plagas-lista">
-                  <li><strong>Descortezadores:</strong> Dendroctonus mexicanus, D. adjuntus, D. frontalis</li>
-                  <li><strong>Parásitas:</strong> Arceuthobium spp., Phoradendron minutifolium</li>
-                </ul>
-                <div class="plagas-stats">
-                  <div class="stat-item">
-                    <span class="stat-value">2015</span>
-                    <span class="stat-label">Año más crítico</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-value">12</span>
-                    <span class="stat-label">Años analizados</span>
-                  </div>
+          <!-- Card de texto (izquierda, 30%) -->
+          <div class="plagas-text">
+            <h3 class="chapter-title">Sanidad Forestal</h3>
+            <div class="chapter-content">
+              <p>
+                La superficie boscosa de Tlaxcala (coníferas y latifoliadas) enfrenta diversas <strong>plagas forestales</strong>: descortezadores, defoliadores, barrenadores y plantas parásitas como el <strong>muérdago enano</strong>.
+              </p>
+              <p>
+                El <strong>descortezador</strong> en el Parque Nacional La Malinche presenta desafíos significativos debido a restricciones para derribar árboles afectados, fragmentación de terrenos e indefinición en la tenencia de la tierra.
+              </p>
+              <p>
+                La <strong>disminución de precipitación</strong> y el <strong>aumento de temperatura</strong> debilitan los bosques, haciéndolos más vulnerables. La sequía propicia un desequilibrio que facilita el ataque de estos insectos.
+              </p>
+              <ul class="plagas-lista">
+                <li><strong>Descortezadores:</strong> Dendroctonus mexicanus, D. adjuntus, D. frontalis</li>
+                <li><strong>Parásitas:</strong> Arceuthobium spp., Phoradendron minutifolium</li>
+              </ul>
+              <div class="plagas-stats">
+                <div class="stat-item">
+                  <span class="stat-value">2015</span>
+                  <span class="stat-label">Año más crítico</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value">12</span>
+                  <span class="stat-label">Años analizados</span>
+                </div>
+              </div>
+
+              <div class="regiones-forestales">
+                <h4 class="regiones-titulo">Regiones Forestales</h4>
+                <div class="region-item">
+                  <h5>Tlaxco-Terrenate</h5>
+                  <p><strong>Amenazas:</strong> Tala clandestina, cambio de uso de suelo, erosión.</p>
+                  <p><strong>Características:</strong> Principal zona forestal para aprovechamiento comercial.</p>
+                </div>
+                <div class="region-item">
+                  <h5>Nanacamilpa-Calpulalpan</h5>
+                  <p><strong>Amenazas:</strong> No especifica amenazas directas en el texto, pero sí menciona que es una región sujeta a manejo forestal.</p>
+                  <p><strong>Características:</strong> Promueve el ecoturismo relacionado con santuarios de avistamiento de luciérnagas.</p>
+                </div>
+                <div class="region-item">
+                  <h5>Parque Nacional La Malinche</h5>
+                  <p><strong>Amenazas:</strong> Bosques irregulares deteriorados por presión demográfica, incendios forestales, problemas sanitarios (descortezador y plantas parásitas).</p>
+                  <p><strong>Características:</strong> Área Natural Protegida compartida con Puebla.</p>
+                </div>
+                <div class="region-item">
+                  <h5>Centro-Poniente</h5>
+                  <p><strong>Amenazas:</strong> Fragmentación de la vegetación debido al cambio de uso de suelo para fines agropecuarios y extracción de leña, presencia de descortezador y muérdago.</p>
+                  <p><strong>Características:</strong> Vegetación forestal fragmentada.</p>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Card 2: Tabla grande (78% ancho) -->
+          <!-- Card mapa (derecha arriba) -->
+          <div class="plagas-map">
+            <div class="map-container" id="map-7"></div>
+          </div>
+
+          <!-- Card tabla (derecha abajo) -->
+          <div class="plagas-tabla">
             <div class="plagas-tabla-card">
               <div class="tabla-header">
                 <h3 class="tabla-titulo-grande">Superficie afectada (ha) por plagas y enfermedades forestales de 2010 a 2021</h3>
@@ -646,17 +715,18 @@
           </div>
         </section>
 
+
         <!-- ============================================================
-             CAPITULO 7 - DEGRADACIÓN DEL SUELO (Layout mapa imagen + texto)
+             CAPITULO 8 - DEGRADACIÓN DEL SUELO (Layout mapa imagen + texto)
              ============================================================ -->
-        <section class="chapter chapter-degradacion" id="chapter-7" data-chapter="7">
+        <section class="chapter chapter-degradacion" id="chapter-8" data-chapter="8">
           <h2 class="map-title">Degradación del Suelo por Erosión Hídrica</h2>
 
           <div class="degradacion-content">
             <!-- Contenedor del mapa imagen y tabla -->
             <div class="degradacion-map-container">
               <div class="mapa-erosion-wrapper">
-                <img src="images/mapa75.png" alt="Mapa de erosión hídrica en Tlaxcala" class="mapa-erosion-img">
+                <div class="map-container" id="map-8"></div>
               </div>
 
               <!-- Tabla de erosión -->
@@ -753,74 +823,6 @@
           </div>
         </section>
 
-        <!-- ============================================================
-             CAPITULO 8 - ESCARABAJO DESCORTEZADOR (Layout mapa imagen + texto)
-             ============================================================ -->
-        <section class="chapter chapter-descortezador" id="chapter-8" data-chapter="8">
-          <h2 class="map-title">Riesgo por Escarabajo Descortezador</h2>
-
-          <div class="descortezador-content">
-            <!-- Contenedor del mapa imagen y simbología -->
-            <div class="descortezador-map-container">
-              <div class="mapa-descortezador-wrapper">
-                <img src="images/mapa73.png" alt="Mapa de riesgo por escarabajo descortezador en Tlaxcala" class="mapa-descortezador-img">
-              </div>
-
-              <!-- Leyenda -->
-              <div class="simbologia-descortezador">
-                <div class="simbologia-section">
-                  <h4 class="simbologia-titulo">Leyenda</h4>
-                  <div class="simbologia-items">
-                    <div class="simbologia-item">
-                      <span class="simbologia-icono limite-municipal"></span>
-                      <span class="simbologia-texto">Límite municipal</span>
-                    </div>
-                    <div class="simbologia-item">
-                      <span class="simbologia-icono poligono-estado"></span>
-                      <span class="simbologia-texto">Polígono del Estado de Tlaxcala</span>
-                    </div>
-                    <div class="simbologia-item">
-                      <span class="simbologia-icono limite-estado"></span>
-                      <span class="simbologia-texto">Límite del Estado de Tlaxcala</span>
-                    </div>
-                    <div class="simbologia-item">
-                      <span class="simbologia-icono limite-estatal"></span>
-                      <span class="simbologia-texto">Límite Estatal</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="simbologia-section">
-                  <h4 class="simbologia-titulo">Descortezador - Riesgo</h4>
-                  <div class="simbologia-items riesgo-items">
-                    <div class="simbologia-item">
-                      <span class="simbologia-color riesgo-moderado"></span>
-                      <span class="simbologia-texto">Moderado</span>
-                    </div>
-                    <div class="simbologia-item">
-                      <span class="simbologia-color riesgo-alto"></span>
-                      <span class="simbologia-texto">Alto</span>
-                    </div>
-                    <div class="simbologia-item">
-                      <span class="simbologia-color riesgo-muy-alto"></span>
-                      <span class="simbologia-texto">Muy Alto</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Card de texto explicativo -->
-            <div class="descortezador-text-card">
-              <h3 class="card-title">Impacto del Cambio Climático</h3>
-              <div class="card-content">
-                <p>
-                  El cambio climático está creando condiciones más favorables para el escarabajo descortezador en Tlaxcala, acelerando su ciclo de vida y aumentando su reproducción. Al mismo tiempo, la sequía y el calor debilitan a los árboles, haciéndolos más vulnerables a la infestación. Esto representa una amenaza seria para los bosques del estado, ya que el insecto puede causar daños extensos y afectar la biodiversidad.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
       </div>
 
       <!-- Timeline inferior -->
@@ -843,19 +845,19 @@
         </div>
         <div class="timeline-item" data-chapter="5">
           <div class="timeline-circle">5</div>
-          <div class="timeline-label">Incendios Forestales</div>
+          <div class="timeline-label">Hidrología 3</div>
         </div>
         <div class="timeline-item" data-chapter="6">
           <div class="timeline-circle">6</div>
-          <div class="timeline-label">Plagas Forestales</div>
+          <div class="timeline-label">Incendios Forestales</div>
         </div>
         <div class="timeline-item" data-chapter="7">
           <div class="timeline-circle">7</div>
-          <div class="timeline-label">Degradación del Suelo</div>
+          <div class="timeline-label">Plagas Forestales</div>
         </div>
         <div class="timeline-item" data-chapter="8">
           <div class="timeline-circle">8</div>
-          <div class="timeline-label">Descortezador</div>
+          <div class="timeline-label">Degradación del Suelo</div>
         </div>
       </div>
 

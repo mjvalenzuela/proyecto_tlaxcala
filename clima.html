@@ -663,11 +663,11 @@
         </div>
         <div class="timeline-item" data-chapter="5">
           <div class="timeline-circle">5</div>
-          <div class="timeline-label">Temperatura</div>
+          <div class="timeline-label">Tendencia de Temperatura</div>
         </div>
         <div class="timeline-item" data-chapter="6">
           <div class="timeline-circle">6</div>
-          <div class="timeline-label">Precipitación</div>
+          <div class="timeline-label">Tendencia de Precipitación</div>
         </div>
       </div>
 
@@ -978,32 +978,30 @@
 
           if (isVercelProxy) {
             const basePath = `/geoserver/${workspace}/wms`;
-            wmsSource = new ol.source.TileWMS({
+            wmsSource = new ol.source.ImageWMS({
               url: proxyUrl.replace('?path=', ''),
               params: {
                 'LAYERS': layerName,
-                'TILED': true,
                 'VERSION': '1.1.0',
                 'FORMAT': 'image/png',
                 'TRANSPARENT': true
               },
               serverType: 'geoserver',
               crossOrigin: 'anonymous',
-              tileLoadFunction: function(imageTile, src) {
+              imageLoadFunction: function(image, src) {
                 const url = new URL(src, window.location.origin);
                 const params = url.searchParams.toString();
                 const fullPath = `${basePath}?${params}`;
                 const encodedPath = encodeURIComponent(fullPath);
                 const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
-                imageTile.getImage().src = finalUrl;
+                image.getImage().src = finalUrl;
               }
             });
           } else {
-            wmsSource = new ol.source.TileWMS({
+            wmsSource = new ol.source.ImageWMS({
               url: proxyUrl + '/SEICCT/wms',
               params: {
                 'LAYERS': layerName,
-                'TILED': true,
                 'FORMAT': 'image/png',
                 'TRANSPARENT': true
               },
@@ -1011,7 +1009,7 @@
             });
           }
 
-          const layer = new ol.layer.Tile({
+          const layer = new ol.layer.Image({
             source: wmsSource,
             visible: true,
             opacity: opacity || 0.85,
@@ -1447,6 +1445,29 @@
         // Generar etiquetas de municipios (1-60)
         const municipiosLabels = Array.from({length: 60}, (_, i) => i + 1);
 
+        // Diccionario ID → Nombre de municipio
+        const nombresMunicipios = {
+          1: 'Amaxac de Guerrero', 2: 'Apetatitlán de Antonio Carvajal', 3: 'Atlangatepec',
+          4: 'Atltzayanca', 5: 'Apizaco', 6: 'Calpulalpan', 7: 'El Carmen Tequexquitla',
+          8: 'Cuapiaxtla', 9: 'Cuaxomulco', 10: 'Chiautempan', 11: 'Muñoz de Domingo Arenas',
+          12: 'Españita', 13: 'Huamantla', 14: 'Hueyotlipan', 15: 'Ixtacuixtla de Mariano Matamoros',
+          16: 'Ixtenco', 17: 'Mazatecochco de José María Morelos', 18: 'Contla de Juan Cuamatzi',
+          19: 'Tepetitla de Lardizábal', 20: 'Sanctórum de Lázaro Cárdenas',
+          21: 'Nanacamilpa de Mariano Arista', 22: 'Acuamanala de Miguel Hidalgo',
+          23: 'Nativitas', 24: 'Panotla', 25: 'San Pablo del Monte', 26: 'Santa Cruz Tlaxcala',
+          27: 'Tenancingo', 28: 'Teolocholco', 29: 'Tepeyanco', 30: 'Terrenate',
+          31: 'Tetla de la Solidaridad', 32: 'Tetlatlahuca', 33: 'Tlaxcala', 34: 'Tlaxco',
+          35: 'Tocatlán', 36: 'Totolac', 37: 'Ziltlaltépec de Trinidad Sánchez Santos',
+          38: 'Tzompantepec', 39: 'Xaloztoc', 40: 'Xaltocan', 41: 'Papalotla de Xicohténcatl',
+          42: 'Xicohtzinco', 43: 'Yauhquemehcan', 44: 'Zacatelco', 45: 'Benito Juárez',
+          46: 'Emiliano Zapata', 47: 'Lázaro Cárdenas', 48: 'La Magdalena Tlaltelulco',
+          49: 'San Damián Texóloc', 50: 'San Francisco Tetlanohcan',
+          51: 'San Jerónimo Zacualpan', 52: 'San José Teacalco', 53: 'San Juan Huactzinco',
+          54: 'San Lorenzo Axocomanitla', 55: 'San Lucas Tecopilco', 56: 'Santa Ana Nopalucan',
+          57: 'Santa Apolonia Teacalco', 58: 'Santa Catarina Ayometla', 59: 'Santa Cruz Quilehtla',
+          60: 'Santa Isabel Xiloxoxtla'
+        };
+
         // Función para generar datos con variación realista
         function generarDatosConVariacion(base, variacion, length) {
           return Array.from({length}, (_, i) => {
@@ -1504,7 +1525,9 @@
             tooltip: {
               callbacks: {
                 title: function(context) {
-                  return 'Municipio ' + context[0].label;
+                  const id = context[0].label;
+                  const nombre = nombresMunicipios[id] || '';
+                  return id + ' - ' + nombre;
                 }
               }
             }
@@ -1516,7 +1539,15 @@
                 text: 'Municipio',
                 font: { size: 11, weight: 'bold' }
               },
-              ticks: { maxTicksLimit: 12 }
+              ticks: {
+                autoSkip: false,
+                callback: function(value, index) {
+                  const label = municipiosLabels[index];
+                  if (label === 1 || label % 5 === 0) return label;
+                  return '';
+                },
+                maxRotation: 0
+              }
             }
           },
           elements: {
@@ -1779,7 +1810,7 @@
             ],
             view: new ol.View({
               center: ol.proj.fromLonLat(defaultCenter),
-              zoom: defaultZoom
+              zoom: 10.5
             }),
             controls: ol.control.defaults.defaults({
               zoom: true,
@@ -1962,7 +1993,7 @@
             ],
             view: new ol.View({
               center: ol.proj.fromLonLat(defaultCenter),
-              zoom: defaultZoom
+              zoom: 10.5
             }),
             controls: ol.control.defaults.defaults({
               zoom: true,

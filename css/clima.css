@@ -74,7 +74,7 @@
 
 .clima-text-card .card-content p {
   margin-bottom: 0.5rem;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .clima-text-card .card-content ul {
@@ -172,8 +172,8 @@
 
 .clima-concepts .concept-item {
   display: flex;
-  align-items: flex-start;
-  gap: 0.3rem;
+  flex-direction: column;
+  gap: 0.15rem;
   margin-bottom: 0.3rem;
   padding: 0.3rem;
   background: rgba(74, 144, 217, 0.05);

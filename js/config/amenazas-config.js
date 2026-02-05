@@ -172,6 +172,51 @@ const simbologias = {
       { label: "Sí", color: "#86607c", stroke: "#232323" },
       { label: "No", color: "#d7dad8", stroke: "#232323" }
     ]
+  },
+  "SEICCT:numero_dias_secos": {
+    titulo: "Número de Días Secos",
+    tipo: "polygon",
+    categorias: [
+      { label: "50 - 55", color: "#af3129", stroke: "#232323" },
+      { label: "55 - 60", color: "#fd9e75", stroke: "#232323" },
+      { label: "60 - 65", color: "#ead891", stroke: "#232323" },
+      { label: "65 - 70", color: "#bdf09f", stroke: "#232323" },
+      { label: "70 - 75", color: "#75be7b", stroke: "#232323" },
+      { label: "75 - 80", color: "#25781a", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:numero_dias_heladas": {
+    titulo: "Número de Días de Heladas",
+    tipo: "polygon",
+    categorias: [
+      { label: "5 - 10", color: "#f4f5da", stroke: "#232323" },
+      { label: "10 - 15", color: "#c8cfcb", stroke: "#232323" },
+      { label: "15 - 20", color: "#9caabd", stroke: "#232323" },
+      { label: "20 - 25", color: "#7184ae", stroke: "#232323" },
+      { label: "25 - 30", color: "#455fa0", stroke: "#232323" }
+    ]
+  },
+  "SEICCT:uso_de_suelo": {
+    titulo: "Uso de Suelo",
+    tipo: "polygon",
+    categorias: [
+      { label: "Agricultura de temporal", color: "#c8c9be", stroke: "#232323" },
+      { label: "Cuerpo de agua", color: "#00dfff", stroke: "#232323" },
+      { label: "Pastizal halófilo", color: "#8deed7", stroke: "#232323" },
+      { label: "Sin vegetación aparente", color: "#d0d0d0", stroke: "#232323" },
+      { label: "Pastizal inducido", color: "#ece9b6", stroke: "#232323" },
+      { label: "Bosque cultivado", color: "#ff0600", stroke: "#232323" },
+      { label: "Matorral desértico rosétofilo", color: "#e1c0dd", stroke: "#232323" },
+      { label: "Matorral crasicaule", color: "#fa4fc1", stroke: "#232323" },
+      { label: "Bosque de táscate", color: "#dba46c", stroke: "#232323" },
+      { label: "Bosque de oyamel", color: "#e5d742", stroke: "#232323" },
+      { label: "Bosque de encino", color: "#abd143", stroke: "#232323" },
+      { label: "Bosque de encino pino", color: "#438a40", stroke: "#232323" },
+      { label: "Bosque de pino", color: "#3be131", stroke: "#232323" },
+      { label: "Bosque de pino encino", color: "#efb0bd", stroke: "#232323" },
+      { label: "Pradera de alta montaña", color: "#f7cdb6", stroke: "#232323" },
+      { label: "Zona urbana", color: "#000000", stroke: "#232323" }
+    ]
   }
 };
 

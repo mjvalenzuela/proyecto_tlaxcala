@@ -131,11 +131,64 @@ const simbologias = {
       { label: '1,500,000 - 3,500,000 m³', color: '#346293', stroke: '#173b61' },
       { label: '3,500,000 - 7,446,640 m³', color: '#173b61', stroke: '#0d2240' }
     ]
+  },
+  'SEICCT:uso_de_suelo': {
+    titulo: 'Uso de Suelo',
+    tipo: 'polygon',
+    categorias: [
+      { label: 'Agricultura de temporal', color: '#c8c9be', stroke: '#232323' },
+      { label: 'Cuerpo de agua', color: '#00dfff', stroke: '#232323' },
+      { label: 'Pastizal halófilo', color: '#8deed7', stroke: '#232323' },
+      { label: 'Sin vegetación aparente', color: '#d0d0d0', stroke: '#232323' },
+      { label: 'Pastizal inducido', color: '#ece9b6', stroke: '#232323' },
+      { label: 'Bosque cultivado', color: '#ff0600', stroke: '#232323' },
+      { label: 'Matorral desértico rosétofilo', color: '#e1c0dd', stroke: '#232323' },
+      { label: 'Matorral crasicaule', color: '#fa4fc1', stroke: '#232323' },
+      { label: 'Bosque de táscate', color: '#dba46c', stroke: '#232323' },
+      { label: 'Bosque de oyamel', color: '#e5d742', stroke: '#232323' },
+      { label: 'Bosque de encino', color: '#abd143', stroke: '#232323' },
+      { label: 'Bosque de encino pino', color: '#438a40', stroke: '#232323' },
+      { label: 'Bosque de pino', color: '#3be131', stroke: '#232323' },
+      { label: 'Bosque de pino encino', color: '#efb0bd', stroke: '#232323' },
+      { label: 'Pradera de alta montaña', color: '#f7cdb6', stroke: '#232323' },
+      { label: 'Zona urbana', color: '#000000', stroke: '#232323' }
+    ]
+  },
+  'SEICCT:incendios_2011': { titulo: 'Áreas Quemadas 2011', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#ebe501', stroke: '#ebe501' }] },
+  'SEICCT:incendios_2012': { titulo: 'Áreas Quemadas 2012', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#ff9c00', stroke: '#ff9c00' }] },
+  'SEICCT:incendios_2013': { titulo: 'Áreas Quemadas 2013', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#ff5700', stroke: '#ff5700' }] },
+  'SEICCT:incendios_2015': { titulo: 'Áreas Quemadas 2015', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#e53935', stroke: '#e53935' }] },
+  'SEICCT:incendios_2016': { titulo: 'Áreas Quemadas 2016', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#d81b60', stroke: '#d81b60' }] },
+  'SEICCT:incendios_2017': { titulo: 'Áreas Quemadas 2017', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#8e24aa', stroke: '#8e24aa' }] },
+  'SEICCT:incendios_2018': { titulo: 'Áreas Quemadas 2018', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#5e35b1', stroke: '#5e35b1' }] },
+  'SEICCT:incendios_2019': { titulo: 'Áreas Quemadas 2019', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#3949ab', stroke: '#3949ab' }] },
+  'SEICCT:incendios_2020': { titulo: 'Áreas Quemadas 2020', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#1e88e5', stroke: '#1e88e5' }] },
+  'SEICCT:incendios_2021': { titulo: 'Áreas Quemadas 2021', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#00897b', stroke: '#00897b' }] },
+  'SEICCT:incendios_2022': { titulo: 'Áreas Quemadas 2022', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#43a047', stroke: '#43a047' }] },
+  'SEICCT:incendios_2023': { titulo: 'Áreas Quemadas 2023', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#7cb342', stroke: '#7cb342' }] },
+  'SEICCT:incendios_2024': { titulo: 'Áreas Quemadas 2024', tipo: 'polygon', categorias: [{ label: 'Área quemada', color: '#c0ca33', stroke: '#c0ca33' }] },
+  'SEICCT:riesgo_descortezadores': {
+    titulo: 'Riesgo de Descortezadores',
+    tipo: 'polygon',
+    categorias: [
+      { label: 'Moderado', color: '#ffed00', stroke: '#232323' },
+      { label: 'Alto', color: '#ff9900', stroke: '#232323' },
+      { label: 'Muy Alto', color: '#c72225', stroke: '#232323' }
+    ]
+  },
+  'SEICCT:riesgo_plantas_parasitas': {
+    titulo: 'Riesgo de Plantas Parásitas',
+    tipo: 'polygon',
+    categorias: [
+      { label: 'Bajo', color: '#00721e', stroke: '#232323' },
+      { label: 'Moderado', color: '#ffed00', stroke: '#232323' },
+      { label: 'Alto', color: '#ff9900', stroke: '#232323' },
+      { label: 'Muy Alto', color: '#c72225', stroke: '#232323' }
+    ]
   }
 };
 
 const capasCapitulo1 = [
-  { tipo: 'subtitulo', titulo: 'Capas Base' },
   {
     nombre: 'Límite Estatal',
     tipo: 'wms',
@@ -153,6 +206,15 @@ const capasCapitulo1 = [
     visible: true,
     zIndex: 2,
     leyenda: false,
+  },
+  {
+    nombre: 'Uso de Suelo',
+    tipo: 'wms',
+    layer: 'SEICCT:uso_de_suelo',
+    opacity: 1,
+    visible: true,
+    zIndex: 3,
+    leyenda: true,
   },
   {
     nombre: 'Municipios (interacción)',
@@ -182,7 +244,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ],
     view: new ol.View({
       center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
-      zoom: 9.5,
+      zoom: 10.5,
     }),
     controls: ol.control.defaults.defaults({
       zoom: true,
@@ -521,7 +583,7 @@ window.addEventListener('DOMContentLoaded', () => {
       ],
       view: new ol.View({
         center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
-        zoom: 9.5,
+        zoom: 10.5,
       }),
       controls: ol.control.defaults.defaults({
         zoom: true,
@@ -729,7 +791,7 @@ window.addEventListener('DOMContentLoaded', () => {
       ],
       view: new ol.View({
         center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
-        zoom: 9.5,
+        zoom: 10.5,
       }),
       controls: ol.control.defaults.defaults({
         zoom: true,
@@ -924,6 +986,1101 @@ window.addEventListener('DOMContentLoaded', () => {
     mapas['map-4'] = map4;
   }
 
+  // CAPITULO 5 - MAPA DE HIDROLOGÍA 3
+  const map5Container = document.getElementById('map-5');
+  if (map5Container) {
+    const map5 = new ol.Map({
+      target: 'map-5',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM(),
+          zIndex: 0,
+        }),
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
+        zoom: 10.5,
+      }),
+      controls: ol.control.defaults.defaults({
+        zoom: true,
+        attribution: false,
+      }),
+    });
+
+    // Configuración de capas para el mapa 5 - Hidrología 3
+    const capasHidrologia5 = [
+      { nombre: 'Acuíferos', layer: 'SEICCT:Acuiferos', visible: false, zIndex: 1, leyenda: true },
+      { nombre: 'Cuerpos de Agua', layer: 'SEICCT:Cuerpos_Agua', visible: false, zIndex: 2, leyenda: true },
+      { nombre: 'Escurrimientos', layer: 'SEICCT:Escurrimientos', visible: false, zIndex: 3, leyenda: true },
+      { nombre: 'Rendimiento Hídrico Anual', layer: 'SEICCT:rendimiento_hidrico_anual', visible: false, zIndex: 4, leyenda: true },
+      { nombre: 'Rendimiento Hídrico Anual por Cuenca', layer: 'SEICCT:rendimiento_hidrico_anual_cuenca', visible: false, zIndex: 5, leyenda: true },
+      { nombre: 'Cambio Rendimiento Hídrico Anual', layer: 'SEICCT:cambio_rendimiento_hidrico_anual', visible: true, zIndex: 6, leyenda: true },
+      { nombre: 'Concesiones Agua Superficiales', layer: 'SEICCT:concesiones_agua_superficiales', visible: false, zIndex: 7, leyenda: true },
+      { nombre: 'Concesiones Agua Subterráneas', layer: 'SEICCT:concesiones_agua_subterraneas', visible: false, zIndex: 8, leyenda: true },
+    ];
+
+    const capasWMS5 = [];
+    const workspace5 = 'SEICCT';
+
+    // Crear capas WMS
+    capasHidrologia5.forEach((capaConfig) => {
+      let wmsSource5;
+
+      if (isVercelProxy) {
+        const basePath5 = `/geoserver/${workspace5}/wms`;
+        wmsSource5 = new ol.source.TileWMS({
+          url: proxyUrl.replace('?path=', ''),
+          params: {
+            'LAYERS': capaConfig.layer,
+            'TILED': true,
+            'VERSION': '1.1.0',
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          serverType: 'geoserver',
+          crossOrigin: 'anonymous',
+          tileLoadFunction: function(imageTile, src) {
+            const url = new URL(src, window.location.origin);
+            const params = url.searchParams.toString();
+            const fullPath = `${basePath5}?${params}`;
+            const encodedPath = encodeURIComponent(fullPath);
+            const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+            imageTile.getImage().src = finalUrl;
+          },
+        });
+      } else {
+        wmsSource5 = new ol.source.TileWMS({
+          url: proxyUrl + '/SEICCT/wms',
+          params: {
+            'LAYERS': capaConfig.layer,
+            'TILED': true,
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          serverType: 'geoserver',
+        });
+      }
+
+      const wmsLayer5 = new ol.layer.Tile({
+        source: wmsSource5,
+        opacity: 1,
+        zIndex: capaConfig.zIndex,
+        visible: capaConfig.visible,
+      });
+      wmsLayer5.set('name', capaConfig.nombre);
+      wmsLayer5.set('layerName', capaConfig.layer);
+      map5.addLayer(wmsLayer5);
+      capasWMS5.push(wmsLayer5);
+    });
+
+    // Crear control de capas para mapa 5
+    const mapElement5 = document.getElementById('map-5');
+    if (mapElement5) {
+      let controlsContainer5 = document.createElement('div');
+      controlsContainer5.className = 'map-controls';
+      controlsContainer5.id = 'map-controls-5';
+      mapElement5.appendChild(controlsContainer5);
+
+      controlsContainer5.innerHTML = `
+        <div class="map-controls-header">
+          <div class="map-controls-title">Capas</div>
+          <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
+        </div>
+        <div class="map-controls-content"></div>
+      `;
+
+      const contentContainer5 = controlsContainer5.querySelector('.map-controls-content');
+      const toggleBtn5 = controlsContainer5.querySelector('.map-controls-toggle');
+
+      toggleBtn5.addEventListener('click', () => {
+        controlsContainer5.classList.toggle('collapsed');
+        toggleBtn5.textContent = controlsContainer5.classList.contains('collapsed') ? '▼' : '▲';
+      });
+
+      // Crear panel de leyendas
+      let legendsContainer5 = document.createElement('div');
+      legendsContainer5.className = 'map-legends';
+      legendsContainer5.id = 'map-legends-5';
+      mapElement5.appendChild(legendsContainer5);
+
+      legendsContainer5.innerHTML = `
+        <div class="map-legends-header">
+          <div class="map-legends-title">Leyenda</div>
+          <button class="map-legends-toggle" title="Ocultar/Mostrar leyenda">▲</button>
+        </div>
+        <div class="map-legends-content"></div>
+      `;
+
+      const legendsContent5 = legendsContainer5.querySelector('.map-legends-content');
+      const legendsToggleBtn5 = legendsContainer5.querySelector('.map-legends-toggle');
+
+      legendsToggleBtn5.addEventListener('click', () => {
+        legendsContainer5.classList.toggle('collapsed');
+        legendsToggleBtn5.textContent = legendsContainer5.classList.contains('collapsed') ? '▼' : '▲';
+      });
+
+      // Función para actualizar leyendas usando simbologías
+      function actualizarLeyendas5() {
+        legendsContent5.innerHTML = '';
+        capasHidrologia5.forEach((capaConfig, index) => {
+          const layer = capasWMS5[index];
+          if (layer.getVisible() && capaConfig.leyenda) {
+            const simbologia = simbologias[capaConfig.layer];
+            if (simbologia) {
+              const legendItem = document.createElement('div');
+              legendItem.className = 'legend-item';
+              legendItem.id = `legend-5-${index}`;
+              legendItem.innerHTML = `<div class="legend-item-title">${simbologia.titulo}</div>`;
+
+              const simbologiaContainer = document.createElement('div');
+              simbologiaContainer.className = 'legend-simbologia';
+
+              simbologia.categorias.forEach(cat => {
+                const categoria = document.createElement('div');
+                categoria.className = 'legend-categoria';
+
+                if (simbologia.tipo === 'line') {
+                  categoria.innerHTML = `
+                    <div class="legend-simbolo legend-line" style="background-color: ${cat.color};"></div>
+                    <span class="legend-label">${cat.label}</span>
+                  `;
+                } else if (simbologia.tipo === 'point') {
+                  categoria.innerHTML = `
+                    <div class="legend-simbolo legend-point" style="background-color: ${cat.color}; border: 2px solid ${cat.stroke};"></div>
+                    <span class="legend-label">${cat.label}</span>
+                  `;
+                } else {
+                  categoria.innerHTML = `
+                    <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
+                    <span class="legend-label">${cat.label}</span>
+                  `;
+                }
+                simbologiaContainer.appendChild(categoria);
+              });
+
+              legendItem.appendChild(simbologiaContainer);
+              legendsContent5.appendChild(legendItem);
+            }
+          }
+        });
+
+        if (legendsContent5.children.length === 0) {
+          legendsContent5.innerHTML = '<div class="map-legends-empty">Seleccione una capa para ver su leyenda</div>';
+        }
+      }
+
+      // Crear checkboxes para cada capa
+      capasHidrologia5.forEach((capaConfig, index) => {
+        const layerControl = document.createElement('div');
+        layerControl.className = 'layer-control';
+        const checkboxId = `layer-5-${index}`;
+        layerControl.innerHTML = `
+          <input type="checkbox" id="${checkboxId}" ${capaConfig.visible ? 'checked' : ''} />
+          <label for="${checkboxId}">${capaConfig.nombre}</label>
+        `;
+        contentContainer5.appendChild(layerControl);
+
+        const checkbox = layerControl.querySelector(`#${checkboxId}`);
+        checkbox.addEventListener('change', (e) => {
+          capasWMS5[index].setVisible(e.target.checked);
+          actualizarLeyendas5();
+        });
+      });
+
+      // Inicializar leyendas
+      actualizarLeyendas5();
+    }
+
+    mapas['map-5'] = map5;
+  }
+
+  // CAPITULO 5 - GRÁFICA DE DEMANDA DE AGUA (Hidrología 3)
+  const ctxDemandaAgua = document.getElementById('chart-demanda-agua');
+  if (ctxDemandaAgua) {
+    // Plugin para dibujar líneas divisorias punteadas entre categorías
+    const verticalLinesPlugin = {
+      id: 'verticalLines',
+      afterDraw: (chart) => {
+        const ctx = chart.ctx;
+        const xAxis = chart.scales.x;
+        const yAxis = chart.scales.y;
+
+        ctx.save();
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.lineWidth = 1;
+
+        // Dibujar líneas entre cada categoría
+        const ticksCount = xAxis.ticks.length;
+        for (let i = 0; i < ticksCount - 1; i++) {
+          const x1 = xAxis.getPixelForTick(i);
+          const x2 = xAxis.getPixelForTick(i + 1);
+          const xMid = (x1 + x2) / 2;
+
+          ctx.beginPath();
+          ctx.moveTo(xMid, yAxis.top);
+          ctx.lineTo(xMid, yAxis.bottom);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+    };
+
+    new Chart(ctxDemandaAgua.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: [
+          ['Público urbano', 'y doméstico'],
+          'Agrícola',
+          'Industrial',
+          'Servicios'
+        ],
+        datasets: [
+          {
+            label: '2023',
+            data: [92330299, 138990063, 166283339.52, 1411405.40],
+            backgroundColor: '#e68a00',
+            borderColor: '#cc7a00',
+            borderWidth: 0
+          },
+          {
+            label: '2060',
+            data: [115003091, 199450000, 30987176, 1750714],
+            backgroundColor: '#f5b84a',
+            borderColor: '#e0a63d',
+            borderWidth: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#333',
+              font: { size: 11, weight: 'bold' },
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 15
+            }
+          },
+          datalabels: {
+            display: true,
+            color: '#333',
+            font: { size: 9, weight: 'bold' },
+            rotation: -90,
+            anchor: function(context) {
+              const value = context.dataset.data[context.dataIndex];
+              // Barras pequeñas (Servicios y Industrial 2060) muestran valor arriba
+              if (value < 50000000) {
+                return 'end';
+              }
+              return 'center';
+            },
+            align: function(context) {
+              const value = context.dataset.data[context.dataIndex];
+              // Barras pequeñas alinean arriba (fuera de la barra)
+              if (value < 50000000) {
+                return 'end';
+              }
+              return 'center';
+            },
+            offset: function(context) {
+              const value = context.dataset.data[context.dataIndex];
+              if (value < 50000000) {
+                return 4;
+              }
+              return 0;
+            },
+            formatter: (value) => {
+              // Formatear números con separador de miles
+              if (value >= 1000000) {
+                return Math.round(value).toLocaleString('es-MX');
+              }
+              return value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()} m³`
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: {
+              color: '#333',
+              font: { size: 10, weight: 'bold' },
+              maxRotation: 0,
+              minRotation: 0,
+              autoSkip: false
+            }
+          },
+          y: {
+            beginAtZero: true,
+            max: 200000000,
+            grid: { color: 'rgba(0,0,0,0.15)' },
+            ticks: {
+              color: '#333',
+              font: { size: 10 },
+              stepSize: 40000000,
+              callback: (value) => {
+                if (value === 0) return '0';
+                return (value / 1000000) + 'M';
+              }
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels, verticalLinesPlugin]
+    });
+  }
+
+  // CAPITULO 6 - MAPA DE INCENDIOS FORESTALES
+  const map6Container = document.getElementById('map-6');
+  if (map6Container) {
+    const map6 = new ol.Map({
+      target: 'map-6',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.XYZ({
+            url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+          }),
+          zIndex: 0,
+        }),
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
+        zoom: 10,
+      }),
+      controls: ol.control.defaults.defaults({
+        zoom: true,
+        attribution: false,
+      }),
+    });
+
+    const capasIncendios = [
+      { nombre: 'Límite Municipal', layer: 'SEICCT:Limite', visible: true, zIndex: 15, leyenda: false },
+      { nombre: 'Uso de Suelo', layer: 'SEICCT:uso_de_suelo', visible: true, zIndex: 1, leyenda: true },
+      { nombre: 'Áreas Quemadas 2011', layer: 'SEICCT:incendios_2011', visible: false, zIndex: 2, leyenda: true },
+      { nombre: 'Áreas Quemadas 2012', layer: 'SEICCT:incendios_2012', visible: false, zIndex: 3, leyenda: true },
+      { nombre: 'Áreas Quemadas 2013', layer: 'SEICCT:incendios_2013', visible: false, zIndex: 4, leyenda: true },
+      { nombre: 'Áreas Quemadas 2015', layer: 'SEICCT:incendios_2015', visible: false, zIndex: 5, leyenda: true },
+      { nombre: 'Áreas Quemadas 2016', layer: 'SEICCT:incendios_2016', visible: false, zIndex: 6, leyenda: true },
+      { nombre: 'Áreas Quemadas 2017', layer: 'SEICCT:incendios_2017', visible: false, zIndex: 7, leyenda: true },
+      { nombre: 'Áreas Quemadas 2018', layer: 'SEICCT:incendios_2018', visible: false, zIndex: 8, leyenda: true },
+      { nombre: 'Áreas Quemadas 2019', layer: 'SEICCT:incendios_2019', visible: false, zIndex: 9, leyenda: true },
+      { nombre: 'Áreas Quemadas 2020', layer: 'SEICCT:incendios_2020', visible: false, zIndex: 10, leyenda: true },
+      { nombre: 'Áreas Quemadas 2021', layer: 'SEICCT:incendios_2021', visible: false, zIndex: 11, leyenda: true },
+      { nombre: 'Áreas Quemadas 2022', layer: 'SEICCT:incendios_2022', visible: false, zIndex: 12, leyenda: true },
+      { nombre: 'Áreas Quemadas 2023', layer: 'SEICCT:incendios_2023', visible: false, zIndex: 13, leyenda: true },
+      { nombre: 'Áreas Quemadas 2024', layer: 'SEICCT:incendios_2024', visible: false, zIndex: 14, leyenda: true },
+    ];
+
+    const capasWMS6 = [];
+    const workspace6 = 'SEICCT';
+
+    capasIncendios.forEach((capaConfig) => {
+      let wmsSource6;
+
+      // Las capas de incendios tienen CRS nativo EPSG:404000 (indefinido)
+      // y GeoServer no puede reproyectarlas a EPSG:3857.
+      // Se solicitan en EPSG:4326 y OpenLayers reproyecta del lado del cliente.
+      const esCapaIncendio = capaConfig.layer.includes('incendios_');
+      const sourceProjection = esCapaIncendio ? 'EPSG:4326' : undefined;
+
+      if (isVercelProxy) {
+        const basePath6 = `/geoserver/${workspace6}/wms`;
+        wmsSource6 = new ol.source.TileWMS({
+          url: proxyUrl.replace('?path=', ''),
+          params: {
+            'LAYERS': capaConfig.layer,
+            'TILED': true,
+            'VERSION': '1.1.0',
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          projection: sourceProjection,
+          serverType: 'geoserver',
+          crossOrigin: 'anonymous',
+          tileLoadFunction: function(imageTile, src) {
+            const url = new URL(src, window.location.origin);
+            const params = url.searchParams.toString();
+            const fullPath = `${basePath6}?${params}`;
+            const encodedPath = encodeURIComponent(fullPath);
+            const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+            imageTile.getImage().src = finalUrl;
+          },
+        });
+      } else {
+        wmsSource6 = new ol.source.TileWMS({
+          url: proxyUrl + '/SEICCT/wms',
+          params: {
+            'LAYERS': capaConfig.layer,
+            'TILED': true,
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          projection: sourceProjection,
+          serverType: 'geoserver',
+        });
+      }
+
+      const wmsLayer6 = new ol.layer.Tile({
+        source: wmsSource6,
+        opacity: 1,
+        zIndex: capaConfig.zIndex,
+        visible: capaConfig.visible,
+      });
+      wmsLayer6.set('name', capaConfig.nombre);
+      wmsLayer6.set('layerName', capaConfig.layer);
+      map6.addLayer(wmsLayer6);
+      capasWMS6.push(wmsLayer6);
+    });
+
+    // Crear control de capas para mapa 6
+    const mapElement6 = document.getElementById('map-6');
+    if (mapElement6) {
+      let controlsContainer6 = document.createElement('div');
+      controlsContainer6.className = 'map-controls';
+      controlsContainer6.id = 'map-controls-6';
+      mapElement6.appendChild(controlsContainer6);
+
+      controlsContainer6.innerHTML = `
+        <div class="map-controls-header">
+          <div class="map-controls-title">Capas</div>
+          <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
+        </div>
+        <div class="map-controls-content"></div>
+      `;
+
+      const contentContainer6 = controlsContainer6.querySelector('.map-controls-content');
+      const toggleBtn6 = controlsContainer6.querySelector('.map-controls-toggle');
+
+      toggleBtn6.addEventListener('click', () => {
+        controlsContainer6.classList.toggle('collapsed');
+        toggleBtn6.textContent = controlsContainer6.classList.contains('collapsed') ? '▼' : '▲';
+      });
+
+      // Crear panel de leyendas
+      let legendsContainer6 = document.createElement('div');
+      legendsContainer6.className = 'map-legends';
+      legendsContainer6.id = 'map-legends-6';
+      mapElement6.appendChild(legendsContainer6);
+
+      legendsContainer6.innerHTML = `
+        <div class="map-legends-header">
+          <div class="map-legends-title">Leyenda</div>
+          <button class="map-legends-toggle" title="Ocultar/Mostrar leyenda">▲</button>
+        </div>
+        <div class="map-legends-content"></div>
+      `;
+
+      const legendsContent6 = legendsContainer6.querySelector('.map-legends-content');
+      const legendsToggleBtn6 = legendsContainer6.querySelector('.map-legends-toggle');
+
+      legendsToggleBtn6.addEventListener('click', () => {
+        legendsContainer6.classList.toggle('collapsed');
+        legendsToggleBtn6.textContent = legendsContainer6.classList.contains('collapsed') ? '▼' : '▲';
+      });
+
+      function actualizarLeyendas6() {
+        legendsContent6.innerHTML = '';
+        capasIncendios.forEach((capaConfig, index) => {
+          const layer = capasWMS6[index];
+          if (layer.getVisible() && capaConfig.leyenda) {
+            const simbologia = simbologias[capaConfig.layer];
+            if (simbologia) {
+              const legendItem = document.createElement('div');
+              legendItem.className = 'legend-item';
+              legendItem.id = `legend-6-${index}`;
+              legendItem.innerHTML = `<div class="legend-item-title">${simbologia.titulo}</div>`;
+
+              const simbologiaContainer = document.createElement('div');
+              simbologiaContainer.className = 'legend-simbologia';
+
+              simbologia.categorias.forEach(cat => {
+                const categoria = document.createElement('div');
+                categoria.className = 'legend-categoria';
+                categoria.innerHTML = `
+                  <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
+                  <span class="legend-label">${cat.label}</span>
+                `;
+                simbologiaContainer.appendChild(categoria);
+              });
+
+              legendItem.appendChild(simbologiaContainer);
+              legendsContent6.appendChild(legendItem);
+            }
+          }
+        });
+
+        if (legendsContent6.children.length === 0) {
+          legendsContent6.innerHTML = '<div class="map-legends-empty">Seleccione una capa para ver su leyenda</div>';
+        }
+      }
+
+      capasIncendios.forEach((capaConfig, index) => {
+        const layerControl = document.createElement('div');
+        layerControl.className = 'layer-control';
+        const checkboxId = `layer-6-${index}`;
+        layerControl.innerHTML = `
+          <input type="checkbox" id="${checkboxId}" ${capaConfig.visible ? 'checked' : ''} />
+          <label for="${checkboxId}">${capaConfig.nombre}</label>
+        `;
+        contentContainer6.appendChild(layerControl);
+
+        const checkbox = layerControl.querySelector(`#${checkboxId}`);
+        checkbox.addEventListener('change', (e) => {
+          capasWMS6[index].setVisible(e.target.checked);
+          actualizarLeyendas6();
+        });
+      });
+
+      actualizarLeyendas6();
+    }
+
+    mapas['map-6'] = map6;
+  }
+
+  // ============================================================
+  // CAPITULO 7 - MAPA DE PLAGAS Y ENFERMEDADES FORESTALES
+  // ============================================================
+  const map7Container = document.getElementById('map-7');
+  if (map7Container) {
+    const map7 = new ol.Map({
+      target: 'map-7',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.XYZ({
+            url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+          }),
+          zIndex: 0,
+        }),
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
+        zoom: 10,
+      }),
+      controls: ol.control.defaults.defaults({
+        zoom: true,
+        attribution: false,
+      }),
+    });
+
+    const capasPlagas = [
+      { nombre: 'Límite Municipal', layer: 'SEICCT:Limite', visible: true, zIndex: 15, leyenda: false },
+      { nombre: 'Uso de Suelo', layer: 'SEICCT:uso_de_suelo', visible: true, zIndex: 1, leyenda: true },
+      { nombre: 'Riesgo de Descortezadores', layer: 'SEICCT:riesgo_descortezadores', visible: false, zIndex: 2, leyenda: true },
+      { nombre: 'Riesgo de Plantas Parásitas', layer: 'SEICCT:riesgo_plantas_parasitas', visible: false, zIndex: 3, leyenda: true },
+    ];
+
+    const capasWMS7 = [];
+    const workspace7 = 'SEICCT';
+
+    capasPlagas.forEach((capaConfig) => {
+      let wmsSource7;
+
+      if (isVercelProxy) {
+        const basePath7 = `/geoserver/${workspace7}/wms`;
+        wmsSource7 = new ol.source.TileWMS({
+          url: proxyUrl.replace('?path=', ''),
+          params: {
+            'LAYERS': capaConfig.layer,
+            'TILED': true,
+            'VERSION': '1.1.0',
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          serverType: 'geoserver',
+          crossOrigin: 'anonymous',
+          tileLoadFunction: function(imageTile, src) {
+            const url = new URL(src, window.location.origin);
+            const params = url.searchParams.toString();
+            const fullPath = `${basePath7}?${params}`;
+            const encodedPath = encodeURIComponent(fullPath);
+            const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+            imageTile.getImage().src = finalUrl;
+          },
+        });
+      } else {
+        wmsSource7 = new ol.source.TileWMS({
+          url: proxyUrl + '/SEICCT/wms',
+          params: {
+            'LAYERS': capaConfig.layer,
+            'TILED': true,
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          serverType: 'geoserver',
+        });
+      }
+
+      const wmsLayer7 = new ol.layer.Tile({
+        source: wmsSource7,
+        opacity: 1,
+        zIndex: capaConfig.zIndex,
+        visible: capaConfig.visible,
+      });
+      wmsLayer7.set('name', capaConfig.nombre);
+      wmsLayer7.set('layerName', capaConfig.layer);
+      map7.addLayer(wmsLayer7);
+      capasWMS7.push(wmsLayer7);
+    });
+
+    // Crear control de capas para mapa 7
+    const mapElement7 = document.getElementById('map-7');
+    if (mapElement7) {
+      let controlsContainer7 = document.createElement('div');
+      controlsContainer7.className = 'map-controls';
+      controlsContainer7.id = 'map-controls-7';
+      mapElement7.appendChild(controlsContainer7);
+
+      controlsContainer7.innerHTML = `
+        <div class="map-controls-header">
+          <div class="map-controls-title">Capas</div>
+          <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
+        </div>
+        <div class="map-controls-content"></div>
+      `;
+
+      const contentContainer7 = controlsContainer7.querySelector('.map-controls-content');
+      const toggleBtn7 = controlsContainer7.querySelector('.map-controls-toggle');
+
+      toggleBtn7.addEventListener('click', () => {
+        controlsContainer7.classList.toggle('collapsed');
+        toggleBtn7.textContent = controlsContainer7.classList.contains('collapsed') ? '▼' : '▲';
+      });
+
+      // Crear panel de leyendas
+      let legendsContainer7 = document.createElement('div');
+      legendsContainer7.className = 'map-legends';
+      legendsContainer7.id = 'map-legends-7';
+      mapElement7.appendChild(legendsContainer7);
+
+      legendsContainer7.innerHTML = `
+        <div class="map-legends-header">
+          <div class="map-legends-title">Leyenda</div>
+          <button class="map-legends-toggle" title="Ocultar/Mostrar leyenda">▲</button>
+        </div>
+        <div class="map-legends-content"></div>
+      `;
+
+      const legendsContent7 = legendsContainer7.querySelector('.map-legends-content');
+      const legendsToggleBtn7 = legendsContainer7.querySelector('.map-legends-toggle');
+
+      legendsToggleBtn7.addEventListener('click', () => {
+        legendsContainer7.classList.toggle('collapsed');
+        legendsToggleBtn7.textContent = legendsContainer7.classList.contains('collapsed') ? '▼' : '▲';
+      });
+
+      function actualizarLeyendas7() {
+        legendsContent7.innerHTML = '';
+        capasPlagas.forEach((capaConfig, index) => {
+          const layer = capasWMS7[index];
+          if (layer.getVisible() && capaConfig.leyenda) {
+            const simbologia = simbologias[capaConfig.layer];
+            if (simbologia) {
+              const legendItem = document.createElement('div');
+              legendItem.className = 'legend-item';
+              legendItem.id = `legend-7-${index}`;
+              legendItem.innerHTML = `<div class="legend-item-title">${simbologia.titulo}</div>`;
+
+              const simbologiaContainer = document.createElement('div');
+              simbologiaContainer.className = 'legend-simbologia';
+
+              simbologia.categorias.forEach(cat => {
+                const categoria = document.createElement('div');
+                categoria.className = 'legend-categoria';
+                categoria.innerHTML = `
+                  <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
+                  <span class="legend-label">${cat.label}</span>
+                `;
+                simbologiaContainer.appendChild(categoria);
+              });
+
+              legendItem.appendChild(simbologiaContainer);
+              legendsContent7.appendChild(legendItem);
+            }
+          }
+        });
+
+        if (legendsContent7.children.length === 0) {
+          legendsContent7.innerHTML = '<div class="map-legends-empty">Seleccione una capa para ver su leyenda</div>';
+        }
+      }
+
+      capasPlagas.forEach((capaConfig, index) => {
+        const layerControl = document.createElement('div');
+        layerControl.className = 'layer-control';
+        const checkboxId = `layer-7-${index}`;
+        layerControl.innerHTML = `
+          <input type="checkbox" id="${checkboxId}" ${capaConfig.visible ? 'checked' : ''} />
+          <label for="${checkboxId}">${capaConfig.nombre}</label>
+        `;
+        contentContainer7.appendChild(layerControl);
+
+        const checkbox = layerControl.querySelector(`#${checkboxId}`);
+        checkbox.addEventListener('change', (e) => {
+          capasWMS7[index].setVisible(e.target.checked);
+          actualizarLeyendas7();
+        });
+      });
+
+      actualizarLeyendas7();
+    }
+
+    mapas['map-7'] = map7;
+  }
+
+  // ============================================================
+  // CAPITULO 8 - MAPA DE DEGRADACIÓN DEL SUELO
+  // ============================================================
+  const map8Container = document.getElementById('map-8');
+  if (map8Container) {
+    const map8 = new ol.Map({
+      target: 'map-8',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.XYZ({
+            url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+          }),
+          zIndex: 0,
+        }),
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([-98.16560203447955, 19.42964878131165]),
+        zoom: 10,
+      }),
+      controls: ol.control.defaults.defaults({
+        zoom: true,
+        attribution: false,
+      }),
+    });
+
+    const capasMap8 = [
+      { nombre: 'Límite Municipal', layer: 'SEICCT:Limite', visible: true, zIndex: 1, leyenda: false },
+    ];
+
+    const capasWMS8 = [];
+
+    capasMap8.forEach((capaConfig) => {
+      let wmsSource8;
+
+      if (isVercelProxy) {
+        const basePath8 = '/geoserver/SEICCT/wms';
+        wmsSource8 = new ol.source.TileWMS({
+          url: proxyUrl.replace('?path=', ''),
+          params: {
+            'LAYERS': capaConfig.layer,
+            'TILED': true,
+            'VERSION': '1.1.0',
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          serverType: 'geoserver',
+          crossOrigin: 'anonymous',
+          tileLoadFunction: function(imageTile, src) {
+            const url = new URL(src, window.location.origin);
+            const params = url.searchParams.toString();
+            const fullPath = `${basePath8}?${params}`;
+            const encodedPath = encodeURIComponent(fullPath);
+            const finalUrl = `${proxyUrl.replace('?path=', '')}?path=${encodedPath}`;
+            imageTile.getImage().src = finalUrl;
+          },
+        });
+      } else {
+        wmsSource8 = new ol.source.TileWMS({
+          url: proxyUrl + '/SEICCT/wms',
+          params: {
+            'LAYERS': capaConfig.layer,
+            'TILED': true,
+            'FORMAT': 'image/png',
+            'TRANSPARENT': true,
+          },
+          serverType: 'geoserver',
+        });
+      }
+
+      const wmsLayer8 = new ol.layer.Tile({
+        source: wmsSource8,
+        opacity: 1,
+        zIndex: capaConfig.zIndex,
+        visible: capaConfig.visible,
+      });
+      wmsLayer8.set('name', capaConfig.nombre);
+      wmsLayer8.set('layerName', capaConfig.layer);
+      map8.addLayer(wmsLayer8);
+      capasWMS8.push(wmsLayer8);
+    });
+
+    // Crear control de capas para mapa 8
+    const mapElement8 = document.getElementById('map-8');
+    if (mapElement8) {
+      let controlsContainer8 = document.createElement('div');
+      controlsContainer8.className = 'map-controls';
+      controlsContainer8.id = 'map-controls-8';
+      mapElement8.appendChild(controlsContainer8);
+
+      controlsContainer8.innerHTML = `
+        <div class="map-controls-header">
+          <div class="map-controls-title">Capas</div>
+          <button class="map-controls-toggle" title="Ocultar/Mostrar capas">▲</button>
+        </div>
+        <div class="map-controls-content"></div>
+      `;
+
+      const contentContainer8 = controlsContainer8.querySelector('.map-controls-content');
+      const toggleBtn8 = controlsContainer8.querySelector('.map-controls-toggle');
+
+      toggleBtn8.addEventListener('click', () => {
+        controlsContainer8.classList.toggle('collapsed');
+        toggleBtn8.textContent = controlsContainer8.classList.contains('collapsed') ? '▼' : '▲';
+      });
+
+      // Crear panel de leyendas
+      let legendsContainer8 = document.createElement('div');
+      legendsContainer8.className = 'map-legends';
+      legendsContainer8.id = 'map-legends-8';
+      mapElement8.appendChild(legendsContainer8);
+
+      legendsContainer8.innerHTML = `
+        <div class="map-legends-header">
+          <div class="map-legends-title">Leyenda</div>
+          <button class="map-legends-toggle" title="Ocultar/Mostrar leyenda">▲</button>
+        </div>
+        <div class="map-legends-content"></div>
+      `;
+
+      const legendsContent8 = legendsContainer8.querySelector('.map-legends-content');
+      const legendsToggleBtn8 = legendsContainer8.querySelector('.map-legends-toggle');
+
+      legendsToggleBtn8.addEventListener('click', () => {
+        legendsContainer8.classList.toggle('collapsed');
+        legendsToggleBtn8.textContent = legendsContainer8.classList.contains('collapsed') ? '▼' : '▲';
+      });
+
+      function actualizarLeyendas8() {
+        legendsContent8.innerHTML = '';
+        capasMap8.forEach((capaConfig, index) => {
+          const layer = capasWMS8[index];
+          if (layer.getVisible() && capaConfig.leyenda) {
+            const simbologia = simbologias[capaConfig.layer];
+            if (simbologia) {
+              const legendItem = document.createElement('div');
+              legendItem.className = 'legend-item';
+              legendItem.id = `legend-8-${index}`;
+              legendItem.innerHTML = `<div class="legend-item-title">${simbologia.titulo}</div>`;
+
+              const simbologiaContainer = document.createElement('div');
+              simbologiaContainer.className = 'legend-simbologia';
+
+              simbologia.categorias.forEach(cat => {
+                const categoria = document.createElement('div');
+                categoria.className = 'legend-categoria';
+                categoria.innerHTML = `
+                  <div class="legend-simbolo" style="background-color: ${cat.color}; border: 1px solid ${cat.stroke};"></div>
+                  <span class="legend-label">${cat.label}</span>
+                `;
+                simbologiaContainer.appendChild(categoria);
+              });
+
+              legendItem.appendChild(simbologiaContainer);
+              legendsContent8.appendChild(legendItem);
+            }
+          }
+        });
+
+        if (legendsContent8.children.length === 0) {
+          legendsContent8.innerHTML = '<div class="map-legends-empty">Seleccione una capa para ver su leyenda</div>';
+        }
+      }
+
+      capasMap8.forEach((capaConfig, index) => {
+        const layerControl = document.createElement('div');
+        layerControl.className = 'layer-control';
+        const checkboxId = `layer-8-${index}`;
+        layerControl.innerHTML = `
+          <input type="checkbox" id="${checkboxId}" ${capaConfig.visible ? 'checked' : ''} />
+          <label for="${checkboxId}">${capaConfig.nombre}</label>
+        `;
+        contentContainer8.appendChild(layerControl);
+
+        const checkbox = layerControl.querySelector(`#${checkboxId}`);
+        checkbox.addEventListener('change', (e) => {
+          capasWMS8[index].setVisible(e.target.checked);
+          actualizarLeyendas8();
+        });
+      });
+
+      actualizarLeyendas8();
+    }
+
+    mapas['map-8'] = map8;
+  }
+
+  // CAPITULO 4 - GRÁFICAS DE HIDROLOGÍA 2
+  // Gráfica de dona - Aprovechamiento del agua
+  const ctxAprovechamiento = document.getElementById('chart-aprovechamiento-agua');
+  if (ctxAprovechamiento) {
+    new Chart(ctxAprovechamiento.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Agrícola', 'Público urbano', 'Industrial', 'Diferentes usos', 'Servicios', 'Pecuario', 'Acuacultura', 'Doméstico'],
+        datasets: [{
+          data: [47.55, 39.81, 7.84, 4.15, 0.61, 0.02, 0.01, 0.00],
+          backgroundColor: [
+            '#7b2d8e',  // Agrícola - morado
+            '#f5a623',  // Público urbano - naranja
+            '#8b7355',  // Industrial - marrón
+            '#c9b896',  // Diferentes usos - beige
+            '#a0a0a0',  // Servicios - gris
+            '#d4a574',  // Pecuario - marrón claro
+            '#5fb3b3',  // Acuacultura - turquesa
+            '#e8d4a8'   // Doméstico - crema
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '55%',
+        plugins: {
+          legend: {
+            display: false
+          },
+          datalabels: {
+            color: '#333',
+            font: { size: 9, weight: 'bold' },
+            formatter: (value, ctx) => {
+              if (value < 1) return '';
+              return ctx.chart.data.labels[ctx.dataIndex] + '\n' + value + '%';
+            },
+            textAlign: 'center',
+            anchor: 'end',
+            align: 'end',
+            offset: 5
+          },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+  }
+
+  // Gráfica de líneas - Proyección acuíferos
+  const ctxProyeccion = document.getElementById('chart-proyeccion-acuiferos');
+  if (ctxProyeccion) {
+    new Chart(ctxProyeccion.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: ['2014', '2020', '2023', '2030', '2040', '2050', '2060'],
+        datasets: [
+          {
+            label: 'Alto Atoyac',
+            data: [40, 28, 22, 14, -5, -38, -65],
+            borderColor: '#00bcd4',
+            backgroundColor: '#00bcd4',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#00bcd4',
+            pointBorderWidth: 2,
+            tension: 0.3
+          },
+          {
+            label: 'Soltepec',
+            data: [28, 22, 18, 12, 2, -12, -25],
+            borderColor: '#8bc34a',
+            backgroundColor: '#8bc34a',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#8bc34a',
+            pointBorderWidth: 2,
+            tension: 0.3
+          },
+          {
+            label: 'Huamantla',
+            data: [18, 14, 12, 8, -2, -15, -25],
+            borderColor: '#ff9800',
+            backgroundColor: '#ff9800',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#ff9800',
+            pointBorderWidth: 2,
+            tension: 0.3
+          },
+          {
+            label: 'Emiliano Zapata',
+            data: [-5, -6, -6, -8, -10, -12, -15],
+            borderColor: '#f44336',
+            backgroundColor: '#f44336',
+            borderWidth: 2,
+            pointRadius: 5,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#f44336',
+            pointBorderWidth: 2,
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#333',
+              font: { size: 10 },
+              usePointStyle: true,
+              padding: 10
+            }
+          },
+          datalabels: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y}`
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(0,0,0,0.1)' },
+            ticks: { color: '#333', font: { size: 10 } }
+          },
+          y: {
+            min: -70,
+            max: 50,
+            grid: { color: 'rgba(0,0,0,0.1)' },
+            ticks: {
+              color: '#333',
+              font: { size: 10 },
+              stepSize: 20
+            }
+          }
+        }
+      }
+    });
+  }
+
   // NAVEGACION ENTRE CAPITULOS
   const chaptersContainer = document.getElementById("chaptersContainer");
   const timelineItems = document.querySelectorAll(".timeline-item");
@@ -948,6 +2105,11 @@ window.addEventListener('DOMContentLoaded', () => {
     if (targetChapter) {
       targetChapter.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+
+    // Actualizar tamaño de mapas tras la navegación
+    setTimeout(() => {
+      Object.values(mapas).forEach(mapa => mapa.updateSize());
+    }, 400);
   }
 
   timelineItems.forEach(item => {

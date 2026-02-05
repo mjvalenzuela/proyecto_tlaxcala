@@ -244,28 +244,7 @@
     <!-- Timeline fijo en la parte inferior -->
     <div class="timeline-container">
       <div class="timeline-wrapper">
-        <div class="timeline-calendar-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
-          </svg>
-        </div>
-        <div class="timeline-graph" id="timelineGraph">
-          <div class="timeline-line"></div>
-          <div class="timeline-markers" id="timelineMarkers"></div>
-        </div>
+        <canvas id="timelineChart"></canvas>
       </div>
     </div>
 
@@ -351,6 +330,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
     <script src="js/acciones/config.js"></script>
     <script src="js/acciones/data-adapter.js"></script>

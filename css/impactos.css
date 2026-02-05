@@ -445,6 +445,105 @@
 }
 
 /* ============================================================
+   CAPITULO 4 - HIDROLOGÍA 2 ESTILOS
+   ============================================================ */
+
+.chapter-estrategias .hidrologia-subtitulo {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-btn-primary);
+  margin: 0.8rem 0 0.4rem 0;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--color-header-bg);
+}
+
+.chapter-estrategias .chart-hidrologia-container {
+  width: 100%;
+  height: 180px;
+  margin: 0.8rem 0;
+  position: relative;
+}
+
+.chapter-estrategias .chart-hidrologia-container.chart-lineas {
+  height: 200px;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.chapter-estrategias .chart-hidrologia-container.chart-barras {
+  height: 280px;
+  border-radius: 8px;
+  padding: 0.5rem;
+  background: white;
+  margin: 0.5rem 0;
+}
+
+
+.chapter-estrategias .acuiferos-titulo {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin: 0.5rem 0 0.3rem 0;
+}
+
+.chapter-estrategias .acuiferos-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.chapter-estrategias .acuiferos-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem 1rem;
+  flex: 1;
+}
+
+.chapter-estrategias .acuiferos-container .gotas-img {
+  width: 100px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.chapter-estrategias .acuiferos-lista li {
+  font-size: 0.8rem;
+  padding: 0.2rem 0;
+}
+
+.chapter-estrategias .acuifero-nombre {
+  font-weight: 500;
+}
+
+.chapter-estrategias .acuifero-nombre.alto-atoyac {
+  color: #1068cb;
+}
+
+.chapter-estrategias .acuifero-nombre.soltepec {
+  color: #4caf50;
+}
+
+.chapter-estrategias .acuifero-nombre.huamantla {
+  color: #ff9800;
+}
+
+.chapter-estrategias .acuifero-nombre.emiliano-zapata {
+  color: #e2484a;
+}
+
+.chapter-estrategias .deficit-texto {
+  font-size: 0.85rem;
+  background: #fff3e0;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  border-left: 3px solid #ff9800;
+  margin: 0.8rem 0;
+}
+
+/* ============================================================
    BOTON SPLIT PARA COMPARAR
    ============================================================ */
 
@@ -1493,6 +1592,294 @@
   margin-top: 0.2rem;
 }
 
+/* ============================================================
+   CAPITULO 6 - INCENDIOS FORESTALES CON MAPA
+   Layout: texto (30%) + mapa arriba (70%) + gráfica abajo (70%)
+   ============================================================ */
+
+.chapter-incendios-mapa {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-template-rows: auto 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  height: calc(100vh - 65px);
+  box-sizing: border-box;
+}
+
+.chapter-incendios-mapa .map-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-btn-primary);
+  margin: 0;
+  padding: 0.8rem 1rem;
+  background: var(--color-bg-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.chapter-incendios-mapa .incendios-text {
+  grid-column: 1;
+  grid-row: 2 / 4;
+  background: var(--color-bg-white);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+}
+
+.chapter-incendios-mapa .chapter-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-btn-primary);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-btn-primary);
+}
+
+.chapter-incendios-mapa .chapter-content {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-gray-900);
+}
+
+.chapter-incendios-mapa .chapter-content p {
+  margin-bottom: 0.8rem;
+}
+
+.chapter-incendios-mapa .incendios-map {
+  grid-column: 2;
+  grid-row: 2;
+  background: var(--color-bg-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.chapter-incendios-mapa .incendios-map .map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.chapter-incendios-mapa .incendios-chart {
+  grid-column: 2;
+  grid-row: 3;
+  background: var(--color-bg-white);
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chapter-incendios-mapa .incendios-chart .chart-title {
+  flex-shrink: 0;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-btn-primary);
+  text-align: center;
+}
+
+.chapter-incendios-mapa .incendios-chart .chart-container {
+  flex: 1;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0;
+  position: relative;
+}
+
+.chapter-incendios-mapa .incendios-chart canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+}
+
+/* Estadísticas de incendios */
+.chapter-incendios-mapa .incendios-stats {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.chapter-incendios-mapa .incendios-stats .stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(255, 152, 0, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid var(--color-warning-orange);
+}
+
+.chapter-incendios-mapa .incendios-stats .stat-value {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-warning-orange-dark);
+}
+
+.chapter-incendios-mapa .incendios-stats .stat-label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--color-text-gray);
+  margin-top: 0.2rem;
+}
+
+/* Controles de capas para mapa 6 */
+.chapter-incendios-mapa .map-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 200px;
+  font-size: 0.75rem;
+}
+
+.chapter-incendios-mapa .map-controls-header {
+  padding: 0.4rem 0.6rem;
+  background: white;
+  color: var(--color-gray-900);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.chapter-incendios-mapa .map-controls-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.chapter-incendios-mapa .map-controls-toggle {
+  background: transparent;
+  border: none;
+  color: var(--color-gray-900);
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.chapter-incendios-mapa .map-controls-content {
+  padding: 0.4rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.chapter-incendios-mapa .map-controls.collapsed .map-controls-content {
+  display: none;
+}
+
+.chapter-incendios-mapa .layer-control {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0;
+  font-size: 0.75rem;
+}
+
+.chapter-incendios-mapa .layer-control input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.chapter-incendios-mapa .layer-control label {
+  cursor: pointer;
+  color: var(--color-gray-900);
+}
+
+/* Panel de leyendas para mapa 6 */
+.chapter-incendios-mapa .map-legends {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 180px;
+  font-size: 0.7rem;
+}
+
+.chapter-incendios-mapa .map-legends-header {
+  padding: 0.3rem 0.5rem;
+  background: white;
+  color: var(--color-gray-900);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.chapter-incendios-mapa .map-legends-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.chapter-incendios-mapa .map-legends-toggle {
+  background: transparent;
+  border: none;
+  color: var(--color-gray-900);
+  cursor: pointer;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.2rem;
+}
+
+.chapter-incendios-mapa .map-legends-content {
+  padding: 0.3rem 0.4rem;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.chapter-incendios-mapa .map-legends.collapsed .map-legends-content {
+  display: none;
+}
+
+.chapter-incendios-mapa .map-legends-empty {
+  font-size: 0.6rem;
+  color: var(--color-gray-600);
+  text-align: center;
+  padding: 0.3rem;
+}
+
+/* Responsive capítulo 6 con mapa */
+@media (max-width: 1024px) {
+  .chapter-incendios-mapa {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .chapter-incendios-mapa .incendios-text {
+    grid-column: 1;
+    grid-row: 2;
+    max-height: 180px;
+  }
+
+  .chapter-incendios-mapa .incendios-map {
+    grid-column: 1;
+    grid-row: 3;
+    min-height: 250px;
+  }
+
+  .chapter-incendios-mapa .incendios-chart {
+    grid-column: 1;
+    grid-row: 4;
+    min-height: 250px;
+  }
+}
+
 /* Responsive capítulo 4 */
 @media (max-width: 1024px) {
   .chapter-incendios {
@@ -1867,6 +2254,323 @@
 }
 
 /* ============================================================
+   CAPITULO 7 - PLAGAS CON MAPA (Layout texto 30% + mapa/tabla 70%)
+   Similar al capítulo 6 de incendios
+   ============================================================ */
+
+.chapter-plagas-mapa {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-template-rows: auto 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  height: calc(100vh - 65px);
+  box-sizing: border-box;
+}
+
+.chapter-plagas-mapa .map-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-btn-primary);
+  margin: 0;
+  padding: 0.8rem 1rem;
+  background: var(--color-bg-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.chapter-plagas-mapa .plagas-text {
+  grid-column: 1;
+  grid-row: 2 / 4;
+  background: var(--color-bg-white);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+}
+
+.chapter-plagas-mapa .chapter-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-btn-primary);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-btn-primary);
+}
+
+.chapter-plagas-mapa .chapter-content {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-gray-900);
+}
+
+.chapter-plagas-mapa .chapter-content p {
+  margin-bottom: 0.5rem;
+}
+
+.chapter-plagas-mapa .plagas-map {
+  grid-column: 2;
+  grid-row: 2;
+  background: var(--color-bg-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.chapter-plagas-mapa .plagas-map .map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.chapter-plagas-mapa .plagas-tabla {
+  grid-column: 2;
+  grid-row: 3;
+  overflow: hidden;
+}
+
+.chapter-plagas-mapa .plagas-tabla .plagas-tabla-card {
+  height: 100%;
+  min-height: 0;
+}
+
+.chapter-plagas-mapa .plagas-tabla .tabla-scroll-grande {
+  max-height: calc(100% - 4rem);
+  overflow-y: auto;
+}
+
+/* Estilos de plagas reutilizados en nuevo layout */
+.chapter-plagas-mapa .plagas-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.chapter-plagas-mapa .plagas-lista li {
+  padding: 0.3rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--color-success-alt);
+  margin-bottom: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.chapter-plagas-mapa .plagas-stats {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.chapter-plagas-mapa .plagas-stats .stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 0.4rem;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid var(--color-success-alt);
+}
+
+.chapter-plagas-mapa .plagas-stats .stat-value {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-success-dark);
+}
+
+.chapter-plagas-mapa .plagas-stats .stat-label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--color-text-gray);
+  margin-top: 0.2rem;
+}
+
+/* Regiones forestales */
+.regiones-forestales {
+  margin-top: 0.8rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.regiones-titulo {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-btn-primary);
+  margin-bottom: 0.5rem;
+}
+
+.region-item {
+  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  background: rgba(76, 175, 80, 0.05);
+  border-radius: 4px;
+  border-left: 3px solid var(--color-success-alt);
+}
+
+.region-item h5 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-success-dark);
+  margin: 0 0 0.2rem 0;
+}
+
+.region-item p {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0.15rem 0;
+}
+
+/* Controles de capas para mapa 7 */
+.chapter-plagas-mapa .map-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 200px;
+  font-size: 0.75rem;
+}
+
+.chapter-plagas-mapa .map-controls-header {
+  padding: 0.4rem 0.6rem;
+  background: white;
+  color: var(--color-gray-900);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.chapter-plagas-mapa .map-controls-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.chapter-plagas-mapa .map-controls-toggle {
+  background: transparent;
+  border: none;
+  color: var(--color-gray-900);
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.chapter-plagas-mapa .map-controls-content {
+  padding: 0.4rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.chapter-plagas-mapa .map-controls.collapsed .map-controls-content {
+  display: none;
+}
+
+.chapter-plagas-mapa .layer-control {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0;
+  font-size: 0.75rem;
+}
+
+.chapter-plagas-mapa .layer-control input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.chapter-plagas-mapa .layer-control label {
+  cursor: pointer;
+  color: var(--color-gray-900);
+}
+
+/* Panel de leyendas para mapa 7 */
+.chapter-plagas-mapa .map-legends {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 180px;
+  font-size: 0.7rem;
+}
+
+.chapter-plagas-mapa .map-legends-header {
+  padding: 0.3rem 0.5rem;
+  background: white;
+  color: var(--color-gray-900);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.chapter-plagas-mapa .map-legends-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.chapter-plagas-mapa .map-legends-toggle {
+  background: transparent;
+  border: none;
+  color: var(--color-gray-900);
+  cursor: pointer;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.2rem;
+}
+
+.chapter-plagas-mapa .map-legends-content {
+  padding: 0.3rem 0.4rem;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.chapter-plagas-mapa .map-legends.collapsed .map-legends-content {
+  display: none;
+}
+
+.chapter-plagas-mapa .map-legends-empty {
+  font-size: 0.6rem;
+  color: var(--color-gray-600);
+  text-align: center;
+  padding: 0.3rem;
+}
+
+/* Responsive capítulo 7 con mapa */
+@media (max-width: 1024px) {
+  .chapter-plagas-mapa {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .chapter-plagas-mapa .plagas-text {
+    grid-column: 1;
+    grid-row: 2;
+    max-height: 180px;
+  }
+
+  .chapter-plagas-mapa .plagas-map {
+    grid-column: 1;
+    grid-row: 3;
+    min-height: 250px;
+  }
+
+  .chapter-plagas-mapa .plagas-tabla {
+    grid-column: 1;
+    grid-row: 4;
+    min-height: 250px;
+  }
+}
+
+/* ============================================================
    CAPITULO 6 - DEGRADACIÓN DEL SUELO (Layout mapa imagen + texto)
    ============================================================ */
 
@@ -1918,18 +2622,137 @@
 
 .mapa-erosion-wrapper {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   overflow: hidden;
   min-height: 0;
+  border-radius: 6px;
 }
 
-.mapa-erosion-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+.mapa-erosion-wrapper .map-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Controles de capas para mapa 8 */
+.mapa-erosion-wrapper .map-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 200px;
+  font-size: 0.75rem;
+}
+
+.mapa-erosion-wrapper .map-controls-header {
+  padding: 0.4rem 0.6rem;
+  background: white;
+  color: var(--color-gray-900);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.mapa-erosion-wrapper .map-controls-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.mapa-erosion-wrapper .map-controls-toggle {
+  background: transparent;
+  border: none;
+  color: var(--color-gray-900);
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.mapa-erosion-wrapper .map-controls-content {
+  padding: 0.4rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.mapa-erosion-wrapper .map-controls.collapsed .map-controls-content {
+  display: none;
+}
+
+.mapa-erosion-wrapper .layer-control {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0;
+  font-size: 0.75rem;
+}
+
+.mapa-erosion-wrapper .layer-control input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.mapa-erosion-wrapper .layer-control label {
+  cursor: pointer;
+  color: var(--color-gray-900);
+}
+
+/* Panel de leyendas para mapa 8 */
+.mapa-erosion-wrapper .map-legends {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 180px;
+  font-size: 0.7rem;
+}
+
+.mapa-erosion-wrapper .map-legends-header {
+  padding: 0.3rem 0.5rem;
+  background: white;
+  color: var(--color-gray-900);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.mapa-erosion-wrapper .map-legends-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.mapa-erosion-wrapper .map-legends-toggle {
+  background: transparent;
+  border: none;
+  color: var(--color-gray-900);
+  cursor: pointer;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.2rem;
+}
+
+.mapa-erosion-wrapper .map-legends-content {
+  padding: 0.3rem 0.4rem;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.mapa-erosion-wrapper .map-legends.collapsed .map-legends-content {
+  display: none;
+}
+
+.mapa-erosion-wrapper .map-legends-empty {
+  font-size: 0.6rem;
+  color: var(--color-gray-600);
+  text-align: center;
+  padding: 0.3rem;
 }
 
 /* Tabla de erosión */
@@ -2208,297 +3031,3 @@
   }
 }
 
-/* ============================================================
-   CAPITULO 7 - ESCARABAJO DESCORTEZADOR (Layout mapa imagen + texto)
-   ============================================================ */
-
-.chapter-descortezador {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  width: 100%;
-  height: calc(100vh - 65px) !important;
-  min-height: calc(100vh - 65px);
-  box-sizing: border-box;
-}
-
-.chapter-descortezador .map-title {
-  grid-column: 1;
-  grid-row: 1;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--color-btn-primary);
-  margin: 0;
-  padding: 0.8rem 1rem;
-  background: var(--color-bg-white);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  text-align: center;
-}
-
-.descortezador-content {
-  display: grid;
-  grid-template-columns: 65% 35%;
-  gap: 0.8rem;
-  height: 100%;
-  min-height: 0;
-}
-
-/* Contenedor del mapa y simbología */
-.descortezador-map-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  background: var(--color-bg-white);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  padding: 0.8rem;
-  overflow: hidden;
-}
-
-.mapa-descortezador-wrapper {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  min-height: 0;
-}
-
-.mapa-descortezador-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 6px;
-}
-
-/* Leyenda del descortezador */
-.simbologia-descortezador {
-  flex-shrink: 0;
-  display: flex;
-  gap: 2rem;
-  padding: 0.8rem 1rem;
-  background: var(--color-gray-100);
-  border-radius: 6px;
-  border: 1px solid var(--color-border-light);
-}
-
-.simbologia-section {
-  flex: 1;
-}
-
-.simbologia-titulo {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-gray-900);
-  margin: 0 0 0.5rem 0;
-  padding-bottom: 0.3rem;
-  border-bottom: 2px solid var(--color-btn-primary);
-}
-
-.simbologia-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.simbologia-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.simbologia-icono {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.simbologia-icono.limite-municipal {
-  border: 1.5px solid var(--color-gray-600);
-  background: transparent;
-  border-radius: 2px;
-}
-
-.simbologia-icono.poligono-estado {
-  background: var(--color-icon-disabled);
-  border-radius: 2px;
-}
-
-.simbologia-icono.limite-estado {
-  background: var(--color-gray-900);
-  border-radius: 50%;
-  width: 8px;
-  height: 8px;
-}
-
-.simbologia-icono.limite-estatal {
-  border: 1.5px dashed var(--color-text-gray);
-  background: transparent;
-  border-radius: 2px;
-}
-
-.simbologia-color {
-  width: 24px;
-  height: 16px;
-  flex-shrink: 0;
-  border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.simbologia-color.riesgo-moderado {
-  background: var(--color-risk-low);
-}
-
-.simbologia-color.riesgo-alto {
-  background: var(--color-risk-medium);
-}
-
-.simbologia-color.riesgo-muy-alto {
-  background: var(--color-risk-high);
-}
-
-.simbologia-texto {
-  font-size: 0.85rem;
-  color: var(--color-gray-900);
-}
-
-.riesgo-items {
-  flex-direction: row;
-  gap: 1rem;
-}
-
-/* Card de texto explicativo */
-.descortezador-text-card {
-  background: var(--color-bg-white);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.descortezador-text-card .card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-bg-white);
-  margin: 0;
-  padding: 0.7rem 1rem;
-  background: linear-gradient(135deg, var(--color-btn-primary-hover) 0%, var(--color-btn-primary) 100%);
-}
-
-.descortezador-text-card .card-content {
-  padding: 1.2rem;
-  overflow-y: auto;
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
-
-.descortezador-text-card p {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: var(--color-gray-900);
-  margin: 0;
-  text-align: justify;
-}
-
-/* ============================================================
-   CAPITULO 7 - RESPONSIVE
-   ============================================================ */
-
-@media (max-width: 1200px) {
-  .descortezador-content {
-    grid-template-columns: 60% 40%;
-  }
-
-  .simbologia-descortezador {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .riesgo-items {
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .descortezador-content {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-  }
-
-  .descortezador-map-container {
-    max-height: 55vh;
-  }
-
-  .descortezador-text-card {
-    max-height: 35vh;
-  }
-
-  .simbologia-descortezador {
-    flex-direction: row;
-  }
-
-  .riesgo-items {
-    flex-direction: row;
-  }
-}
-
-@media (max-width: 768px) {
-  .chapter-descortezador {
-    padding: 0.3rem;
-    gap: 0.3rem;
-  }
-
-  .chapter-descortezador .map-title {
-    font-size: 1.1rem;
-    padding: 0.6rem;
-  }
-
-  .descortezador-content {
-    gap: 0.5rem;
-  }
-
-  .descortezador-map-container {
-    padding: 0.5rem;
-  }
-
-  .simbologia-descortezador {
-    flex-direction: column;
-    padding: 0.6rem;
-    gap: 0.8rem;
-  }
-
-  .simbologia-titulo {
-    font-size: 0.8rem;
-  }
-
-  .simbologia-texto {
-    font-size: 0.75rem;
-  }
-
-  .riesgo-items {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .descortezador-text-card .card-title {
-    font-size: 1rem;
-    padding: 0.5rem 0.8rem;
-  }
-
-  .descortezador-text-card .card-content {
-    padding: 0.8rem;
-  }
-
-  .descortezador-text-card p {
-    font-size: 0.95rem;
-  }
-}
