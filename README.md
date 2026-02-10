@@ -33,11 +33,11 @@ Esta plataforma presenta información sobre cambio climático en Tlaxcala a trav
 | Sección | Archivo | Descripción | Capítulos |
 |---------|---------|-------------|-----------|
 | **Inicio** | `index.html` | Página principal con acceso a todas las secciones | - |
-| **Vulnerabilidad** | `vulnerabilidad.html` | Índice de vulnerabilidad climática por municipio | 4 |
-| **Riesgo** | `riesgo.html` | Riesgo climático, eventos y atlas municipal | 3 |
-| **Amenazas** | `amenazas.html` | Amenazas climáticas (sequía, heladas, etc.) | 7 |
-| **Impactos** | `impactos.html` | Impactos en agricultura, bosques y suelo | 7 |
-| **Clima** | `clima.html` | Datos climáticos históricos | Variable |
+| **Vulnerabilidad** | `vulnerabilidad.html` | Índice de vulnerabilidad climática y biodiversidad | 4 |
+| **Riesgo** | `riesgo.html` | Riesgo climático y eventos por año | 2 |
+| **Amenazas** | `amenazas.html` | Amenazas climáticas (sequía, heladas) | 4 |
+| **Impactos** | `impactos.html` | Impactos en agricultura, hidrología, bosques y suelo | 8 |
+| **Clima** | `clima.html` | Datos climáticos históricos y tendencias | 6 |
 | **Escenarios Climáticos** | `escenarios_clima.html` | Proyecciones de cambio climático | 6 |
 | **Acciones Climáticas** | `acciones-climaticas.html` | Mapa de proyectos y programas | 1 (mapa interactivo) |
 | **Mitigación** | `mitigacion.html` | Estrategias de mitigación | Variable |
@@ -45,41 +45,46 @@ Esta plataforma presenta información sobre cambio climático en Tlaxcala a trav
 ### Descripción detallada de cada sección
 
 #### Vulnerabilidad
-- **Capítulo 1:** Contexto del estado
-- **Capítulo 2:** Temperatura promedio
-- **Capítulo 3:** Índice de vulnerabilidad por municipio
-- **Capítulo 4:** Modelos climáticos (ganancia/pérdida de especies)
+- **Capítulo 1:** Índice de vulnerabilidad al cambio climático por municipio
+- **Capítulo 2:** Vulnerabilidad de la biodiversidad - Riqueza de especies (9 subcapítulos por grupo taxonómico)
+- **Capítulo 3:** Vulnerabilidad de la biodiversidad - Ganancia de idoneidad (8 subcapítulos)
+- **Capítulo 4:** Vulnerabilidad de la biodiversidad - Pérdida de idoneidad (8 subcapítulos)
 
 #### Riesgo
 - **Capítulo 1:** Riesgo climático por municipio
 - **Capítulo 2:** Eventos por año y declaratorias
-- **Capítulo 3:** Atlas de riesgo municipal
 
 #### Amenazas
-- **Capítulo 1:** Introducción a amenazas
-- **Capítulo 2:** Sequía
-- **Capítulo 3:** Heladas
-- **Capítulo 4:** Precipitación extrema
-- **Capítulo 5:** Ondas de calor
-- **Capítulo 6:** Incendios forestales
-- **Capítulo 7:** Recursos forestales
+- **Capítulo 1:** Amenazas climáticas por municipio
+- **Capítulo 2:** Análisis de amenazas climáticas
+- **Capítulo 3:** Amenazas al sector agrícola: Sequía
+- **Capítulo 4:** Amenazas al sector agrícola: Helada
 
 #### Impactos
-- **Capítulo 1:** Sector agrícola
-- **Capítulo 2:** Superficie siniestrada
-- **Capítulo 3:** Estrategias de adaptación
-- **Capítulo 4:** Incendios forestales
-- **Capítulo 5:** Plagas forestales
-- **Capítulo 6:** Degradación del suelo
-- **Capítulo 7:** Escarabajo descortezador
+- **Capítulo 1:** Impactos en el sector agrícola
+- **Capítulo 2:** Superficie siniestrada por cultivo
+- **Capítulo 3:** Hidrología (Adaptación al cambio climático)
+- **Capítulo 4:** Hidrología 2
+- **Capítulo 5:** Hidrología 3
+- **Capítulo 6:** Incendios forestales
+- **Capítulo 7:** Plagas y enfermedades forestales
+- **Capítulo 8:** Degradación del suelo por erosión hídrica
+
+#### Clima
+- **Capítulo 1:** Análisis del clima en Tlaxcala
+- **Capítulo 2:** Temperatura media por estación
+- **Capítulo 3:** Precipitación total por estación
+- **Capítulo 4:** Análisis histórico de temperatura por municipio
+- **Capítulo 5:** Tendencias de temperatura
+- **Capítulo 6:** Tendencias de precipitación
 
 #### Escenarios Climáticos
-- **Capítulo 1:** Introducción
-- **Capítulo 2:** Temperatura futura
-- **Capítulo 3:** Precipitación futura
-- **Capítulo 4:** Escenario RCP 4.5
-- **Capítulo 5:** Escenario RCP 8.5
-- **Capítulo 6:** Conclusiones
+- **Capítulo 1:** Clima y escenarios de cambio climático
+- **Capítulo 2:** Variables climáticas
+- **Capítulo 3:** Escenarios de cambio climático (comparativos)
+- **Capítulo 4:** Comparativo de escenarios climáticos
+- **Capítulo 5:** Modelos utilizados
+- **Capítulo 6:** Otros datos
 
 ---
 
@@ -304,7 +309,10 @@ capas: [
     zIndex: 2                      // Orden de apilamiento
   }
 ]
+
 ```
+
+**Ver video explicativo:** https://youtu.be/mXJkK4rqxVU
 
 ### Parámetros de configuración
 
@@ -535,4 +543,4 @@ Presentación: https://docs.google.com/presentation/d/1BtHFzTq2s1vKJBcjl-sx-5ogD
 
 ---
 
-**Última actualización:** Enero 2026
+**Última actualización:** Febrero 2026
