@@ -240,7 +240,9 @@ class DataManager {
           // Expandir: crear un marcador por cada municipio
           munIds.forEach((munId, munIdx) => {
             const centroid = centroids[munId];
-            const munName = Array.isArray(munNames) ? munNames[munIdx] : munNames;
+            // Usar mapeo de config para nombre correcto del municipio (corrige errores del API)
+            const nombreConfig = this.config.MUNICIPIOS_WFS.nombresMunicipios[munId];
+            const munName = nombreConfig || (Array.isArray(munNames) ? munNames[munIdx] : munNames);
 
             // Usar centroide del municipio si está disponible, sino usar coordenadas originales
             const lat = centroid ? centroid.lat : ubicacion.lat;

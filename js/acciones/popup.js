@@ -186,10 +186,18 @@ class PopupGenerator {
     const icono = esEstatal ? "🏛️" : "📍";
 
     // Obtener municipios de la ubicación actual (no de todas las ubicaciones)
+    // Usar mapeo de config para corregir nombres del API
+    const nombresMunicipios = this.config.MUNICIPIOS_WFS.nombresMunicipios;
     let municipiosDeUbicacion = [];
-    if (ubicacion && ubicacion.mun_name && !esEstatal) {
-      const nombres = Array.isArray(ubicacion.mun_name) ? ubicacion.mun_name : [ubicacion.mun_name];
-      municipiosDeUbicacion = nombres.filter(n => n);
+    if (ubicacion && !esEstatal) {
+      const munIds = Array.isArray(ubicacion.mun_id) ? ubicacion.mun_id : (ubicacion.mun_id ? [ubicacion.mun_id] : []);
+      if (munIds.length > 0) {
+        municipiosDeUbicacion = munIds.map(id => nombresMunicipios[id] || '').filter(n => n);
+      }
+      if (municipiosDeUbicacion.length === 0 && ubicacion.mun_name) {
+        const nombres = Array.isArray(ubicacion.mun_name) ? ubicacion.mun_name : [ubicacion.mun_name];
+        municipiosDeUbicacion = nombres.filter(n => n);
+      }
     }
 
     // Verificar si es un marcador expandido (parte de un grupo multi-municipio)
@@ -343,7 +351,14 @@ function verDetallePDF(accionId, ubicacionIdx = 0) {
 
   const pdfUrl = `https://api.cambioclimaticotlaxcala.mx/api/v1/surveys/${ubicacion.survey_id}/pdf/`;
 
-  window.open(pdfUrl, '_blank');
+  // Usar enlace temporal para descargar (el servidor envía Content-Disposition: attachment)
+  const a = document.createElement('a');
+  a.href = pdfUrl;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 /**
