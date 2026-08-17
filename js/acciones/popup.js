@@ -351,14 +351,10 @@ function verDetallePDF(accionId, ubicacionIdx = 0) {
 
   const pdfUrl = `https://api.cambioclimaticotlaxcala.mx/api/v1/surveys/${ubicacion.survey_id}/pdf/`;
 
-  // Usar enlace temporal para descargar (el servidor envía Content-Disposition: attachment)
-  const a = document.createElement('a');
-  a.href = pdfUrl;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  // Abrir PDF en el visor de Google Docs para mostrarlo en el navegador
+  // (el servidor envía Content-Disposition: attachment que fuerza descarga)
+  const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(pdfUrl)}&embedded=true`;
+  window.open(viewerUrl, '_blank');
 }
 
 /**
