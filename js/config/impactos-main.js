@@ -1380,8 +1380,8 @@ window.addEventListener('DOMContentLoaded', () => {
       layers: [
         new ol.layer.Tile({
           source: new ol.source.XYZ({
-            url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+            url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           }),
           zIndex: 0,
         }),
@@ -1590,8 +1590,8 @@ window.addEventListener('DOMContentLoaded', () => {
       layers: [
         new ol.layer.Tile({
           source: new ol.source.XYZ({
-            url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+            url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           }),
           zIndex: 0,
         }),
@@ -1781,8 +1781,8 @@ window.addEventListener('DOMContentLoaded', () => {
       layers: [
         new ol.layer.Tile({
           source: new ol.source.XYZ({
-            url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+            url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            attributions: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           }),
           zIndex: 0,
         }),
